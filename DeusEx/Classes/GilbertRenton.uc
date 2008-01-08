@@ -3,6 +3,11 @@
 //=============================================================================
 class GilbertRenton extends HumanCivilian;
 
+function Bool HasTwoHandedWeapon()
+{
+	return False;
+}
+
 defaultproperties
 {
      CarcassType=Class'DeusEx.GilbertRentonCarcass'
