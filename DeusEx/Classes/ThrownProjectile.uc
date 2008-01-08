@@ -45,7 +45,7 @@ simulated function Tick(float deltaTime)
 	local ScriptedPawn P;
 	local DeusExPlayer Player;
 	local Vector dist, HitLocation, HitNormal;
-	local float blinkRate, mult, skillDiff;
+	local float blinkRate, mult, skillDiff, levelDiff;
 	local float proxRelevance;
 	local Pawn curPawn;
 	local bool pass;
@@ -85,6 +85,7 @@ simulated function Tick(float deltaTime)
 		{
 			if (bArmed)
 			{
+				levelDiff = 1.000000 / Level.Game.Difficulty;
 				proxCheckTime += deltaTime;
 
 				// beep based on skill
@@ -131,7 +132,7 @@ simulated function Tick(float deltaTime)
 								dist = Player.Location - Location;
 								if (VSize(dist) < proxRadius)
 									if (skillTime == 0)
-										skillTime = FClamp(-20.0 * Player.SkillSystem.GetSkillLevelValue(class'SkillDemolition'), 1.0, 10.0);
+										skillTime = FClamp((-14.0 - (6.0 * levelDiff)) * Player.SkillSystem.GetSkillLevelValue(class'SkillDemolition'), levelDiff, 10.0);
 							}
 						}
 					}
