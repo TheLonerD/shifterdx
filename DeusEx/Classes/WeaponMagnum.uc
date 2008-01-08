@@ -3,6 +3,19 @@
 //=============================================================================
 class WeaponMagnum expands WeaponPistol;
 
+function Facelift(bool bOn)
+{
+	local Texture temptex;
+	if(bOn)
+	{
+		temptex = Texture(DynamicLoadObject("ShifterTextures.Weapons.Magnum",class'Texture', True));
+		if(temptex != None)
+			MultiSkins[3] = temptex;
+	}
+	else
+		MultiSkins[3] = Default.MultiSkins[3];
+}
+
 defaultproperties
 {
      HitDamage=17

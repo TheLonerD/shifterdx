@@ -206,13 +206,22 @@ function SwapObjects(HUDObjectSlot firstSlot, HUDObjectSlot secondSlot)
 function SelectObject(Inventory item, bool bNewToggle)
 {
 	local int objectIndex;
+	local bool bFound;
+
+	bFound = False;
 
 	for (objectIndex=0;objectIndex<10;objectIndex++)
 	{
 		if (objBelt.objects[objectIndex].item == item)
 		{
-			if (!objBelt.objects[objectIndex].GetToggle())
+			if (!objBelt.objects[objectIndex].GetToggle() && !bFound)
+			{
 				objBelt.objects[objectIndex].SetToggle(bNewToggle);
+
+				//== We only want to activate one button on multi-slot items
+				if(bNewToggle)
+					bFound = True;
+			}
 		}
 		else
 		{

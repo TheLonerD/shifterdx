@@ -18,9 +18,6 @@ function bool UseAmmo(int AmountNeeded)
 	local ShellCasing shell;
 	local DeusExWeapon W;
 
-	if(Self.isA('Ammo10mmEX'))
-		return Super.UseAmmo(AmountNeeded);
-
 	if (Super.UseAmmo(AmountNeeded))
 	{
 		GetAxes(Pawn(Owner).ViewRotation, X, Y, Z);

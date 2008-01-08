@@ -115,12 +115,20 @@ event DrawWindow(GC gc)
 
 function SetAmmo(Class<Ammo> newAmmo, bool bNewHasIt, optional int newRounds)
 {
+	local Texture temptex;
 	ammo   = newAmmo;
 	bHasIt = bNewHasIt;
 	rounds = newRounds;
 	
 	SetClientObject(ammo);
-	SetIcon(Class<DeusExAmmo>(ammo).Default.Icon);
+
+	//== Try to load up the optional, spruced up icons if we can
+	if(Class<DeusExAmmo>(ammo).Default.DynamicLoadIcon != "")
+		temptex = Texture(DynamicLoadObject(Class<DeusExAmmo>(ammo).Default.DynamicLoadIcon,class'Texture', True));
+	if(temptex != None)
+		SetIcon(temptex);
+	else
+		SetIcon(Class<DeusExAmmo>(ammo).Default.Icon);
 	UpdateIconColor(bHasIt);
 	SetSensitivity(bHasIt);	
 }

@@ -5,6 +5,31 @@
 //=============================================================================
 class WeaponModAuto extends WeaponMod;
 
+function Facelift(bool bOn)
+{
+	local Texture temptex;
+	if(bOn)
+	{
+		temptex = Texture(DynamicLoadObject("ShifterTextures.Items.WeaponModAuto",class'Texture', True));
+		if(temptex != None)
+			Skin = temptex;
+
+		temptex = Texture(DynamicLoadObject("ShifterTextures.Icons.IconModAuto",class'Texture', True));
+		if(temptex != None)
+			largeIcon = temptex;	
+
+		temptex = Texture(DynamicLoadObject("ShifterTextures.Icons.BeltIconModAuto",class'Texture', True));
+		if(temptex != None)
+			Icon = temptex;		
+	}
+	else
+	{
+		Skin = Default.Skin;
+		largeIcon = Default.largeIcon;
+		Icon = Default.Icon;
+	}
+}
+
 // ----------------------------------------------------------------------
 // ApplyMod()
 // ----------------------------------------------------------------------

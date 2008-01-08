@@ -23,6 +23,7 @@ function AddAmmoInfoWindow(DeusExAmmo ammo, bool bShowDescriptions)
 	local AlignWindow winAmmo;
 	local PersonaNormalTextWindow winText;
 	local Window winIcon;
+	local Texture temptex;
 
 	if (ammo != None)
 	{
@@ -32,7 +33,13 @@ function AddAmmoInfoWindow(DeusExAmmo ammo, bool bShowDescriptions)
 
 		// Add icon
 		winIcon = winAmmo.NewChild(Class'Window');
-		winIcon.SetBackground(ammo.Icon);
+		//== Allow for the loading of optional, updated textures
+		if(ammo.Default.DynamicLoadIcon != "")
+			temptex = Texture(DynamicLoadObject(ammo.Default.DynamicLoadIcon,class'Texture', True));
+		if(temptex != None)
+			winIcon.SetBackground(temptex);
+		else
+			winIcon.SetBackground(ammo.Icon);
 		winIcon.SetBackgroundStyle(DSTY_Masked);
 		winIcon.SetSize(42, 37);
 

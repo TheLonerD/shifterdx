@@ -124,6 +124,8 @@ var Actor ConActorsBound[10];
 
 var int conActorCount;
 
+var string startEventString; // The string that corresponds to the section of the convo we want to start in
+
 // ----------------------------------------------------------------------
 // SetStartActor()
 // ----------------------------------------------------------------------
@@ -168,7 +170,7 @@ function SetInitialRadius(int newInitialRadius)
 // 3.  Jumps into the 'PlayEvent' state
 // ----------------------------------------------------------------------
 
-function Bool StartConversation(DeusExPlayer newPlayer, optional Actor newInvokeActor, optional bool bForcePlay)
+function Bool StartConversation(DeusExPlayer newPlayer, optional Actor newInvokeActor, optional bool bForcePlay, optional string startLabel)
 {
 	local DeusExLevelInfo aDeusExLevelInfo;
 
@@ -1400,6 +1402,17 @@ function SetForcePlay(bool bNewForcePlay)
 function bool GetForcePlay()
 {
 	return bForcePlay;
+}
+
+function SetStartLabel(string startLabel)
+{
+	startEventString = startLabel;
+}
+
+
+function string GetStartLabel()
+{
+	return startEventString;
 }
 
 // ----------------------------------------------------------------------

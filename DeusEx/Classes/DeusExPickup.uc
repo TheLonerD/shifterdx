@@ -23,6 +23,24 @@ replication
 }
 
 // ----------------------------------------------------------------------
+// PreBeginPlay()
+// ----------------------------------------------------------------------
+simulated function PreBeginPlay()
+{
+	Super.PreBeginPlay();
+
+	if(Level.NetMode == NM_Standalone)
+		Facelift(true);
+}
+
+// ----------------------------------------------------------------------
+// Facelift()
+//  Applies the new HDTP textures and meshes if present, stays the same
+//  otherwise.  Also, the name of this function is made of win
+// ----------------------------------------------------------------------
+function Facelift(bool bOn){}
+
+// ----------------------------------------------------------------------
 // HandlePickupQuery()
 //
 // If the bCanHaveMultipleCopies variable is set to True, then we want

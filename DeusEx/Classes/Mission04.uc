@@ -28,7 +28,7 @@ function FirstFrame()
 		if(flags.GetBool('M04_Hotel_Cleared'))
 			flags.SetBool('PlayerBailedOutWindow', False,, 0);
 		else
-			flags.SetBool('PaulDenton_Dead', True,, 13);
+			flags.SetBool('PaulDenton_Dead', True,, 0);
 	}
 
 	if (localURL == "04_NYC_STREET")
@@ -86,6 +86,24 @@ function FirstFrame()
 		{
 			if(Spawn(class'Phone',None,, vect(-613.23, -3236.47, 117.19)) != None)
 				flags.SetBool('M04_Ans_Mach_Placed', True,, 5);
+		}
+	}
+	else if (localURL == "04_NYC_NSFHQ")
+	{
+		if(!flags.GetBool('M04_Switch_Trig_Placed'))
+		{
+			ftrig = Spawn(class'FlagTrigger',None,, vect(-138.417221, 62.275002, 1208.103882));
+			if(ftrig != None)
+			{
+				ftrig.Tag = 'UNATCOHatesPlayer';
+				ftrig.bSetFlag = True;
+				ftrig.bTrigger = False;
+				ftrig.flagExpiration = 5;
+				ftrig.FlagName = 'UNATCOSwitched';
+				ftrig.flagValue = True;
+
+				flags.SetBool('M04_Switch_Trig_Placed', True,, 5);
+			}
 		}
 	}
 	else if (localURL == "04_NYC_UNATCOHQ")
@@ -353,6 +371,39 @@ function Timer()
 				flags.SetBool('PlayerKilledRenton', True,, 5);
 				foreach AllActors(class'Actor', A, 'RentonsHatePlayer')
 					A.Trigger(Self, Player);
+			}
+		}
+
+		if (flags.GetBool('InterruptFamilySquabble_Played') && !flags.GetBool('GaveRentonGun') && !flags.GetBool('JoJoFine_Dead') && !flags.GetBool('GilbertRenton_Dead') && !flags.GetBool('GilbertRenton_Equippable'))
+		{
+			foreach AllActors(class'GilbertRenton', Gilbert)
+			{
+				Gilbert.bCanGiveWeapon = True;
+				flags.SetBool('GilbertRenton_Equippable',True,,5);
+			}
+		}
+
+		if (flags.GetBool('GilbertRenton_Equippable') && !flags.GetBool('GilbertRenton_Dead'))
+		{
+			//== If we've given him a weapon, start the "thanks for the weapon" part of the give conversation
+			if(flags.GetBool('GilbertRenton_Equipped') && !flags.GetBool('RentonGiveConvoReduxActive'))
+			{
+				foreach AllActors(class'GilbertRenton', Gilbert)
+				{
+					if(Player.StartConversationByName('InterruptFamilySquabble', Gilbert, False, False, "GiveCommon"))
+					{
+						flags.SetBool('RentonGiveConvoReduxActive',True,,5);
+						Gilbert.bCanGiveWeapon = False;
+					}
+
+//					Player.conPlay.JumpToConversation(Player.conPlay.con, "GiveCommon");
+				}
+			}
+
+			if(flags.GetBool('GaveRentonGun') || flags.GetBool('JoJoFine_Dead'))
+			{
+				flags.SetBool('GilbertRenton_Equippable',False,,4);
+				flags.SetBool('RentonGiveConvoReduxActive',False,,4);
 			}
 		}
 

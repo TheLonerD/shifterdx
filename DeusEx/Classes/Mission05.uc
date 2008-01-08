@@ -77,6 +77,7 @@ function FirstFrame()
 
 		//== There's a data cube that likes to fall through the level
 		//==  let's spawn a new copy, only this time inside the level boundaries
+		//==  Worst case scenario is there's a datacube on top of another
 		if(!flags.GetBool('M05_Datacube_Replaced'))
 		{
 			dCube = spawn(class'DataCube', None,, vect(-279.169556,432.570007,-100.000000));
@@ -137,10 +138,7 @@ function FirstFrame()
 						break;
 					}
 					
-//					if (nextItem == None)
-//						break;	
-//					else
-						item = nextItem;
+					item = nextItem;
 				}
 			}
 			

@@ -50,7 +50,8 @@ var Font ConversationNameFonts[2];
 // 3.  Jumps into the 'PlayEvent' state
 // ----------------------------------------------------------------------
 
-function Bool StartConversation(DeusExPlayer newPlayer, optional Actor newInvokeActor, optional bool bForcePlay)
+//== Modified so conversations can be started at certain points within the convo, if necessary -- Y|yukichigai
+function Bool StartConversation(DeusExPlayer newPlayer, optional Actor newInvokeActor, optional bool bForcePlay, optional string startLabel)
 {
 	if ( Super.StartConversation(newPlayer, newInvokeActor, bForcePlay) == False )
 		return False;
@@ -113,6 +114,15 @@ function Bool StartConversation(DeusExPlayer newPlayer, optional Actor newInvoke
 
 	// Grab the first event!
 	currentEvent = con.eventList;
+
+	if(startLabel != "")
+		currentEvent = con.GetEventFromLabel( startLabel );
+
+	if(currentEvent == None)
+	{
+		currentEvent = con.eventList;
+		log("ConPlay error, event "$ startLabel $" not found, defaulting to normal conversation start point");
+	}
 
 	// Create a ConHistory object
 	if (!bForcePlay)

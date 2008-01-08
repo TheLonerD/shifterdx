@@ -6090,7 +6090,8 @@ function DropDecoration()
 					mult = 1.0;
 			}
 
-			if (IsLeaning())
+			//== We shouldn't throw items due to being dropped whilst in a conversation, because that tends to kill or PO who we're conversing with
+			if (IsLeaning() || IsInState('Conversation'))
 				CarriedDecoration.Velocity = vect(0,0,0);
 			else
 				CarriedDecoration.Velocity = Vector(ViewRotation) * mult * 500 + vect(0,0,220) + 40 * VRand();
@@ -7939,7 +7940,7 @@ Begin:
 //	TweenToWaiting(0.1);
 //	FinishAnim();
 
-	if (!conPlay.StartConversation(Self))
+	if (!conPlay.StartConversation(Self,,,conPlay.GetStartLabel()))
 	{
 		AbortConversation(True);
 	}
@@ -8128,7 +8129,8 @@ function bool StartConversationByName(
 	Name conName, 
 	Actor conOwner, 
 	optional bool bAvoidState, 
-	optional bool bForcePlay
+	optional bool bForcePlay,
+	optional string startSection
 	)
 {
 	local ConListItem conListItem;
@@ -8165,7 +8167,7 @@ function bool StartConversationByName(
 		// to play!
 
 		if ((dist <= 800) || (bForcePlay))
-			bConversationStarted = StartConversation(conOwner, IM_Named, con, bAvoidState, bForcePlay);
+			bConversationStarted = StartConversation(conOwner, IM_Named, con, bAvoidState, bForcePlay, startSection);
 	}
 
 	return bConversationStarted;
@@ -8203,7 +8205,8 @@ function bool StartConversation(
 	EInvokeMethod invokeMethod, 
 	optional Conversation con,
 	optional bool bAvoidState,
-	optional bool bForcePlay
+	optional bool bForcePlay,
+	optional string startSection
 	)
 {
 	local DeusExRootWindow root;
@@ -8309,6 +8312,7 @@ function bool StartConversation(
 		conPlay.SetStartActor(invokeActor);
 		conPlay.SetConversation(con);
 		conPlay.SetForcePlay(bForcePlay);
+		conPlay.SetStartLabel(startSection);
 		conPlay.SetInitialRadius(VSize(Location - invokeActor.Location));
 
 		// If this conversation was invoked with IM_Named, then save away

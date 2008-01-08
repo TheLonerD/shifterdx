@@ -148,13 +148,15 @@ function DrawBorder(GC gc)
 function UpdateInHand()
 {
 	local int slotIndex;
+	local bool bPressed;
 	
 	// highlight the slot and unhighlight the other slots
 	if ((player != None) && (!bInteractive))
 	{
+		bPressed = False;
 		//=== Changed to iterate through the belt slot backwards, so that multi-slot weapons in DXMP highlight properly
-//		for (slotIndex=0; slotIndex<ArrayCount(objects); slotIndex++)
-		for (slotIndex=(ArrayCount(objects) - 1); slotIndex >= 0; slotIndex--)
+		for (slotIndex=0; slotIndex<ArrayCount(objects); slotIndex++)
+//		for (slotIndex=(ArrayCount(objects) - 1); slotIndex >= 0; slotIndex--)
 		{
 			// Highlight the object in the player's hand
 			if ((player.inHand != None) && (objects[slotIndex].item == player.inHand))
@@ -162,9 +164,13 @@ function UpdateInHand()
 			else
 				objects[slotIndex].HighlightSelect(False);
 
+			//== We only want to actually activate one of these buttons for multi-slot items in MP
 			if ((player.inHandPending != None) && //(player.inHandPending != player.inHand) &&
-			    (objects[slotIndex].item == player.inHandPending))
+			    (objects[slotIndex].item == player.inHandPending) && !bPressed)
+			{
 				objects[slotIndex].SetToggle(true);
+				bPressed = True;
+			}
 			else
 				objects[slotIndex].SetToggle(false);
 		}

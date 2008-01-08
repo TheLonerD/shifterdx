@@ -375,7 +375,11 @@ function PreBeginPlay()
 	{
 		Default.mpPickupAmmoCount = Default.PickupAmmoCount;
 	}
+	if(Level.NetMode == NM_Standalone)
+		Facelift(true);
 }
+
+function Facelift(bool bOn){}
 
 //
 // PostBeginPlay
@@ -3745,6 +3749,8 @@ simulated function ProcessTraceHit(Actor Other, Vector HitLocation, Vector HitNo
 	local int	   EMPlev;
 	local float	   EMPDam;
 	local DeusExPlayer dxPlayer;
+	local LaserTrigger lastrig; //For electrostatic discharge
+	local Spark        thespark; //For determining radius from the hit loc, plus a pretty effect
 
 	//== If we're using 10mm explosive rounds (or if we're in unrealistic mode and we're an NPC) spawn a bullet explosion instead
 	if( (AmmoName == Class'Ammo10mmEX' || (DeusExPlayer(Owner) == None && DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0 && Abs(VSize(HitLocation - Owner.Location)) > FMin(HitDamage * 1.78, 25 * 1.78) ) ) && Other != None)
@@ -3796,6 +3802,10 @@ simulated function ProcessTraceHit(Actor Other, Vector HitLocation, Vector HitNo
 				//=== Scramble damage is only done under certain conditions
 				if((Pawn(Other).Default.Health <= (EMPlev * 100) + 50 || Pawn(Other).Default.Health <= HitDamage * mult * EMPDam * 5 || EMPlev >= 3) && Level.NetMode == NM_Standalone)
 					Other.TakeDamage(HitDamage * mult * EMPDam * 5, Pawn(Owner), HitLocation, 1000.0*X, 'NanoVirus');
+
+				thespark = Spawn(class'Spark',Owner,, HitLocation);
+				foreach thespark.RadiusActors(class'LaserTrigger', lastrig, 1.25)
+					lastrig.TakeDamage(HitDamage * mult * EMPDam, Pawn(Owner), HitLocation, 1000.0*X, 'EMP');
 			}
 
 			SelectiveSpawnEffects( HitLocation, HitNormal, Other, HitDamage * mult);
@@ -3831,6 +3841,8 @@ simulated function ProcessTraceHit(Actor Other, Vector HitLocation, Vector HitNo
 				//=== Scramble damage is only done under certain conditions
 				if((Pawn(Other).Default.Health <= (EMPlev * 100) + 50 || Pawn(Other).Default.Health <= HitDamage * mult * EMPDam * 5 || EMPlev >= 3) && Level.NetMode == NM_Standalone)
 					Other.TakeDamage(HitDamage * mult * EMPDam * 5, Pawn(Owner), HitLocation, 1000.0*X, 'NanoVirus');
+
+				Spawn(class'Spark',Owner,, HitLocation);
 			}
 
 			if (bPenetrating && Other.IsA('Pawn') && !Other.IsA('Robot'))
