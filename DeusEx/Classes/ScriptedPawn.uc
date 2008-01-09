@@ -420,12 +420,14 @@ var      int      NumCarcasses;     // number of carcasses seen
 var      float    walkAnimMult;
 var      float    runAnimMult;
 
-var()	 bool	  bUnStunnable;	    // for bLethal weapons
-var()	 bool	  bTookHandtoHand;  // tracks Hand to Hand weapons
+var transient	 bool	  bUnStunnable;	    // for bLethal weapons
+var transient	 bool	  bTookHandtoHand;  // tracks Hand to Hand weapons
 
 var()	 bool	  bCanGiveWeapon;   // Can the player give this NPC a weapon?
 
 var()	 int	  PendingSkillPoints; // how many skillpoints are pending for Stealth bonuses
+
+var()    vector    EnemyLastSeenAt; //A vector indicating the last position the enemy was sighted
 
 native(2102) final function ConBindEvents();
 
@@ -813,6 +815,7 @@ function bool SetEnemy(Pawn newEnemy, optional float newSeenTime,
 			EnemyTimer = 0;
 		Enemy         = newEnemy;
 		EnemyLastSeen = newSeenTime;
+		EnemyLastSeenAt = newEnemy.Location;
 
 		return True;
 	}
@@ -1813,7 +1816,10 @@ function UpdateActorVisibility(actor seeActor, float deltaSeconds,
 		else
 			bCanSee = false;
 		if (bCanSee)
+		{
 			EnemyLastSeen = 0;
+			EnemyLastSeenAt = seeActor.Location;
+		}
 		else if (EnemyLastSeen <= 0)
 			EnemyLastSeen = 0.01;
 	}
@@ -11997,10 +12003,13 @@ State Attacking
 		local DeusExWeapon	   lWeapon, bestWeapon;
 		local DeusExCarcass	   carc, bestCarc;
 		local Inventory		   inv;
+		local float		   actorVis;
 
 		destPoint = None;
 		destLoc   = vect(0, 0, 0);
 		destType  = DEST_Failure;
+
+		actorVis = 1.0;
 
 		if (enemy == None)
 			return (destType);
@@ -12065,19 +12074,30 @@ State Attacking
 			}
 		}
 
-		if (destType == DEST_Failure)
+		if(destType == DEST_Failure)
+			actorVis = ComputeActorVisibility(Enemy);
+
+		//== Only try to kill 'em if we can actually see 'em
+		if(actorVis >= 0.1)
 		{
-			if (AICanShoot(enemy, true, false, 0.025) || ActorReachable(enemy))
+			if (destType == DEST_Failure)
 			{
-				destType = ComputeBestFiringPosition(tempVect);
-				if (destType == DEST_NewLocation)
-					destLoc = tempVect;
+				if (AICanShoot(enemy, true, false, 0.025) || ActorReachable(enemy))
+				{
+					destType = ComputeBestFiringPosition(tempVect);
+					if (destType == DEST_NewLocation)
+						destLoc = tempVect;
+				}
 			}
 		}
 
+
 		if (destType == DEST_Failure)
 		{
-			MoveTarget = FindPathToward(enemy);
+			if(actorVis >= 0.1)
+				MoveTarget = FindPathToward(enemy);
+			else
+				MoveTarget = FindPathTo(EnemyLastSeenAt);
 			if (MoveTarget != None)
 			{
 				if (!bDefendHome || IsNearHome(MoveTarget.Location))
@@ -12096,7 +12116,10 @@ State Attacking
 		// Default behavior, so they don't just stand there...
 		if (destType == DEST_Failure)
 		{
-			enemyDir = Rotator(Enemy.Location - Location);
+			if(actorVis >= 0.1)
+				enemyDir = Rotator(Enemy.Location - Location);
+			else
+				enemyDir = Rotator(EnemyLastSeenAt - Location);
 			if (AIPickRandomDestination(60, 150,
 			                            enemyDir.Yaw, 0.5, enemyDir.Pitch, 0.5, 
 			                            2, FRand()*0.4+0.35, tempVect))

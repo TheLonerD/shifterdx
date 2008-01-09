@@ -374,19 +374,19 @@ function Timer()
 			}
 		}
 
-		if (flags.GetBool('InterruptFamilySquabble_Played') && !flags.GetBool('GaveRentonGun') && !flags.GetBool('JoJoFine_Dead') && !flags.GetBool('GilbertRenton_Dead') && !flags.GetBool('GilbertRenton_Equippable'))
+		if (flags.GetBool('InterruptFamilySquabble_Played') && !flags.GetBool('GaveRentonGun') && !flags.GetBool('JoJoFine_Dead') && !flags.GetBool('GilbertRenton_Dead') && !flags.GetBool('M04_GilbertRenton_Equippable'))
 		{
 			foreach AllActors(class'GilbertRenton', Gilbert)
 			{
 				Gilbert.bCanGiveWeapon = True;
-				flags.SetBool('GilbertRenton_Equippable',True,,5);
+				flags.SetBool('M04_GilbertRenton_Equippable',True,,5);
 			}
 		}
 
 		if (flags.GetBool('GilbertRenton_Equippable') && !flags.GetBool('GilbertRenton_Dead'))
 		{
 			//== If we've given him a weapon, start the "thanks for the weapon" part of the give conversation
-			if(flags.GetBool('GilbertRenton_Equipped') && !flags.GetBool('RentonGiveConvoReduxActive'))
+			if(flags.GetBool('GilbertRenton_Equipped') && !flags.GetBool('M04_RentonGiveConvoReduxActive'))
 			{
 				foreach AllActors(class'GilbertRenton', Gilbert)
 				{
@@ -395,15 +395,13 @@ function Timer()
 						flags.SetBool('RentonGiveConvoReduxActive',True,,5);
 						Gilbert.bCanGiveWeapon = False;
 					}
-
-//					Player.conPlay.JumpToConversation(Player.conPlay.con, "GiveCommon");
 				}
 			}
 
 			if(flags.GetBool('GaveRentonGun') || flags.GetBool('JoJoFine_Dead'))
 			{
-				flags.SetBool('GilbertRenton_Equippable',False,,4);
-				flags.SetBool('RentonGiveConvoReduxActive',False,,4);
+				flags.SetBool('M04_GilbertRenton_Equippable',False,,4);
+				flags.SetBool('M04_RentonGiveConvoReduxActive',False,,4);
 			}
 		}
 
@@ -437,7 +435,7 @@ function Timer()
 				foreach AllActors(class'PaulDenton', Paul)
 				{
 					count = Abs(VSize(Player.Location - Paul.Location));
-					if(count < 120)
+					if(count < 120 && Player.Location.X > -410.000000 && Player.Location.Y > -2990.000000)
 						flags.SetBool('ApartmentEntered', True,, 5);
 				}
 			}

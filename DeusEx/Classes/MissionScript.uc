@@ -17,11 +17,11 @@ var FlagBase flags;
 var string localURL;
 var DeusExLevelInfo dxInfo;
 
-var String emailSubject[25];
 var String emailFrom[25];
 var String emailTo[25];
 var String emailCC[25];
-var String emailString[25];
+var localized String emailSubject[25];
+var localized String emailString[25];
 
 // ----------------------------------------------------------------------
 // PostPostBeginPlay()

@@ -6327,6 +6327,9 @@ exec function bool DropItem(optional Inventory inv, optional bool bDrop)
 					//== Make them use the weapon
 					ScriptedPawn(FrobTarget).SetWeapon(Weapon(item));
 
+					if(ScriptedPawn(FrobTarget).bImportant)
+						flagBase.setBool(DeusExRootWindow(rootWindow).StringToName(FrobTarget.BindName $"_Equipped"),True);
+
 					ClientMessage("Gave "$ item.ItemName $" to "$ FrobTarget.FamiliarName);
 					return True;
 				}
@@ -7940,7 +7943,7 @@ Begin:
 //	TweenToWaiting(0.1);
 //	FinishAnim();
 
-	if (!conPlay.StartConversation(Self,,,conPlay.GetStartLabel()))
+	if (!conPlay.StartConversation(Self))
 	{
 		AbortConversation(True);
 	}

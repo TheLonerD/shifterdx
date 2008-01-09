@@ -1,0 +1,66 @@
+In order to compile Shifter's DeusEx.u you need a few things:
+
+A) The Deus Ex SDK.
+B) The v1112fm patch installed
+
+Once you have those, here's the process:
+
+1) Copy the DeusEx folder (the folder itself, not just the contents) to your
+   C:\DeusEx folder.  You should wind up with a C:\DeusEx\DeusEx\Classes folder
+   if you did it right. (As well as a \Inc folder)
+
+2) In your DeusEx\System folder, open DeusEx.ini.  Scroll down to the section
+   labeled "[Editor.EditorEngine]".  At the bottom of the section you will find
+   some entries that start with "EditPackages".  All you need to do is add two
+   lines IMMEDIATELY before the line referring to "DeusEx".  The two lines are:
+
+EditPackages=UBrowser
+EditPackages=UWindow
+
+   If you do it right the bottom of the section should read as follows:
+
+EditPackages=Core
+EditPackages=Engine
+EditPackages=Editor
+EditPackages=Fire
+EditPackages=IpDrv
+EditPackages=Extension
+EditPackages=DeusExUI
+EditPackages=ConSys
+EditPackages=DeusExConversations
+EditPackages=DeusExSounds
+EditPackages=DeusExItems
+EditPackages=DeusExDeco
+EditPackages=DeusExCharacters
+EditPackages=DeusExText
+EditPackages=UBrowser
+EditPackages=UWindow
+EditPackages=DeusEx
+EditPackages=IpServer
+
+3) While you're in C:\DeusEx\System you also need to delete (or rename) your
+   current DeusEx.u file. (e.g. to DeusEx.u.old or something NOT ENDING IN .U)
+
+4) Run UCC.exe with the command option "make".  You can do this from the Run
+   command in Windows by typing in the following:
+
+      C:\DeusEx\System\UCC.exe "make"
+
+   You can also make a shortcut to the same location for future use.
+
+5) Wait for the package to compile.  BE PATIENT.  Even on my system (which is
+   anything but slow) it takes over a minute.  On my older systems it took
+   upwards of five minutes to compile.
+
+6) Once it's done compiling, open up Deus Ex as normal and enjoy your new
+   snapshot build of Shifter.
+
+
+IF YOU GET A COMPILE ERROR
+   There are two possibilities: a) I uploaded code without checking if it would
+   compile right (a possibility if I was tired), or b) something installed on
+   your version of Deus Ex is interfering with the compile.  An easy way to
+   test this is to download a previous version via SVN and compile it. (I can
+   say with certainty that Revision 8 should compile)  If it doesn't compile
+   then the problem is likely on your end; if it does then it's probably a
+   screwup on my part.

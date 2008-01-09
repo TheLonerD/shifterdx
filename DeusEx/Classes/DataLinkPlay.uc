@@ -85,7 +85,7 @@ function SetTrigger(DataLinkTrigger newDatalinkTrigger)
 // 3.  Jumps into the 'PlayEvent' state
 // ----------------------------------------------------------------------
 
-function Bool StartConversation(DeusExPlayer newPlayer, optional Actor newInvokeActor, optional bool bForcePlay, optional string startLabel)
+function Bool StartConversation(DeusExPlayer newPlayer, optional Actor newInvokeActor, optional bool bForcePlay)
 {
 	local Actor tempActor;
 

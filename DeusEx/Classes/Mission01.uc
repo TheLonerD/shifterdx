@@ -153,6 +153,7 @@ function Timer()
 	local SecurityCamera cam;
 	local int count;
 	local Inventory item, nextItem;
+	local GuntherHermann gunther;
 
 	Super.Timer();
 
@@ -180,6 +181,29 @@ function Timer()
 			// if the player killed more than 5, set the flag
 			if (count < 23)
 				flags.SetBool('M01PlayerAggressive', True,, 6);		// don't expire until mission 6
+		}
+
+		if(flags.GetBool('GuntherRescued_Played'))
+		{
+			//== Gunther should always be equippable after we rescue him
+			if(!flags.GetBool('M01_GuntherEquippable'))
+			{
+				foreach AllActors(class'GuntherHermann', gunther)
+				{
+					gunther.bCanGiveWeapon = True;
+					flags.SetBool('M01_GuntherEquippable',True,,2);
+				}
+			}
+
+			if(flags.GetBool('GuntherHermann_Equipped') && !flags.GetBool('GuntherRespectsPlayer') && !flags.GetBool('M01_GuntherGiveConvoReduxPlayed'))
+			{
+				//== Once we've given Gunther a gun (and if he hates us) play the "thanks" part of the rescue convo
+				foreach AllActors(class'GuntherHermann', gunther)
+				{
+					if(Player.StartConversationByName('GuntherRescued', gunther, False, False, "GiveSpeech"))
+						flags.SetBool('M01_GuntherGiveConvoReduxPlayed',True,,2);
+				}
+			}
 		}
 
 		// check for the leader being killed

@@ -843,6 +843,51 @@ UPDATES:
 	at Untrained. (a three-quarter second drop)  Investing a few skill
 	points in your Demolition skill is now advisable, to say the least.
 
+	 - Did a little work on how the AI interacts with the various types of
+	cloaking in the game.  Due to the somewhat rudimentary nature of the AI
+	routines I am unable to get a realistic-feeling system in at this time,
+	but I've included a fix so that NPCs won't follow you around with
+	precise knowledge of your exact location while you're cloaked, though
+	they will shoot at you just fine until the usual period of time has
+	elapsed.  After that point they will have officially "lost" you.
+
+	 - Adjusted the variables used in MissionScripts to add in custom email
+	so that localization files (inTs) can override the contents.  This way
+	the translation that Russian fan is working on will be able to affect
+	said emails.
+
+	 - Added in a new means to add custom text to any variety of so-called
+	"Information Devices", including Data Cubes, Newspapers, and Books.
+	This doesn't cover Public Info terminals, which I'll have to handle
+	separately.  I have no idea what I'll do with this new power, but it's
+	nice to know I can do something all the same.
+
+	 - Added a location restriction on my "Paul won't converse with you in
+	the 'Ton" fix.  The fix now limits it so that the conversation won't be
+	started until you're actually inside the main room where you can see
+	him, elminiating the possibility of the conversation not starting
+	because it was triggered while you were in his bedroom.
+
+	 - Added an additional perk to having a higher Medicine skill level,
+	along the lines of the existing bonus for Water Coolers and Water
+	Fountains.  For each additional level of the Medicine skill, all food
+	items will heal one addtional point of health.  You're welcome.
+
+	 - While I was screwing around with food I thought I'd add a little
+	code to Soda so that the new names don't show up in your inventory,
+	since the four types of Soda are counted as one single type.  When you
+	try to pick up any type of Soda it will simply be renamed "Soda" if
+	you're successful, though you will still receive the brand-specific
+	"you found some whatever" message.
+
+	 - Placed some new code in the first mission so that you can now give
+	Gunther a weapon later if you opt not to when you initially rescue him.
+	Doing so will initiate the last part of the conversation in the same
+	way that giving a weapon to Mr. Renton will.  Unlike the Renton
+	situation though Gunther will ALWAYS be able to accept a weapon once
+	you rescue him, should you decide to spoil him with a Sniper Rifle or
+	PS20 or something.  (I'll work on making that worthwhile)
+
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 

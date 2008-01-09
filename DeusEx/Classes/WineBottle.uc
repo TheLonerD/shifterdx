@@ -30,17 +30,24 @@ state Activated
 	function BeginState()
 	{
 		local DeusExPlayer player;
+		local float mult;
 		
 		Super.BeginState();
 
 		player = DeusExPlayer(Owner);
 		if (player != None)
 		{
-			player.HealPlayer(2, False);
-			if(player.drugEffectTimer < 0.0 && player.drugEffectTimer >= -5.0)
+			if(player.SkillSystem != None)
 			{
-				player.drugEffectTimer = -0.1;
+				mult = player.SkillSystem.GetSkillLevelValue(class'SkillMedicine');
+				if(mult <= 0) mult = 1.0;
+				else if(mult == 2.5) mult = 3.0;
+				else if(mult == 3.0) mult = 4.0;
 			}
+//			player.HealPlayer(2, False);
+			player.HealPlayer(1 + Int(mult), False);
+			if(player.drugEffectTimer < 0.0 && player.drugEffectTimer >= -5.0)
+				player.drugEffectTimer = -0.1;
 			else
 				player.drugEffectTimer += 5.0;
 		}

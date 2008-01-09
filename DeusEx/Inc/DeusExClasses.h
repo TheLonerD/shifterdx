@@ -584,6 +584,7 @@ public:
     BITFIELD bTookHandtoHand:1;
     BITFIELD bCanGiveWeapon:1;
     INT PendingSkillPoints GCC_PACK(4);
+    FVector EnemyLastSeenAt;
     DECLARE_FUNCTION(execAddCarcass);
     DECLARE_FUNCTION(execHaveSeenCarcass);
     DECLARE_FUNCTION(execGetPawnAllianceType);

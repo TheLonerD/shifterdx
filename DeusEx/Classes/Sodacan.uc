@@ -69,6 +69,22 @@ function BeginPlay()
 	}	
 }
 
+function bool HandlePickupQuery( inventory Item )
+{
+	local bool bResult;
+	local string tString;
+
+	tString = ItemName;
+	ItemName = Default.ItemName;
+
+	bResult = Super.HandlePickupQuery(Item);
+
+	if(!bResult)
+		ItemName = tString;
+
+	return bResult;
+}
+
 state Activated
 {
 	function Activate()
@@ -79,13 +95,22 @@ state Activated
 	function BeginState()
 	{
 		local DeusExPlayer player;
+		local float mult;
 		
 		Super.BeginState();
 
 		player = DeusExPlayer(Owner);
 		if (player != None)
 		{
-			player.HealPlayer(2, False);
+			if(player.SkillSystem != None)
+			{
+				mult = player.SkillSystem.GetSkillLevelValue(class'SkillMedicine');
+				if(mult <= 0) mult = 1.0;
+				else if(mult == 2.5) mult = 3.0;
+				else if(mult == 3.0) mult = 4.0;
+			}
+//			player.HealPlayer(2, False);
+			player.HealPlayer(1 + Int(mult), False);
 			//Either reduces your drunkenness or extends your zyme high
 			if(player.drugEffectTimer > 4.0 || player.drugEffectTimer < 0.0)
 				player.drugEffectTimer -= 4.0;

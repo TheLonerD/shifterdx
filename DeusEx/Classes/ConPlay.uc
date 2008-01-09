@@ -51,8 +51,10 @@ var Font ConversationNameFonts[2];
 // ----------------------------------------------------------------------
 
 //== Modified so conversations can be started at certain points within the convo, if necessary -- Y|yukichigai
-function Bool StartConversation(DeusExPlayer newPlayer, optional Actor newInvokeActor, optional bool bForcePlay, optional string startLabel)
+function Bool StartConversation(DeusExPlayer newPlayer, optional Actor newInvokeActor, optional bool bForcePlay)
 {
+	local string startLabel;
+
 	if ( Super.StartConversation(newPlayer, newInvokeActor, bForcePlay) == False )
 		return False;
 
@@ -114,6 +116,8 @@ function Bool StartConversation(DeusExPlayer newPlayer, optional Actor newInvoke
 
 	// Grab the first event!
 	currentEvent = con.eventList;
+
+	startLabel = GetStartLabel();
 
 	if(startLabel != "")
 		currentEvent = con.GetEventFromLabel( startLabel );

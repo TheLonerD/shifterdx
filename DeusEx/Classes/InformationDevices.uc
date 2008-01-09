@@ -18,6 +18,7 @@ var localized String msgNoText;
 var Bool bFirstParagraph;
 var localized String ImageLabel;
 var localized String AddedToDatavaultLabel;
+var localized String SpecialText;
 
 // ----------------------------------------------------------------------
 // Destroyed()
@@ -158,6 +159,28 @@ function CreateInfoWindow()
 			}
 		}
 		CriticalDelete(parser);
+	}
+
+	if ( SpecialText != "" && textTag == '' && aReader != None)
+	{
+		infoWindow = rootWindow.hud.ShowInfoWindow();
+		infoWindow.ClearTextWindows();
+
+		winText = infoWindow.AddTextWindow();
+		winText.SetText(SpecialText);
+
+		if (bAddToVault)
+		{
+			note = aReader.GetNote(textTag);
+
+			if (note == None)
+			{
+				note = aReader.AddNote(SpecialText,, True);
+				note.SetTextTag(textTag);
+			}
+
+			vaultString = "";
+		}
 	}
 
 	// do we have any image data to give the player?
