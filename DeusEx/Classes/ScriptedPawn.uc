@@ -815,7 +815,10 @@ function bool SetEnemy(Pawn newEnemy, optional float newSeenTime,
 			EnemyTimer = 0;
 		Enemy         = newEnemy;
 		EnemyLastSeen = newSeenTime;
-		EnemyLastSeenAt = newEnemy.Location;
+		if(newEnemy != None)
+			EnemyLastSeenAt = newEnemy.Location;
+		else
+			EnemyLastSeenAt = vect(0, 0, 0);
 
 		return True;
 	}
@@ -12096,7 +12099,7 @@ State Attacking
 		{
 			if(actorVis >= 0.1)
 				MoveTarget = FindPathToward(enemy);
-			else
+			else if (EnemyLastSeenAt != vect(0, 0, 0))
 				MoveTarget = FindPathTo(EnemyLastSeenAt);
 			if (MoveTarget != None)
 			{
@@ -12118,7 +12121,7 @@ State Attacking
 		{
 			if(actorVis >= 0.1)
 				enemyDir = Rotator(Enemy.Location - Location);
-			else
+			else if (EnemyLastSeenAt != vect(0, 0, 0))
 				enemyDir = Rotator(EnemyLastSeenAt - Location);
 			if (AIPickRandomDestination(60, 150,
 			                            enemyDir.Yaw, 0.5, enemyDir.Pitch, 0.5, 

@@ -165,6 +165,7 @@ function Timer()
 	local Phone amach;
 	local ConversationTrigger contrig;
 	local ConListItem conList;
+	local ComputerPublic compPub;
 
 	Super.Timer();
 
@@ -443,6 +444,19 @@ function Timer()
 
 			if (count > 0)
 				flags.SetBool('M02ViolenceInBar', True,, 4);
+		}
+
+		if (!flags.GetBool('M02_Bar_Warning_Placed'))
+		{
+			foreach AllActors(class'ComputerPublic', compPub)
+			{
+				compPub.bulletinTitles[0] = "A warning from Project Mayhem";
+//				compPub.bulletinText[0] = "I am Jack's bulletin.";
+				compPub.bulletinText[0] = "If you are reading this then this warning is for you. Every word you read of this useless fine print is another second of your life. Don't you have other things to do?";
+				compPub.bulletinText[0] = compPub.bulletinText[0] $ " Is your life so empty that you honestly can't think of a better way to spend these moments? Or are you so impressed with authority that you give respect and credence to all who claim it?";
+				compPub.bulletinText[0] = compPub.bulletinText[0] $ " Do you think everything you're supposed to think? Buy what you're told you should want? Get out of your apartment. Meet a member of the opposite sex.";
+				compPub.bulletinText[0] = compPub.bulletinText[0] $ " Stop excessive shopping and masturbation. Quit your job. Start a fight. Prove you're alive. If you don't claim your humanity you will become a statistic. You have been warned......Tyler";
+			}
 		}
 	}
 	else if (localURL == "02_NYC_HOTEL")

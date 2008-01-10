@@ -825,8 +825,8 @@ UPDATES:
 
 	 - Moved the body of the mechanic Ray (the Odd Mechanic) kills so that
 	you don't damn near trip over it.  If you're observant it's still not
-	very well hidden, but at least this way it at least looks like Ray put
-	in SOME effort.
+	very well hidden, but at least this way it looks like Ray put in SOME
+	amount of effort.
 
 	 - Added spark effects to melee hits that occur when the Electrostatic
 	Discharge aug is on.  I have also used said spark to calculate whether
@@ -865,7 +865,7 @@ UPDATES:
 	 - Added a location restriction on my "Paul won't converse with you in
 	the 'Ton" fix.  The fix now limits it so that the conversation won't be
 	started until you're actually inside the main room where you can see
-	him, elminiating the possibility of the conversation not starting
+	him, eliminiating the possibility of the conversation not starting
 	because it was triggered while you were in his bedroom.
 
 	 - Added an additional perk to having a higher Medicine skill level,
@@ -887,6 +887,17 @@ UPDATES:
 	situation though Gunther will ALWAYS be able to accept a weapon once
 	you rescue him, should you decide to spoil him with a Sniper Rifle or
 	PS20 or something.  (I'll work on making that worthwhile)
+
+	 - Created a new method for adding custom bulletins to news terminals.
+	Again, I have no idea what I'm going to do with this, but I figure
+	there's no harm in futureproofing.
+
+	 - Added in some beam visuals for the Railgun, specifically a green
+	laser "trail" when you fire the weapon.  The effect doesn't behave
+	precisely like I want it to, particularly in that it REFUSES to travel
+	through walls and such.  I suspect this may be another annoying
+	limitation of the Unreal 1 engine.  If it isn't though I will add the
+	through-walls functionality for the visuals in the future.
 
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)

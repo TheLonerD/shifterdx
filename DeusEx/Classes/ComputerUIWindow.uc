@@ -26,6 +26,7 @@ struct TextFileInfo
 {
 	var Name   fileName;
 	var String fileDescription;
+	var String fileString;
 };
 
 struct TextEmailInfo 

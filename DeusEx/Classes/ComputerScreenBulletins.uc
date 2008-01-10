@@ -120,7 +120,26 @@ function SetCompOwner(ElectronicDevices newCompOwner)
 		rowId = lstBulletins.IndexToRowId(0);
 		lstBulletins.SetRow(rowId, True);
 	}
-	else
+
+	if(ComputerPublic(compOwner).bulletinTitles[0] != "")
+	{
+		fileIndex = bulletinIndex;
+		bulletinIndex = 0;
+
+		while(ComputerPublic(compOwner).bulletinTitles[bulletinIndex] != "" && bulletinIndex < 4 && fileIndex < 9)
+		{
+			fileInfo[fileIndex].fileDescription = ComputerPublic(compOwner).bulletinTitles[bulletinIndex];
+			fileInfo[fileIndex].fileString = ComputerPublic(compOwner).bulletinText[bulletinIndex];
+			lstBulletins.AddRow(fileInfo[fileIndex].fileDescription);
+
+			bulletinIndex++;
+		}
+
+		rowId = lstBulletins.IndexToRowId(0);
+		lstBulletins.SetRow(rowId, True);
+	}
+
+	if(ComputerPublic(compOwner).bulletinTag == '' && ComputerPublic(compOwner).bulletinTitles[0] == "")
 	{
 		// No bulletins, so just print a "No Bulletins Today!" message
 		winBulletin.SetText(NoBulletinsTodayText);
@@ -171,7 +190,10 @@ event bool ListSelectionChanged(window list, int numSelections, int focusRowId)
 
 	bulletinIndex = lstBulletins.RowIdToIndex(focusRowId);
 	winBulletin.SetText("");
-	ProcessDeusExText(fileInfo[bulletinIndex].fileName, winBulletin);
+	if(fileInfo[bulletinIndex].fileName != '')
+		ProcessDeusExText(fileInfo[bulletinIndex].fileName, winBulletin);
+	else if(fileInfo[bulletinIndex].fileString != "")
+		winBulletin.SetText(fileInfo[bulletinIndex].fileString);
 }
 
 // ----------------------------------------------------------------------

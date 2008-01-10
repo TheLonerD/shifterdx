@@ -6,6 +6,8 @@
 
 class WeaponRailgun extends WeaponPlasmaRifle;
 
+var LaserEmitter FireBeamEmitter; //== For firing effects
+
 simulated function float CalculateAccuracy()
 {
 	if(bLasing || bZoomed)
@@ -70,6 +72,47 @@ simulated function TraceFire( float Accuracy )
 		dist = Abs(VSize(HitLocation - Owner.Location));
 	}
 
+	FireBeamEmitter = Spawn(class'LaserEmitter', None, , Location, Pawn(Owner).ViewRotation);
+	if(FireBeamEmitter != None)
+	{
+		FireBeamEmitter.AmbientSound = None;
+		if(FireBeamEmitter.proxy != None)
+			FireBeamEmitter.proxy.Skin = Texture'Wepn_Prifle_SFX';
+		FireBeamEmitter.TurnOn();
+
+		for(j=0; j<ArrayCount(FireBeamEmitter.spot); j++)
+		{
+			if (FireBeamEmitter.spot[j] != None)
+			{
+				FireBeamEmitter.spot[j].Skin = Texture'proj_Prifle';
+			}
+		}
+
+/*		for (j=0; j<ArrayCount(FireBeamEmitter.spot); j++)
+		{
+			if (FireBeamEmitter.spot[j] != None)
+			{
+				FireBeamEmitter.spot[j].Destroy();
+				FireBeamEmitter.spot[j] = None;
+				if (LaserIterator(FireBeamEmitter.RenderInterface) != None)
+					LaserIterator(FireBeamEmitter.RenderInterface).DeleteBeam(j);
+			}
+		}
+
+		if (LaserIterator(FireBeamEmitter.RenderInterface) != None)
+			LaserIterator(FireBeamEmitter.RenderInterface).AddBeam(0, Location, FireBeamEmitter.Rotation, 1200);
+
+		FireBeamEmitter.spot[0] = Spawn(class'LaserSpot', FireBeamEmitter, , Location, FireBeamEmitter.Rotation);
+		if(FireBeamEmitter.spot[0] != None)
+			FireBeamEmitter.spot[0].Skin = Texture'proj_Prifle';
+
+		FireBeamEmitter.bIsOn = False;
+*/
+		
+
+		SetTimer(3, False);
+	}
+
 	EndTrace = Pawn(Owner).Location;
 	EndTrace.Z += Pawn(Owner).BaseEyeHeight;
 
@@ -117,6 +160,15 @@ simulated function TraceFire( float Accuracy )
 		}
 	} */
 
+}
+
+function Timer()
+{
+	if(FireBeamEmitter != None)
+	{
+		FireBeamEmitter.bIsOn = True;
+		FireBeamEmitter.Destroy();
+	}
 }
 
 function DrawLineEffect(vector A, vector B, float Detail)

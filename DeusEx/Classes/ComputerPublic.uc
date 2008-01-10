@@ -4,6 +4,8 @@
 class ComputerPublic extends Computers;
 
 var() name bulletinTag;
+var() string bulletinTitles[4];
+var() string bulletinText[4];
 
 defaultproperties
 {
