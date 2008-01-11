@@ -757,6 +757,9 @@ event TravelPostAccept()
 
 	// make sure the player's eye height is correct
 	BaseEyeHeight = CollisionHeight - (GetDefaultCollisionHeight() - Default.BaseEyeHeight);
+
+	//== Apply the HDTP facelift
+	GlobalFacelift(True);
 }
 
 // ----------------------------------------------------------------------
@@ -876,6 +879,33 @@ exec function DualmapF10() { if ( AugmentationSystem != None) AugmentationSystem
 exec function DualmapF11() { if ( AugmentationSystem != None) AugmentationSystem.ActivateAugByKey(8); }
 exec function DualmapF12() { if ( AugmentationSystem != None) AugmentationSystem.ActivateAugByKey(9); }
 
+exec function GlobalFacelift(bool bOn)
+{
+	local Actor generic;
+
+	//== HDTP might break multiplayer compatibility
+	if(Level.NetMode != NM_StandAlone)
+		return;
+
+	foreach AllActors(class'Actor', generic)
+	{
+		if(DeusExDecoration(generic) != None)
+			DeusExDecoration(generic).Facelift(bOn);
+
+		if(DeusExWeapon(generic) != None)
+			DeusExWeapon(generic).Facelift(bOn);
+
+		if(DeusExPickup(generic) != None)
+			DeusExPickup(generic).Facelift(bOn);
+
+		if(DeusExAmmo(generic) != None)
+			DeusExAmmo(generic).Facelift(bOn);
+
+		if(ScriptedPawn(generic) != None)
+			ScriptedPawn(generic).Facelift(bOn);
+	}
+}
+
 //
 // Team Say
 //
@@ -953,7 +983,11 @@ exec function QuickSave()
 	   return;
 	}
 
+	GlobalFacelift(False);
+
 	SaveGame(-1, QuickSaveGameTitle);
+
+	GlobalFacelift(True);
 }
 
 // ----------------------------------------------------------------------

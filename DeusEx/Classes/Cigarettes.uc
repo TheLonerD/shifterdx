@@ -36,6 +36,25 @@ function SetSkin()
 		Skin = lSkin;
 }
 
+function Facelift(bool bOn)
+{
+	local string texstr;
+
+	if(bOn)
+	{
+		switch (Cig)
+		{
+			case SC_Default:	 texstr = "HDTPitems.Skins.HDTPcigarettesTex1"; break;
+			case SC_BigTop:		 texstr = "HDTPitems.Skins.HDTPcigarettesTex2"; break;
+		}
+		Skin = Texture(DynamicLoadObject(texstr,class'Texture', True));
+	}
+
+	if(Skin == None || !bOn)
+		Skin = None;
+
+}
+
 state Activated
 {
 	function Activate()

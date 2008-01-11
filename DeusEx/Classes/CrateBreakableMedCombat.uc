@@ -3,14 +3,15 @@
 //=============================================================================
 class CrateBreakableMedCombat extends Containers;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	if(bOn)
+	{
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPCrateBreakableMed", class'mesh', True));
+		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCrateBreakableTex3", class'Texture', True));
+	}
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPCrateBreakableMed", class'mesh', True));
-	Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCrateBreakableTex3", class'Texture', True));
-
-	if(Mesh == None || Skin == None)
+	if(Mesh == None || Skin == None || !bOn)
 	{
 		Mesh = Default.Mesh;
 		Skin = Default.Skin;

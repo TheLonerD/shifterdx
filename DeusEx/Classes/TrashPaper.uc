@@ -3,16 +3,13 @@
 //=============================================================================
 class TrashPaper extends Trash;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	local Texture lSkin;
+	if(bOn)
+		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPTrashpaperTex1", class'Texture', True));
 
-	Super.PreBeginPlay();
-
-	lSkin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPTrashpaperTex1", class'Texture', True));
-
-	if(lSkin != None)
-		Skin = lSkin;
+	if(Skin == None || !bOn)
+		Skin = None;
 }
 
 defaultproperties

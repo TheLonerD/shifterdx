@@ -24,13 +24,12 @@ event HitWall(vector HitNormal, actor HitWall)
 	}
 }
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPBasketBall", class'mesh', True));
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPBasketBall", class'mesh', True));
-
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
 }
 

@@ -3,17 +3,13 @@
 //=============================================================================
 class AIPrototype extends DeusExDecoration;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPAIPrototype", class'mesh', True));
 
-	Super.PreBeginPlay();
-
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPAIPrototype", class'mesh', True));
-
-	if(Mesh == None)
-	{
+	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
-	}
 }
 
 defaultproperties

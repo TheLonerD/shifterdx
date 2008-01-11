@@ -19,14 +19,17 @@ var bool bConfused;				// used when hit by EMP
 var float confusionTimer;		// how long until unit resumes normal operation
 var float confusionDuration;	// how long does EMP hit last?
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPalarmunit", class'mesh', True));
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPalarmunit", class'mesh', True));
-
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
+	{
+		MultiSkins[6] = None;
+		MultiSkins[7] = None;
 		Mesh = Default.Mesh;
+	}
 	else
 	{
 		MultiSkins[2] = Texture'DeusExItems.Skins.PinkMaskTex';

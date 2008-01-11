@@ -486,7 +486,9 @@ function PerformSave()
 	localRoot     = root;
 
 	localRoot.ClearWindowStack();
+	localPlayer.GlobalFacelift(False);
 	localPlayer.SaveGame(gameIndex, saveName);
+	localPlayer.GlobalFacelift(True);
 	localRoot.Show();
 }
 

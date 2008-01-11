@@ -68,6 +68,45 @@ function SetSkin()
 	}
 }
 
+function Facelift(bool bOn)
+{
+	if(bOn)
+	{
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPFlagpole", class'mesh', True));
+	}
+
+	if(Mesh == None || !bOn)
+	{
+		MultiSkins[1] = None;
+		Mesh = Default.Mesh;
+		switch (SkinColor)
+		{
+			case SC_China:		Skin = Texture'FlagPoleTex1'; break;
+			case SC_France:		Skin = Texture'FlagPoleTex2'; break;
+			case SC_President:	Skin = Texture'FlagPoleTex3'; break;
+			case SC_UNATCO:		Skin = Texture'FlagPoleTex4'; break;
+			case SC_USA:		Skin = Texture'FlagPoleTex5'; break;
+		}
+	}
+	else
+	{
+		switch (SkinColor)
+		{
+			case SC_China:		MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPFlagpoleTex1", class'Texture'));
+						break;
+			case SC_France:		Skin = Texture'FlagPoleTex2'; break;
+			case SC_President:	Skin = Texture'FlagPoleTex3'; break;
+			case SC_UNATCO:		Skin = Texture'FlagPoleTex4'; break;
+			case SC_USA:		MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPFlagpoleTex5", class'Texture'));
+						break;
+		}
+
+		//== Until the HDTP package is complete we gotta revert to the old mesh for some flags
+		if(MultiSkins[1] == None)
+			Mesh = Default.Mesh;
+	}
+}
+
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
 

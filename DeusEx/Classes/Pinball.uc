@@ -5,13 +5,12 @@ class Pinball extends ElectronicDevices;
 
 var bool bUsing;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPpinball", class'mesh', True));
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPpinball", class'mesh', True));
-
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
 }
 

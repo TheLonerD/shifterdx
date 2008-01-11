@@ -6,14 +6,20 @@
 
 class WeaponBaton extends DeusExWeapon;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	local Name tName;
 
-	PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPWeaponBaton", class'mesh', True));
+	tName = GetStateName();
 
-	if(PlayerViewMesh == None)
+	if(bOn)
+		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPWeaponBaton", class'mesh', True));
+
+	if(PlayerViewMesh == None || !bOn)
 		PlayerViewMesh = Default.PlayerViewMesh;
+
+	if(tName != 'Pickup')
+		Mesh = PlayerViewMesh;
 }
 
 simulated function bool ClientAltFire( float Value )

@@ -3,16 +3,12 @@
 //=============================================================================
 class BoneFemur extends DeusExDecoration;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	local Texture lSkin;
-
-	Super.PreBeginPlay();
-
-	lSkin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPBoneFemur", class'Texture', True));
-
-	if(lSkin != None)
-		Skin = lSkin;
+	if(bOn)
+		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPBoneFemur", class'Texture', True));
+	else
+		Skin = None;
 }
 
 defaultproperties

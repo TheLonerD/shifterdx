@@ -22,13 +22,12 @@ var float lastHackTime;				// last time the ATM was hacked
 var localized String msgLockedOut;
 var bool bSuckedDryByHack;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPATM", class'mesh', True));
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPATM", class'mesh', True));
-
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
 }
 

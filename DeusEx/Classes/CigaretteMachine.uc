@@ -14,19 +14,21 @@ var localized String CostUnit;
 var Class<Actor> VendProduct;
 var localized String VendProductName;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
-
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPcigarettemachine", class'mesh', True));
-
-	if(Mesh == None)
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPcigarettemachine", class'mesh', True));
+	
+	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
 }
 
 function BeginPlay()
 {
 	Super.BeginPlay();
+
+//	if(VendProduct != None && VendProductName == "")
+//		VendProductName = VendProduct.Default.ItemName;
 
 	if(VendProductName == "") VendProductName = (class'Cigarettes').Default.ItemName;
 }

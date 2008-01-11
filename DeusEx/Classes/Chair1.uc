@@ -3,13 +3,12 @@
 //=============================================================================
 class Chair1 extends Seat;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPchair1", class'mesh', True));
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPchair1", class'mesh', True));
-
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
 }
 

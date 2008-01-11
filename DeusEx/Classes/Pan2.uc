@@ -3,14 +3,16 @@
 //=============================================================================
 class Pan2 extends DeusExDecoration;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPPan2",class'mesh', True));
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPPan2",class'mesh', True));
-
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
+	{
+		Skin = None;
 		Mesh = Default.Mesh;
+	}
 	else
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPPan2Tex1",class'Texture'));
 }

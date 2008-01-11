@@ -3,14 +3,16 @@
 //=============================================================================
 class CrowbarThrown extends DeusExProjectile;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPCrowbarPickup", class'mesh', True));
 
-	Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPCrowbarPickup", class'mesh', True));
-
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
+	{
+		Texture = None;
 		Mesh = Default.Mesh;
+	}
 	else
 		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPWeaponCrowbarTex2", class'Texture'));
 }

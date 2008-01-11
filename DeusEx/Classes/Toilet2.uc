@@ -12,14 +12,34 @@ enum ESkinColor
 var() ESkinColor SkinColor;
 var bool bUsing;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPToilet2", class'mesh', True));
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPToilet2", class'mesh', True));
-
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
+	{
+		MultiSkins[1] = None;
 		Mesh = Default.Mesh;
+		switch (SkinColor)
+		{
+			case SC_Clean:	Skin = Texture'Toilet2Tex1';
+					break;
+			case SC_Filthy:	Skin = Texture'Toilet2Tex2';
+					break;
+		}
+	}
+	else
+	{
+		Skin = None;
+		switch (SkinColor)
+		{
+			case SC_Clean:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.CleanUrinalTex", class'Texture', True));
+					break;
+			case SC_Filthy:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyUrinalTex", class'Texture', True));
+					break;
+		}
+	}
 }
 
 function BeginPlay()

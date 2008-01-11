@@ -5,16 +5,13 @@ class Switch1 extends DeusExDecoration;
 
 var bool bOn;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	local Texture lSkin;
+	if(bOn)
+		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPSwitch1Tex1", class'Texture', True));
 
-	Super.PreBeginPlay();
-
-	lSkin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPSwitch1Tex1", class'Texture', True));
-
-	if(lSkin != None)
-		Skin = lSkin;
+	if(Skin == None || !bOn)
+		Skin = None;
 }
 
 function Frob(Actor Frobber, Inventory frobWith)

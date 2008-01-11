@@ -3,13 +3,12 @@
 //=============================================================================
 class Lamp2 extends Lamp;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPlamp2", class'mesh', True));
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPlamp2", class'mesh', True));
-
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
 }
 

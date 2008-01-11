@@ -86,7 +86,12 @@ function PreBeginPlay()
 		flyGen = Spawn(Class'FlyGenerator', , , Location, Rotation);
 	else
 		flyGen = None;
+
+	if(Level.NetMode == NM_StandAlone)
+		Facelift(true);
 }
+
+function Facelift(bool bOn){}
 
 // ----------------------------------------------------------------------
 // PostPostBeginPlay()

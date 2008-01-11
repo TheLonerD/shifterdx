@@ -38,30 +38,81 @@ function Trigger(Actor Other, Pawn Instigator)
 
 function BeginPlay()
 {
+	local String texstr;
+
 	Super.BeginPlay();
 
 	switch (SkinColor)
 	{
-		case SC_1:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCageLightTex1", class'Texture', True));
-				Skin = Texture'CageLightTex1'; break;
-		case SC_2:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCageLightTex2", class'Texture', True));
-				Skin = Texture'CageLightTex2'; break;
-		case SC_3:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCageLightTex3", class'Texture', True));
-				Skin = Texture'CageLightTex3'; break;
-		case SC_4:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCageLightTex4", class'Texture', True));
-				Skin = Texture'CageLightTex4'; break;
-		case SC_5:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCageLightTex5", class'Texture', True));
-				Skin = Texture'CageLightTex5'; break;
-		case SC_6:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCageLightTex6", class'Texture', True));
-				Skin = Texture'CageLightTex6'; break;
+		case SC_1:	texstr = "CageLightTex1";
+				break;
+		case SC_2:	texstr = "CageLightTex2";
+				break;
+		case SC_3:	texstr = "CageLightTex3";
+				break;
+		case SC_4:	texstr = "CageLightTex4";
+				break;
+		case SC_5:	texstr = "CageLightTex5";
+				break;
+		case SC_6:	texstr = "CageLightTex6";
+				break;
 	}
 
-	MultiSkins[2] = MultiSkins[1];
+
 	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPCageLight", class'mesh', True));
-	if(Mesh != None)
-		Skin = None;
-	else
+
+	if(Mesh == None)
+	{
+		MultiSkins[1] = None;
+		MultiSkins[2] = None;
 		Mesh = Default.Mesh;
+		Skin = Texture(DynamicLoadObject("DeusExDeco." $ texstr, class'Texture', True));
+	}
+	else
+	{
+		Skin = None;
+		MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP" $ texstr, class'Texture', True));
+		MultiSkins[2] = MultiSkins[1];
+	}
+}
+
+function Facelift(bool bLiftOn)
+{
+	local String texstr;
+
+	switch (SkinColor)
+	{
+		case SC_1:	texstr = "CageLightTex1";
+				break;
+		case SC_2:	texstr = "CageLightTex2";
+				break;
+		case SC_3:	texstr = "CageLightTex3";
+				break;
+		case SC_4:	texstr = "CageLightTex4";
+				break;
+		case SC_5:	texstr = "CageLightTex5";
+				break;
+		case SC_6:	texstr = "CageLightTex6";
+				break;
+	}
+
+
+	if(bLiftOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPCageLight", class'mesh', True));
+
+	if(Mesh == None || !bLiftOn)
+	{
+		MultiSkins[1] = None;
+		MultiSkins[2] = None;
+		Mesh = Default.Mesh;
+		Skin = Texture(DynamicLoadObject("DeusExDeco." $ texstr, class'Texture', True));
+	}
+	else
+	{
+		Skin = None;
+		MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP" $ texstr, class'Texture', True));
+		MultiSkins[2] = MultiSkins[1];
+	}
 }
 
 function PostBeginPlay()

@@ -105,7 +105,7 @@ function Trigger(Actor Other, Pawn Instigator)
 			bIsOn = True;
 			LastHitActor = None;
 			MultiSkins[1] = Texture'LaserSpot1';
-			if(Skin != None)
+			if(Mesh != Default.Mesh)
 				Skin = Texture(DynamicLoadObject("HDTPDecos.Skin.HDTPlaserEmitterTex2", class'Texture', True));
 		}
 	}
@@ -127,7 +127,7 @@ function UnTrigger(Actor Other, Pawn Instigator)
 			bIsOn = False;
 			LastHitActor = None;
 			MultiSkins[1] = Texture'BlackMaskTex';
-			if(Skin != None)
+			if(Mesh != Default.Mesh)
 				Skin = Texture(DynamicLoadObject("HDTPDecos.Skin.HDTPlaserEmitterTex0", class'Texture', True));
 		}
 	}
@@ -197,13 +197,17 @@ function Destroyed()
 	Super.Destroyed();
 }
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPlaseremitter", class'mesh', True));
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPlaseremitter", class'mesh', True));
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
+	{
+		MultiSkins[2] = None;
+		Skin = None;
 		Mesh = Default.Mesh;
+	}
 	else
 	{
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPLaseremittertex0", class'Texture'));

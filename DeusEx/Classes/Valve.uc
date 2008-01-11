@@ -8,16 +8,13 @@ class Valve extends DeusExDecoration;
 
 var() bool bOpen;
 
-/* simulated function PreBeginPlay()
+/* function Facelift(bool bOn)
 {
-	local Texture lSkin;
+	if(bOn)
+		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPValveTex1", class'Texture', True));
 
-	Super.PreBeginPlay();
-
-	lSkin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPValveTex1", class'Texture', True));
-
-	if(lSkin != None)
-		Skin = lSkin;
+	if(Skin == None || !bOn)
+		Skin = None;
 } */
 
 function Frob(actor Frobber, Inventory frobWith)

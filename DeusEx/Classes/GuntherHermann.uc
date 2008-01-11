@@ -37,31 +37,28 @@ function float ShieldDamage(name damageType)
 		return Super.ShieldDamage(damageType);
 }
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	local mesh lMesh;
 	local int i;
 
-	Super.PreBeginPlay();
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPcharacters.HDTPGunther", class'mesh', True));
 
-	lMesh = mesh(DynamicLoadObject("HDTPcharacters.HDTPGunther", class'mesh', True));
-
-	if(lMesh != None)
-	{
-		Texture = None;
-		for(i = 0; i < 8; i++)
-		{
-			MultiSkins[i] = None;
-		}
-		Mesh = lMesh;
-	}
-	else
+	if(Mesh == None || !bOn)
 	{
 		Texture = Default.Texture;
 		Mesh = Default.Mesh;
 		for(i = 0; i < 8; i++)
 		{
 			MultiSkins[i] = Default.MultiSkins[i];
+		}
+	}
+	else
+	{
+		Texture = None;
+		for(i = 0; i < 8; i++)
+		{
+			MultiSkins[i] = None;
 		}
 	}
 }

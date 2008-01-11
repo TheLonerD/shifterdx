@@ -45,11 +45,11 @@ function BeginPlay()
 									explosionRadius = 1000;
 									HitPoints = 4;
 									break;
-		case SC_FlammableLiquid:	texstr = "Barrel1Tex6";
+		case SC_FlammableLiquid:		texstr = "Barrel1Tex6";
 									bExplosive = True;
 									HitPoints = 8;
 									break;
-		case SC_FlammableSolid:		texstr = "Barrel1Tex7";
+		case SC_FlammableSolid:			texstr = "Barrel1Tex7";
 									bExplosive = True;
 									explosionDamage = 200;
 									HitPoints = 8;
@@ -57,7 +57,7 @@ function BeginPlay()
 		case SC_Poison:				texstr = "Barrel1Tex8";
 									HitPoints = 12;
 									break;
-		case SC_RadioActive:		texstr = "Barrel1Tex9";
+		case SC_RadioActive:			texstr = "Barrel1Tex9";
 									bInvincible = True;
 									LightType = LT_Steady;
 									LightRadius = 8;
@@ -74,9 +74,35 @@ function BeginPlay()
 		case SC_Yellow:				texstr = "Barrel1Tex11"; break;
 	}
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPbarrel1", class'mesh', True));
+	if(Mesh == Default.Mesh)
+		Skin = Texture(DynamicLoadObject("DeusExDeco."$ texstr, class'Texture'));
+	else
+		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP"$ texstr, class'Texture'));
+}
 
-	if(Mesh == None)
+function Facelift(bool bOn)
+{
+	local String texstr;
+
+	switch (SkinColor)
+	{
+		case SC_Biohazard:			texstr = "Barrel1Tex1";	break;
+		case SC_Blue:				texstr = "Barrel1Tex2"; break;
+		case SC_Brown:				texstr = "Barrel1Tex3"; break;
+		case SC_Rusty:				texstr = "Barrel1Tex4"; break;
+		case SC_Explosive:			texstr = "Barrel1Tex5"; break;
+		case SC_FlammableLiquid:		texstr = "Barrel1Tex6"; break;
+		case SC_FlammableSolid:			texstr = "Barrel1Tex7"; break;
+		case SC_Poison:				texstr = "Barrel1Tex8"; break;
+		case SC_RadioActive:			texstr = "Barrel1Tex9"; break;
+		case SC_Wood:				texstr = "Barrel1Tex10"; break;
+		case SC_Yellow:				texstr = "Barrel1Tex11"; break;
+	}
+
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPbarrel1", class'mesh', True));
+
+	if(Mesh == None || !bOn)
 	{
 		Mesh = Default.Mesh;
 		Skin = Texture(DynamicLoadObject("DeusExDeco."$ texstr, class'Texture'));

@@ -3,19 +3,32 @@
 //=============================================================================
 class Candybar extends DeusExPickup;
 
-simulated function PreBeginPlay()
+simulated function BeginPlay()
+{
+	Super.BeginPlay();
+
+	if(Rand(2) == 1)
+		Skin = Texture'CandybarTex2';
+}
+
+function Facelift(bool bOn)
 {
 	local Texture lSkin;
 
-	Super.PreBeginPlay();
+	lSkin = Skin;
 
-	if(Rand(2) == 1)
-		lSkin = Texture'CandybarTex2';
-	else
-		lSkin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPCandybartex1", class'Texture', true));
+	if(bOn && lSkin != Texture'CandybarTex2')
+		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPCandybartex1", class'Texture', true));
 
-	if(lSKin != None)
-		Skin = lSkin;
+	if(Skin == None || !bOn)
+	{
+		if(lSkin == Texture'CandybarTex2')
+			Skin = lSkin;
+
+		else
+			Skin = None;
+	}
+
 }
 
 state Activated

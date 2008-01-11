@@ -13,20 +13,37 @@ enum ESkinColor
 
 var() ESkinColor SkinColor;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	local string texstr;
 
-	Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPLiquor40oz", class'mesh', True));
+	switch (SkinColor)
+	{
+		case SC_Super45:		texstr = "Liquor40ozTex1"; break;
+		case SC_Bottle2:		texstr = "Liquor40ozTex2"; break;
+		case SC_Bottle3:		texstr = "Liquor40ozTex3"; break;
+		case SC_Bottle4:		texstr = "Liquor40ozTex4"; break;
+	}
 
-	if(Mesh == None)
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPLiquor40oz", class'mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
+		Texture = None;
 		Mesh = Default.Mesh;
+		PlayerViewMesh = Default.PlayerViewMesh;
+		PickupViewMesh = Default.PickupViewMesh;
+		ThirdPersonMesh = Default.ThirdPersonMesh;
+		Skin = Texture(DynamicLoadObject("DeusExItems."$ texstr, class'Texture'));
+	}
 	else
 	{
 		PlayerViewMesh = Mesh;
 		PickupViewMesh = Mesh;
 		ThirdPersonMesh = Mesh;
 		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex2", class'Texture'));
+		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex1", class'Texture', True)); //This is always the same image, for now
 	}
 }
 

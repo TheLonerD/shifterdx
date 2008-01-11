@@ -45,12 +45,24 @@ simulated function PreBeginPlay()
 		MaxRange = mpMaxRange;
 	}
 
-	PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPWeaponCrowbar", class'mesh', True));
-	PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCrowbarPickup", class'mesh', True));
-	ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCrowbar3rd", class'mesh', True));
+}
 
-	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None)
+function Facelift(bool bOn)
+{
+	local Name tName;
+
+	tName = GetStateName();
+
+	if(bOn)
 	{
+		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPWeaponCrowbar", class'mesh', True));
+		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCrowbarPickup", class'mesh', True));
+		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCrowbar3rd", class'mesh', True));
+	}
+
+	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+	{
+		Texture = None;
 		PlayerViewMesh = Default.PlayerViewMesh;
 		PickupViewMesh = Default.PickupViewMesh;
 		ThirdPersonMesh = Default.ThirdPersonMesh;
@@ -60,6 +72,12 @@ simulated function PreBeginPlay()
 		Mesh = PickupViewMesh;
 		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPWeaponCrowbarTex2", class'Texture'));
 	}
+
+	if(tName == 'Pickup')
+		Mesh = PickupViewMesh;
+	else
+		Mesh = PlayerViewMesh;
+
 }
 
 //Damage up to 12 from 10

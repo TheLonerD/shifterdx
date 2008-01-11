@@ -26,14 +26,46 @@ enum ESkinColor
 var() ESkinColor SkinColor;
 var bool bJustHit;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	local string texstr;
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPPoolball", class'mesh'));
+	switch (SkinColor)
+	{
 
-	if(Mesh == None)
+		case SC_1:		texstr = "PoolballTex1"; break;
+		case SC_2:		texstr = "PoolballTex2"; break;
+		case SC_3:		texstr = "PoolballTex3"; break;
+		case SC_4:		texstr = "PoolballTex4"; break;
+		case SC_5:		texstr = "PoolballTex5"; break;
+		case SC_6:		texstr = "PoolballTex6"; break;
+		case SC_7:		texstr = "PoolballTex7"; break;
+		case SC_8:		texstr = "PoolballTex8"; break;
+		case SC_9:		texstr = "PoolballTex9"; break;
+		case SC_10:		texstr = "PoolballTex10"; break;
+		case SC_11:		texstr = "PoolballTex11"; break;
+		case SC_12:		texstr = "PoolballTex12"; break;
+		case SC_13:		texstr = "PoolballTex13"; break;
+		case SC_14:		texstr = "PoolballTex14"; break;
+		case SC_15:		texstr = "PoolballTex15"; break;
+		case SC_Cue:		texstr = "PoolballTex16"; break;
+	}
+
+	Skin = None;
+
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPPoolball", class'mesh'));
+
+	if(Mesh == None || !bOn)
+	{
+		MultiSkins[1] = None;
 		Mesh = Default.Mesh;
+		Skin = Texture(DynamicLoadObject("DeusExDeco."$ texstr, class'Texture'));
+	}
+	else
+	{
+		MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP"$ texstr, class'Texture', True));
+	}
 }
 
 function BeginPlay()
@@ -61,23 +93,6 @@ function BeginPlay()
 		case SC_14:		texstr = "PoolballTex14"; break;
 		case SC_15:		texstr = "PoolballTex15"; break;
 		case SC_Cue:		texstr = "PoolballTex16"; break;
-
-//		case SC_1:		Skin = Texture'PoolballTex1'; break;
-//		case SC_2:		Skin = Texture'PoolballTex2'; break;
-//		case SC_3:		Skin = Texture'PoolballTex3'; break;
-//		case SC_4:		Skin = Texture'PoolballTex4'; break;
-//		case SC_5:		Skin = Texture'PoolballTex5'; break;
-//		case SC_6:		Skin = Texture'PoolballTex6'; break;
-//		case SC_7:		Skin = Texture'PoolballTex7'; break;
-//		case SC_8:		Skin = Texture'PoolballTex8'; break;
-//		case SC_9:		Skin = Texture'PoolballTex9'; break;
-//		case SC_10:		Skin = Texture'PoolballTex10'; break;
-//		case SC_11:		Skin = Texture'PoolballTex11'; break;
-//		case SC_12:		Skin = Texture'PoolballTex12'; break;
-//		case SC_13:		Skin = Texture'PoolballTex13'; break;
-//		case SC_14:		Skin = Texture'PoolballTex14'; break;
-//		case SC_15:		Skin = Texture'PoolballTex15'; break;
-//		case SC_Cue:	Skin = Texture'PoolballTex16'; break;
 	}
 
 	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP"$ texstr, class'Texture', True));

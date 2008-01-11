@@ -23,19 +23,46 @@ var Class<Actor> VendProduct; //what the machine vends.  Using the Actor class m
 			      // make it vend pretty much anything: pickups, weapons, grenades, NPCs....
 var localized String msgEmpty;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	Skin = None;
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPVendingMachine", class'mesh', True));
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPVendingMachine", class'mesh', True));
 
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
+	{
+		MultiSkins[1] = None;
+		MultiSkins[2] = None;
 		Mesh = Default.Mesh;
+		switch (SkinColor)
+		{
+			case SC_Drink: 	Skin = Texture'VendingMachineTex1';
+					break;
+			case SC_Snack:	Skin = Texture'VendingMachineTex2';
+					break;
+		}
+	}
+	else
+	{
+		switch (SkinColor)
+		{
+			case SC_Drink: 	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPvendingDrinktex1",class'Texture', True));
+					MultiSkins[2] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPvendingDrinktex2",class'Texture', True));
+					break;
+			case SC_Snack:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPvendingSnacktex1",class'Texture', True));
+					MultiSkins[2] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPvendingSnacktex2",class'Texture', True));
+					break;
+		}
+	}
 }
 
 function BeginPlay()
 {
 	Super.BeginPlay();
+
+//	if(VendProduct != None && VendProductName == "")
+//		VendProductName = VendProduct.Default.ItemName;
 
 	switch (SkinColor)
 	{

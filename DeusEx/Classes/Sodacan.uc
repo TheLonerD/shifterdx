@@ -3,14 +3,22 @@
 //=============================================================================
 class Sodacan extends DeusExPickup;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	local Texture lSkin;
 
-	Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPsodacan", class'mesh', True));
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPsodacan", class'mesh', True));
 
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
+	{
+		lSkin = Skin;
 		Mesh = Default.Mesh;
+		PlayerViewMesh = Default.PlayerViewMesh;
+		PickupViewMesh = Default.PickupViewMesh;
+		ThirdPersonMesh = Default.ThirdPersonMesh;
+		Skin = lSkin;
+	}
 	else
 	{
 		PlayerViewMesh = Mesh;

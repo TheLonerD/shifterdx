@@ -13,14 +13,28 @@ enum ESkinColor
 
 var() ESkinColor SkinColor;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	local String texstr;
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPOfficeChair", class'mesh', True));
+	switch (SkinColor)
+	{
+		case SC_GrayLeather:		texstr = "OfficeChairTex1"; break;
+		case SC_BrownLeather:		texstr = "OfficeChairTex2"; break;
+		case SC_BrownCloth:		texstr = "OfficeChairTex3"; break;
+		case SC_GrayCloth:		texstr = "OfficeChairTex4"; break;
+	}
 
-	if(Mesh == None)
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPOfficeChair", class'mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
 		Mesh = Default.Mesh;
+		Skin = Texture(DynamicLoadObject("DeusExDeco."$ texstr, class'Texture'));
+	}
+	else
+		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP" $ texstr, class'Texture'));
 }
 
 function BeginPlay()

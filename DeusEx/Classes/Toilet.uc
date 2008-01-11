@@ -15,14 +15,42 @@ var bool bNeedsFlushing;
 var localized string unflushedString;
 var localized string awardString;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPToilet", class'mesh', True));
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPToilet", class'mesh', True));
-
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
+	{
+		MultiSkins[1] = None;
+		MultiSkins[2] = None;
+		MultiSkins[3] = None;
 		Mesh = Default.Mesh;
+		switch (SkinColor)
+		{
+			case SC_Clean:	Skin = Texture'ToiletTex1'; break;
+			case SC_Filthy:	Skin = Texture'ToiletTex2'; break;
+		}
+	}
+	else
+	{
+		Skin = None;
+		switch(SkinColor)
+		{
+			case SC_Clean:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.CleanHDTPToiletTex1", class'Texture', True));
+					MultiSkins[2] = Texture(DynamicLoadObject("HDTPDecos.Skins.CleanHDTPToiletTex2", class'Texture', True));
+					break;
+			case SC_Filthy:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyHDTPToiletTex1", class'Texture', True));
+					MultiSkins[2] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyHDTPToiletTex2", class'Texture', True));
+					break;
+		}
+
+		if(bNeedsFlushing)
+			MultiSkins[3] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyToiletWaterTex", class'Texture', True));
+		else
+			MultiSkins[3] = Texture(DynamicLoadObject("HDTPDecos.Skins.CleanToiletWaterTex", class'Texture', True));
+
+	}
 }
 
 function BeginPlay()

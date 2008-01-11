@@ -728,28 +728,15 @@ function PreBeginPlay()
 		bInvincible = True;
       bDisabled = !bActive;
 	}
-	else
-	{
-		lMesh = mesh(DynamicLoadObject("HDTPDecos.HDTPAutoturretbase", class'mesh', True));
-		if(lMesh != None)
-			Mesh = lMesh;
-		else
-			Mesh = Default.Mesh;
-	}
 }
 
-//=== We'll have to see if this works for net play clients
-simulated function PostNetBeginPlay()
+function Facelift(bool bOn)
 {
-	local mesh lMesh;
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPAutoturretbase", class'mesh', True));
 
-	lMesh = mesh(DynamicLoadObject("HDTPDecos.HDTPAutoturretbase", class'mesh', True));
-	if(lMesh != None)
-		Mesh = lMesh;
-	else
+	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
-
-	Super.PostNetBeginPlay();
 }
 
 function PostBeginPlay()

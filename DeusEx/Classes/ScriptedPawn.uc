@@ -470,8 +470,12 @@ function PreBeginPlay()
 
 	// Set up callbacks
 	UpdateReactionCallbacks();
+
+	if(Level.NetMode == NM_StandAlone)
+		Facelift(true);
 }
 
+function Facelift(bool bOn){}
 
 // ----------------------------------------------------------------------
 // PostBeginPlay()
@@ -12030,7 +12034,7 @@ State Attacking
 				bestCarc = None;
 				foreach RadiusActors(Class'DeusExWeapon', lWeapon, 240)
 				{
-					if(FMax(lWeapon.HitDamage, lWeapon.ProjectileDamage) > FMax(DeusExWeapon(Weapon).HitDamage, DeusExWeapon(Weapon).ProjectileDamage) && !lWeapon.bUnique)
+					if(FMax(lWeapon.HitDamage, lWeapon.ProjectileDamage) > FMax(DeusExWeapon(Weapon).HitDamage, DeusExWeapon(Weapon).ProjectileDamage) && !lWeapon.bUnique && Pawn(lWeapon.Owner) == None && DeusExCarcass(lWeapon.Owner) == None)
 						bestWeapon = lWeapon;
 				}
 	

@@ -899,6 +899,29 @@ UPDATES:
 	limitation of the Unreal 1 engine.  If it isn't though I will add the
 	through-walls functionality for the visuals in the future.
 
+	 - Added a check to the NPC weapon pick-up feature so that NPCs won't
+	go after a weapon WHILE someone is holding it.  It typically only
+	showed up when an NPC was equipped only with a low-damage hand-to-hand
+	weapon, but the possibility existed for other situations.
+
+	 - Finished moving all of the individual HDTP model/skin swap stuff in
+	to separate functions, and created a "master" function which invokes
+	them all.  This means that Shifter can now switch between normal and
+	HDTP resources mid-game.  The function which does this is called
+	GlobalFacelift, and can be run from the console. (e.g. "GlobalFacelift
+	True" will load all HDTP resources, "GlobalFacelift False" will go back
+	to the basic DeusEx stuff)
+
+	 - Related to the above, I have included code so that whenever you save
+	your game all HDTP resources will be temporarily unloaded while the
+	game is saved, which (in theory) means that you can save a game on a
+	computer with HDTP installed and load it on another one without HDTP.
+
+	 - Also related, whenever you load a game the HDTP "Facelift" will be
+	applied as soon as the map loads, meaning that if you have a game which
+	was saved pre-Shifter or pre-HDTP you can now load it up and enjoy the
+	HDTP goodness without having to wait until the next level change.
+
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 

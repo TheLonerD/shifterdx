@@ -3,12 +3,17 @@
 //=============================================================================
 class DataCube extends InformationDevices;
 
-simulated function PreBeginPlay()
+function Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
-
-	Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPDatacubetex1", class'Texture', True));
-	if(Skin != None)
+	if(bOn)
+		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPDatacubetex1", class'Texture', True));
+	if(Skin == None || !bOn)
+	{
+		Texture = None;
+		MultiSkins[2] = None;
+		Skin = Default.Skin;
+	}
+	else
 	{
 		Texture = Texture'Effects.Corona.Corona_G';
 		MultiSkins[2] = Skin;
