@@ -12,28 +12,31 @@ simulated function Tick(float DeltaTime)
 
 	Super.Tick(DeltaTime);
 
-	if(bLightOn && ChangeTimer >= 1.000000)
+	if(GetStateName() != 'Pickup')
 	{
-		ChangeTimer = 0.000000;
-		rnd = FRand();
-		if(rnd <= 0.200000)
+		if(bLightOn && ChangeTimer >= 1.000000)
 		{
-			if(Texture == Texture'Effects.Ambrosia_SFX')
+			ChangeTimer = 0.000000;
+			rnd = FRand();
+			if(rnd <= 0.200000)
 			{
-				PlaySound(sound'Spark2', SLOT_None, 0.5,, 1024);
-				Texture=Texture'Effects.Wepn_Prifle_SFX';
-				HitDamage=15;
-			}
-			else
-			{
-				PlaySound(sound'Spark2', SLOT_None, 0.5,, 1024);
-				Texture=Texture'Effects.Ambrosia_SFX';
-				HitDamage=8;
+				if(Texture == Texture'Effects.Ambrosia_SFX')
+				{
+					PlaySound(sound'Spark2', SLOT_None, 0.5,, 1024);
+					Texture=Texture'Effects.Wepn_Prifle_SFX';
+					HitDamage=15;
+				}
+				else
+				{
+					PlaySound(sound'Spark2', SLOT_None, 0.5,, 1024);
+					Texture=Texture'Effects.Ambrosia_SFX';
+					HitDamage=8;
+				}
 			}
 		}
+		else if(bLightOn)
+			ChangeTimer += DeltaTime;
 	}
-	else if(bLightOn)
-		ChangeTimer += DeltaTime;
 }
 
 state DownWeapon

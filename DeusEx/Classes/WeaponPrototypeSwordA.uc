@@ -12,51 +12,54 @@ simulated function Tick(float DeltaTime)
 
 	Super.Tick(DeltaTime);
 
-	if(bLightOn && ChangeTimer >= 1.000000)
+	if(GetStateName() != 'Pickup')
 	{
-		ChangeTimer = 0.000000;
-		rnd = FRand();
-		if(rnd <= 0.100000)
+		if(bLightOn && ChangeTimer >= 1.000000)
 		{
-			if(Texture == Texture'Effects.LaserBeam1')
+			ChangeTimer = 0.000000;
+			rnd = FRand();
+			if(rnd <= 0.100000)
 			{
-				PlaySound(sound'Spark2', SLOT_None,,, 1024);
-				Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
-				AreaOfEffect=AOE_Point;
-				bUnlit=False;
-				LightType = LT_None;
+				if(Texture == Texture'Effects.LaserBeam1')
+				{
+					PlaySound(sound'Spark2', SLOT_None,,, 1024);
+					Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
+					AreaOfEffect=AOE_Point;
+					bUnlit=False;
+					LightType = LT_None;
+				}
+				else
+				{
+					PlaySound(sound'Spark1', SLOT_None,0.75,, 1024);
+					Texture=Texture'Effects.LaserBeam1';
+					AreaOfEffect=AOE_Cone;
+					bUnlit=True;
+					LightType = LT_Steady;
+				}
 			}
-			else
+			else if(rnd >= 0.900000)
 			{
-				PlaySound(sound'Spark1', SLOT_None,0.75,, 1024);
-				Texture=Texture'Effects.LaserBeam1';
-				AreaOfEffect=AOE_Cone;
-				bUnlit=True;
-				LightType = LT_Steady;
+				if(Texture == Texture'Effects.LaserBeam1')
+				{
+					PlaySound(sound'EMPZap', SLOT_None,0.75,, 1024);
+					Texture=Texture'Effects.Virus_SFX';
+					AreaOfEffect=AOE_Sphere;
+					bUnlit=True;
+					LightType = LT_Steady;
+				}
+				else
+				{
+					PlaySound(sound'Spark1', SLOT_None,0.75,, 1024);
+					Texture=Texture'Effects.LaserBeam1';
+					AreaOfEffect=AOE_Cone;
+					bUnlit=True;
+					LightType = LT_Steady;
+				}
 			}
 		}
-		else if(rnd >= 0.900000)
-		{
-			if(Texture == Texture'Effects.LaserBeam1')
-			{
-				PlaySound(sound'EMPZap', SLOT_None,0.75,, 1024);
-				Texture=Texture'Effects.Virus_SFX';
-				AreaOfEffect=AOE_Sphere;
-				bUnlit=True;
-				LightType = LT_Steady;
-			}
-			else
-			{
-				PlaySound(sound'Spark1', SLOT_None,0.75,, 1024);
-				Texture=Texture'Effects.LaserBeam1';
-				AreaOfEffect=AOE_Cone;
-				bUnlit=True;
-				LightType = LT_Steady;
-			}
-		}
+		else if(bLightOn)
+			ChangeTimer += DeltaTime;
 	}
-	else if(bLightOn)
-		ChangeTimer += DeltaTime;
 }
 
 state DownWeapon

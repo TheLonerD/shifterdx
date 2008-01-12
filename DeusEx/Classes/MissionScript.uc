@@ -234,7 +234,7 @@ function Timer()
 				{
 					check++;
 					itemp = None;
-					if(DeusExWeapon(inv) != None)
+					if(DeusExWeapon(inv) != None || player.combatDifficulty > 4.0)
 					{
 						bWhatever = true;
 					}

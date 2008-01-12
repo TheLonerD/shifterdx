@@ -595,7 +595,7 @@ simulated function float GetWeaponSkill()
 simulated function float CalculateAccuracy()
 {
 	local float accuracy;	// 0 is dead on, 1 is pretty far off
-	local float tempacc, div;
+	local float tempacc, div, diff;
    local float weapskill; // so we don't keep looking it up (slower).
 	local int HealthArmRight, HealthArmLeft, HealthHead;
 	local int BestArmRight, BestArmLeft, BestHead;
@@ -606,6 +606,8 @@ simulated function float CalculateAccuracy()
    weapskill = GetWeaponSkill();
 
 	player = DeusExPlayer(Owner);
+
+	diff = DeusExPlayer(GetPlayerPawn()).combatDifficulty;
 
 	if (player != None)
 	{
@@ -667,7 +669,7 @@ simulated function float CalculateAccuracy()
 	// increase accuracy (decrease value) if we haven't been moving for awhile
 	// this only works for the player, because NPCs don't need any more aiming help!
 	//  EXCEPT now they do because of my changes -- Y|yukichigai
-	if (player != None || Level.Game.Difficulty >= 1.0)
+	if (player != None || diff >= 1.0)
 	{
 		tempacc = accuracy;
 		if (standingTimer > 0)
@@ -676,7 +678,7 @@ simulated function float CalculateAccuracy()
 			div = Max(15.0 + 29.0 * weapskill, 0.0);
 			// NPCs get a decreased standing bonus on lower difficulty levels
 			if(player == None)
-				div *= 4.0/(Level.Game.Difficulty);
+				div *= 4.0/diff;
 			accuracy -= FClamp(standingTimer/div, 0.0, 0.6);
 	
 			// don't go too low

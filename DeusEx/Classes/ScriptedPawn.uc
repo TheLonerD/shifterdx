@@ -663,7 +663,7 @@ function InitializeInventory()
 			inv.setBase(Self);
 			//log("ScriptedPawn==>Gave Credits in amount of " $Credits(inv).numCredits$ " to " $Self);
 		}
-		if(Rand(4) == 2)
+		if(Rand(4) == 2 || (DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0 && Rand(3) > 0))
 			bCheckedCombat = True; //If/when they are carrying a combat knife, replace it with a Crowbar or Sword
 		inv = None;
 		switch(Rand(7))
@@ -3019,6 +3019,9 @@ function bool GenerateRandomInventory()
 {
 	local Inventory item;
 	local bool bHadWeapon, bHadPowerfulWeapon;
+	local DeusExPlayer dxPlayer;
+
+	dxPlayer = DeusExPlayer(GetPlayerPawn());
 
 	item = Inventory;
 
@@ -3028,10 +3031,9 @@ function bool GenerateRandomInventory()
 	while(item != None && !(bHadWeapon && bHadPowerfulWeapon))
 	{	
 
-		//== I was going to include this code, but it's time-intensive and unlike other situations, cross-linked
-		//==  inventory between the player and the pawn won't cause horrible problems, just a false positive.
-//		if(item.Owner == GetPlayerPawn())
-//			break;
+		if(DeusExPlayer(item.Owner) == dxPlayer)
+			break;
+
 
 		if(DeusExWeapon(item) != None) //They have a weapon?
 		{
@@ -3045,20 +3047,26 @@ function bool GenerateRandomInventory()
 		item = item.Inventory;
 	}
 
-	if(bHadWeapon == True || Self.IsA('HumanMilitary'))
+	if(bHadWeapon || Self.IsA('HumanMilitary') || dxPlayer.combatDifficulty > 4.0)
 	{
-		if(bHadPowerfulWeapon == True || Rand(7) == 4)
+		if(bHadPowerfulWeapon || Rand(7) == 4 || (dxPlayer.combatDifficulty > 4.0 && bHadWeapon))
 		{
 			switch(Rand(11))
 			{
-				case 0:
-					item = spawn(Class'AmmoSabot',self);
+				case 0: if(!bHadPowerfulWeapon && bHadWeapon && dxPlayer.combatDifficulty > 4.0)
+						item = spawn(Class'WeaponGEPGun',self);
+					else if (!bHadWeapon)
+						item = spawn(Class'WeaponSawedOffShotgun',self);
+					else
+						item = spawn(Class'AmmoSabot',self);
 					break;
 				case 1:
 					item = spawn(Class'Ammo20mm',self);
 					break;
-				case 2:
-					item = spawn(Class'AmmoRocketWP',self);
+				case 2: if(bHadWeapon)
+						item = spawn(Class'AmmoRocketWP',self);
+					else
+						item = spawn(Class'WeaponProd',self);
 					break;
 				case 3:
 					item = spawn(Class'WeaponPepperGun',self);
@@ -3066,17 +3074,27 @@ function bool GenerateRandomInventory()
 				case 4:
 					item = spawn(Class'WeaponHideAGun',self);
 					break;
-				case 5:
-					item = spawn(Class'AmmoDartFlare',self);
+				case 5: if(!bHadWeapon)
+						item = spawn(Class'WeaponPistol',self);
+					else
+						item = spawn(Class'AmmoDartFlare',self);
 					break;
-				case 6:
+				case 6: 
 					item = spawn(Class'WeaponShuriken',self);
 					break;
-				case 7:
-					item = spawn(Class'WeaponProd',self);
+				case 7: if(!bHadPowerfulWeapon && bHadWeapon && dxPlayer.combatDifficulty > 4.0)
+						item = spawn(Class'WeaponFlamethrower',self);
+					else
+						item = spawn(Class'WeaponProd',self);
 					break;
 				case 8:
 					item = spawn(Class'Ammo10mmEX',self);
+					break;
+				case 9: if(!bHadPowerfulWeapon && bHadWeapon && dxPlayer.combatDifficulty > 4.0)
+						item = spawn(Class'WeaponLAW',self);
+					break;
+				case 10: if(!bHadWeapon)
+						item = spawn(Class'WeaponPistol',self);
 					break;
 			}
 		}
@@ -3099,6 +3117,9 @@ function bool GenerateRandomInventory()
 				case 7:
 				case 3:
 					item = spawn(Class'WeaponPepperGun',self);
+					break;
+				case 8: if(!bHadWeapon && Level.Game.Difficulty > 4.0)
+						item = spawn(Class'WeaponPistol',self);
 					break;
         		}
 		}
@@ -3190,6 +3211,10 @@ function bool GenerateRandomInventory()
      		}
 		log("ScriptedPawn==>Item Given: " $item$ " " $Self);
      		item = None;
+
+		//== If we have a weapon in hand, make sure we're using the best one now
+		if(Weapon != None)
+			SwitchToBestWeapon();
      	}
 }
 

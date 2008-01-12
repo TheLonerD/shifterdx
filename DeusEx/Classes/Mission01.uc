@@ -53,7 +53,7 @@ function PreTravel()
 		foreach AllActors(class'Inventory', item)
 		{
 			//== Introducing JC's storage locker, AKA his office
-			if(item.Location.X <= 104.0000 && item.Location.X >= -432.0000 && item.Location.Y <= 1424.0000 && item.Location.Y >= 1018.0000 && item.Location.Z >= 232.0000 && item.Location.Z <= 400.0000 && !item.IsA('NanoKeyRing'))
+			if(item.Location.X <= 104.0000 && item.Location.X >= -432.0000 && item.Location.Y <= 1424.0000 && item.Location.Y >= 1018.0000 && item.Location.Z >= 232.0000 && item.Location.Z <= 400.0000 && !item.IsA('NanoKeyRing') && ScriptedPawn(item.Owner) == None && DeusExPlayer(item.Owner) == None)
 			{
 				tname = DeusExRootWindow(Player.rootWindow).StringToName("M01_JC_Item_"$ c);
 

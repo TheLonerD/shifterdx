@@ -922,6 +922,19 @@ UPDATES:
 	was saved pre-Shifter or pre-HDTP you can now load it up and enjoy the
 	HDTP goodness without having to wait until the next level change.
 
+	 - Added code to the various Prototype Nanoswords which ensures that
+	the "stasis field instability" effect doesn't occur when the weapon has
+	been dropped.
+
+	 - Prevented the "JC Office Storage" feature from tracking items you
+	(or anybody else) currently have in inventory.  This should cut down on
+	seemingly random items showing up as part of the office storage
+	feature.
+
+	 - Increased the probability of an NPC being given a better melee
+	weapon in Unrealistic, and also added some ultra-powerful items to the
+	Random Inventory list in Unrealistic.
+
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 

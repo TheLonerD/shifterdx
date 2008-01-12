@@ -12,47 +12,50 @@ simulated function Tick(float DeltaTime)
 
 	Super.Tick(DeltaTime);
 
-	if(bLightOn && ChangeTimer >= 1.000000)
+	if(GetStateName() != 'Pickup')
 	{
-		ChangeTimer = 0.000000;
-		rnd = FRand();
-		if(rnd <= 0.100000)
+		if(bLightOn && ChangeTimer >= 1.000000)
 		{
-			if(Texture == Texture'Effects.Wepn_Prifle_SFX')
+			ChangeTimer = 0.000000;
+			rnd = FRand();
+			if(rnd <= 0.100000)
 			{
-				PlaySound(sound'Spark2', SLOT_None,,, 1024);
-				Texture=Texture'Effects.LaserBeam2';
-				HitDamage = 11;
-				LightHue = 160;
+				if(Texture == Texture'Effects.Wepn_Prifle_SFX')
+				{
+					PlaySound(sound'Spark2', SLOT_None,,, 1024);
+					Texture=Texture'Effects.LaserBeam2';
+					HitDamage = 11;
+					LightHue = 160;
+				}
+				else
+				{
+					PlaySound(sound'Spark1', SLOT_None,0.75,, 1024);
+					Texture=Texture'Effects.Wepn_Prifle_SFX';
+					HitDamage = 15;
+					LightHue = 100;
+				}
 			}
-			else
+			else if(rnd >= 0.900000)
 			{
-				PlaySound(sound'Spark1', SLOT_None,0.75,, 1024);
-				Texture=Texture'Effects.Wepn_Prifle_SFX';
-				HitDamage = 15;
-				LightHue = 100;
+				if(Texture == Texture'Effects.Wepn_Prifle_SFX')
+				{
+					PlaySound(sound'EMPZap', SLOT_None,0.75,, 1024);
+					Texture=Texture'Effects.Virus_SFX';
+					HitDamage = 22;
+					LightHue = 0;
+				}
+				else
+				{
+					PlaySound(sound'Spark1', SLOT_None,0.75,, 1024);
+					Texture=Texture'Effects.Wepn_Prifle_SFX';
+					HitDamage = 15;
+					LightHue = 100;
+				}
 			}
 		}
-		else if(rnd >= 0.900000)
-		{
-			if(Texture == Texture'Effects.Wepn_Prifle_SFX')
-			{
-				PlaySound(sound'EMPZap', SLOT_None,0.75,, 1024);
-				Texture=Texture'Effects.Virus_SFX';
-				HitDamage = 22;
-				LightHue = 0;
-			}
-			else
-			{
-				PlaySound(sound'Spark1', SLOT_None,0.75,, 1024);
-				Texture=Texture'Effects.Wepn_Prifle_SFX';
-				HitDamage = 15;
-				LightHue = 100;
-			}
-		}
+		else if(bLightOn)
+			ChangeTimer += DeltaTime;
 	}
-	else if(bLightOn)
-		ChangeTimer += DeltaTime;
 }
 
 state DownWeapon
