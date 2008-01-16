@@ -24,4 +24,5 @@ defaultproperties
      BindName="JuanLebedev"
      FamiliarName="Juan Lebedev"
      UnfamiliarName="Juan Lebedev"
+     bLikesNeutral=False
 }

@@ -11916,9 +11916,10 @@ State Attacking
 {
 	function Bump(actor Other)
 	{
-		local Inventory inv;
+		local Inventory inv, nextItem;
+		local bool bPickedUp;
 		//== If we bumped a weapon pickup we might want to, say, pick it up
-		if(Other.isA('DeusExWeapon') && !Self.IsA('Robot') && !Self.IsA('Animal') && Physics == PHYS_Walking)
+		if((Other.IsA('DeusExWeapon') || (Other.IsA('DeusExCarcass') && !bFearCarcass)) && !Self.IsA('Robot') && !Self.IsA('Animal') && Physics == PHYS_Walking)
 		{
 			//== No picking up Unique weapons
 			if(!DeusExWeapon(Other).bUnique && FindInventoryType(Other.Class) == None)
@@ -11946,7 +11947,67 @@ State Attacking
 						}
 					}
 				}
-	
+
+				bPickedUp = True;
+			}
+
+			//== Simulate frobbing
+			else if(Other.IsA('DeusExCarcass'))
+			{
+				if(DeusExCarcass(Other).Inventory != None)
+				{
+					inv = DeusExCarcass(Other).Inventory;
+
+					do
+					{
+						nextItem = inv.Inventory;
+
+						if(inv.Owner == Self)
+							break;
+
+						if(Weapon(inv) != None)
+						{
+							if(FindInventoryType(inv.Class) == None)
+							{
+								DeusExCarcass(Other).DeleteInventory(inv);
+
+								inv.InitialState='Idle2';
+								inv.GiveTo(Self);
+								inv.SetBase(Self);
+
+								bPickedUp = True;
+							}
+
+							if(DeusExWeapon(inv).AmmoType != None)
+							{
+								Weapon = Weapon(inv);
+
+								inv = FindInventoryType(DeusExWeapon(Weapon).AmmoName);
+								if (inv != None)
+									Ammo(inv).AmmoAmount += (DeusExWeapon(Weapon).AmmoName).default.AmmoAmount;
+				
+								else
+								{
+									inv = spawn(DeusExWeapon(Weapon).AmmoName, self);
+				
+									if (inv != None)
+									{
+										Ammo(inv).AmmoAmount += (DeusExWeapon(Weapon).AmmoName).default.AmmoAmount;
+										inv.InitialState='Idle2';
+										inv.GiveTo(Self);
+										inv.SetBase(Self);
+									}
+								}
+							}
+						}
+						inv = nextItem;
+
+					}until(inv == None);
+				}
+			}
+
+			if(bPickedUp)
+			{
 				SwitchToBestWeapon();
 				if(ShouldCrouch())
 					StartCrouch();
@@ -12033,7 +12094,7 @@ State Attacking
 		local EDestinationType     destType;
 		local NearbyProjectileList projList;
 		local DeusExWeapon	   lWeapon, bestWeapon;
-		local DeusExCarcass	   carc, bestCarc;
+		local DeusExCarcass	   carc;
 		local Inventory		   inv;
 		local float		   actorVis;
 
@@ -12056,43 +12117,12 @@ State Attacking
 			if( ( Rand(18) > 13 || (DeusExWeapon(Weapon).bHandToHand && FMax(DeusExWeapon(Weapon).HitDamage, DeusExWeapon(Weapon).ProjectileDamage) < 20) ) && !Weapon.IsA('WeaponNPCRanged'))
 			{
 				bestWeapon = None;
-				bestCarc = None;
 				foreach RadiusActors(Class'DeusExWeapon', lWeapon, 240)
 				{
-					if(FMax(lWeapon.HitDamage, lWeapon.ProjectileDamage) > FMax(DeusExWeapon(Weapon).HitDamage, DeusExWeapon(Weapon).ProjectileDamage) && !lWeapon.bUnique && Pawn(lWeapon.Owner) == None && DeusExCarcass(lWeapon.Owner) == None)
+					if(FMax(lWeapon.HitDamage, lWeapon.ProjectileDamage) > FMax(DeusExWeapon(Weapon).HitDamage, DeusExWeapon(Weapon).ProjectileDamage) && !lWeapon.bUnique && Pawn(lWeapon.Owner) == None && DeusExCarcass(lWeapon.Owner) == None) //(DeusExCarcass(lWeapon.Owner) == None || !bFearCarcass
 						bestWeapon = lWeapon;
 				}
-	
-				//== I'll enable this code once I get a good method for pawns to frob bodies selectively
-	/*			if(!bFearCarcass)
-				{
-					foreach RadiusActors(class'DeusExCarcass', carc, 160)
-					{
-						inv = carc.Inventory;
-						while(inv != None)
-						{
-							if(inv.IsA('DeusExWeapon'))
-							{
-								if(FMax(DeusExWeapon(inv).HitDamage, DeusExWeapon(inv).ProjectileDamage) > FMax(DeusExWeapon(Weapon).HitDamage, DeusExWeapon(Weapon).ProjectileDamage)
-								{
-									bestWeapon = DeusExWeapon(inv);
-									bestCarc = carc;
-								}
-							}
-						}
-					}
-				}
-				if(bestCarc != None)
-				{
-					if (bAvoidHarm)
-						GetProjectileList(projList, bestCarc.Location);
-					if (!bAvoidHarm || !IsLocationDangerous(projList, bestCarc.Location))
-					{
-						destLoc = bestCarc.Location;
-						destType = DEST_NewLocation;
-					}
-				}
-				else */
+
 				if(bestWeapon != None)
 				{
 					if (bAvoidHarm)

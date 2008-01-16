@@ -89,7 +89,12 @@ state Activated
 			}
 			PlaySound(sound'MaleCough');
 			if(DeusExPlayer(Owner) != None)
-				DeusExPlayer(Owner).drugEffectTimer = 0.0;
+			{
+				if(DeusExPlayer(Owner).drugEffectTimer >= 0.0)
+					DeusExPlayer(Owner).drugEffectTimer = 0.0;
+				else
+					DeusExPlayer(Owner).drugEffectTimer = -0.1;
+			}
 		}
 
 		UseOnce();

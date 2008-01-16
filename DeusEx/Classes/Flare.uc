@@ -122,13 +122,17 @@ function LightFlare()
 
 function Tick(float deltaTime)
 {
+	local AirBubble airbub;
+
 	Super.Tick(deltaTime);
 
 	if(Region.Zone.bWaterZone && AmbientSound != None)
 	{
 		if((LifeSpan % 1.000000) + deltaTime > 1.000000)
 		{
-			Spawn(class'AirBubble', Self,, Location, rot(16384,0,0));
+			airbub = Spawn(class'AirBubble', Self,, Location, rot(16384,0,0));
+			if(airbub != None)
+				airbub.EmitOnSurface = class'SmokeTrail';
 		}
 	}
 

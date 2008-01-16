@@ -5,6 +5,7 @@ class AirBubble expands Effects;
 
 var() float RiseRate;
 var vector OrigVel;
+var Class<Effects> EmitOnSurface; // An effect to emit when we surface
 
 auto state Flying
 {
@@ -42,6 +43,26 @@ auto state Flying
 					if(WaterRing(splash) != None)
 						WaterRing(splash).bNoExtraRings = True;
 	
+				}
+
+				if(EmitOnSurface != None)
+				{
+					splash = Spawn(EmitOnSurface);
+
+					if(splash != None)
+					{
+						splash.Velocity.Z = Velocity.Z;
+
+						if(Effects(splash) != None)
+							splash.DrawScale = DrawScale;
+
+						//== Special cases, because nobody could think to have a unified RiseRate variable
+						if(SmokeTrail(splash) != None)
+						{
+//							SmokeTrail(splash).RiseRate = RiseRate;
+							SmokeTrail(splash).OrigVel.Z = Velocity.Z;
+						}
+					}
 				}
 			}
 		}

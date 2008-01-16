@@ -44,41 +44,18 @@ function ComputeFallDirection(float totalTime, int numFrames,
 	}
 }
 
+//== Redundant due to the function in Animal.uc, but we may as well leave it here
 function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector momentum, name damageType)
 {
-	local int tDamage,
-	    DamageHead,
-	    DamageTorso,
-	    DamageRArm,
-	    DamageLArm,
-	    DamageRLeg,
-	    DamageLLeg;
-
 	//== If it's radiation damage, heal instead of hurt
-	if(damageType == 'Radiation' && Damage > 0)
+	if(damageType == 'Radiation')
 	{
-		//== Calculate what is damaged, but keep in mind the possibility of over-healed parts
-		DamageHead = FMax(Default.HealthHead - HealthHead, 0);
-		DamageTorso = FMax(Default.HealthTorso - HealthTorso, 0);
-		DamageRArm = FMax(Default.HealthArmRight - HealthArmRight, 0);
-		DamageLArm = FMax(Default.HealthArmLeft - HealthArmLeft, 0);
-		DamageRLeg = FMax(Default.HealthLegRight - HealthLegRight, 0);
-		DamageLLeg = FMax(Default.HealthLegLeft - HealthLegLeft, 0);
-
-		//== Either heal using the full damage amount, or the total damage that the Gray has, whatever is lower.
-		tDamage = FMin(Damage, DamageTorso + DamageHead + DamageRArm + DamageLArm + DamageRLeg + DamageLLeg);
-
-		//== If the Gray is healed then we just stop right here
-		if(tDamage <= 0)
+		if(Damage <= 0 || Health >= Default.Health)
 			return;
 
-		//== Heal everything somewhat evenly.  The head and torso are first priority, so they get double compared to everything else.
-		HealthHead += ( (DamageHead * 2 * tDamage) / ((DamageHead * 2) + (DamageTorso * 2) + DamageRArm + DamageLArm + DamageRLeg + DamageLLeg) );
-		HealthTorso += ( (DamageTorso * 2 * tDamage) / ((DamageHead * 2) + (DamageTorso * 2) + DamageRArm + DamageLArm + DamageRLeg + DamageLLeg) );
-		HealthArmRight += ( (DamageRArm * tDamage) / ((DamageHead * 2) + (DamageTorso * 2) + DamageRArm + DamageLArm + DamageRLeg + DamageLLeg) );
-		HealthArmLeft += ( (DamageLArm * tDamage) / ((DamageHead * 2) + (DamageTorso * 2) + DamageRArm + DamageLArm + DamageRLeg + DamageLLeg) );
-		HealthLegRight += ( (DamageRLeg * tDamage) / ((DamageHead * 2) + (DamageTorso * 2) + DamageRArm + DamageLArm + DamageRLeg + DamageLLeg) );
-		HealthLegLeft += ( (DamageLLeg * tDamage) / ((DamageHead * 2) + (DamageTorso * 2) + DamageRArm + DamageLArm + DamageRLeg + DamageLLeg) );
+		Health += Damage;
+		if(Health > Default.Health)
+			Health = Default.Health;
 
 		return;
 	}

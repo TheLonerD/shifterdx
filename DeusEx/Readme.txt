@@ -935,6 +935,40 @@ UPDATES:
 	weapon in Unrealistic, and also added some ultra-powerful items to the
 	Random Inventory list in Unrealistic.
 
+	 - Per an observation by Kyle, I have made Juan Lebedev neutral.  While
+	he can provide useful information, he is nonetheless technically a non-
+	ally, non-enemy at that point.
+
+	 - Fixed an issue where using Cigarettes while Zyming could make bullet
+	time last forever.
+
+	 - Ensured that Grays will actually gain health from being around
+	sources of radiation.  (I was assuming they used a health system based
+	on specific body parts, but they use an overall health total) Note that
+	this fix does NOT apply to "Greys" from Zodiac, as they are actually a
+	separate and new NPC class due to the necessary interaction from the
+	E-Rifle.
+
+	 - Okay, nevermind about that above bit that the Zodiac "Greys" won't
+	heal from radiation, as I've added a custom function to the larger base
+	class (Animal) which does specific checks for "Greys". (And Blues) I'll
+	admit it's technically bad coding practice to do something like that,
+	but given that I can't really mod Zodiac itself I had little choice.
+
+	 - Changed Air Bubbles so that they can be assigned to spawn a specific
+	something-or-other when they break the surface.  I promptly used said
+	ability to make Air Bubbles created by Flares spawn smoke once they
+	break the surface of water.
+
+	 - Removed the code which stopped corpse frobbing from dropping Combat
+	Knives that you don't pick up.  Sure, you wind up with a litter of
+	Combat Knives behind you wherever you go, but some folks like throwing
+	them and I figure it's illogical to delete the damn things completely.
+
+	 - Working on code to let NPCs searching for weapons frob the dead or
+	unconscious to get said weapons.  It's not finished, but you can look
+	at my code (which doesn't work since Carcasses don't call Bump())
+
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 

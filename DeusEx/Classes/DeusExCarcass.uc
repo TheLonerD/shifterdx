@@ -718,11 +718,11 @@ function Frob(Actor Frobber, Inventory frobWith)
 							if (W != None)
 							{
 								// Destroy the weapon, baby!
-								if(!W.IsA('WeaponCombatKnife'))
-								{
+//								if(!W.IsA('WeaponCombatKnife'))
+//								{
 									tempitem = spawn(item.Class,self); //but leave behind a copy if we want it later 
 									Weapon(tempitem).PickupAmmoCount = Weapon(item).AmmoType.AmmoAmount;
-								}
+//								}
 								DeleteInventory(item);
 								item.Destroy();
 								item = None;
