@@ -327,7 +327,7 @@ function Tick(float deltaTime)
 
 	if (winZoom != None)
 	{
-		if ((bTargetActive && (lastTarget == None)) || !bTargetActive)
+		if ((bTargetActive && (lastTarget == None)) || !bTargetActive || !bTargetWindowActive)
 		{
 			winZoom.Destroy();
 			winZoom = None;
@@ -348,11 +348,6 @@ function PostDrawWindow(GC gc)
    //DEUS_EX AMSD Draw vision first so that everything else doesn't get washed green
 	if (bVisionActive)
 		DrawVisionAugmentation(gc);
-	else if(DeusExWeapon(Player.inHand) != None)
-	{
-		if(DeusExWeapon(Player.inHand).bZoomed && (Player.inHand.isA('WeaponRailgun') || Player.inHand.isA('WeaponPrecisionRifle')))
-			DrawVisionAugmentation(gc);
-	}
 
 	if ( Player.Level.NetMode != NM_Standalone )
 		DrawMiscStatusMessages( gc );
@@ -741,7 +736,7 @@ function GetTargetReticleColor( Actor target, out Color xcolor )
 	{
 		if (ScriptedPawn(target).GetPawnAllianceType(Player) == ALLIANCE_Hostile)
 			xcolor = colRed;
-		else if(ScriptedPawn(target).GetPawnAllianceType(Player) == ALLIANCE_Friendly)
+		else if(ScriptedPawn(target).GetPawnAllianceType(Player) == ALLIANCE_Friendly) // || player.AugmentationSystem.GetClassLevel(class'AugIFF') < 1)
 			xcolor = colGreen;
 		else
 		{
@@ -1061,9 +1056,9 @@ function DrawTargetAugmentation(GC gc)
 
 				// print the name of the target above the box
 				if (target.IsA('Pawn'))
-					str = target.BindName;
+					str = target.FamiliarName; //target.BindName;
 				else if (target.IsA('DeusExDecoration'))
-					str = DeusExDecoration(target).itemName;
+					str = DeusExDecoration(target).GetDecoName(); //itemName;
 				else if (target.IsA('DeusExProjectile'))
 					str = DeusExProjectile(target).itemName;
 				else
@@ -1228,25 +1223,6 @@ function DrawVisionAugmentation(GC gc)
 		visLevelValue = visionLevelValue;
 	}
 
-	//== So Railgun scope can see through walls
-	if(WeaponRailgun(Player.inHand) != None)
-	{
-		if(DeusExWeapon(Player.inHand).bZoomed && (visLevel < 3 || visLevelValue < DeusExWeapon(Player.inHand).AccurateRange))
-		{
-			visLevel = 3;
-			visLevelValue = DeusExWeapon(Player.inHand).AccurateRange;
-		}
-	}
-	//== So Precision Rifle makes NPCs muy visible
-	if(WeaponPrecisionRifle(Player.inHand) != None)
-	{
-		if(DeusExWeapon(Player.inHand).bZoomed && visLevel < 1)
-		{
-			visLevel = -2;
-			visLevelValue = 0; //DeusExWeapon(Player.inHand).AccurateRange;
-		}
-	}
-
 	boxW = width/2;
 	boxH = height/2;
 	boxCX = width/2;
@@ -1258,7 +1234,7 @@ function DrawVisionAugmentation(GC gc)
 
 	// at level one and higher, enhance heat sources (FLIR)
 	// use DrawActor to enhance NPC visibility
-	if (visLevel >= 1 || visLevel == -2)
+	if (visLevel >= 1)
 	{
 		// shift the entire screen to dark red (except for the middle box)
       if (player.Level.Netmode == NM_Standalone && visLevel >= 1)
@@ -1276,7 +1252,7 @@ function DrawVisionAugmentation(GC gc)
       }
 
       // DEUS_EX AMSD In multiplayer, draw green here so that we can draw red actors over it
-      if ( (player.Level.Netmode != NM_Standalone && visLevel >= 1) || visLevel == -2)
+      if ( (player.Level.Netmode != NM_Standalone && visLevel >= 1))
       {
          gc.SetStyle(DSTY_Modulated);
          gc.DrawPattern(0, 0, width, height, 0, 0, Texture'VisionBlue');
@@ -1379,13 +1355,6 @@ function DrawVisionAugmentation(GC gc)
                }
             }
          }
-      }
-
-      if(visLevel == -2)
-      {
-	gc.SetStyle(DSTY_Modulated);
-	gc.DrawTexture( ((width-256)/2), ((height-256)/2), 256, 256, 0, 0, Texture'HUDScopeView');
-	return;
       }
 
       // draw text label
@@ -1578,7 +1547,16 @@ function int GetVisionTargetStatus(Actor Target)
       return 3;
    
    if (player.Level.NetMode == NM_Standalone)
+   {
+/*      if(target.IsA('ScriptedPawn') && player.AugmentationSystem.GetClassLevel(class'AugIFF') >= 1)
+      {
+	if(ScriptedPawn(target).GetPawnAllianceType(Player) == ALLIANCE_Hostile)
+	   return VISIONENEMY;
+	if(ScriptedPawn(target).GetPawnAllianceType(Player) == ALLIANCE_Friendly)
+	   return VISIONALLY;
+      } */
       return VISIONNEUTRAL;
+   }
 
    if (target.IsA('DeusExPlayer'))
    {     

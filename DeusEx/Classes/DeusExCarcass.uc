@@ -434,6 +434,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 					corpse.MaxDamage = MaxDamage;
 					corpse.CorpseItemName = itemName;
 					corpse.CarcassName = CarcassName;
+					corpse.FamiliarName = FamiliarName; //Make sure to track the nifty Familiar Name
 					corpse.Frob(player, None);
 					corpse.SetBase(player);
 					player.PutInHand(corpse);
@@ -718,11 +719,11 @@ function Frob(Actor Frobber, Inventory frobWith)
 							if (W != None)
 							{
 								// Destroy the weapon, baby!
-//								if(!W.IsA('WeaponCombatKnife'))
-//								{
+								if(!W.IsA('WeaponCombatKnife')) //Special case, since the Combat Knife is both ammo and weapon
+								{
 									tempitem = spawn(item.Class,self); //but leave behind a copy if we want it later 
 									Weapon(tempitem).PickupAmmoCount = Weapon(item).AmmoType.AmmoAmount;
-//								}
+								}
 								DeleteInventory(item);
 								item.Destroy();
 								item = None;

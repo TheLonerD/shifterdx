@@ -4934,7 +4934,7 @@ exec function ParseRightClick()
 	{
 		// if there's no FrobTarget, put away an inventory item or drop a decoration
 		// or drop the corpse
-		if ((inHand != None) && inHand.IsA('POVCorpse'))
+		if (( (inHand != None) && inHand.IsA('POVCorpse') ) )// || (inHand.IsA('Flare') && Flare(inHand).AmbientSound != None))
 			DropItem();
 		else
 			PutInHand(None);
@@ -5200,7 +5200,7 @@ exec function PutInHand(optional Inventory inv)
 		return;
 
 	// can't do anything if you're carrying a corpse
-	if ((inHand != None) && inHand.IsA('POVCorpse'))
+	if (( (inHand != None) && inHand.IsA('POVCorpse') ) )//|| (inHand.IsA('Flare') && Flare(inHand).AmbientSound != None))
 		return;
 
 	if (inv != None)
@@ -6439,6 +6439,7 @@ exec function bool DropItem(optional Inventory inv, optional bool bDrop)
 							carc.MaxDamage = POVCorpse(item).MaxDamage;
 							carc.itemName = POVCorpse(item).CorpseItemName;
 							carc.CarcassName = POVCorpse(item).CarcassName;
+							carc.FamiliarName = POVCorpse(item).FamiliarName; //And track the Familiar Name too
 							carc.Velocity = item.Velocity * 0.5;
 							item.Velocity = vect(0,0,0);
 							carc.bHidden = False;

@@ -67,6 +67,45 @@ function BeginPlay()
 		Skin = Texture(DynamicLoadObject("DeusExItems."$ texstr, class'Texture'));
 }
 
+//== Look ma, we can switch between food items now
+function SwitchItem()
+{
+	local Class<DeusExPickup> SwitchList[6];
+	local Inventory inv;
+	local int i;
+	local DeusExPlayer P;
+
+	P = DeusExPlayer(Owner);
+
+	i = 0;
+
+	//== Comment out the self reference here and we're done
+//	SwitchList[i++] = class'Liquor40oz';
+	SwitchList[i++] = class'LiquorBottle';
+	SwitchList[i++] = class'Sodacan';
+	SwitchList[i++] = class'SoyFood';
+	SwitchList[i++] = class'WineBottle';
+	SwitchList[i++] = class'VialCrack';
+	SwitchList[i++] = class'Candybar';
+
+	for(i = 0; i < 6; i++)
+	{
+		inv = P.FindInventoryType(SwitchList[i]);
+
+		if(inv != None)
+		{
+			if(inv.beltPos == -1)
+			{
+				P.ClientMessage(Sprintf(SwitchingTo,inv.ItemName));
+				P.AddObjectToBelt(inv,Self.beltPos,false);
+				P.PutInHand(inv);
+				i = 6;
+				break;
+			}
+		}
+	}
+}
+
 state Activated
 {
 	function Activate()

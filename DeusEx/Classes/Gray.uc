@@ -227,25 +227,28 @@ function PlayCriticalDamageSound()
 }
 
 //== I'll finish this code when I have some serious time, as modifying AI routines is hard work
-/*
+
 state Fleeing
 {
 	function PickDestination()
 	{
 		local DamageTrigger dtrig;
-		super.PickDestination();
+		Super.PickDestination();
 
-		//== If we're just going to a random location, find the nearest radiation source
-		if(destPoint == None && MoveTarget == None)
+		foreach RadiusActors(class'DamageTrigger', dtrig, 500)
 		{
-			foreach RadiusActors(class'DamageTrigger', dtrig)
+			if(dtrig.DamageType == 'Radiation')
 			{
-				
+				if(PointReachable(dtrig.Location))
+				{
+					destLoc = dtrig.Location;
+					break;
+				}
 			}
 		}
 	}
 }
-*/
+
 
 defaultproperties
 {

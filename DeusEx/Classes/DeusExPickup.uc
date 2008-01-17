@@ -10,6 +10,8 @@ var int				maxCopies;		// 0 means unlimited copies
 
 var localized String CountLabel;
 var localized String msgTooMany;
+var localized String SwitchingTo;
+var localized String OutOf;
 
 // ----------------------------------------------------------------------
 // Networking Replication
@@ -281,35 +283,38 @@ function SwitchItem()
 	if(IsA('Multitool') && Level.NetMode == NM_Standalone)
 	{
 		W = P.FindInventoryType(Class'DeusEx.Lockpick');
-		Ws = "Lockpicks";
+		Ws = (Class'Lockpick').Default.ItemName;
 	}
 	else if(IsA('Lockpick') && Level.NetMode == NM_Standalone)
 	{
 		W = P.FindInventoryType(Class'DeusEx.Multitool');
-		Ws = "Multitools";
+		Ws = (Class'Multitool').Default.ItemName;
 	}
 	else if(IsA('Medkit'))
 	{
 		W = P.FindInventoryType(Class'DeusEx.BioelectricCell');
-		Ws = "Bioelectric Cells";
+		Ws = (Class'BioelectricCell').Default.ItemName;
 	}
 	else if(IsA('BioelectricCell'))
 	{
 		W = P.FindInventoryType(Class'DeusEx.Medkit');
-		Ws = "Medkits";
+		Ws = (Class'Medkit').Default.ItemName;
 	}
 
 	if(Ws != "-1")
 	{
 		if(W != None)
 		{
-			P.ClientMessage(sprintf("Switching to %d", Ws));
-			P.AddObjectToBelt(W,Self.beltPos,false);
-			P.PutInHand(W);
+			if(W.beltPos == -1)
+			{
+				P.ClientMessage(sprintf(SwitchingTo, Ws));
+				P.AddObjectToBelt(W,Self.beltPos,false);
+				P.PutInHand(W);
+			}
 		}
 		else
 		{
-			P.ClientMessage(sprintf("Out of %d", Ws));
+			P.ClientMessage(sprintf(OutOf, Ws));
 		}
 	}
 }
@@ -326,4 +331,6 @@ defaultproperties
      ItemName="DEFAULT PICKUP NAME - REPORT THIS AS A BUG"
      RespawnTime=30.000000
      LandSound=Sound'DeusExSounds.Generic.PaperHit1'
+     SwitchingTo="Switching to %s"
+     OutOf="Out of %s"
 }

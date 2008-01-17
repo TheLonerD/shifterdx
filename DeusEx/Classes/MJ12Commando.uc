@@ -86,11 +86,14 @@ function Carcass SpawnCarcass()
 	if(carc != none)
 	{
 		item = Spawn(Class'AmmoRocketMini', carc);
-		item.InitialState='Idle2';
-		item.GiveTo(Self);
-		item.SetBase(Self);
-		DeleteInventory(item);
-		carc.AddInventory(item);
+		if(item != None)
+		{
+			item.InitialState='Idle2';
+			item.GiveTo(Self);
+			item.SetBase(Self);
+			DeleteInventory(item);
+			carc.AddInventory(item);
+		}
 	}
 }
 

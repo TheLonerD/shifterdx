@@ -265,8 +265,8 @@ function PreTravel()
 
 		foreach AllActors(Class'PaulDenton', paul)
 		{
-			//== If Paul has left the building, he's safe
-			if(paul.bHidden)
+			//== If Paul has left the building, or if he acts like he's safe, he's safe
+			if(paul.bHidden || flags.GetBool('M04RaidDone'))
 				count = 0;
 		}
 

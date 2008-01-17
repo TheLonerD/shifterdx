@@ -451,16 +451,7 @@ KNOWN GLITCHES:
 	 - An odd side-effect of the "Office Storage" feature may rarely cause
 	random weapons to appear in JC's UNATCO office upon returning from a
 	mission.  Sometimes these weapons come with a mod or mods installed;
-	apparently silenced Sniper Rifles are the most common.  This should not
-	be confused with what happens if you use the "legend" cheat to warp to
-	a different level while in JC's office, as that will cause a complete
-	copy of JC's inventory to be placed in your office upon your return.
-
-	 - There are reports of odd interactions between the Targeting
-	augmentation and the Precision Rifle's light-enhancing scope.  I am
-	working on clearing up the problem, but in the interim it would be
-	advisable to turn off the Targeting aug when using the Precision Rifle.
-
+	apparently silenced Sniper Rifles are the most common.
 
 	Multiplayer:
 
@@ -482,13 +473,9 @@ KNOWN GLITCHES:
 
 THINGS TO EXPECT IN THE FUTURE:
 
-	 - There will be a "run bar" on screen at all times which will deplete
-	as you run.  When it is completely empty you will only be able to walk.
-	This bar will double as your Oxygen bar when swimming.  This may be
-	limited to the Realistic difficulty level; it may also be part of a
-	larger revamp of the skill system, specifically expanding the "Swimming"
-	skill to a more general "Athletics" skill.  Maybe.  If I can balance it
-	right.
+	 - Okay, scratch that whole "run bar" idea mentioned in earlier ReadMe
+	versions.  I am, however, fully committed to converting the Swimming
+	skill to a larger, more encompassing Athletics skill.
 
 	 - The Skull Gun aug will be changed to a lower-damage, lower-drain aug
 	that automatically fires at enemy targets when active.
@@ -960,15 +947,89 @@ UPDATES:
 	ability to make Air Bubbles created by Flares spawn smoke once they
 	break the surface of water.
 
-	 - Removed the code which stopped corpse frobbing from dropping Combat
-	Knives that you don't pick up.  Sure, you wind up with a litter of
-	Combat Knives behind you wherever you go, but some folks like throwing
-	them and I figure it's illogical to delete the damn things completely.
+	 - Finalized code which will allow NPCs searching for weapons to frob
+	corpses to get said weapons.  There's a limit in place to prevent them
+	from picking up Unique weapons, just in case.
 
-	 - Working on code to let NPCs searching for weapons frob the dead or
-	unconscious to get said weapons.  It's not finished, but you can look
-	at my code (which doesn't work since Carcasses don't call Bump())
+	 - Added some simple code to make Grays (non-Zodiac) try to search out
+	Radiation areas when they are fleeing.  There's a lot missing from the
+	AI flee routines as it is so it's not perfect right now, but in theory
+	you may see a Gray or two run towards an area of Radiation once you've
+	shot them enough to make 'em flee.
 
+	 - Started breaking up what I call the "HK Unique Weapon Clusterfuck".
+	In v1.7.2 there were 5 Uniques in the HK area, nearly half of the total
+	Unique Weapons available in the game.  I'll admit that HK is a large
+	and lengthy section of the game, but it's not THAT long and lengthy.
+	For reference, I'm moving the Toxin Blade and one of the Prototype
+	Nanoswords.  I'd considered moving the ILAW, but since that location is
+	so difficult to reach (and the ILAW is available later) I saw no harm
+	in leaving it there.
+
+	 - Reworked the way the Railgun and Precision Rifle's custom scope
+	effects are implemented.  Rather than piggybacking on the existing
+	Vision augmentation system, the new method performs a few fancy moves
+	inside the existing scope code.  This new method is far simpler than
+	the old method, and as such I've removed the unnecessary extra windows
+	which the old method would draw. (e.g. the outer IR amp window)  As a
+	side effect this does somewhat limit the visible FOV of the through-
+	walls view on the Railgun's scope, but to be fair the old method didn't
+	really simulate a thermal scope very well.
+
+	 - Redid how the scope function checks whether or not the Targeting aug
+	is responsible for zooming the weapon.  If the zoom level available
+	from the Targeting aug is equal to that of the weapon in use the scope
+	function will assume that the Targeting aug is responsible, and thus
+	will not draw the "blinders" around the screen.
+
+	 - Changed the Targeting aug a tiny bit so that when you press the F8
+	key to disable the target window it won't play the "aug off" sound.
+	That was a bit confusing.
+
+	 - Also updated the Targeting aug to use the Familiar Names of people
+	it targets, rather than the "BindName", a lovely run-on name used
+	mostly for internal conversation purposes and little else.
+
+	 - Fixed the issue where picking up unconscious folks and then dropping
+	them elsewhere would cause their display name to revert to the basic
+	"Unconscious", rather than the more specific names I've set them up to
+	display.
+
+	 - Added in some code for any NPCs that are part of the Animal class
+	which will check that the model used by the NPC has an animation before
+	it attempts to play it in a conversation.  This will dramatically cut
+	down on the number of script errors which show up in the log for mods
+	that use Animals as conversing NPCs. (Which, as I've discovered, also
+	improves overall stability)
+
+	 - Rejiggered my "OMG I CAN GAT ON TEH BOTE NOW!!1! LOL" fix so that it
+	only works on non-interactive conversations, e.g those you cannot use
+	the mouse to click through quickly.  Combined with the above fix, which
+	as I mentioned greatly improves stability, this means you can actually
+	listen to the entire "Manderley raps" section of the Malkavian mod
+	without the game crashing on you.  Well... sometimes, anyway.
+
+	 - Included a fix to prevent NPCs marked as Invincible from dropping
+	their weapons or taking any sort of damage.  The old code merely would
+	prevent their main health from dropping, but would allow damage to be
+	done to specific areas such as the arms and legs, which in turn could
+	cause the NPC to drop their weapon and start running.
+
+	 - Created a new "Cycling" option for consumables; just like for
+	Lockpicks, Multitools, etc. it's activated by pressing the Change Ammo
+	key.  This new cycling ability will go through the following items:
+	Candy Bars, Forties, Liquor, Soda, Soy Food, Wine, and Zyme.
+
+	 - While I was messing with cycling I adjusted the existing routine for
+	Lockpicks/etc. so that it won't cycle to items already in a belt slot.
+	Previously you could, say, cycle between lockpicks and multitools while
+	both were in your item belt and wind up with one of the items taking up
+	two full slots.
+
+	- Also in there, I've moved the text notifications of the switches from
+	hardcoded strings to localized variables stored in the DeusExPickup
+	class.  This means that the Russian fan who is translating Shifter via
+	the DeusEx.inT file will have one more thing to translate.
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 

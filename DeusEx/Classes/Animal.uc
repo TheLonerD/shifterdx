@@ -171,7 +171,6 @@ function bool ShouldBeStartled(Pawn startler)
 	return bPh33r;
 }
 
-
 function FleeFromPawn(Pawn fleePawn)
 {
 	SetEnemy(fleePawn, , true);
@@ -185,6 +184,100 @@ function vector GetSwimPivot()
 	return (vect(0,0,0));
 }
 
+//== Stolen from Pawn.uc and overridden to check whether or not the model has certain animations
+function LipSynch(float deltaTime)
+{
+	local name animseq;
+	local float rnd;
+	local float tweentime;
+
+	// update the animation timers that we are using
+	animTimer[0] += deltaTime;
+	animTimer[1] += deltaTime;
+	animTimer[2] += deltaTime;
+
+	if (bIsSpeaking)
+	{
+		// if our framerate is high enough (>20fps), tween the lips smoothly
+		if (Level.TimeSeconds - animTimer[3]  < 0.05)
+			tweentime = 0.1;
+		else
+			tweentime = 0.0;
+
+		// the last animTimer slot is used to check framerate
+		animTimer[3] = Level.TimeSeconds;
+
+		if (nextPhoneme == "A")
+			animseq = 'MouthA';
+		else if (nextPhoneme == "E")
+			animseq = 'MouthE';
+		else if (nextPhoneme == "F")
+			animseq = 'MouthF';
+		else if (nextPhoneme == "M")
+			animseq = 'MouthM';
+		else if (nextPhoneme == "O")
+			animseq = 'MouthO';
+		else if (nextPhoneme == "T")
+			animseq = 'MouthT';
+		else if (nextPhoneme == "U")
+			animseq = 'MouthU';
+		else if (nextPhoneme == "X")
+			animseq = 'MouthClosed';
+
+		if (animseq != '' && HasAnim(animseq))
+		{
+			if (lastPhoneme != nextPhoneme)
+			{
+				lastPhoneme = nextPhoneme;
+				TweenBlendAnim(animseq, tweentime);
+			}
+		}
+	}
+	else if (bWasSpeaking)
+	{
+		bWasSpeaking = False;
+		if(HasAnim('MouthClosed'))
+			TweenBlendAnim('MouthClosed', tweentime);
+	}
+
+	// blink randomly
+	if (animTimer[0] > 2.0)
+	{
+		animTimer[0] = 0;
+		if (FRand() < 0.4 && HasAnim('Blink'))
+			PlayBlendAnim('Blink', 1.0, 0.1, 1);
+	}
+
+	LoopHeadConvoAnim();
+	LoopBaseConvoAnim();
+}
+
+//== Also overridden to check for the presence of animations before running them
+function LoopBaseConvoAnim()
+{
+	local float rnd;
+
+	rnd = FRand();
+
+	// move arms randomly
+	if (bIsSpeaking)
+	{
+		if (animTimer[2] > 2.5)
+		{
+			animTimer[2] = 0;
+			if (rnd < 0.1 && HasAnim('GestureLeft'))
+				PlayAnim('GestureLeft', 0.35, 0.4);
+			else if (rnd < 0.2 && HasAnim('GestureRight'))
+				PlayAnim('GestureRight', 0.35, 0.4);
+			else if (rnd < 0.3 && HasAnim('GestureBoth'))
+				PlayAnim('GestureBoth', 0.35, 0.4);
+		}
+	}
+
+	// if we're not playing an animation, loop the breathe
+	if (!IsAnimating() && HasAnim('BreathLight'))
+		LoopAnim('BreatheLight',, 0.4);
+}
 
 state Fleeing
 {

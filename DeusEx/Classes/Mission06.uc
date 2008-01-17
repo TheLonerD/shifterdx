@@ -58,15 +58,6 @@ function FirstFrame()
 			foreach AllActors(class'DeusExCarcass', carc, 'John_Smith_Body')
 				carc.bHidden = False;
 		}
-
-		if(!flags.GetBool('MS_ToxinBladeAdded'))
-		{
-			loc.X = 2332.649170;
-			loc.Y = -1051.226440;
-			loc.Z = -495.900726;
-			spawn(Class'WeaponToxinBlade', None,,loc);
-			flags.setBool('MS_ToxinBladeAdded', True,, 8);
-		}
 	}
 	else if (localURL == "06_HONGKONG_MJ12LAB")
 	{
@@ -92,12 +83,11 @@ function FirstFrame()
 				flags.SetBool('M07_ILAW_Placed', True,, 8);
 			}
 		}
-		if(!flags.getBool('M06_Prototypes_Placed'))
-		{
-			//spawn(Class'WeaponPrototypeSwordB', None,, vect(-1671.00, -328.50, -706.00));
-			spawn(Class'WeaponPrototypeSwordC', None,, vect(-1671.00, -328.50, -690.00));
-			flags.setBool('M06_Prototypes_Placed', True,, 8);
-		}
+//		if(!flags.getBool('M06_Prototypes_Placed'))
+//		{
+//			spawn(Class'WeaponPrototypeSwordC', None,, vect(-1671.00, -328.50, -690.00));
+//			flags.setBool('M06_Prototypes_Placed', True,, 8);
+//		}
 	}
 	else if (localURL == "06_HONGKONG_TONGBASE")
 	{
@@ -205,7 +195,7 @@ function FirstFrame()
 
 							if(Weapon(item) != None && !item.IsA('WeaponSword'))
 							{
-								if(item.Owner == GetPlayerPawn())
+								if(item.Owner == player)
 									break; //== We have somehow stumbled into the player's inventory. Abort!
 
 								pawn.DeleteInventory(item);
@@ -764,7 +754,6 @@ function Timer()
 			{
 				if(scicarc.InitialInventory[0].Inventory != None)
 				{
-					//spawn(Class'WeaponPrototypeSwordB', None,, scicarc.Location + vect(0,0,10));
 					scicarc.FrobItems[0] = Class'WeaponPrototypeSwordB';
 					flags.SetBool('M06_SwordB_Placed', True,, 8);
 					break;

@@ -34,7 +34,15 @@ auto state Pickup
 		if (gen == None && AmbientSound == None)
 			Super.Frob(Frobber, frobWith);
 		else if (Frobber.IsA('Pawn'))
-			Pawn(Frobber).ClientMessage(ExpireMessage);
+		{
+/*			if(Frobber.IsA('DeusExPlayer'))
+			{
+				SetBase(Frobber);
+				DeusExPlayer(Frobber).PutInHand(Self);
+			}
+			else */
+				Pawn(Frobber).ClientMessage(ExpireMessage);
+		}
 	}
 }
 

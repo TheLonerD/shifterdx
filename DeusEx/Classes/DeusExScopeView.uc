@@ -122,6 +122,9 @@ event DrawWindow(GC gc)
 	local float			fromY, toY;
 	local float			scopeWidth, scopeHeight;
 	local bool			test;
+	local Texture			oldSkins[9];
+	local Actor			A;
+	local vector			loc;
 
 	Super.DrawWindow(gc);
 
@@ -156,11 +159,51 @@ event DrawWindow(GC gc)
 			if(!DeusExWeapon(Player.inHand).bHasScope)
 				test = false;
 
-			else if(desiredFOV != DeusExWeapon(Player.inHand).Default.ScopeFOV)
+			else if(desiredFOV == Int(30.000000 + (100.000000 * Player.AugmentationSystem.GetAugLevelValue(class'AugTarget'))))
 				test = false;
+
+			if(WeaponPrecisionRifle(Player.inHand) != None || WeaponRailgun(Player.inHand) != None)
+			{
+				test = true;
+				gc.SetStyle(DSTY_Translucent);
+
+				loc = Player.Location;
+				loc.Z += Player.BaseEyeHeight;
+
+				foreach Player.AllActors(class'Actor', A)
+				{
+					if(A.bVisionImportant && DeusExRootWindow(player.rootWindow).hud.augDisplay.IsHeatSource(A))
+					{
+						if( ( VSize(loc - A.Location) <= DeusExWeapon(Player.inHand).maxRange && WeaponRailgun(Player.inHand) != None) || Player.LineOfSightTo(A,true))
+						{
+							DeusExRootWindow(Player.rootWindow).hud.augDisplay.VisionTargetStatus = DeusExRootWindow(Player.rootWindow).hud.augDisplay.GetVisionTargetStatus(A);               
+							DeusExRootWindow(Player.rootWindow).hud.augDisplay.SetSkins(A, oldSkins);
+							gc.DrawActor(A, False, False, True, 1.0, 2.0, None);
+							DeusExRootWindow(Player.rootWindow).hud.augDisplay.ResetSkins(A, oldSkins);
+						}
+					}
+				}
+				gc.SetStyle(DSTY_Normal);
+			}
 		}
 		if(test)
 		{
+			if(WeaponRailgun(Player.inHand) != None)
+			{
+			      gc.SetStyle(DSTY_Modulated);
+			      gc.DrawPattern(fromX, fromY, scopeWidth, scopeHeight, 0, 0, Texture'SolidGreen');
+			      gc.DrawPattern(fromX, fromY, scopeWidth, scopeHeight, 0, 0, Texture'SolidGreen');
+			      gc.SetStyle(DSTY_Normal);
+			}
+
+			if(WeaponPrecisionRifle(Player.inHand) != None)
+			{
+			      gc.SetStyle(DSTY_Modulated);
+			      gc.DrawPattern(fromX, fromY, scopeWidth, scopeHeight, 0, 0, Texture'VisionBlue');
+			      gc.DrawPattern(fromX, fromY, scopeWidth, scopeHeight, 0, 0, Texture'VisionBlue');
+			      gc.SetStyle(DSTY_Normal);
+			}
+
 			gc.DrawPattern(0, 0, width, fromY, 0, 0, Texture'Solid');
 			gc.DrawPattern(0, toY, width, fromY, 0, 0, Texture'Solid');
 			gc.DrawPattern(0, fromY, fromX, scopeHeight, 0, 0, Texture'Solid');

@@ -937,10 +937,10 @@ Begin:
 		PlaySpeech( ConEventSpeech(currentEvent).conSpeech.soundID, ConEventSpeech(currentEvent).Speaker ); 
 
 		// Add two seconds to the sound since there seems to be a slight lag
-		//== And while we're at it, make sure the sound length will actually set the timer
+		//== And while we're at it, make sure the sound length will actually set the timer for conversations
 		if( con.GetSpeechLength(ConEventSpeech(currentEvent).conSpeech.soundID) > 0.0)
 			SetTimer( con.GetSpeechLength(ConEventSpeech(currentEvent).conSpeech.soundID), False );
-		else //== OMG I CAN GET ON TEH BOTE!
+		else if( conWinThird == None ) //== OMG I CAN GET ON TEH BOTE!
 			SetTimer( FMax(lastSpeechTextLength * perCharDelay, minimumTextPause), False );
 	}
 

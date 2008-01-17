@@ -166,6 +166,7 @@ function Timer()
 	local ConversationTrigger contrig;
 	local ConListItem conList;
 	local ComputerPublic compPub;
+	local Pillow fluffy;
 
 	Super.Timer();
 
@@ -451,7 +452,6 @@ function Timer()
 			foreach AllActors(class'ComputerPublic', compPub)
 			{
 				compPub.bulletinTitles[0] = "A warning from Project Mayhem";
-//				compPub.bulletinText[0] = "I am Jack's bulletin.";
 				compPub.bulletinText[0] = "If you are reading this then this warning is for you. Every word you read of this useless fine print is another second of your life. Don't you have other things to do?";
 				compPub.bulletinText[0] = compPub.bulletinText[0] $ " Is your life so empty that you honestly can't think of a better way to spend these moments? Or are you so impressed with authority that you give respect and credence to all who claim it?";
 				compPub.bulletinText[0] = compPub.bulletinText[0] $ " Do you think everything you're supposed to think? Buy what you're told you should want? Get out of your apartment. Meet a member of the opposite sex.";
@@ -507,6 +507,20 @@ function Timer()
 			!flags.GetBool('FordSchickRescueDone'))
 		{
 			flags.SetBool('FordSchickRescueDone', True,, 9);
+		}
+	}
+	else if (localURL == "02_NYC_SMUG")
+	{
+		if(!flags.GetBool('M02_ToxinBladeAdded'))
+		{
+			foreach AllActors(Class'Pillow', fluffy)
+			{
+				if(spawn(Class'WeaponToxinBlade', None,, fluffy.Location, rot(0,16383,0) + fluffy.Rotation) != None)
+				{
+					flags.setBool('M02_ToxinBladeAdded', True,, 3);
+					break;
+				}
+			}
 		}
 	}
 }

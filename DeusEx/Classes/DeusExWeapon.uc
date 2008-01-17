@@ -1791,7 +1791,7 @@ simulated function RefreshScopeDisplay(DeusExPlayer player, bool bInstant, bool 
 	if (bScopeOn && (player != None))
 	{
 		temp = Int(30.000000 + (100.000000 * player.AugmentationSystem.GetAugLevelValue(class'AugTarget')));
-		if(ScopeFOV < temp || temp < 0)
+		if(ScopeFOV < temp || temp <= 0)
 			temp = ScopeFOV;
 
 		// Show the Scope View

@@ -3411,6 +3411,10 @@ function EHitLocation HandleDamage(int actualDamage, Vector hitLocation, Vector 
 
 	if (actualDamage > 0)
 	{
+		//== Kinda hacky, but we don't want to actually damage invincible pawns, just play the animations
+		if(bInvincible)
+			actualDamage = 0;
+
 		if (offset.z > headOffsetZ)		// head
 		{
 			// narrow the head region
@@ -7238,7 +7242,7 @@ function bool ShouldFlee()
 
 function bool ShouldDropWeapon()
 {
-	if (((HealthArmLeft <= 0) || (HealthArmRight <= 0)) && (Health > 0))
+	if (((HealthArmLeft <= 0) || (HealthArmRight <= 0)) && (Health > 0) && !bInvincible)
 		return true;
 	else
 		return false;
@@ -11917,7 +11921,6 @@ State Attacking
 	function Bump(actor Other)
 	{
 		local Inventory inv, nextItem;
-		local bool bPickedUp;
 		//== If we bumped a weapon pickup we might want to, say, pick it up
 		if((Other.IsA('DeusExWeapon') || (Other.IsA('DeusExCarcass') && !bFearCarcass)) && !Self.IsA('Robot') && !Self.IsA('Animal') && Physics == PHYS_Walking)
 		{
@@ -11948,66 +11951,6 @@ State Attacking
 					}
 				}
 
-				bPickedUp = True;
-			}
-
-			//== Simulate frobbing
-			else if(Other.IsA('DeusExCarcass'))
-			{
-				if(DeusExCarcass(Other).Inventory != None)
-				{
-					inv = DeusExCarcass(Other).Inventory;
-
-					do
-					{
-						nextItem = inv.Inventory;
-
-						if(inv.Owner == Self)
-							break;
-
-						if(Weapon(inv) != None)
-						{
-							if(FindInventoryType(inv.Class) == None)
-							{
-								DeusExCarcass(Other).DeleteInventory(inv);
-
-								inv.InitialState='Idle2';
-								inv.GiveTo(Self);
-								inv.SetBase(Self);
-
-								bPickedUp = True;
-							}
-
-							if(DeusExWeapon(inv).AmmoType != None)
-							{
-								Weapon = Weapon(inv);
-
-								inv = FindInventoryType(DeusExWeapon(Weapon).AmmoName);
-								if (inv != None)
-									Ammo(inv).AmmoAmount += (DeusExWeapon(Weapon).AmmoName).default.AmmoAmount;
-				
-								else
-								{
-									inv = spawn(DeusExWeapon(Weapon).AmmoName, self);
-				
-									if (inv != None)
-									{
-										Ammo(inv).AmmoAmount += (DeusExWeapon(Weapon).AmmoName).default.AmmoAmount;
-										inv.InitialState='Idle2';
-										inv.GiveTo(Self);
-										inv.SetBase(Self);
-									}
-								}
-							}
-						}
-						inv = nextItem;
-
-					}until(inv == None);
-				}
-			}
-
-			if(bPickedUp)
-			{
 				SwitchToBestWeapon();
 				if(ShouldCrouch())
 					StartCrouch();
@@ -12015,6 +11958,7 @@ State Attacking
 				//== New weapon, new tactics
 				PickDestination();
 			}
+
 		}
 
 		Global.Bump(Other);
@@ -12119,7 +12063,7 @@ State Attacking
 				bestWeapon = None;
 				foreach RadiusActors(Class'DeusExWeapon', lWeapon, 240)
 				{
-					if(FMax(lWeapon.HitDamage, lWeapon.ProjectileDamage) > FMax(DeusExWeapon(Weapon).HitDamage, DeusExWeapon(Weapon).ProjectileDamage) && !lWeapon.bUnique && Pawn(lWeapon.Owner) == None && DeusExCarcass(lWeapon.Owner) == None) //(DeusExCarcass(lWeapon.Owner) == None || !bFearCarcass
+					if(FMax(lWeapon.HitDamage, lWeapon.ProjectileDamage) > FMax(DeusExWeapon(Weapon).HitDamage, DeusExWeapon(Weapon).ProjectileDamage) && !lWeapon.bUnique && Pawn(lWeapon.Owner) == None && (DeusExCarcass(lWeapon.Owner) == None || !bFearCarcass)) //
 						bestWeapon = lWeapon;
 				}
 
@@ -12303,11 +12247,13 @@ State Attacking
 
 	function Tick(float deltaSeconds)
 	{
-		local bool   bCanSee;
+		local bool   bCanSee, bPickedUp;
 		local float  yaw;
 		local vector lastLocation;
 		local Pawn   lastEnemy;
 		local float  surpriseTime;
+		local DeusExCarcass nearcarc;
+		local Inventory item, nextitem, ammo;
 
 		Global.Tick(deltaSeconds);
 		if (CrouchTimer > 0)
@@ -12342,6 +12288,73 @@ State Attacking
 				yaw = Abs(yaw)*360/32768;  // 0-180 x 2
 				if (yaw <= FireAngle)
 					FireIfClearShot();
+			}
+		}
+
+		if(destLoc != vect(0, 0, 0) && VSize(Location - destLoc) <= 16)
+		{
+			foreach RadiusActors(class'DeusExCarcass', nearcarc, FMax(CollisionRadius, CollisionHeight))
+			{
+				if(nearcarc.Inventory != None)
+				{
+					item = nearcarc.Inventory;
+
+					do
+					{
+						ammo = None;
+						nextItem = item.Inventory;
+
+						if(item.Owner == Self)
+							break;
+
+						if(Weapon(item) != None && !DeusExWeapon(item).bUnique)
+						{
+							if(FindInventoryType(item.Class) == None)
+							{
+								nearcarc.DeleteInventory(item);
+
+								item.InitialState='Idle2';
+								item.GiveTo(Self);
+								item.SetBase(Self);
+
+								bPickedUp = True;
+							}
+
+							if(DeusExWeapon(item).AmmoType != None)
+							{
+
+								ammo = FindInventoryType(DeusExWeapon(item).AmmoName);
+								if (ammo != None)
+									Ammo(ammo).AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
+				
+								else
+								{
+									ammo = spawn(DeusExWeapon(item).AmmoName, self);
+				
+									if (ammo != None)
+									{
+										Ammo(ammo).AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
+										ammo.InitialState='Idle2';
+										ammo.GiveTo(Self);
+										ammo.SetBase(Self);
+									}
+								}
+							}
+						}
+						item = nextItem;
+
+					}until(item == None);
+				}
+			}
+
+			if(bPickedUp)
+			{
+				SwitchToBestWeapon();
+				if(ShouldCrouch())
+					StartCrouch();
+	
+				//== New weapon, new tactics
+				PickDestination();
 			}
 		}
 		//UpdateReactionLevel(true, deltaSeconds);

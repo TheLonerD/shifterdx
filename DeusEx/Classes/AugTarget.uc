@@ -47,7 +47,7 @@ function Deactivate()
    {
 	bViewWindowActive = false;
 	DeusExRootWindow(Player.rootWindow).hud.augDisplay.bTargetWindowActive = false;
-	Player.PlaySound(DeactivateSound, SLOT_None);
+	//Player.PlaySound(DeactivateSound, SLOT_None);
 	Player.ClientMessage("Targeting window hidden");
    }
 //   else

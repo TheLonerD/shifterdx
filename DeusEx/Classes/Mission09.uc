@@ -106,6 +106,12 @@ function Timer()
 			flags.SetBool('SummonSimons', False,, 10);
 		}
 
+		if(!flags.getBool('M09_PrototypePlaced'))
+		{
+			spawn(Class'WeaponPrototypeSwordC', None,, vect(2640.00, 168.00, 933.200012), rot(0, -4800, 0));
+			flags.setBool('M09_PrototypePlaced', True,, 8);
+		}
+
 		// randomly play explosions and shake the view
 		// if the ship has been breeched
 		if (flags.GetBool('MS_ShipBreeched'))
