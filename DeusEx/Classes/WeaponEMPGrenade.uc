@@ -63,6 +63,46 @@ function BecomePickup()
          Lifespan = 0.0;
 }
 
+//== For switching between grenade types, including Zodiac's C4
+function SwitchItem()
+{
+	local Class<DeusExWeapon> SwitchList[5];
+	local Inventory inv;
+	local int i;
+	local DeusExPlayer P;
+
+	P = DeusExPlayer(Owner);
+
+	i = 0;
+
+	SwitchList[i++] = class'WeaponEMPGrenade';
+	SwitchList[i++] = class'WeaponGasGrenade';
+	SwitchList[i++] = class'WeaponNanoVirusGrenade';
+	SwitchList[i++] = class'WeaponLAM';
+	SwitchList[i++] = Class<DeusExWeapon>(DynamicLoadObject("Zodiac.WeaponC4", class'Class', True)); //I am such a badass
+
+	for(i = 0; i < 5; i++)
+	{
+		if(SwitchList[i] != None && SwitchList[i] != Class)
+		{
+			inv = P.FindInventoryType(SwitchList[i]);
+
+			if(inv != None)
+			{
+				if(inv.beltPos == -1 && DeusExWeapon(inv).TestCycleable())
+				{
+					if(!bDestroyOnFinish)
+						P.ClientMessage(Sprintf(msgSwitchingTo,inv.ItemName));
+					P.AddObjectToBelt(inv,Self.beltPos,false);
+					P.PutInHand(inv);
+					i = 5; //Just to be sure
+					break;
+				}
+			}
+		}
+	}
+}
+
 // ----------------------------------------------------------------------
 // TestMPBeltSpot()
 // Returns true if the suggested belt location is ok for the object in mp.

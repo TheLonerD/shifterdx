@@ -78,6 +78,10 @@ function bool HandlePickupQuery( inventory Item )
 				// abort the pickup
 				return True;
 			}
+
+			DeusExPickup(Item).NumCopies--;
+			DeusExPickup(anItem).TransferSkin(Item);
+			DeusExPickup(Item).NumCopies++;
 			bResult = True;
 		}
 
@@ -101,14 +105,6 @@ function bool HandlePickupQuery( inventory Item )
 		if (bResult)
 		{			
 			UpdateBeltText();	
-
-			//The code for this will be modified so it doesn't double pickup amounts
-//			if(Item.IsA('WeaponPepperGun'))
-//			{
-//				Ammo(player.FindInventoryType(Weapon(Item).AmmoName)).AddAmmo(Rand(67) + 34);
-//			}
-//			if(Item.IsA('WeaponHideAGun'))
-//				Ammo(player.FindInventoryType(Weapon(Item).AmmoName)).AddAmmo(1);
 		}
 
 		return bResult;
@@ -318,6 +314,12 @@ function SwitchItem()
 		}
 	}
 }
+
+function TransferSkin(Inventory inv)
+{
+
+}
+
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
 

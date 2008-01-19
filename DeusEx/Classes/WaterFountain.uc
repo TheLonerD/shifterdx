@@ -8,7 +8,6 @@ class WaterFountain extends DeusExDecoration;
 
 var bool bUsing;
 var int numUses;
-var float mult;
 var localized String msgEmpty;
 
 function Facelift(bool bOn)
@@ -29,9 +28,11 @@ function Timer()
 
 function Frob(Actor Frobber, Inventory frobWith)
 {
+	local int mult;
+
 	Super.Frob(Frobber, frobWith);
 
-	mult = 1.0;
+	mult = 1;
 
 	if (numUses <= 0)
 	{
@@ -50,12 +51,8 @@ function Frob(Actor Frobber, Inventory frobWith)
 	if (DeusExPlayer(Frobber) != None)
 	{
 		if(DeusExPlayer(Frobber).SkillSystem != None)
-		{
-			mult = DeusExPlayer(Frobber).SkillSystem.GetSkillLevelValue(class'SkillMedicine');
-			if(mult <= 0) mult = 1.0;
-			else if(mult == 2.5) mult = 3.0;
-			else if(mult == 3.0) mult = 4.0;
-		}
+			mult += DeusExPlayer(Frobber).SkillSystem.GetSkillLevel(class'SkillMedicine');
+
 		DeusExPlayer(Frobber).HealPlayer(mult);
 	}
 

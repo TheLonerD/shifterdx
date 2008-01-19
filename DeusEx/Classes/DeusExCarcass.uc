@@ -758,6 +758,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 									itemCount = (invItem.MaxCopies - invItem.numCopies);
 									DeusExPickup(item).numCopies -= itemCount;
 									invItem.numCopies = invItem.MaxCopies;
+									invItem.TransferSkin(item);
 									P.ClientMessage(invItem.PickupMessage @ invItem.itemArticle @ invItem.itemName, 'Pickup');
 									AddReceivedItem(player, invItem, itemCount);
 								}
@@ -766,7 +767,8 @@ function Frob(Actor Frobber, Inventory frobWith)
 									P.ClientMessage(Sprintf(msgCannotPickup, invItem.itemName));
 									if(Level.NetMode == NM_Standalone)
 									{
-										spawn(item.Class,self);
+										invitem = DeusExPickup(spawn(item.Class,self));
+										invitem.TransferSkin(item);
 										DeleteInventory(item);
 										item.Destroy();	
 									}
@@ -775,6 +777,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 							else
 							{
 								invItem.numCopies += itemCount;
+								invItem.TransferSkin(item);
 								DeleteInventory(item);
 
 								P.ClientMessage(invItem.PickupMessage @ invItem.itemArticle @ invItem.itemName, 'Pickup');

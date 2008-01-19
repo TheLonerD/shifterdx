@@ -6293,7 +6293,9 @@ exec function bool DropItem(optional Inventory inv, optional bool bDrop)
 				if (previousItemInHand == item)
 					PutInHand(previousItemInHand);
 
+				inv = item;
 				item = Spawn(item.Class, Owner);
+				DeusExPickup(item).TransferSkin(inv);
 			}
 			else
 			{
@@ -6501,7 +6503,7 @@ exec function bool DropItem(optional Inventory inv, optional bool bDrop)
 	if ((bRemovedFromSlots) && (item != None) && (!bDropped))
 	{
         //DEUS_EX AMSD Use the function call for this, helps multiplayer
-        PlaceItemInSlot(item, itemPosX, itemPosY);
+	        PlaceItemInSlot(item, itemPosX, itemPosY);
 	}
 
 	return bDropped;

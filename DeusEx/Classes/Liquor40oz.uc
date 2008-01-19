@@ -13,58 +13,84 @@ enum ESkinColor
 
 var() ESkinColor SkinColor;
 
+var() ESkinColor StackSkins[9];
+
 function Facelift(bool bOn)
 {
-	local string texstr;
+	local int skinnum;
 
-	switch (SkinColor)
-	{
-		case SC_Super45:		texstr = "Liquor40ozTex1"; break;
-		case SC_Bottle2:		texstr = "Liquor40ozTex2"; break;
-		case SC_Bottle3:		texstr = "Liquor40ozTex3"; break;
-		case SC_Bottle4:		texstr = "Liquor40ozTex4"; break;
-	}
+	skinnum = SkinColor;
+
+	if(numCopies > 1 && numCopies <= 10)
+		skinnum = StackSkins[numCopies - 2];
+
+	skinnum++;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPLiquor40oz", class'mesh', True));
 
-	if(Mesh == None || !bOn)
+	if(Mesh == None || !bOn || skinnum != 1)
 	{
 		Texture = None;
 		Mesh = Default.Mesh;
 		PlayerViewMesh = Default.PlayerViewMesh;
 		PickupViewMesh = Default.PickupViewMesh;
 		ThirdPersonMesh = Default.ThirdPersonMesh;
-		Skin = Texture(DynamicLoadObject("DeusExItems."$ texstr, class'Texture'));
+		Skin = Texture(DynamicLoadObject("DeusExItems.Liquor40ozTex"$ skinnum, class'Texture'));
 	}
 	else
 	{
 		PlayerViewMesh = Mesh;
 		PickupViewMesh = Mesh;
 		ThirdPersonMesh = Mesh;
-		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex2", class'Texture'));
+		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex2", class'Texture')); //The formula will probably be skinnum * 2 in the future
 		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex1", class'Texture', True)); //This is always the same image, for now
 	}
 }
 
 function BeginPlay()
 {
-	local string texstr;
+	local int skinnum;
 
 	Super.BeginPlay();
 
-	switch (SkinColor)
+	skinnum = SkinColor + 1;
+
+	if(Mesh != Default.Mesh && skinnum == 1)
+		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex" $ skinnum, class'Texture', True));
+	else
 	{
-		case SC_Super45:		texstr = "Liquor40ozTex1"; break;
-		case SC_Bottle2:		texstr = "Liquor40ozTex2"; break;
-		case SC_Bottle3:		texstr = "Liquor40ozTex3"; break;
-		case SC_Bottle4:		texstr = "Liquor40ozTex4"; break;
+		Texture = None;
+		Mesh = Default.Mesh;
+		PlayerViewMesh = Default.PlayerViewMesh;
+		PickupViewMesh = Default.PickupViewMesh;
+		ThirdPersonMesh = Default.ThirdPersonMesh;
+		Skin = Texture(DynamicLoadObject("DeusExItems.Liquor40ozTex"$ skinnum, class'Texture'));
+	}
+}
+
+function TransferSkin(Inventory inv)
+{
+	if(numCopies > 1 && numCopies <= 10)
+	{
+		if(DeusExPickup(inv).numCopies >= 1 && DeusExPickup(inv).numCopies < 10)
+			StackSkins[numCopies - 2] = Liquor40oz(inv).StackSkins[DeusExPickup(inv).numCopies - 1];
+		else
+			StackSkins[numCopies - 2] = Liquor40oz(inv).SkinColor;
+	}
+	else
+	{
+		if(DeusExPickup(inv).numCopies >= 1 && DeusExPickup(inv).numCopies < 10)
+			SkinColor = Liquor40oz(inv).StackSkins[DeusExPickup(inv).numCopies - 1];
+		else
+			SkinColor = Liquor40oz(inv).SkinColor;
 	}
 
-	if(Mesh != Default.Mesh)
-		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex1", class'Texture', True)); //This is always the same image, for now
-	else
-		Skin = Texture(DynamicLoadObject("DeusExItems."$ texstr, class'Texture'));
+	if(Level.NetMode == NM_Standalone)
+	{
+		Facelift(True);
+		DeusExPickup(inv).Facelift(True);
+	}
 }
 
 //== Look ma, we can switch between food items now
@@ -116,7 +142,7 @@ state Activated
 	function BeginState()
 	{
 		local DeusExPlayer player;
-		local float mult;
+		local int mult;
 		
 		Super.BeginState();
 
@@ -124,16 +150,12 @@ state Activated
 		if (player != None)
 		{
 			if(player.SkillSystem != None)
-			{
-				mult = player.SkillSystem.GetSkillLevelValue(class'SkillMedicine');
-				if(mult <= 0) mult = 1.0;
-				else if(mult == 2.5) mult = 3.0;
-				else if(mult == 3.0) mult = 4.0;
-			}
+				mult = player.SkillSystem.GetSkillLevel(class'SkillMedicine') + 1;
+
 //			player.HealPlayer(5, False);
-			player.HealPlayer(4 + Int(mult), False);
+			player.HealPlayer(4 + mult, False);
 			if(player.drugEffectTimer < 0.0 && player.drugEffectTimer >= -7.0)
-				player.drugEffectTimer = -0.1;
+				player.drugEffectTimer = -0.01;
 			else
 				player.drugEffectTimer += 7.0;
 		}
@@ -142,8 +164,6 @@ state Activated
 	}
 Begin:
 }
-
-//     Description="'COLD SWEAT forty ounce malt liquor. Never let 'em see your COLD SWEAT.'"
 
 defaultproperties
 {

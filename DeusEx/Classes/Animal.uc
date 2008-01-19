@@ -74,11 +74,11 @@ function EHitLocation HandleDamage(int Damage, Vector hitLocation, Vector offset
 function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector momentum, name damageType)
 {
 	//== Deus Ex Grays, Zodiac "Greys" and Zodiac Blues get the radiation heal bonus
-	if((Default.BindName == "Gray" || Default.BindName == "Grey" || Default.BindName == "Blue") && Mesh == LodMesh'DeusExCharacters.Gray')
+	if((Default.BindName == "Gray" || Default.BindName == "Grey" || Default.BindName == "Blue" || Default.BindName == "Sen") && Mesh == LodMesh'DeusExCharacters.Gray')
 	{
 		if(damageType == 'Radiation')
 		{
-			if(Health < Default.Health && !bInvincible && Damage > 0)
+			if(Health < Default.Health && Damage > 0)
 			{
 				Health += Damage;
 				if(Health > Default.Health)

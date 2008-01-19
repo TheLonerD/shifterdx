@@ -211,6 +211,7 @@ var localized String msgRangeUnit;
 var localized String msgTimeUnit;
 var localized String msgMassUnit;
 var localized String msgNotWorking;
+var localized String msgSwitchingTo;
 
 //
 // strings for info display
@@ -740,7 +741,10 @@ function bool LoadAmmo(int ammoNum)
 			// it isn't a Scramble grenade if the call is made in an MP game
 			if(TestCycleable()) 
 			{
-				if(Self.IsA('WeaponLAM'))
+
+				SwitchItem();
+
+/*				if(Self.IsA('WeaponLAM'))
 				{
 					W1 = P.FindInventoryType(Class'DeusEx.WeaponEMPGrenade');
 					Ws1 = "EMP Grenades";
@@ -812,7 +816,7 @@ function bool LoadAmmo(int ammoNum)
 					if(DeusExWeapon(W3).TestCycleable())
 						P.ClientMessage(Sprintf(msgOutOf, Ws3));
 				}
-				//Get the item to come up HERE
+*/				//Get the item to come up HERE
 				return false;
 			}
 
@@ -1021,6 +1025,8 @@ function bool LoadAmmo(int ammoNum)
 
 	return False;
 }
+
+function SwitchItem(){}
 
 // ----------------------------------------------------------------------
 //
@@ -1954,6 +1960,7 @@ simulated function HandToHandAttack()
 	if ( bHandToHand && (ReloadCount > 0) && (SimAmmoAmount <= 0))
 	{
 		DestroyOnFinish();
+		SwitchItem(); //Replace a lost grenade in the belt slot with a new one if we can
 		if ( Role < ROLE_Authority )
 		{
 			ServerGotoFinishFire();
@@ -5460,6 +5467,7 @@ defaultproperties
      msgTimeUnit="SEC"
      msgMassUnit="LBS"
      msgNotWorking="This weapon doesn't work underwater"
+     msgSwitchingTo="Switching to %s"
      msgInfoAmmoLoaded="Ammo loaded:"
      msgInfoAmmo="Ammo type(s):"
      msgInfoDamage="Base damage:"

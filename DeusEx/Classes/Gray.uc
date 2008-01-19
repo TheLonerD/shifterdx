@@ -59,6 +59,15 @@ function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector mo
 
 		return;
 	}
+	//== I don't plan on putting Zodiac's E-Rifle in Shifter, but who knows
+	else if(damageType == 'EnergyWeapon')
+	{
+		if(!bOnFire && fRand() >= 0.9)
+			CatchFire();
+		else
+			Damage *= 1.1;
+	}
+
 	Super.TakeDamage(Damage, instigatedBy, hitlocation, momentum, damageType);
 }
 

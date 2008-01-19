@@ -74,7 +74,7 @@ state Activated
 	function BeginState()
 	{
 		local DeusExPlayer player;
-		local float mult;
+		local int mult;
 		
 		Super.BeginState();
 
@@ -82,14 +82,10 @@ state Activated
 		if (player != None)
 		{
 			if(player.SkillSystem != None)
-			{
-				mult = player.SkillSystem.GetSkillLevelValue(class'SkillMedicine');
-				if(mult <= 0) mult = 1.0;
-				else if(mult == 2.5) mult = 3.0;
-				else if(mult == 3.0) mult = 4.0;
-			}
+				mult += player.SkillSystem.GetSkillLevel(class'SkillMedicine') + 1;
+
 //			player.HealPlayer(3, False);
-			player.HealPlayer(2 + Int(mult), False);
+			player.HealPlayer(2 + mult, False);
 			if(player.drugEffectTimer < 0.0 && player.drugEffectTimer >= -10.0)
 				player.drugEffectTimer = -0.1;
 			else

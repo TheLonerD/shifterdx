@@ -3,102 +3,182 @@
 //=============================================================================
 class Sodacan extends DeusExPickup;
 
+enum ESkinColor
+{
+	SC_Default,
+	SC_Nuke,
+	SC_Zap,
+	SC_Burn,
+	SC_Blast
+};
+
+var() ESkinColor StackSkins[10]; //Should match the maxCopies var
+
+var localized String InvDescription[4];
+
 function Facelift(bool bOn)
 {
-	local Texture lSkin;
+	local int skinnum;
+	local Texture otherIcon;
+
+	if(numCopies > 1 && numCopies <= 10) //Default.maxCopies
+	{
+		skinnum = StackSkins[numCopies - 1];
+		if(skinnum < 1 || skinnum > 4)
+		{
+			StackSkins[numCopies - 1] = RandomCanTex();
+			skinnum = StackSkins[numCopies - 1];
+		}
+	}
+	else
+	{
+		skinnum = StackSkins[0];
+		if(skinnum < 1 || skinnum > 4)
+		{
+			StackSkins[0] = RandomCanTex();
+			skinnum = StackSkins[0];
+		}
+	}
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPsodacan", class'mesh', True));
 
-	if(Mesh == None || !bOn)
+	if(Mesh == None || !bOn || skinnum > 1)
 	{
-		lSkin = Skin;
 		Mesh = Default.Mesh;
 		PlayerViewMesh = Default.PlayerViewMesh;
 		PickupViewMesh = Default.PickupViewMesh;
 		ThirdPersonMesh = Default.ThirdPersonMesh;
-		Skin = lSkin;
+		Skin = Texture(DynamicLoadObject("DeusExItems.SodaCanTex"$ skinnum, class'Texture', False));
 	}
 	else
 	{
 		PlayerViewMesh = Mesh;
 		PickupViewMesh = Mesh;
 		ThirdPersonMesh = Mesh;
+		Skin = Texture(DynamicLoadObject("HDTPItems.HDTPSodacantex"$ skinnum, class'Texture', False));
 	}
+
+	MultiSkins[1] = Skin;
+
+	switch(skinnum)
+	{
+		case 0:
+		case 1:
+			ItemName = default.ItemName $ " (Nuke!)";
+			beltDescription = "NUKE!";
+			Icon = Default.Icon;
+			LargeIcon = Default.LargeIcon;
+			break;
+		case 2:
+			ItemName = default.ItemName $ " (Zap!)";
+			beltDescription = "ZAP!";
+			if(bOn) //Hey, we can dynamic load for HDTP, why not for Zodiac too
+			{
+				otherIcon = Texture(DynamicLoadObject("Zodiac.Icons.BeltIconZapSodaCan", class'Texture', True));
+				if(otherIcon != None)
+					Icon = otherIcon;
+
+				otherIcon = Texture(DynamicLoadObject("Zodiac.Icons.LargeIconZapSodaCan", class'Texture', True));
+				if(otherIcon != None)
+					LargeIcon = otherIcon;
+			}
+			else
+			{
+				Icon = Default.Icon;
+				LargeIcon = Default.LargeIcon;
+			}
+			break;
+		case 3:
+			ItemName = default.ItemName $ " (Burn!)";
+			beltDescription = "BURN!";
+			Icon = Default.Icon;
+			LargeIcon = Default.LargeIcon;
+			break;
+		case 4:
+			ItemName = default.ItemName $ " (Blast!)";
+			beltDescription = "BLAST!";
+			Icon = Default.Icon;
+			LargeIcon = Default.LargeIcon;
+			break;
+	}
+
+	Description = InvDescription[skinnum - 1];
 }
 
-function BeginPlay()
+function PreBeginPlay()
 {
 	local Sodacan soda;
 
-	Super.BeginPlay();
+	//== Hack.  Check for Zodiac's Zap! Soda and replace it with a normal Soda can
+	//==  set to SkinType SC_Zap and delete the existing... but only if we aren't
+	//==  in someone's inventory already
+	if(String(Class.Name) == "ZapSodaCan" && Pawn(Owner) == None)
+	{
+		soda = spawn(class'Sodacan', Owner);
+		soda.StackSkins[0] = SC_Zap;
+		soda.Facelift(True);
+		Destroy();
+		return;
+	}
 
-	ItemName = Default.ItemName $ " (Nuke!)";
+	Super.PreBeginPlay();
+
+}
+
+function ESkinColor RandomCanTex()
+{
+	local Sodacan soda;
 
 	//=== There's a random chance we'll have a different soda label
-	if(frand() > 0.4)
+	if(frand() > 0.25)
 	{
-		//== Check for any soda in a 2ft range.
+		//== Check for any soda in a 2ft range.  Clusters of Nuke should stay as Nuke
 		foreach RadiusActors(class'Sodacan', soda, 32)
 		{
-			if(soda.Skin == None && soda != Self)
-				return;
+			if((soda.StackSkins[0] == SC_Default || soda.StackSkins[0] == SC_Nuke) && soda != Self)
+				return SC_Nuke;
 		}
-
-		//== Reset the mesh, as HDTP only has one skin thus far
-		Mesh = Default.Mesh;
-		PlayerViewMesh = Default.Mesh;
-		PickupViewMesh = Default.Mesh;
-		ThirdPersonMesh = Default.Mesh;
 
 		switch(Rand(6))
 		{
 			case 0:
 			case 3:
-				Skin = Texture'SodaCanTex2';
-				MultiSkins[1] = Texture'SodaCanTex2';
-				ItemName = Default.ItemName $ " (Zap!)";
+				return SC_Zap;
 				break;
 
 			case 1:
 			case 4:
-				Skin = Texture'SodaCanTex3';
-				MultiSkins[1] = Texture'SodaCanTex3';
-				ItemName = Default.ItemName $ " (Burn!)";
+				return SC_Burn;
 				break;
 
 			case 2:
 			case 5:
-				Skin = Texture'SodaCanTex4';
-				MultiSkins[1] = Texture'SodaCanTex4';
-				ItemName = Default.ItemName $ " (Blast!)";
+				return SC_Blast;
 				break;
 		}
-	}	
+	}
+
+	return SC_Nuke;		
 }
 
-function bool HandlePickupQuery( inventory Item )
+function TransferSkin(Inventory inv)
 {
-	local bool bResult;
-	local string tString;
+	StackSkins[numCopies - 1] = Sodacan(inv).StackSkins[DeusExPickup(inv).numCopies];
 
-	tString = ItemName;
-	ItemName = Default.ItemName;
-
-	bResult = Super.HandlePickupQuery(Item);
-
-	if(!bResult)
-		ItemName = tString;
-
-	return bResult;
+	if(Level.NetMode == NM_Standalone)
+	{
+		Facelift(True);
+		DeusExPickup(inv).Facelift(True);
+	}
 }
 
-//== Let's make sure the name gets reset in all situations
-function inventory SpawnCopy( pawn Other )
+function UseOnce()
 {
-	ItemName = Default.ItemName;
+	Super.UseOnce();
 
-	return Super.SpawnCopy(Other);
+	if(numCopies > 0 && Level.NetMode == NM_Standalone)
+		Facelift(True);
 }
 
 //== Look ma, we can switch between food items now
@@ -150,22 +230,23 @@ state Activated
 	function BeginState()
 	{
 		local DeusExPlayer player;
-		local float mult;
+		local int mult;
 		
 		Super.BeginState();
+
+		if(numCopies > 0 && numCopies <= 10)
+			mult = StackSkins[numCopies - 1];
+		else
+			mult = StackSkins[0];
 
 		player = DeusExPlayer(Owner);
 		if (player != None)
 		{
 			if(player.SkillSystem != None)
-			{
-				mult = player.SkillSystem.GetSkillLevelValue(class'SkillMedicine');
-				if(mult <= 0) mult = 1.0;
-				else if(mult == 2.5) mult = 3.0;
-				else if(mult == 3.0) mult = 4.0;
-			}
-//			player.HealPlayer(2, False);
-			player.HealPlayer(1 + Int(mult), False);
+				mult += player.SkillSystem.GetSkillLevel(class'SkillMedicine') + 1;
+
+			//== Health gained is based on the color of the can
+			player.HealPlayer(mult, False);
 			//Either reduces your drunkenness or extends your zyme high
 			if(player.drugEffectTimer > 4.0 || player.drugEffectTimer < 0.0)
 				player.drugEffectTimer -= 4.0;
@@ -202,4 +283,8 @@ defaultproperties
      CollisionHeight=4.500000
      Mass=5.000000
      Buoyancy=3.000000
+     InvDescription(0)="The can is blank except for the phrase 'PRODUCT PLACEMENT HERE.' It is unclear whether this is a name or an invitation."
+     InvDescription(1)="A can of Zap! soda.  The label reads: '50% more effective than Nuke!'"
+     InvDescription(2)="The only easily visible item is the letter 'B' printed on the front.  The small information label reads 'Beats out Zap! by a factor of 1.3333333333333333333333333333333333....'|n|nThe numbers keep repeating and appear to take up the remaining space on the label."
+     InvDescription(3)="Aside from the bold-face title the can appears to be blank.  Closer inspection shows the original printing has been removed and a new name printed on top.  The words 'got Electrolytes' and 'Thirst Mutilator' are still barely visible."
 }

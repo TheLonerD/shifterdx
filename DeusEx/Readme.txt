@@ -1031,6 +1031,56 @@ UPDATES:
 	class.  This means that the Russian fan who is translating Shifter via
 	the DeusEx.inT file will have one more thing to translate.
 
+	 - Started making the various different-skinned consumables such that
+	when you pick them up it keeps track of the type and order of them.
+	This means that when you use or drop them the one left in your hand
+	or inventory will change to whatever color/skin/etc. the NEXT one is.
+	So far this applies to Soda and Forties.  I may do it to Candy Bars as
+	well, though I'm not sure.
+
+	 - And since I was spending so much pointless effort screwing around
+	with Soda I figured I might as well spruce it up EVEN MORE.  Therefore,
+	the name displayed in the item belt will changed based on which soda
+	you have.  This is useful, because each different soda type will heal a
+	different amount.  Nuke heals at 2, Zap (as per Zodiac) heals at 3, and
+	so on.
+
+	 - And while we're on the subject of Zap, it occured to me that just	
+	because I started screwing around with DynamicLoadObject just so I
+	could make Shifter HDTP compatible doesn't mean I have to limit myself
+	to that end.  Therefore if you have Zodiac installed Zap! soda will use
+	the special Zap! icons.  Thanks to the recent HDTP-related upgrades
+	I've made this won't even pose a problem with savegames/etc.
+
+	- And also related to Zap! soda, all instances of Zap! soda within
+	Zodiac will be automagically replaced with the Shifter version of Zap,
+	which is only different in that it stacks with your normal soda, plus
+	the fact that it will heal more based on your medicine skill.
+
+	 - Since I'm on a Zodiac/Shifter crossover kick I thought I'd make sure
+	the E-Rifle has the same 1-in-10 chance of setting normal Grays on fire
+	that it does when used on Zodiac "Greys".  Sure, you can't get the
+	E-Rifle into a Shifter game without cheating, but I figure eh, what the
+	hell, why not?
+
+	- Made sure that the Alien Spy in Zodiac gets counted in that whole
+	"Radiation heals aliens" bit I described before.  I think that's the
+	last of the Zodiac compatibility crap left to do.
+
+	 - Nope, not the last bit of Zodiac compatibility.  I've added code so
+	that C4 is now included in the cycling feature of grenades.  Enjoy.
+
+	 - Added a little code so that when you use up one type of grenade it
+	will automatically switch to the next grenade type and fill the old
+	grenade's belt slot if any other grenades are available.
+
+	 - Changed the Article variable on the Blackjack so that when you pick
+	it up it says you found "Paul's Blackjack", not "a Blackjack".
+
+	 - Did a little bit of behind-the-scenes work with the various items
+	that I've made to benefit from having a higher Medicine skill level.
+	The code should work exactly the same, but is far more efficient.
+
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 
 	 - Cleaned up some issues relating to NPCs picking up weapons, in
