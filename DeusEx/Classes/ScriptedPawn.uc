@@ -4716,6 +4716,32 @@ function PlayRunningAndFiring()
 	}
 }
 
+// ----------------------------------------------------------------------
+// PlayDodge()
+//  In Unrealistic, NPCs can dodge too.  Make sure it looks good
+// ----------------------------------------------------------------------
+
+function PlayDodge(eDodgeDir DodgeMove)
+{
+	//== Slow animations make it look like they're waiting to land
+	switch(DodgeMove)
+	{
+		case DODGE_Left:
+		case DODGE_Right:
+				if (HasTwoHandedWeapon())
+					LoopAnimPivot('Strafe2H',0.1,0.1);
+				else
+					LoopAnimPivot('Strafe',0.1,0.1);
+				break;
+		case DODGE_Back:
+		case DODGE_Forward:
+				if (HasTwoHandedWeapon())
+					LoopAnimPivot('RunShoot2H',0.1,0.1);
+				else
+					LoopAnimPivot('Run',0.1,0.1);
+				break;
+	}
+}
 
 // ----------------------------------------------------------------------
 // PlayReloadBegin()
@@ -11299,51 +11325,45 @@ ContinueFromDoor:
 // ----------------------------------------------------------------------
 
 State Fleeing
-{ /*
+{ 
 	function Bump(actor Other)
 	{
-		local HidePoint hidePoint;
 		local Inventory inv;
 
 		//== If we bumped a weapon pickup we might want to, say, pick it up
-		if(Other.isA('DeusExWeapon') && !Self.IsA('Robot') && !Self.IsA('Animal') && Physics == PHYS_Walking)
+		if(!bFearWeapon && !ShouldDropWeapon() && Other.isA('DeusExWeapon') && !Self.IsA('Robot') && !Self.IsA('Animal') && Physics == PHYS_Walking && !ShouldFlee())
 		{
 			if(FindInventoryType(Other.Class) == None)
 			{
-				//== Only pick it up if we're looking for it, indicated by the hidepoint
-				foreach Other.BasedActors(class'HidePoint', hidePoint)
+				Other.InitialState='Idle2';
+				Inventory(Other).GiveTo(Self);
+				Other.SetBase(Self);
+			}
+
+			if(DeusExWeapon(Other).AmmoType != None)
+			{
+				inv = FindInventoryType(DeusExWeapon(Other).AmmoName);
+				if (inv != None)
+					Ammo(inv).AmmoAmount += (DeusExWeapon(Other).AmmoName).default.AmmoAmount;
+
+				else
 				{
-					Other.InitialState='Idle2';
-					Inventory(Other).GiveTo(Self);
-					Other.SetBase(Self);
-					if(DeusExWeapon(Other).AmmoType != None)
+					inv = spawn(DeusExWeapon(Other).AmmoName, self);
+
+					if (inv != None)
 					{
-						inv = FindInventoryType(DeusExWeapon(Other).AmmoName);
-						if (inv != None)
-							Ammo(inv).AmmoAmount += (DeusExWeapon(Other).AmmoName).default.AmmoAmount;
-		
-						else
-						{
-							inv = spawn(DeusExWeapon(Other).AmmoName, self);
-		
-							if (inv != None)
-							{
-								inv.InitialState='Idle2';
-								inv.GiveTo(Self);
-								inv.SetBase(Self);
-							}
-						}
+						inv.InitialState='Idle2';
+						inv.GiveTo(Self);
+						inv.SetBase(Self);
 					}
-					SwitchToBestWeapon();
-					FinishFleeing();
-					hidePoint.Destroy();
-					break;
 				}
 			}
+				SwitchToBestWeapon();
+				FinishFleeing();
 		}
 
 		Global.Bump(Other);
-	} */
+	} 
 
 	function ReactToInjury(Pawn instigatedBy, Name damageType, EHitLocation hitPos)
 	{
@@ -11433,7 +11453,12 @@ State Fleeing
 
 	function Tick(float deltaSeconds)
 	{
+		local Inventory item, nextitem, ammo;
+		local bool bPickedUp;
+		local DeusExCarcass nearcarc;
+
 		UpdateActorVisibility(Enemy, deltaSeconds, 1.0, false);
+
 		if (IsValidEnemy(Enemy))
 		{
 			if (EnemyLastSeen > FearSustainTime)
@@ -11443,6 +11468,72 @@ State Fleeing
 			FinishFleeing();
 		else if (!IsFearful())
 			FinishFleeing();
+
+		if(destLoc != vect(0, 0, 0) && VSize(Location - destLoc) <= 16)
+		{
+			foreach RadiusActors(class'DeusExCarcass', nearcarc, FMax(CollisionRadius, CollisionHeight))
+			{
+				if(nearcarc.Inventory != None)
+				{
+					item = nearcarc.Inventory;
+
+					do
+					{
+						ammo = None;
+						nextItem = item.Inventory;
+
+						if(item.Owner == Self)
+							break;
+
+						if(Weapon(item) != None && !DeusExWeapon(item).bUnique)
+						{
+							if(FindInventoryType(item.Class) == None)
+							{
+								nearcarc.DeleteInventory(item);
+
+								item.InitialState='Idle2';
+								item.GiveTo(Self);
+								item.SetBase(Self);
+
+								bPickedUp = True;
+							}
+
+							if(DeusExWeapon(item).AmmoType != None)
+							{
+
+								ammo = FindInventoryType(DeusExWeapon(item).AmmoName);
+								if (ammo != None)
+									Ammo(ammo).AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
+				
+								else
+								{
+									ammo = spawn(DeusExWeapon(item).AmmoName, self);
+				
+									if (ammo != None)
+									{
+										Ammo(ammo).AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
+										ammo.InitialState='Idle2';
+										ammo.GiveTo(Self);
+										ammo.SetBase(Self);
+									}
+								}
+							}
+						}
+						item = nextItem;
+
+					}until(item == None);
+				}
+			}
+
+			if(bPickedUp)
+			{
+				SwitchToBestWeapon();
+
+				if(!ShouldFlee())
+					FinishFleeing();
+			}
+		}
+
 		Global.Tick(deltaSeconds);
 	}
 
@@ -11490,9 +11581,6 @@ State Fleeing
 		local NearbyProjectileList projList;
 		local bool                 bSuccess;
 
-		local Inventory inv;
-		local bool bHasWeapon;
-
 		maxCandidates  = 3;  // must be <= size of candidates[] arrays
 		maxDist        = 10000;
 
@@ -11521,102 +11609,81 @@ State Fleeing
 
 		if (Enemy != None)
 		{
-///*			inv = Inventory;
-//			while(inv != None)
-//			{
-//				if(inv.IsA('DeusExWeapon'))
-//				{
-//					bHasWeapon = True;
-//					break;
-//				}
-//
-//				inv = inv.Inventory;
-//			}
-//			if(!ShouldDropWeapon() && !bFearWeapon && !Self.IsA('Robot') && !Self.IsA('Animal') && !bHasWeapon)
-//			{
-//				foreach RadiusActors(class'DeusExWeapon', lWeapon, maxDist)
-//				{
-//					// More importantly, can we REACH our hiding spot?
-//					waypoint = GetNextWaypoint(lWeapon);
-//					if (waypoint != None)
-//					{
-//						// How far is it to the hiding place?
-//						dist = VSize(hidePoint.Location - Location);
-//
-//						// Determine vectors to the waypoint and our enemy
-//						vector1 = enemy.Location - Location;
-//						vector2 = waypoint.Location - Location;
-//
-//						// Strip out magnitudes from the vectors
-//						tmpDist = VSize(vector1);
-//						if (tmpDist > 0)
-//							vector1 /= tmpDist;
-//						tmpDist = VSize(vector2);
-//						if (tmpDist > 0)
-//							vector2 /= tmpDist;
-//
-//						// Add them
-//						vector1 += vector2;
-//
-//						// Compute a score (a function of angle)
-//						score = VSize(vector1);
-//						score = 4-(score*score);
-//
-//						// Find an empty slot for this candidate
-//						openSlot  = -1;
-//						bestScore = score;
-//						bestDist  = dist;
-//
-//						for (i=0; i<maxCandidates; i++)
-//						{
-//							// Can we replace the candidate in this slot?
-//							if (bestScore > candidates[i].score)
-//								bReplace = TRUE;
-//							else if ((bestScore == candidates[i].score) &&
-//							         (bestDist < candidates[i].dist))
-//								bReplace = TRUE;
-//							else
-//								bReplace = FALSE;
-//							if (bReplace)
-//							{
-//								bestScore = candidates[i].score;
-//								bestDist  = candidates[i].dist;
-//								openSlot = i;
-//							}
-//						}
-//
-//						// We found an open slot -- put our candidate here
-//						if (openSlot >= 0)
-//						{
-//							//== See if there's an existing hidepoint for this weapon
-//							foreach lWeapon.BasedActors(class'HidePoint', hidePoint)
-//							{
-//								//== if there is, use it
-//								if(hidePoint.Location == lWeapon.Location)
-//									break;
-//								//== if there is but it isn't at the right position, delete it
-//								else
-//									hidePoint.Destroy();
-//							}
-//
-//							if(hidePoint == None)
-//							{
-//								hidePoint = spawn(class'HidePoint', lWeapon,, lWeapon.Location);
-//								hidePoint.setBase(lWeapon);
-//								hidePoint.setOwner(lWeapon);
-//							}
-//
-//							candidates[openSlot].point    = hidePoint;
-//							candidates[openSlot].waypoint = waypoint;
-//							candidates[openSlot].location = waypoint.Location;
-//							candidates[openSlot].score    = score;
-//							candidates[openSlot].dist     = dist;
-//							if (candidateCount < maxCandidates)
-//								candidateCount++;
-//						}
-//					}
-//				}
-//			}*/
+			//== If we're fleeing because we have no weapons, try to find another weapon
+			if(!ShouldDropWeapon() && !bFearWeapon && !Self.IsA('Robot') && !Self.IsA('Animal') && !ShouldFlee())
+			{
+				foreach RadiusActors(Class'DeusExWeapon', lWeapon, maxDist)
+				{
+					if (Pawn(lWeapon.Owner) == None && (DeusExCarcass(Owner) == None || !bFearCarcass) && !lWeapon.bUnique)
+					{
+						// How far is it to the hiding place?
+						dist = VSize(lWeapon.Location - Location);
+
+						// Determine vectors to the waypoint and our enemy
+						vector1 = enemy.Location - Location;
+						vector2 = lWeapon.Location - Location;
+
+						// Strip out magnitudes from the vectors
+						tmpDist = VSize(vector1);
+						if (tmpDist > 0)
+							vector1 /= tmpDist;
+						tmpDist = VSize(vector2);
+						if (tmpDist > 0)
+							vector2 /= tmpDist;
+
+						// Add them
+						vector1 += vector2;
+
+						// Compute a score (a function of angle)
+						score = VSize(vector1);
+						score = 4-(score*score);
+
+						// Find an empty slot for this candidate
+						openSlot  = -1;
+						bestScore = score;
+						bestDist  = dist;
+
+						for (i=0; i<maxCandidates; i++)
+						{
+							// Can we replace the candidate in this slot?
+							if (bestScore > candidates[i].score)
+								bReplace = TRUE;
+							else if ((bestScore == candidates[i].score) &&
+							         (bestDist < candidates[i].dist))
+								bReplace = TRUE;
+							else
+								bReplace = FALSE;
+							if (bReplace)
+							{
+								bestScore = candidates[i].score;
+								bestDist  = candidates[i].dist;
+								openSlot = i;
+							}
+						}
+
+						// We found an open slot -- put our candidate here
+						if (openSlot >= 0)
+						{
+							waypoint = GetNextWaypoint(lWeapon);
+							candidates[openSlot].point = None;
+							if(waypoint != None)
+							{
+								candidates[openSlot].waypoint = waypoint;
+								candidates[openSlot].location = waypoint.Location;
+							}
+							else
+							{
+								candidates[openSlot].waypoint = None;
+								candidates[openSlot].location = lWeapon.Location;
+							}
+							candidates[openSlot].score    = score;
+							candidates[openSlot].dist     = dist;
+							if (candidateCount < maxCandidates)
+								candidateCount++;
+						}
+					}
+				}
+			}
 			foreach RadiusActors(Class'HidePoint', hidePoint, maxDist)
 			{
 				// Can the boogeyman see our hiding spot?

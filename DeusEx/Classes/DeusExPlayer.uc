@@ -3694,6 +3694,29 @@ state PlayerWalking
 			PlayInAir();
 	}
 
+	function PlayerMove ( float DeltaTime )
+	{
+		local float alpha;
+
+		alpha = DodgeClickTime;
+
+		//== Selectively enable/disable player dodge
+		if(Level.NetMode == NM_Standalone)
+		{
+			//== Unrealistic, make sure dodging is enabled
+			if(combatDifficulty > 4.0 && alpha <= 0.0)
+				DodgeClickTime = 0.3;
+			//== All other modes, dodging is not allowed
+			else if(combatDifficulty <= 4.0)
+				DodgeClickTime = 0.0;
+		}
+
+		Super.PlayerMove(DeltaTime);
+
+		//== Whatever we did, reset the dodge interval when we're done
+		DodgeClickTime = alpha;
+	}
+
 	// lets us affect the player's movement
 	function ProcessMove ( float DeltaTime, vector newAccel, eDodgeDir DodgeMove, rotator DeltaRot)
 	{
@@ -10581,6 +10604,41 @@ function PlayHit(float Damage, vector HitLocation, name damageType, vector Momen
 function PlayDeathHit(float Damage, vector HitLocation, name damageType, vector Momentum)
 {
 	PlayDying(damageType, HitLocation);
+}
+
+function Bool HasTwoHandedWeapon()
+{
+	if ((Weapon != None) && (Weapon.Mass >= 30))
+		return True;
+	else
+		return False;
+}
+
+// ----------------------------------------------------------------------
+// PlayDodge()
+//  In Unrealistic, players can dodge.  Make sure it looks good
+// ----------------------------------------------------------------------
+
+function PlayDodge(eDodgeDir DodgeMove)
+{
+	//== Slow animations make it look like they're waiting to land
+	switch(DodgeMove)
+	{
+		case DODGE_Left:
+		case DODGE_Right:
+				if (HasTwoHandedWeapon())
+					LoopAnim('Strafe2H',0.1,0.1);
+				else
+					LoopAnim('Strafe',0.1,0.1);
+				break;
+		case DODGE_Back:
+		case DODGE_Forward:
+				if (HasTwoHandedWeapon())
+					LoopAnim('RunShoot2H',0.1,0.1);
+				else
+					LoopAnim('Run',0.1,0.1);
+				break;
+	}
 }
 
 // ----------------------------------------------------------------------

@@ -1038,6 +1038,13 @@ UPDATES:
 	So far this applies to Soda and Forties.  I may do it to Candy Bars as
 	well, though I'm not sure.
 
+	 - As part of the aforementioned upgrade to consumables Forties will
+	not always display the HDTP skin, since there's only one HDTP skin vs.
+	four standard Deus Ex skins for Forties.  People using HDTP will still
+	see the HDTP model/skin for the most common type of Forty, but may come
+	across a few others using the old-school alternate textures from time
+	to time.  (Depends on the map, actually)
+
 	 - And since I was spending so much pointless effort screwing around
 	with Soda I figured I might as well spruce it up EVEN MORE.  Therefore,
 	the name displayed in the item belt will changed based on which soda
@@ -1080,6 +1087,20 @@ UPDATES:
 	 - Did a little bit of behind-the-scenes work with the various items
 	that I've made to benefit from having a higher Medicine skill level.
 	The code should work exactly the same, but is far more efficient.
+
+	 - Enabled Dodging (double-tap a direction key) in Unrealistic.  It
+	might not be particularly useful yet, but it probably will be once I
+	start making NPCs able to dodge as well.
+
+	 - If an NPC who is afraid of bodies gets hit by some chunks o' flesh
+	they will now get very afraid.  Not that gibbing someone just a few
+	feet from 'em shouldn't already make them afraid, but y'know.
+
+	 - NPCs who are fleeing merely due to not having a weapon but otherwise
+	are capable and willing to fight will now seek out weapons, even from
+	corpses so long as they aren't afraid of 'em.  You probably won't see
+	this in action very much since it takes something special to disarm an
+	NPC without getting them to the point where they should flee.
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 

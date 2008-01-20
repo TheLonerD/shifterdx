@@ -12,6 +12,17 @@ auto state Flying
 		Velocity = VRand() * 300;
 		DrawScale = FRand() + 1.5;
 	}
+
+	//== If we bump an NPC who doesn't like dead bodies, put the fear of God in 'em
+	function Bump(actor Other)
+	{
+		if(Other.IsA('ScriptedPawn'))
+		{
+			if(ScriptedPawn(Other).bFearCarcass)
+				ScriptedPawn(Other).IncreaseFear(Self,2.0);
+		}
+		Super.Bump(Other);
+	}
 }
 
 function Tick(float deltaTime)
