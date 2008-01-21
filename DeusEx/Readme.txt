@@ -1102,6 +1102,58 @@ UPDATES:
 	this in action very much since it takes something special to disarm an
 	NPC without getting them to the point where they should flee.
 
+	 - Fixed a glitch with the new "grenade replacement" stuff which would
+	cause them to switch every time you used one, not just if it was out of
+	ammo like I intended.
+
+	 - Added Cigarettes to the "Consumables" cycling ability. Not including
+	them the first time around was an oversight.
+
+	 - Added a check into the multiplayer component to prevent people from
+	modifying their ini files to spawn with an invalid player class.  It's
+	not really a big problem since the most you would wind up with is an
+	unusable player model, but there should still be a check there.
+
+	 - Finally managed to get the new HDTP model and skin for Valves
+	working.  Turns out there was a new mesh, something that was not noted
+	in the installer or even present in HDTP code.
+
+	 - Due do a bout of coding overload mixed with boredom mixed with being
+	re-acquainted with a particularly funny image on FARK, I've added a new
+	skin for the "Caution Wet Floor" signs that will show up randomly, so
+	long as you have the optional ShifterTextures package.  To give you an
+	idea of what kind of image it is, the variable which tracks whether or
+	not it's enabled is called "bSmartass".
+
+	 - Prevented firing animations from being played when activating a
+	weapon's scope via the Alt-Fire button.
+
+	 - Restored an unused (well, mostly unused) sound for Rats.  Turns out
+	that three separate squeak sounds are included in the game, but two of
+	them are supposedly only for when they're hurt.  One does indeed sound
+	like a cry of pain, but the other one is just another generic-sounding
+	rat noise. (Bruxing, I think)
+
+	 - Set the "bHasAltFire" variable for a few weapons like the Crowbar,
+	Baton, and various shotguns.  I didn't have to set these in the past
+	because the "throw" method for hand-to-hand weapons and alt-fire for
+	shotguns involved overriding the AltFire function directly.  Due to the
+	new code I've put in place to stop fire animations from being played on
+	weapons without alt-fire, however, those overridden functions never get
+	called unless the variable is set.
+
+	 - Incorporated the "custom transfers" fix for mod conversations into
+	the Shifter conversation class.  This means that any mods that use
+	Shifter as a "base" will not need to create a package with their own
+	special player class and conversation class in order to have convos
+	where the player is given items that are part of the mod.
+
+	 - Removed some old code which could theoretically prevent any weapon
+	with an alt-fire AND alternate ammo from using the "Change Ammo" key.
+	I say theoretically because a number of shotguns fall into that very
+	category and work just fine.  Still, there's no reason for the code to
+	be there anymore.
+
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 
 	 - Cleaned up some issues relating to NPCs picking up weapons, in

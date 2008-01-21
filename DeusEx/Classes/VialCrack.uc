@@ -12,7 +12,7 @@ class VialCrack extends DeusExPickup;
 //== Look ma, we can switch between food items now
 function SwitchItem()
 {
-	local Class<DeusExPickup> SwitchList[6];
+	local Class<DeusExPickup> SwitchList[7];
 	local Inventory inv;
 	local int i;
 	local DeusExPlayer P;
@@ -24,6 +24,7 @@ function SwitchItem()
 	//== Comment out the self reference here and we're done
 //	SwitchList[i++] = class'VialCrack';
 	SwitchList[i++] = class'Candybar';
+	SwitchList[i++] = class'Cigarettes';
 	SwitchList[i++] = class'Liquor40oz';
 	SwitchList[i++] = class'LiquorBottle';
 	SwitchList[i++] = class'Sodacan';
@@ -41,7 +42,7 @@ function SwitchItem()
 				P.ClientMessage(Sprintf(SwitchingTo,inv.ItemName));
 				P.AddObjectToBelt(inv,Self.beltPos,false);
 				P.PutInHand(inv);
-				i = 6;
+				i = 7;
 				break;
 			}
 		}

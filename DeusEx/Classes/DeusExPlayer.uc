@@ -906,6 +906,19 @@ exec function GlobalFacelift(bool bOn)
 	}
 }
 
+exec function AltFire( optional float F )
+{
+	if(DeusExWeapon(Weapon) != None)
+	{
+		if(!DeusExWeapon(Weapon).bHasAltFire)
+		{
+			DeusExWeapon(Weapon).ScopeToggle();
+			return;
+		}
+	}
+	Super.AltFire(F);
+}
+
 //
 // Team Say
 //
@@ -4012,6 +4025,7 @@ state PlayerWalking
 
 		if ( bPressedJump )
 			DoJump();
+
 		if ( (Physics == PHYS_Walking || Physics == PHYS_Spider) && (GetAnimGroup(AnimSequence) != 'Dodge') )
 		{
 			if (!bIsCrouching)

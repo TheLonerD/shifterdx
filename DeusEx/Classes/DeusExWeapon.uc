@@ -1119,16 +1119,11 @@ function CycleAmmo()
 {
 	local int i, last;
 
-	if(bHasAltFire && !bHandToHand)
-		return;
-
-	if (NumAmmoTypesAvailable() < 2 && (bHasAltFire != True || bHandToHand))
+	if (NumAmmoTypesAvailable() < 2 && (bHandToHand || TestCycleable()))
 	{
-		if(TestCycleable() || bHandToHand)
-		{
-			//Call the item cycling option
-			LoadAmmo(0);
-		}
+		//Call the item cycling option
+		LoadAmmo(0);
+
 		return;
 	}
 
@@ -1960,7 +1955,8 @@ simulated function HandToHandAttack()
 	if ( bHandToHand && (ReloadCount > 0) && (SimAmmoAmount <= 0))
 	{
 		DestroyOnFinish();
-		SwitchItem(); //Replace a lost grenade in the belt slot with a new one if we can
+		if(AmmoType.AmmoAmount <= 0)
+			SwitchItem(); //Replace a lost grenade in the belt slot with a new one if we can
 		if ( Role < ROLE_Authority )
 		{
 			ServerGotoFinishFire();

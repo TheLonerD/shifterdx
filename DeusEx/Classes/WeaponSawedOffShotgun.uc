@@ -234,4 +234,5 @@ defaultproperties
      CollisionHeight=0.900000
      Mass=15.000000
      msgExtraShells="%d rounds loaded into firing chamber"
+     bHasAltFire=True
 }

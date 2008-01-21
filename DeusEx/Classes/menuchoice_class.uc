@@ -13,7 +13,7 @@ var localized String     ClassNames[95]; //Human readable class names.
 
 //Portrait variables
 var ButtonWindow btnPortrait;
-var globalconfig Texture texPortraits[95];
+var globalconfig String texPortraits[95]; //Futureproofing for possible optional texture package
 var int PortraitIndex;
 
 // ----------------------------------------------------------------------
@@ -146,11 +146,21 @@ function CreatePortraitButton()
 
 // ----------------------------------------------------------------------
 // UpdatePortrait()
+//  Modified.  In the future I may have an optional texture package to go
+//   with Shifter which will contain icons for all the new models I've
+//   added.  If so, this will load them if present
 // ----------------------------------------------------------------------
 
 function UpdatePortrait()
 {
-   btnPortrait.SetBackground(texPortraits[CurrentValue]);
+   local Texture portTex;
+
+   portTex = Texture(DynamicLoadObject(texPortraits[CurrentValue], class'Texture', True));
+
+   if(portTex == None)
+	portTex = Texture'DeusExUI.UserInterface.menuplayersetupautoteam';
+
+   btnPortrait.SetBackground(portTex);
 }
 
 // ----------------------------------------------------------------------
@@ -346,100 +356,100 @@ defaultproperties
      ClassNames(91)="Tracer Tong"
      ClassNames(92)="Margaret Williams"
      ClassNames(93)="Woman In Black"
-     texPortraits(0)=Texture'DeusExUI.UserInterface.menuplayersetupjcdenton'
-     texPortraits(1)=Texture'DeusExUI.UserInterface.menuplayersetupnsf'
-     texPortraits(2)=Texture'DeusExUI.UserInterface.menuplayersetupunatco'
-     texPortraits(3)=Texture'DeusExUI.UserInterface.menuplayersetupmj12'
-     texPortraits(4)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(5)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(6)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(7)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(8)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(9)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(10)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(11)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(12)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(13)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(14)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(15)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(16)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(17)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(18)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(19)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(20)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(21)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(22)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(23)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(24)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(25)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(26)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(27)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(28)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(29)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(30)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(31)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(32)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(33)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(34)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(35)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(36)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(37)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(38)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(39)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(40)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(41)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(42)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(43)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(44)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(45)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(46)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(47)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(48)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(49)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(50)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(51)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(52)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(53)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(54)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(55)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(56)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(57)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(58)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(59)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(60)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(61)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(62)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(63)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(64)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(65)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(66)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(67)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(68)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(69)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(70)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(71)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(72)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(73)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(74)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(75)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(76)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(77)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(78)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(79)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(80)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(81)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(82)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(83)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(84)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(85)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(86)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(87)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(88)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(89)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(90)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(91)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(92)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
-     texPortraits(93)=Texture'DeusExUI.UserInterface.menuplayersetupautoteam'
+     texPortraits(0)="DeusExUI.UserInterface.menuplayersetupjcdenton"
+     texPortraits(1)="DeusExUI.UserInterface.menuplayersetupnsf"
+     texPortraits(2)="DeusExUI.UserInterface.menuplayersetupunatco"
+     texPortraits(3)="DeusExUI.UserInterface.menuplayersetupmj12"
+     texPortraits(4)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(5)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(6)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(7)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(8)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(9)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(10)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(11)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(12)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(13)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(14)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(15)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(16)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(17)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(18)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(19)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(20)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(21)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(22)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(23)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(24)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(25)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(26)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(27)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(28)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(29)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(30)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(31)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(32)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(33)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(34)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(35)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(36)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(37)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(38)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(39)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(40)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(41)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(42)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(43)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(44)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(45)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(46)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(47)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(48)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(49)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(50)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(51)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(52)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(53)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(54)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(55)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(56)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(57)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(58)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(59)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(60)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(61)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(62)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(63)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(64)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(65)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(66)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(67)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(68)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(69)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(70)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(71)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(72)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(73)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(74)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(75)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(76)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(77)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(78)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(79)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(80)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(81)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(82)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(83)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(84)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(85)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(86)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(87)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(88)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(89)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(90)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(91)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(92)="DeusExUI.UserInterface.menuplayersetupautoteam"
+     texPortraits(93)="DeusExUI.UserInterface.menuplayersetupautoteam"
      defaultInfoWidth=153
      defaultInfoPosX=170
      HelpText="Model for your character in non-team games."

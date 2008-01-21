@@ -211,7 +211,10 @@ event PostLogin(playerpawn NewPlayer)
 
 function bool ApproveClass( class<playerpawn> SpawnClass)
 {
-	return true;
+	if(ClassIsChildOf(SpawnClass, class'DeusExPlayer'))
+		return true;
+
+	return false;
 }
 
 //

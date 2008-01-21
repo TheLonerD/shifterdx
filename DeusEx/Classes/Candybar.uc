@@ -34,7 +34,7 @@ function Facelift(bool bOn)
 //== Look ma, we can switch between food items now
 function SwitchItem()
 {
-	local Class<DeusExPickup> SwitchList[6];
+	local Class<DeusExPickup> SwitchList[7];
 	local Inventory inv;
 	local int i;
 	local DeusExPlayer P;
@@ -45,6 +45,7 @@ function SwitchItem()
 
 	//== Comment out the self reference here and we're done
 //	SwitchList[i++] = class'Candybar';
+	SwitchList[i++] = class'Cigarettes';
 	SwitchList[i++] = class'Liquor40oz';
 	SwitchList[i++] = class'LiquorBottle';
 	SwitchList[i++] = class'Sodacan';

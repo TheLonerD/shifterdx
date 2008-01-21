@@ -102,4 +102,5 @@ defaultproperties
      Mesh=LodMesh'DeusExItems.BatonPickup'
      CollisionRadius=14.000000
      CollisionHeight=1.000000
+     bHasAltFire=True
 }

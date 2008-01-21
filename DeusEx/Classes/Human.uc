@@ -8,6 +8,8 @@ var float mpGroundSpeed;
 var float mpWaterSpeed;
 var float humanAnimRate;
 
+var(Sounds) sound HitSound3; //So we can completely override any hit noises without overriding functions
+
 replication 
 {
 	reliable if (( Role == ROLE_Authority ) && bNetOwner )
@@ -366,7 +368,9 @@ function PlayTakeHitSound(int Damage, name damageType, int Mult)
 		}
 		else
 		{
-			if(bIsFemale)
+			if(HitSound1 != None)
+				PlaySound(HitSound1, SLOT_Pain, FMax(Mult * TransientSoundVolume, Mult * 2.0),,, RandomPitch());
+			else if(bIsFemale)
 				PlaySound(sound'FemalePainSmall', SLOT_Pain, FMax(Mult * TransientSoundVolume, Mult * 2.0),,, RandomPitch());
 			else
 				PlaySound(sound'MalePainSmall', SLOT_Pain, FMax(Mult * TransientSoundVolume, Mult * 2.0),,, RandomPitch());
@@ -399,21 +403,27 @@ function PlayTakeHitSound(int Damage, name damageType, int Mult)
 			rnd = FRand();
 			if (rnd < 0.33)
 			{
-				if(bIsFemale)
+				if(HitSound1 != None)
+					PlaySound(HitSound1, SLOT_Pain, FMax(Mult * TransientSoundVolume, Mult * 2.0),,, RandomPitch());
+				else if(bIsFemale)
 					PlaySound(sound'FemalePainSmall', SLOT_Pain, FMax(Mult * TransientSoundVolume, Mult * 2.0),,, RandomPitch());
 				else
 					PlaySound(sound'MalePainSmall', SLOT_Pain, FMax(Mult * TransientSoundVolume, Mult * 2.0),,, RandomPitch());
 			}
 			else if (rnd < 0.66)
 			{
-				if(bIsFemale)
+				if(HitSound3 != None)
+					PlaySound(HitSound3, SLOT_Pain, FMax(Mult * TransientSoundVolume, Mult * 2.0),,, RandomPitch());
+				else if(bIsFemale)
 					PlaySound(sound'FemalePainMedium', SLOT_Pain, FMax(Mult * TransientSoundVolume, Mult * 2.0),,, RandomPitch());
 				else
 					PlaySound(sound'MalePainMedium', SLOT_Pain, FMax(Mult * TransientSoundVolume, Mult * 2.0),,, RandomPitch());
 			}
 			else
 			{
-				if(bIsFemale)
+				if(HitSound2 != None)
+					PlaySound(HitSound2, SLOT_Pain, FMax(Mult * TransientSoundVolume, Mult * 2.0),,, RandomPitch());
+				else if(bIsFemale)
 					PlaySound(sound'FemalePainLarge', SLOT_Pain, FMax(Mult * TransientSoundVolume, Mult * 2.0),,, RandomPitch());
 				else
 					PlaySound(sound'MalePainLarge', SLOT_Pain, FMax(Mult * TransientSoundVolume, Mult * 2.0),,, RandomPitch());

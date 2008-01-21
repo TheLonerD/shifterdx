@@ -130,4 +130,5 @@ defaultproperties
      CollisionRadius=19.000000
      CollisionHeight=1.050000
      Mass=15.000000
+     bHasAltFire=True
 }

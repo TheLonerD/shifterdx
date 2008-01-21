@@ -53,7 +53,12 @@ function Tick(float deltaTime)
 	{
 		time = 0;
 		if (FRand() < 0.05)
-			PlaySound(sound'RatSqueak2', SLOT_None);
+		{
+			if(FRand() > 0.40)
+				PlaySound(sound'RatSqueak2', SLOT_None);
+			else
+				PlaySound(sound'RatSqueak3', SLOT_None);
+		}
 	}
 }
 

@@ -8,14 +8,14 @@ class Valve extends DeusExDecoration;
 
 var() bool bOpen;
 
-/* function Facelift(bool bOn)
+ function Facelift(bool bOn)
 {
 	if(bOn)
-		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPValveTex1", class'Texture', True));
+		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPValve", class'Mesh', True));
 
-	if(Skin == None || !bOn)
-		Skin = None;
-} */
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+} 
 
 function Frob(actor Frobber, Inventory frobWith)
 {
