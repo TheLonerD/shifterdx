@@ -1154,6 +1154,16 @@ UPDATES:
 	category and work just fine.  Still, there's no reason for the code to
 	be there anymore.
 
+	 - Added in support for Sgt. Kelly's new skins and icons for the Magnum
+	and Rate of Fire mod, which truth be told are pretty damn neat looking.
+	The new textures are switched out in the same way that HDTP stuff is
+	handled, so saving won't be an issue.
+
+	 - ACTUALLY fixed the "invisible alarm panel" glitch.  It looks like it
+	was due to a problem with my implementation of the new HDTP stuff,
+	mostly owing to the fact that the new HDTP mesh for the alarm panel did
+	not specify any skins.
+
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 
 	 - Cleaned up some issues relating to NPCs picking up weapons, in

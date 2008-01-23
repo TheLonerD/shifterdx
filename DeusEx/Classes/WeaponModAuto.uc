@@ -16,9 +16,9 @@ function Facelift(bool bOn)
 
 		temptex = Texture(DynamicLoadObject("ShifterTextures.Icons.IconModAuto",class'Texture', True));
 		if(temptex != None)
-			largeIcon = temptex;	
+			largeIcon = temptex;
 
-		temptex = Texture(DynamicLoadObject("ShifterTextures.Icons.BeltIconModAuto",class'Texture', True));
+		temptex = Texture(DynamicLoadObject("ShifterTextures.Icons.BeltModAuto",class'Texture', True));
 		if(temptex != None)
 			Icon = temptex;		
 	}

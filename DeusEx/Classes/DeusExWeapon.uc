@@ -1123,7 +1123,6 @@ function CycleAmmo()
 	{
 		//Call the item cycling option
 		LoadAmmo(0);
-
 		return;
 	}
 

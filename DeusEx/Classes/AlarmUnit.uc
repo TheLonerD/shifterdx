@@ -35,6 +35,7 @@ function Facelift(bool bOn)
 		MultiSkins[2] = Texture'DeusExItems.Skins.PinkMaskTex';
 		MultiSkins[7] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPAlarmUnittex2",class'Texture'));
 		MultiSkins[6] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPAlarmUnittex1",class'Texture'));
+		MultiSkins[1] = MultiSkins[6];
 	}
 }
 
