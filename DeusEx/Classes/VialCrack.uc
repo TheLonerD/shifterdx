@@ -62,6 +62,9 @@ state Activated
 
 		player = DeusExPlayer(Owner);
 
+		if(player == None)
+			return;
+
 		if(player.drugEffectTimer < 0.0)
 			return;
 		
@@ -75,8 +78,10 @@ state Activated
 			//===  messed up when they use Zyme.  There is still a risk if the speed has been
 			//===  lowered to something below 0.2, since the absolute lowest the game can run
 			//===  is 0.1 speed.
-			if(Level.NetMode == NM_Standalone)
-				Level.Game.SetGameSpeed(Level.Game.GameSpeed / 2.000);
+			if(player.Level.NetMode == NM_Standalone)
+				player.Level.Game.SetGameSpeed(player.Level.Game.GameSpeed / 2.000);
+			else
+				log("VialCrack: Some smartass put Zyme in a multiplayer map.  Hit them.");
 
 			//=== Since game speed is halved the time is doubled.  15 seconds is actually 30 seconds
 			player.drugEffectTimer = -15.0;

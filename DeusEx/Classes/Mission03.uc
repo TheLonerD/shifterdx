@@ -149,7 +149,7 @@ function FirstFrame()
 				if(item.invSlotsX * item.invSlotsY > 4)
 				{
 					loc.X = -360 + (16 - Rand(32));
-					loc.Y = 1060 + (item.CollisionRadius) + Rand(32);
+					loc.Y = 1074 + (item.CollisionRadius);
 					loc.Z = 324 + (16 - Rand(24));
 				}
 				else
@@ -255,28 +255,30 @@ function FirstFrame()
 
 		}until(item == None);
 
-/*		if(flags.GetBool('M01_JC_LeftHeavyItemOnFloor'))
+		//== Clear out the snarky email if JC didn't leave anything heavy on the floor
+		if(!flags.GetBool('M01_JC_LeftHeavyItemOnFloor'))
 		{
-			count = 0;
-			while(dxInfo.emailFrom[count] != "JanitDept" && dxInfo.emailFrom[count] != "" && count < 10)
-				count++;
-
-			if(count < 10)
+			for(count = 0; count < 25; count++)
 			{
-				if(dxInfo.emailSubject[count] == "")
+				if(dxInfo.emailFrom[count] == "JanitDept")
 				{
-					dxInfo.emailSubject[count] = "Please help us keep your office clean";
-					dxInfo.emailFrom[count] = "JanitDept";
-					dxInfo.emailTo[count] = "JCD";
-					dxInfo.emailString[count] = "Agent Denton,|n|n     Welcome to UNATCO!  Allow me to introduce myself: I'm Dan, the head of Janitorial Services here at HQ.|n|n     Let me cut to the chase: the Janitorial Services Department is not as well-equipped as I would like it.  ";
-					dxInfo.emailString[count] = dxInfo.emailString[count] $"Rather than the state-of-the-art industrial cleaning robots you might find in the private sector, we're only able to requisition the basic model cleaning robot.  (\"Budget considerations\" is what Manderley keeps telling me)  ";
-					dxInfo.emailString[count] = dxInfo.emailString[count] $"This model is pretty limited, has no real pushing power to speak of, and is all but impossible to reprogram.  Every time anybody leaves something heavier than a desk chair on the floor the little things burn themselves out trying to push it out ";
-					dxInfo.emailString[count] = dxInfo.emailString[count] $"of the way so they can clean, which is exactly what happened earlier in your office.  Three of our cleaning bots had to have their drive motors completely replaced after trying to push that... whatever it is up against the shelf in your office.";
-					dxInfo.emailString[count] = dxInfo.emailString[count] $"|n|n     As this only happened on your first day I can hardly blame you for not knowing.  However, in the future please try not to leave anything particularly heavy on the floor of your office.";
-					dxInfo.emailString[count] = dxInfo.emailString[count] $"|n|n|nThanks,|n|nDaniel Matsuma|nHead of Janitorial Services";
+					dxInfo.emailFrom[count] = "";
+					dxInfo.emailTo[count] = "";
+					dxInfo.emailSubject[count] = "";
+					dxInfo.emailCC[count] = "";
+					dxInfo.emailString[count] = "";
+				}
+
+				if(emailFrom[count] == "JanitDept")
+				{
+					emailFrom[count] = "";
+					emailTo[count] = "";
+					emailSubject[count] = "";
+					emailCC[count] = "";
+					emailString[count] = "";
 				}
 			}
-		} */
+		}
 	}
 }
 
@@ -307,6 +309,9 @@ function PreTravel()
 				//== For whatever reason, we have to set the flag like this
 				Player.flagBase.SetName(tname, item.Class.Name);
 				Player.flagBase.SetExpiration(tname, FLAG_Name, 5);
+
+				if(item.invSlotsX * item.invSlotsY > 4 && item.Location.Z <= 330.000000)
+					Player.flagBase.SetBool('M03_JC_LeftHeavyItemOnFloor', True,, 6);
 
 				if(item.IsA('DeusExWeapon'))
 				{
@@ -804,4 +809,8 @@ defaultproperties
     VoIPText="Join active VoIP session"
     VoIPTText="Establishing Datalink connection to VoIP socket..."
     VoIPNText="No VoIP sessions currently active"
+    emailSubject(0)="Please help us keep your office clean"
+    emailFrom(0)="JanitDept"
+    emailTo(0)="JCD"
+    emailString(0)="Agent Denton,|n|n     Welcome to UNATCO!  Allow me to introduce myself: I'm Dan, the head of Janitorial Services here at HQ.|n|n     Let me cut to the chase: the Janitorial Services Department is not as well-equipped as I would like it.  Rather than the state-of-the-art industrial cleaning robots you might find in the private sector, we're only able to requisition the basic model cleaning robot.  ('Budget considerations' is what Manderley keeps telling me)  This model is pretty limited, has no real pushing power to speak of, and is all but impossible to reprogram.  Every time anybody leaves something heavier than a desk chair on the floor the little things burn themselves out trying to push it out of the way so they can clean, which is exactly what happened earlier in your office.  Three of our cleaning bots had to have their drive motors completely replaced after trying to push that... whatever it is up against the shelf in your office.|n|n     As this only happened on your first day I can hardly blame you for not knowing.  However, in the future please try not to leave anything particularly heavy on the floor of your office.|n|n|nThanks,|n|nDaniel Matsuma|nHead of Janitorial Services"
 }

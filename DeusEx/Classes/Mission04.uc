@@ -124,7 +124,7 @@ function FirstFrame()
 				if(item.invSlotsX * item.invSlotsY > 4)
 				{
 					loc.X = -360 + (16 - Rand(32));
-					loc.Y = 1060 + (item.CollisionRadius) + Rand(32);
+					loc.Y = 1074 + (item.CollisionRadius);
 					loc.Z = 324 + (16 - Rand(24));
 				}
 				else
@@ -245,29 +245,36 @@ function PreTravel()
 	local MIB mblack;
 	local UNATCOTroop troop;
 	local PaulDenton paul;
+	local Inventory item;
+	local name tname;
 
 	// If the hotel is clear of hostiles when the player leaves through the window,
 	//  remove the "Player Bailed" flag so Paul doesn't wind up dead anyway
 	if (localURL == "04_NYC_HOTEL" && flags.GetBool('M04RaidTeleportDone'))
 	{
-		count = 0;
-		foreach AllActors(Class'UNATCOTroop', troop)
-		{
-			if(troop.bHidden == False)
-				count++;
-		}
-
-		foreach AllActors(Class'MIB', mblack)
-		{
-			if(mblack.bHidden == False)
-				count += 2;
-		}
+		count = 1;
 
 		foreach AllActors(Class'PaulDenton', paul)
 		{
 			//== If Paul has left the building, or if he acts like he's safe, he's safe
 			if(paul.bHidden || flags.GetBool('M04RaidDone'))
 				count = 0;
+		}
+
+		if(count > 0)
+		{
+			count = 0;
+			foreach AllActors(Class'UNATCOTroop', troop)
+			{
+				if(troop.bHidden == False)
+					count++;
+			}
+	
+			foreach AllActors(Class'MIB', mblack)
+			{
+				if(mblack.bHidden == False)
+					count += 2;
+			}
 		}
 
 		if(count <= 0)
@@ -283,7 +290,7 @@ function PreTravel()
 	//== For looks, let's remove the items from the player's belt
 	//==  before they get sent to MJ12 HQ, rather than after.
 	//==  (the items are still in inventory though)
-	if(localURL == "04_NYC_BATTERYPARK")
+	else if(localURL == "04_NYC_BATTERYPARK")
 	{
 		for(count=0; count < 10; count++)
 		{
@@ -295,6 +302,91 @@ function PreTravel()
 		}
 
 		DeusExRootWindow(Player.rootWindow).hud.belt.ClearBelt();
+	}
+
+	else if(localURL == "04_NYC_UNATCOHQ")
+	{
+		count = 0;
+		foreach AllActors(class'Inventory', item)
+		{
+			//== Introducing JC's storage locker, AKA his office
+			if(item.Location.X <= 104.0000 && item.Location.X >= -432.0000 && item.Location.Y <= 1424.0000 && item.Location.Y >= 1018.0000 && item.Location.Z >= 232.0000 && item.Location.Z <= 400.0000 && !item.IsA('NanoKeyRing') && ScriptedPawn(item.Owner) == None && DeusExPlayer(item.Owner) == None)
+			{
+				tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ count);
+
+				//== For whatever reason, we have to set the flag like this
+				Player.flagBase.SetName(tname, item.Class.Name);
+				Player.flagBase.SetExpiration(tname, FLAG_Name, 6);
+
+				if(item.invSlotsX * item.invSlotsY > 4 && item.Location.Z <= 330.000000)
+					Player.flagBase.SetBool('M04_JC_LeftHeavyItemOnFloor', True,, 6);
+
+				if(item.IsA('DeusExWeapon'))
+				{
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ count $"_bHasLaser");
+					Player.flagBase.SetBool(tname, True,, 6);
+					if(!DeusExWeapon(item).bCanHaveLaser)
+						Player.flagBase.DeleteFlag(tname, FLAG_Bool);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ count $"_bHasSilencer");
+					Player.flagBase.SetBool(tname, True,, 6);
+					if(!DeusExWeapon(item).bCanHaveSilencer)
+						Player.flagBase.DeleteFlag(tname, FLAG_Bool);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ count $"_bHasScope");
+					Player.flagBase.SetBool(tname, True,, 6);
+					if(!DeusExWeapon(item).bCanHaveScope)
+						Player.flagBase.DeleteFlag(tname, FLAG_Bool);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ count $"_ModBaseAccuracy");
+					Player.flagBase.SetFloat(tname, DeusExWeapon(item).ModBaseAccuracy,, 6);
+					if(!DeusExWeapon(item).bCanHaveModBaseAccuracy)
+						Player.flagBase.DeleteFlag(tname, FLAG_Float);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ count $"_ModReloadCount");
+					Player.flagBase.SetFloat(tname, DeusExWeapon(item).ModReloadCount,, 6);
+					if(!DeusExWeapon(item).bCanHaveModReloadCount)
+						Player.flagBase.DeleteFlag(tname, FLAG_Float);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ count $"_ModAccurateRange");
+					Player.flagBase.SetFloat(tname, DeusExWeapon(item).ModAccurateRange,, 6);
+					if(!DeusExWeapon(item).bCanHaveModAccurateRange)
+						Player.flagBase.DeleteFlag(tname, FLAG_Float);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ count $"_ModReloadTime");
+					Player.flagBase.SetFloat(tname, DeusExWeapon(item).ModReloadTime,, 6);
+					if(!DeusExWeapon(item).bCanHaveModReloadTime)
+						Player.flagBase.DeleteFlag(tname, FLAG_Float);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ count $"_ModRecoilStrength");
+					Player.flagBase.SetFloat(tname, DeusExWeapon(item).ModRecoilStrength,, 6);
+					if(!DeusExWeapon(item).bCanHaveModRecoilStrength)
+						Player.flagBase.DeleteFlag(tname, FLAG_Float);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ count $"_ModShotTime");
+					Player.flagBase.SetFloat(tname, DeusExWeapon(item).ModShotTime,, 6);
+					if(!DeusExWeapon(item).bCanHaveModShotTime)
+						Player.flagBase.DeleteFlag(tname, FLAG_Float);
+
+				}
+				else if(item.IsA('AugmentationCannister'))
+				{
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ count $"_Aug1");
+					Player.flagBase.SetName(tname, AugmentationCannister(item).AddAugs[0]);
+					Player.flagBase.SetExpiration(tname, FLAG_Name, 6);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ count $"_Aug2");
+					Player.flagBase.SetName(tname, AugmentationCannister(item).AddAugs[1]);
+					Player.flagBase.SetExpiration(tname, FLAG_Name, 6);
+				}
+
+				count++;
+			}
+			//== Make a deliniating endpoint, in case someone comes back and takes/adds stuff
+			tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ count);
+			Player.flagBase.SetName(tname, '');
+			Player.flagBase.SetExpiration(tname, FLAG_Name, 6);
+		}
 	}
 
 	Super.PreTravel();

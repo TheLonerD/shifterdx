@@ -590,7 +590,10 @@ function ProcessScriptEmail(optional int Index, optional TextWindow winText)
 
 	if(winText != None)
 	{
-		winText.AppendText(emailInfo[emailIndex].emailString);
+		if(Index > 0)
+			winText.AppendText(emailInfo[Index].emailString);
+		else
+			winText.AppendText(emailInfo[emailIndex].emailString);
 	}
 	else
 	{

@@ -153,6 +153,9 @@ function FirstFrame()
 		flags.SetBool(flagName, True);
 	}
 
+	if(flags.GetFloat('Travel_GameSpeed') > 0.0)
+		Level.Game.SetGameSpeed(flags.GetFloat('Travel_GameSpeed'));
+
 	flagName = Player.rootWindow.StringToName("M"$dxInfo.MissionNumber$"MissionStart");
 	if (!flags.GetBool(flagName))
 	{
@@ -190,6 +193,8 @@ function PreTravel()
 	}
 
 	flags.SetInt('PendingSkillPoints', points,, 0);
+
+	flags.SetFloat('Travel_GameSpeed', Level.Game.GameSpeed);
 
 	// zero the flags so FirstFrame() gets executed at load
 	flags = None;

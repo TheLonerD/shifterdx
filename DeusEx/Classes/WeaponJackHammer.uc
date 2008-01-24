@@ -47,7 +47,7 @@ defaultproperties
      bCanHaveModShotTime=False
      InventoryGroup=93
      ItemName="JackHammer"
-     ItemArticle="a"
+     ItemArticle="the"
      Description="A product of Smuggler's extreme if not appropriate paranoia, the JackHammer is a fully automatic shotgun capable of exhausting a full clip in just under a second.  Unfortunately, Smuggler didn't have time to expand the clip capacity."
      beltDescription="JACKHAMMER"
      bUnique=True

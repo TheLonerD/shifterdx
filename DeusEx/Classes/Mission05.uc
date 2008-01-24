@@ -20,6 +20,10 @@ function FirstFrame()
 	local DataCube dCube;
 	local name tname;
 	local int c;
+	local Janitor dmatsuma;
+	local float txPos;
+	local class<Actor> spawnclass;
+	local vector loc;
 
 	Super.FirstFrame();
 
@@ -171,22 +175,26 @@ function FirstFrame()
 
 							if(DeusExWeapon(item) != None)
 							{
-								if(DeusExWeapon(item).AmmoType != None)
-								{
-									inv = T.FindInventoryType(DeusExWeapon(item).AmmoName);
-									if (inv != None)
-										Ammo(inv).AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
-					
-									if(inv == None)
-										inv = spawn(DeusExWeapon(item).AmmoName, T);
-					
-									if (inv != None)
+					     			if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
+					     			{
+					     				Weapon(item).AmmoType = Ammo(T.FindInventoryType(Weapon(item).AmmoName));
+					      				if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
+					      				{
+					      					Weapon(item).AmmoType = Ammo(T.FindInventoryType(Weapon(item).AmmoName));
+					      					if (Weapon(item).AmmoType == None)
+					      					{
+											Weapon(item).AmmoType = spawn(Weapon(item).AmmoName,T);
+					      					}
+					      				}
+									if(Weapon(item).AmmoType != None)
 									{
-										inv.InitialState='Idle2';
-										inv.GiveTo(T);
-										inv.SetBase(T);
+										Weapon(item).AmmoType.InitialState='Idle2';
+										Weapon(item).AmmoType.GiveTo(T);
+										Weapon(item).AmmoType.SetBase(T);
 									}
-								}
+					     			}
+								else if(Weapon(item).AmmoType != None && Weapon(item).AmmoType.AmmoAmount < 1)
+									Weapon(item).AmmoType.AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
 							}
 							flags.DeleteFlag(tname, FLAG_Name);
 						}
@@ -202,6 +210,247 @@ function FirstFrame()
 		{
 			spawn(class'WeaponModAuto', None,, vect(1268.506104,-901.829224,63.520828));
 			flags.SetBool('M05_ModRoF_Placed', True,, 6);
+		}
+
+		//== Do not piss off the janitorial staff, or they will steal your stuff and kill you with it
+		if(flags.GetBool('M01_JC_LeftHeavyItemOnFloor') && flags.GetBool('M03_JC_LeftHeavyItemOnFloor') && flags.GetBool('M04_JC_LeftHeavyItemOnFloor') && !flags.GetBool('Beware_The_Angry_Janitor'))
+		{
+			dmatsuma = spawn(class'Janitor');
+			if(dmatsuma != None)
+			{
+				dmatsuma.UnfamiliarName = "Angry Janitor";
+				dmatsuma.FamiliarName = "Daniel Matsuma";
+				dmatsuma.setLocation(vect(-1478.937012, 712.059082, 575.173706));
+				dmatsuma.SpeechTargetAcquired = Sound'DeusExSounds.Player.MaleLaugh';
+				dmatsuma.ChangeAlly('Player', -1.0, true);
+
+				//== The janitor fears NOTHING
+				dmatsuma.bFearHacking = False;
+				dmatsuma.bFearWeapon = False;
+				dmatsuma.bFearShot = False;
+				dmatsuma.bFearInjury = False;
+				dmatsuma.bFearIndirectInjury = False;
+				dmatsuma.bFearCarcass = False;
+				dmatsuma.bFearDistress = False;
+				dmatsuma.bFearAlarm = False;
+				dmatsuma.bLookingForEnemy = True;
+				dmatsuma.MinHealth = 20;
+
+				//== The janitor is a skilled fighter
+				dmatsuma.bCanStrafe = True;
+				dmatsuma.bCanCrouch = True;
+				dmatsuma.BaseAccuracy = 0.4;
+				dmatsuma.RaiseAlarm = RAISEALARM_Never;
+				dmatsuma.bKeepWeaponDrawn = True;
+				dmatsuma.MaxRange = 1000.0000;
+				dmatsuma.Health = 150;
+				dmatsuma.HealthHead = 150;
+				dmatsuma.HealthTorso = 150;
+				dmatsuma.HealthLegLeft = 150;
+				dmatsuma.HealthLegRight = 150;
+				dmatsuma.HealthArmLeft = 150;
+				dmatsuma.HealthArmRight = 150;
+
+				item = Spawn(class'WeaponAssaultShotgun', dmatsuma);
+				if(item != None)
+				{
+					item.InitialState='Idle2';
+					item.SetBase(dmatsuma);
+					item.GiveTo(dmatsuma);
+
+					if(DeusExWeapon(item) != None)
+					{
+			     			if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
+			     			{
+			     				Weapon(item).AmmoType = Ammo(dmatsuma.FindInventoryType(Weapon(item).AmmoName));
+			      				if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
+			      				{
+			      					Weapon(item).AmmoType = Ammo(dmatsuma.FindInventoryType(Weapon(item).AmmoName));
+			      					if (Weapon(item).AmmoType == None)
+			      					{
+									Weapon(item).AmmoType = spawn(Weapon(item).AmmoName,dmatsuma);
+			      					}
+			      				}
+							if(Weapon(item).AmmoType != None)
+							{
+								Weapon(item).AmmoType.InitialState='Idle2';
+								Weapon(item).AmmoType.GiveTo(dmatsuma);
+								Weapon(item).AmmoType.SetBase(dmatsuma);
+								Weapon(item).AmmoType.AmmoAmount += 30;
+							}
+			     			}
+						else if(Weapon(item).AmmoType != None && Weapon(item).AmmoType.AmmoAmount < 1)
+							Weapon(item).AmmoType.AmmoAmount += 30;
+					}
+				}
+				flags.SetBool('Beware_The_Angry_Janitor', True,, 6);
+			}
+		}
+
+		//== Spawn all the stuff JC "stores" in his office
+		c = 0;
+		txPos = -384.0000;
+		do
+		{
+			tname = flags.GetName(DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c));
+
+			if(tname != '')
+			{
+				spawnclass = class<Inventory>(DynamicLoadObject("DeusEx."$ tname, class'Class'));
+
+				if(dmatsuma == None)
+				{
+					item = Inventory(spawn(spawnclass, None));
+					if(item.invSlotsX * item.invSlotsY > 4)
+					{
+						loc.X = -360 + (16 - Rand(32));
+						loc.Y = 1074 + (item.CollisionRadius);
+						loc.Z = 324 + (16 - Rand(24));
+					}
+					else
+					{
+						if(txPos + item.CollisionRadius >= 310.000)
+							txPos = -384.0000;
+		
+						txPos += item.CollisionRadius;
+		
+						loc.X = txPos;
+						loc.Y = 1062;
+						loc.Z = 324 + (16 - (frand() * 24));
+					}
+
+					item.SetLocation(loc);
+				}
+				else //== Like I said, steal your stuff, kill you with it
+				{
+					if(dmatsuma.FindInventoryType(spawnclass) == None)
+					{
+						item = Inventory(spawn(spawnclass, dmatsuma));
+						item.InitialState='Idle2';
+						item.GiveTo(dmatsuma);
+						item.SetBase(dmatsuma);
+					}
+					else
+						item = dmatsuma.FindInventoryType(spawnclass);
+
+					if(DeusExWeapon(item) != None)
+					{
+			     			if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
+			     			{
+			     				Weapon(item).AmmoType = Ammo(dmatsuma.FindInventoryType(Weapon(item).AmmoName));
+			      				if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
+			      				{
+			      					Weapon(item).AmmoType = Ammo(dmatsuma.FindInventoryType(Weapon(item).AmmoName));
+			      					if (Weapon(item).AmmoType == None)
+			      					{
+									Weapon(item).AmmoType = spawn(Weapon(item).AmmoName,dmatsuma);
+			      					}
+			      				}
+							if(Weapon(item).AmmoType != None)
+							{
+								Weapon(item).AmmoType.InitialState='Idle2';
+								Weapon(item).AmmoType.GiveTo(dmatsuma);
+								Weapon(item).AmmoType.SetBase(dmatsuma);
+							}
+			     			}
+						else if(Weapon(item).AmmoType != None && Weapon(item).AmmoType.AmmoAmount < 1)
+							Weapon(item).AmmoType.AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
+					}
+				}
+
+				flags.DeleteFlag(DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c), FLAG_Name);
+
+				//== Now we need to handle all the weapon mods, if applicable
+				if(item.IsA('DeusExWeapon'))
+				{
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c $"_bHasLaser");
+					if(DeusExWeapon(item).bCanHaveLaser)
+						DeusExWeapon(item).bHasLaser = flags.GetBool(tname);
+					flags.DeleteFlag(tname, FLAG_Bool);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c $"_bHasSilencer");
+					if(DeusExWeapon(item).bCanHaveSilencer)
+						DeusExWeapon(item).bHasSilencer = flags.GetBool(tname);
+					flags.DeleteFlag(tname, FLAG_Bool);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c $"_bHasScope");
+					if(DeusExWeapon(item).bCanHaveScope)
+						DeusExWeapon(item).bHasScope = flags.GetBool(tname);
+					flags.DeleteFlag(tname, FLAG_Bool);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c $"_ModBaseAccuracy");
+					if(DeusExWeapon(item).bCanHaveModBaseAccuracy)
+					{
+						DeusExWeapon(item).ModBaseAccuracy = flags.GetFloat(tname);
+						if(DeusExWeapon(item).Default.BaseAccuracy == 0.0)
+							DeusExWeapon(item).BaseAccuracy = 0.0 - DeusExWeapon(item).ModBaseAccuracy;
+						else
+							DeusExWeapon(item).BaseAccuracy = DeusExWeapon(item).Default.BaseAccuracy - (DeusExWeapon(item).Default.BaseAccuracy * DeusExWeapon(item).ModBaseAccuracy);
+					}
+					flags.DeleteFlag(tname, FLAG_Float);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c $"_ModReloadCount");
+					if(DeusExWeapon(item).bCanHaveModReloadCount)
+					{
+						DeusExWeapon(item).ModReloadCount = flags.GetFloat(tname);
+						DeusExWeapon(item).ReloadCount = DeusExWeapon(item).Default.ReloadCount + Int(FMax(Float(DeusExWeapon(item).Default.ReloadCount) * DeusExWeapon(item).ModReloadCount, 1.0));
+					}
+					flags.DeleteFlag(tname, FLAG_Float);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c $"_ModAccurateRange");
+					if(DeusExWeapon(item).bCanHaveModAccurateRange)
+					{
+						DeusExWeapon(item).ModAccurateRange = flags.GetFloat(tname);
+						DeusExWeapon(item).AccurateRange = DeusExWeapon(item).Default.AccurateRange + (DeusExWeapon(item).Default.AccurateRange * DeusExWeapon(item).ModAccurateRange);
+					}
+					flags.DeleteFlag(tname, FLAG_Float);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c $"_ModReloadTime");
+					if(DeusExWeapon(item).bCanHaveModReloadTime)
+					{
+						DeusExWeapon(item).ModReloadTime = flags.GetFloat(tname);
+						DeusExWeapon(item).ReloadTime = FMax(DeusExWeapon(item).Default.ReloadTime + (DeusExWeapon(item).Default.ReloadTime * DeusExWeapon(item).ModReloadTime), 0.0);
+					}
+					flags.DeleteFlag(tname, FLAG_Float);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c $"_ModRecoilStrength");
+					if(DeusExWeapon(item).bCanHaveModRecoilStrength)
+					{
+						DeusExWeapon(item).ModRecoilStrength = flags.GetFloat(tname);
+						DeusExWeapon(item).RecoilStrength = FMax(DeusExWeapon(item).Default.RecoilStrength + (DeusExWeapon(item).Default.RecoilStrength * DeusExWeapon(item).ModRecoilStrength), 0.0);
+					}
+					flags.DeleteFlag(tname, FLAG_Float);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c $"_ModShotTime");
+					if(DeusExWeapon(item).bCanHaveModShotTime)
+					{
+						DeusExWeapon(item).ModShotTime = flags.GetFloat(tname);
+						DeusExWeapon(item).ShotTime = FMax(DeusExWeapon(item).Default.ShotTime + (DeusExWeapon(item).Default.ShotTime * DeusExWeapon(item).ModShotTime), 0.0);
+					}
+					flags.DeleteFlag(tname, FLAG_Float);
+				}
+				else if(item.IsA('AugmentationCannister'))
+				{
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c $"_Aug1");
+					AugmentationCannister(item).AddAugs[0] = flags.GetName(tname);
+					flags.DeleteFlag(tname, FLAG_Name);
+
+					tname = DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c $"_Aug2");
+					AugmentationCannister(item).AddAugs[1] = flags.GetName(tname);
+					flags.DeleteFlag(tname, FLAG_Name);
+				}
+
+				c++;
+			}
+			else
+				item = None;
+
+		}until(item == None);
+
+		if(dmatsuma != None)
+		{
+			if(dmatsuma.Weapon == None)
+				dmatsuma.SwitchToBestWeapon();
 		}
 
 		// make Anna not flee in this mission
@@ -234,22 +483,26 @@ function FirstFrame()
 
 							if(DeusExWeapon(item) != None)
 							{
-								if(DeusExWeapon(item).AmmoType != None)
-								{
-									inv = T.FindInventoryType(DeusExWeapon(item).AmmoName);
-									if (inv != None)
-										Ammo(inv).AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
-					
-									if(inv == None)
-										inv = spawn(DeusExWeapon(item).AmmoName, T);
-					
-									if (inv != None)
+					     			if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
+					     			{
+					     				Weapon(item).AmmoType = Ammo(T.FindInventoryType(Weapon(item).AmmoName));
+					      				if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
+					      				{
+					      					Weapon(item).AmmoType = Ammo(T.FindInventoryType(Weapon(item).AmmoName));
+					      					if (Weapon(item).AmmoType == None)
+					      					{
+											Weapon(item).AmmoType = spawn(Weapon(item).AmmoName,T);
+					      					}
+					      				}
+									if(Weapon(item).AmmoType != None)
 									{
-										inv.InitialState='Idle2';
-										inv.GiveTo(T);
-										inv.SetBase(T);
+										Weapon(item).AmmoType.InitialState='Idle2';
+										Weapon(item).AmmoType.GiveTo(T);
+										Weapon(item).AmmoType.SetBase(T);
 									}
-								}
+					     			}
+								else if(Weapon(item).AmmoType != None && Weapon(item).AmmoType.AmmoAmount < 1)
+									Weapon(item).AmmoType.AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
 							}
 							flags.DeleteFlag(tname, FLAG_Name);
 						}
@@ -322,6 +575,7 @@ function Timer()
 	local VendingMachine V;
 	local MIB mblack;
 	local Inventory item;
+	local Janitor dmatsuma;
 
 	Super.Timer();
 

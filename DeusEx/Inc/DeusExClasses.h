@@ -585,6 +585,13 @@ public:
     BITFIELD bCanGiveWeapon:1;
     INT PendingSkillPoints GCC_PACK(4);
     FVector EnemyLastSeenAt;
+    class USound* SearchingSound;
+    class USound* SpeechTargetAcquired;
+    class USound* SpeechTargetLost;
+    class USound* SpeechOutOfAmmo;
+    class USound* SpeechCriticalDamage;
+    class USound* SpeechScanning;
+    class USound* SpeechAreaSecure;
     DECLARE_FUNCTION(execAddCarcass);
     DECLARE_FUNCTION(execHaveSeenCarcass);
     DECLARE_FUNCTION(execGetPawnAllianceType);

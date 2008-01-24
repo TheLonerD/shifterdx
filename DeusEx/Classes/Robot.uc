@@ -4,14 +4,6 @@
 class Robot extends ScriptedPawn
 	abstract;
 
-var(Sounds) sound SearchingSound;
-var(Sounds) sound SpeechTargetAcquired;
-var(Sounds) sound SpeechTargetLost;
-var(Sounds) sound SpeechOutOfAmmo;
-var(Sounds) sound SpeechCriticalDamage;
-var(Sounds) sound SpeechScanning;
-var(Sounds) sound SpeechAreaSecure;
-
 var() int EMPHitPoints;
 var ParticleGenerator sparkGen;
 var float crazedTimer;

@@ -61,9 +61,9 @@ function PreTravel()
 				Player.flagBase.SetName(tname, item.Class.Name);
 				Player.flagBase.SetExpiration(tname, FLAG_Name, 4);
 
-				//== This will be enabled later, once I get it working right
-//				if(item.invSlotsX * item.invSlotsY > 4 && item.Location.Z <= 330.000000)
-//					Player.flagBase.SetBool('M01_JC_LeftHeavyItemOnFloor', True,, 5);
+				//== Check for heavy weapons left on the ground for snarky email purposes
+				if(item.invSlotsX * item.invSlotsY > 4 && item.Location.Z <= 330.000000)
+					Player.flagBase.SetBool('M01_JC_LeftHeavyItemOnFloor', True,, 6);
 
 				if(item.IsA('DeusExWeapon'))
 				{
@@ -326,6 +326,10 @@ function Timer()
 				flags.SetBool('MS_ReadyForBriefing', True,, 2);
 			}
 		}
+
+		//== If we come back to the map, we might take more stuff, so let's clear out the relevant "heavy" flag
+		if(flags.GetBool('M01_JC_LeftHeavyItemOnFloor'))
+			flags.SetBool('M01_JC_LeftHeavyItemOnFloor', False);
 	}
 }
 

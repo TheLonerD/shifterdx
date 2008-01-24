@@ -453,6 +453,12 @@ KNOWN GLITCHES:
 	mission.  Sometimes these weapons come with a mod or mods installed;
 	apparently silenced Sniper Rifles are the most common.
 
+	 - The new Zyme effects do not completely work in at least one map in
+	the game: the Hong Kong Canal area.  While you will receive the skill
+	and speed boost, for unknown reasons the game's speed will not drop.
+	As soon as you move to another map in the area, however, all normal
+	Zyme effects will return.
+
 	Multiplayer:
 
 	 - Clients connecting to a server running ShifterMP may witness some
@@ -1163,6 +1169,46 @@ UPDATES:
 	was due to a problem with my implementation of the new HDTP stuff,
 	mostly owing to the fact that the new HDTP mesh for the alarm panel did
 	not specify any skins.
+
+	 - Changed the DrugEffectTimer in the player class to be a "travel"
+	variable.  This means that when you change maps while drunk you won't
+	suddenly lose or gain your zyme abilities or drunk status.
+
+	 - Related to the above, added in some code to maintain game speed from
+	map to map.  There's a tiny bit of lag after level load before the new
+	speed is set, but it's still better than nothing.
+
+	 - Fixed an issue with the code I added to allow me to add new email to
+	computer terminals, which was preventing me from adding in another bit
+	of additional flavor to the game.
+
+	 - Reworked Office Storage a little to ensure that heavy weapons are
+	placed on the ground properly.
+
+	 - Moved support for searching sounds/etc. from the Robot class to the
+	more generic ScriptedPawn class.  This means that for NPCs I can have
+	them emit certain sounds rather than specified barks when certain
+	things happen, e.g. when they spot someone.
+
+	 - Fixed some issues I didn't even know I had with giving NPCs weapons
+	and the ammo for said weapons in various functions.  While I was giving
+	them ammo, I wasn't setting the variable in their weapons which tracked
+	what ammo went to the gun.
+
+	 - Added in a method to specify "backup" music for a level if the music
+	specified (or the specification) it somehow corrupted/etc.  This most
+	commonly shows up in Hell's Kitchen the last time you make it back to
+	NYC, though personally I've always had music in that level.  Still, for
+	those of you who have no music this fix should solve the problem.
+
+	 - Changed the article on a number of Unique weapons to "the", so when
+	you pick them up it will say (for example) "the Boomstick", rather than
+	"a Boomstick".
+
+	 - Included a method that MAY fix the lack of music in maps like Hell's
+	Kitchen the last time you visit it.  It's not a generic fix, and it
+	requires that I identify each section that needs fixing.  If there are
+	any sections besides Hell's Kitchen that need fixing, let me know.
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 

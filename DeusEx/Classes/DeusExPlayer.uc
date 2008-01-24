@@ -126,7 +126,7 @@ var name WallMaterial;
 var Vector WallNormal;
 
 // drug effects on the player
-var float drugEffectTimer;
+var travel float drugEffectTimer;
 
 // shake variables
 var float JoltMagnitude;  // magnitude of bounce imposed by heavy footsteps
@@ -1452,6 +1452,8 @@ simulated function DrugEffects(float deltaTime)
 			{
 				if(Level.NetMode == NM_Standalone)
 					Level.Game.SetGameSpeed(Level.Game.GameSpeed * 2.000);
+				else
+					log("DeusExPlayer: Somehow the zyme effect was activated in a non-singleplayer map.  WTF?");
 				drugEffectTimer = 60.0;
 				ClientMessage("Zyme effect wears off");
 			}
@@ -1519,13 +1521,20 @@ function UpdateDynamicMusic(float deltaTime)
 {
 	local bool bCombat;
 	local ScriptedPawn npc;
-   local Pawn CurPawn;
+	local Pawn CurPawn;
 	local DeusExLevelInfo info;
+	local music Song;
 
-	if (Level.Song == None)
-		return;
+	//== In case any of the mission song info gets all f%$#ed up (like NYC in mission 8)
+	if (Level.Song == None || Music(DynamicLoadObject(String(Level.Song), class'Music', True)) == None)
+	{
+		Song = Music(DynamicLoadObject(FlagBase.GetName('Song_Name') $"."$ FlagBase.GetName('Song_Name'), class'Music', True));
 
-	//== Hacky attempt to fix the load music errors
+		if(Song == None)
+			return;
+	}
+	else
+		Song = Level.Song;
 
    // DEUS_EX AMSD In singleplayer, do the old thing.
    // In multiplayer, we can come out of dying.
@@ -1556,7 +1565,7 @@ function UpdateDynamicMusic(float deltaTime)
 
 		if (musicMode != MUS_Outro)
 		{
-			ClientSetMusic(Level.Song, 5, 255, MTRAN_FastFade);
+			ClientSetMusic(Song, 5, 255, MTRAN_FastFade);
 			musicMode = MUS_Outro;
 		}
 	}
@@ -1570,7 +1579,7 @@ function UpdateDynamicMusic(float deltaTime)
 			else
 				savedSection = 255;
 
-			ClientSetMusic(Level.Song, 4, 255, MTRAN_Fade);
+			ClientSetMusic(Song, 4, 255, MTRAN_Fade);
 			musicMode = MUS_Conversation;
 		}
 	}
@@ -1578,7 +1587,7 @@ function UpdateDynamicMusic(float deltaTime)
 	{
 		if (musicMode != MUS_Dying)
 		{
-			ClientSetMusic(Level.Song, 1, 255, MTRAN_Fade);
+			ClientSetMusic(Song, 1, 255, MTRAN_Fade);
 			musicMode = MUS_Dying;
 		}
 	}
@@ -1617,9 +1626,9 @@ function UpdateDynamicMusic(float deltaTime)
 						savedSection = 255;
 
 					if(musicChangeTimer >= 20.0)
-						ClientSetMusic(Level.Song, 3, 255, MTRAN_Instant);
+						ClientSetMusic(Song, 3, 255, MTRAN_Instant);
 					else
-						ClientSetMusic(Level.Song, 3, 255, MTRAN_FastFade);
+						ClientSetMusic(Song, 3, 255, MTRAN_FastFade);
 					musicMode = MUS_Combat;
 				}
 
@@ -1635,12 +1644,12 @@ function UpdateDynamicMusic(float deltaTime)
 						savedSection = Level.SongSection;
 
 					if(musicChangeTimer >= 20.0)
-						ClientSetMusic(Level.Song, savedSection, 255, MTRAN_Instant);
+						ClientSetMusic(Song, savedSection, 255, MTRAN_Instant);
 					// fade slower for combat transitions
 					else if (musicMode == MUS_Combat)
-						ClientSetMusic(Level.Song, savedSection, 255, MTRAN_SlowFade);
+						ClientSetMusic(Song, savedSection, 255, MTRAN_SlowFade);
 					else
-						ClientSetMusic(Level.Song, savedSection, 255, MTRAN_Fade);
+						ClientSetMusic(Song, savedSection, 255, MTRAN_Fade);
 
 					savedSection = 255;
 					musicMode = MUS_Ambient;
@@ -6378,23 +6387,28 @@ exec function bool DropItem(optional Inventory inv, optional bool bDrop)
 					//== Give them ammo for the weapon if they don't have it
 					if(DeusExWeapon(item).AmmoType != None)
 					{
-						inv = ScriptedPawn(FrobTarget).FindInventoryType(DeusExWeapon(item).AmmoName);
-						if (inv != None)
-							Ammo(inv).AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
-		
-						if(inv == None)
-						{
-							inv = spawn(DeusExWeapon(item).AmmoName, FrobTarget);
-		
-							if (inv != None)
+			     			if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
+			     			{
+			     				Weapon(item).AmmoType = Ammo(ScriptedPawn(FrobTarget).FindInventoryType(Weapon(item).AmmoName));
+			      				if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
+			      				{
+			      					Weapon(item).AmmoType = Ammo(ScriptedPawn(FrobTarget).FindInventoryType(Weapon(item).AmmoName));
+			      					if (Weapon(item).AmmoType == None)
+			      					{
+									Weapon(item).AmmoType = spawn(Weapon(item).AmmoName,FrobTarget);
+			      					}
+			      				}
+							if(Weapon(item).AmmoType != None)
 							{
 								//== Just to be sure, make sure the NPC has a little extra ammo
-								Ammo(inv).AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
-								inv.InitialState='Idle2';
-								inv.GiveTo(ScriptedPawn(FrobTarget));
-								inv.SetBase(FrobTarget);
+								Weapon(item).AmmoType.AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
+								Weapon(item).AmmoType.InitialState='Idle2';
+								Weapon(item).AmmoType.GiveTo(ScriptedPawn(FrobTarget));
+								Weapon(item).AmmoType.SetBase(FrobTarget);
 							}
-						}
+			     			}
+						else if(Weapon(item).AmmoType != None)
+							Weapon(item).AmmoType.AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
 					}
 
 					//== Make them use the weapon

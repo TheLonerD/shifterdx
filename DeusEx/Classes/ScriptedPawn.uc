@@ -429,6 +429,14 @@ var()	 int	  PendingSkillPoints; // how many skillpoints are pending for Stealth
 
 var()    vector    EnemyLastSeenAt; //A vector indicating the last position the enemy was sighted
 
+var(Sounds) sound SearchingSound;
+var(Sounds) sound SpeechTargetAcquired;
+var(Sounds) sound SpeechTargetLost;
+var(Sounds) sound SpeechOutOfAmmo;
+var(Sounds) sound SpeechCriticalDamage;
+var(Sounds) sound SpeechScanning;
+var(Sounds) sound SpeechAreaSecure;
+
 native(2102) final function ConBindEvents();
 
 native(2105) final function bool IsValidEnemy(Pawn TestEnemy, optional bool bCheckAlliance);
@@ -4161,12 +4169,16 @@ function PlayTargetAcquiredSound()
 	local DeusExPlayer dxPlayer;
 
 	dxPlayer = DeusExPlayer(GetPlayerPawn());
+
 	if ((dxPlayer != None) && (Enemy == dxPlayer))
 	{
 		dxPlayer.StartAIBarkConversation(self, BM_TargetAcquired);
 		//== Neutralize all stealth bonuses
 		PendingSkillPoints = 0;
 	}
+
+	if(SpeechTargetAcquired != None)
+		PlaySound(SpeechTargetAcquired, SLOT_None,,, 2048);
 }
 
 
@@ -4181,6 +4193,9 @@ function PlayTargetLostSound()
 	dxPlayer = DeusExPlayer(GetPlayerPawn());
 	if ((dxPlayer != None) && (SeekPawn == dxPlayer))
 		dxPlayer.StartAIBarkConversation(self, BM_TargetLost);
+
+	if(SpeechTargetLost != None)
+		PlaySound(SpeechTargetLost, SLOT_None,,, 2048);
 }
 
 
@@ -11328,8 +11343,6 @@ State Fleeing
 { 
 	function Bump(actor Other)
 	{
-		local Inventory inv;
-
 		//== If we bumped a weapon pickup we might want to, say, pick it up
 		if(!bFearWeapon && !ShouldDropWeapon() && Other.isA('DeusExWeapon') && !Self.IsA('Robot') && !Self.IsA('Animal') && Physics == PHYS_Walking && !ShouldFlee())
 		{
@@ -11340,26 +11353,29 @@ State Fleeing
 				Other.SetBase(Self);
 			}
 
-			if(DeusExWeapon(Other).AmmoType != None)
-			{
-				inv = FindInventoryType(DeusExWeapon(Other).AmmoName);
-				if (inv != None)
-					Ammo(inv).AmmoAmount += (DeusExWeapon(Other).AmmoName).default.AmmoAmount;
-
-				else
+     			if ((Weapon(Other).AmmoType == None) && (Weapon(Other).AmmoName != None) && (Weapon(Other).AmmoName != Class'AmmoNone'))
+     			{
+     				Weapon(Other).AmmoType = Ammo(FindInventoryType(Weapon(Other).AmmoName));
+      				if ((Weapon(Other).AmmoType == None) && (Weapon(Other).AmmoName != None) && (Weapon(Other).AmmoName != Class'AmmoNone'))
+      				{
+      					Weapon(Other).AmmoType = Ammo(FindInventoryType(Weapon(Other).AmmoName));
+      					if (Weapon(Other).AmmoType == None)
+      					{
+						Weapon(Other).AmmoType = spawn(Weapon(Other).AmmoName,Self);
+      					}
+      				}
+				if(Weapon(Other).AmmoType != None)
 				{
-					inv = spawn(DeusExWeapon(Other).AmmoName, self);
-
-					if (inv != None)
-					{
-						inv.InitialState='Idle2';
-						inv.GiveTo(Self);
-						inv.SetBase(Self);
-					}
+					Weapon(Other).AmmoType.InitialState='Idle2';
+					Weapon(Other).AmmoType.GiveTo(Self);
+					Weapon(Other).AmmoType.SetBase(Self);
 				}
-			}
-				SwitchToBestWeapon();
-				FinishFleeing();
+     			}
+			else if(Weapon(Other).AmmoType != None && Weapon(Other).AmmoType.AmmoAmount < 1)
+				Weapon(Other).AmmoType.AmmoAmount += (DeusExWeapon(Other).AmmoName).default.AmmoAmount;
+
+			SwitchToBestWeapon();
+			FinishFleeing();
 		}
 
 		Global.Bump(Other);
@@ -11987,7 +12003,6 @@ State Attacking
 {
 	function Bump(actor Other)
 	{
-		local Inventory inv, nextItem;
 		//== If we bumped a weapon pickup we might want to, say, pick it up
 		if((Other.IsA('DeusExWeapon') || (Other.IsA('DeusExCarcass') && !bFearCarcass)) && !Self.IsA('Robot') && !Self.IsA('Animal') && Physics == PHYS_Walking)
 		{
@@ -11998,25 +12013,27 @@ State Attacking
 				Other.InitialState='Idle2';
 				Inventory(Other).GiveTo(Self);
 				Other.SetBase(Self);
-				if(DeusExWeapon(Other).AmmoType != None)
-				{
-					inv = FindInventoryType(DeusExWeapon(Other).AmmoName);
-					if (inv != None)
-						Ammo(inv).AmmoAmount += (DeusExWeapon(Other).AmmoName).default.AmmoAmount;
-	
-					else
+
+	     			if ((Weapon(Other).AmmoType == None) && (Weapon(Other).AmmoName != None) && (Weapon(Other).AmmoName != Class'AmmoNone'))
+	     			{
+	     				Weapon(Other).AmmoType = Ammo(FindInventoryType(Weapon(Other).AmmoName));
+	      				if ((Weapon(Other).AmmoType == None) && (Weapon(Other).AmmoName != None) && (Weapon(Other).AmmoName != Class'AmmoNone'))
+	      				{
+	      					Weapon(Other).AmmoType = Ammo(FindInventoryType(Weapon(Other).AmmoName));
+	      					if (Weapon(Other).AmmoType == None)
+	      					{
+							Weapon(Other).AmmoType = spawn(Weapon(Other).AmmoName,Self);
+	      					}
+	      				}
+					if(Weapon(Other).AmmoType != None)
 					{
-						inv = spawn(DeusExWeapon(Other).AmmoName, self);
-	
-						if (inv != None)
-						{
-							Ammo(inv).AmmoAmount += (DeusExWeapon(Other).AmmoName).default.AmmoAmount;
-							inv.InitialState='Idle2';
-							inv.GiveTo(Self);
-							inv.SetBase(Self);
-						}
+						Weapon(Other).AmmoType.InitialState='Idle2';
+						Weapon(Other).AmmoType.GiveTo(Self);
+						Weapon(Other).AmmoType.SetBase(Self);
 					}
-				}
+	     			}
+				else if(Weapon(Other).AmmoType != None && Weapon(Other).AmmoType.AmmoAmount < 1)
+					Weapon(Other).AmmoType.AmmoAmount += (DeusExWeapon(Other).AmmoName).default.AmmoAmount;
 
 				SwitchToBestWeapon();
 				if(ShouldCrouch())
