@@ -21,7 +21,7 @@ function FirstFrame()
 	local name tname;
 	local int c;
 	local Janitor dmatsuma;
-	local float txPos;
+	local float txPos, tyPos;
 	local class<Actor> spawnclass;
 	local vector loc;
 
@@ -212,13 +212,25 @@ function FirstFrame()
 			flags.SetBool('M05_ModRoF_Placed', True,, 6);
 		}
 
+		if(!flags.GetBool('M05_Janitor_Note_Placed'))
+		{
+			dCube = spawn(class'Datacube',None,, vect(-258.821838,1236.736450,287.50));
+			flags.SetBool('M05_Janitor_Note_Placed',True,, 6);
+		}
+
+		c = 0;
+		if(flags.GetBool('M01_JC_LeftHeavyItemOnFloor'))
+			c++;
+
+		if(flags.GetBool('M03_JC_LeftHeavyItemOnFloor'))
+			c++;
+
 		//== Do not piss off the janitorial staff, or they will steal your stuff and kill you with it
-		if(flags.GetBool('M01_JC_LeftHeavyItemOnFloor') && flags.GetBool('M03_JC_LeftHeavyItemOnFloor') && flags.GetBool('M04_JC_LeftHeavyItemOnFloor') && !flags.GetBool('Beware_The_Angry_Janitor'))
+		if(c >= 2 && flags.GetBool('M04_JC_LeftHeavyItemOnFloor') && !flags.GetBool('Beware_The_Angry_Janitor'))
 		{
 			dmatsuma = spawn(class'Janitor');
 			if(dmatsuma != None)
 			{
-				dmatsuma.UnfamiliarName = "Angry Janitor";
 				dmatsuma.FamiliarName = "Daniel Matsuma";
 				dmatsuma.setLocation(vect(-1478.937012, 712.059082, 575.173706));
 				dmatsuma.SpeechTargetAcquired = Sound'DeusExSounds.Player.MaleLaugh';
@@ -241,7 +253,6 @@ function FirstFrame()
 				dmatsuma.bCanCrouch = True;
 				dmatsuma.BaseAccuracy = 0.4;
 				dmatsuma.RaiseAlarm = RAISEALARM_Never;
-				dmatsuma.bKeepWeaponDrawn = True;
 				dmatsuma.MaxRange = 1000.0000;
 				dmatsuma.Health = 150;
 				dmatsuma.HealthHead = 150;
@@ -287,9 +298,20 @@ function FirstFrame()
 			}
 		}
 
+		if(dCube != None)
+		{
+			if(c >= 2 && flags.GetBool('M04_JC_LeftHeavyItemOnFloor'))
+				dCube.SpecialText = emailString[3];
+			else if(c >= 1)
+				dCube.SpecialText = emailString[2];
+			else
+				dCube.SpecialText = emailString[1];		
+		}
+
 		//== Spawn all the stuff JC "stores" in his office
 		c = 0;
-		txPos = -384.0000;
+		txPos = -394.0000;
+		tyPos = 112.0000;
 		do
 		{
 			tname = flags.GetName(DeusExRootWindow(Player.rootWindow).StringToName("M04_JC_Item_"$ c));
@@ -298,25 +320,31 @@ function FirstFrame()
 			{
 				spawnclass = class<Inventory>(DynamicLoadObject("DeusEx."$ tname, class'Class'));
 
+				//== The positioning is a little different this time
 				if(dmatsuma == None)
 				{
 					item = Inventory(spawn(spawnclass, None));
 					if(item.invSlotsX * item.invSlotsY > 4)
 					{
 						loc.X = -360 + (16 - Rand(32));
-						loc.Y = 1074 + (item.CollisionRadius);
-						loc.Z = 324 + (16 - Rand(24));
+						loc.Y = 208 - (item.CollisionRadius);
+						loc.Z = 270 + (16 - Rand(24));
 					}
 					else
 					{
-						if(txPos + item.CollisionRadius >= 310.000)
-							txPos = -384.0000;
+						if(txPos + item.CollisionRadius >= -300.000)
+						{
+							txPos = -394.0000;
+							tyPos += 20.0000;
+						}
+						if(tyPos >= 200.0000)
+							tyPos = 112.00000;
 		
 						txPos += item.CollisionRadius;
 		
 						loc.X = txPos;
-						loc.Y = 1062;
-						loc.Z = 324 + (16 - (frand() * 24));
+						loc.Y = tyPos;
+						loc.Z = 270 + (16 - (frand() * 24));
 					}
 
 					item.SetLocation(loc);
@@ -446,12 +474,6 @@ function FirstFrame()
 				item = None;
 
 		}until(item == None);
-
-		if(dmatsuma != None)
-		{
-			if(dmatsuma.Weapon == None)
-				dmatsuma.SwitchToBestWeapon();
-		}
 
 		// make Anna not flee in this mission
 		foreach AllActors(class'AnnaNavarre', Anna)
@@ -703,4 +725,7 @@ defaultproperties
      emailFrom(0)="JReyes"
      emailTo(0)="ghermann"
      emailString(0)="Gunther,|n|n     Our latest supply shipment just came in, but your part of the shipment was missing.  Instead of an augmentation canister, the package contained a single can of lemon-lime soda.  I've already talked to the supply depot; they don't know what happened to the first shipment, but another is on the way.  It should be here in a few days.|n|n|nJaime"
+     emailString(1)="Agent Denton,|n|n     My name is Dan Matsuma.  You don't know me, but I'm the head of Janitorial Services here.  (Was, anyway)  If you're reading this then my efforts weren't wasted.|n|n     You're a good man, Agent Denton, and I don't believe you're a traitor.  That the Coalition would brand you and your brother as such is the latest in a string of disturbing things I've seen.  Enough is enough.  Even janitors can make a stand for what's right.  I've managed to 're-direct' the stuff those goons confiscated from your office, and I've stashed it in the cleaning closet on this floor.  Hopefully some of it will be of help.|n|n     To set your mind at ease, Agent Denton, (and to anybody else reading this) I will be on my way out of the country by the time you read this note.  Consider this my official resignation.|n|n|nSincerely,|nDaniel Matsuma|n|nP.S. Manderley, if you're reading this, I was the one who blocked off your hidden safe.  I never bought that 'budget considerations' excuse, you prick."
+     emailString(2)="Agent Denton,|n|n     Dan Matsuma here.  I know we've had our differences, but I write to you as a friend.  If you're reading this then my efforts weren't wasted.|n|n     Cleaning habits aside you're a good man, Agent Denton, and I don't believe you're a traitor.  That the Coalition would brand you and your brother as such is the latest in a string of disturbing things I've seen.  Enough is enough.  Even janitors can make a stand for what's right.  I've managed to 're-direct' the stuff those goons confiscated from your office, and I've stashed it in the cleaning closet on this floor.  Hopefully some of it will be of help.|n|n     To set your mind at ease, Agent Denton, (and to anybody else reading this) I will be on my way out of the country by the time you read this note.  Consider this my official resignation.|n|n|nSincerely,|nDaniel Matsuma|n|nP.S. Manderley, if you're reading this, I was the one who blocked off your hidden safe.  I never bought that 'budget considerations' excuse, you prick."
+     emailString(3)="******* UNATCO INTERNAL MAIL AUTOMATED FORWARDING NOTICE|n|nTHIS PARCEL WAS RE-ROUTED TO THE MOST RECENT ADDRESS OF RECIPIENT 'JC Denton'.  IF YOU ARE NOT 'JC Denton' PLEASE CONTACT YOUR STATION POSTMASTER.|n|n******* END NOTICE|n|n|nDear Jackass,|n|n     Today Manderley told me my department is overbudget due to an increase in requisitions for cleaning bot drive motors.  'The money has to be made up somewhere', so now I'm working unpaid overtime for the next six months.  THANKS TO YOU.|n|n     As compensation I'm taking a few items from your office, and having this sent to your new office instead.  Maybe when this note arrives in Hong Kong instead of that giant whatever-it-is you'll think twice before tormenting the next janitorial staff unfortunate enough to be saddled with you.  If there were any justice in the world though, you'd be declared a traitor so I'd be legally allowed to shoot you.|n|n     Die in a fire.|n|n|nDaniel Matsuma,|nHead of Janitorial Services"
 }

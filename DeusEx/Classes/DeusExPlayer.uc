@@ -1523,12 +1523,12 @@ function UpdateDynamicMusic(float deltaTime)
 	local ScriptedPawn npc;
 	local Pawn CurPawn;
 	local DeusExLevelInfo info;
-	local music Song;
+	local Music Song;
 
 	//== In case any of the mission song info gets all f%$#ed up (like NYC in mission 8)
 	if (Level.Song == None || Music(DynamicLoadObject(String(Level.Song), class'Music', True)) == None)
 	{
-		Song = Music(DynamicLoadObject(FlagBase.GetName('Song_Name') $"."$ FlagBase.GetName('Song_Name'), class'Music', True));
+		Song = Music(DynamicLoadObject(FlagBase.GetName('Song_Name') $"."$ FlagBase.GetName('Song_Name'), class'Music'));
 
 		if(Song == None)
 			return;

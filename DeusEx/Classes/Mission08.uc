@@ -87,9 +87,6 @@ function FirstFrame()
 			spawn(class'WeaponPrototypeSwordA',None,, loc);
 			flags.SetBool('M08_SwordA_Placed', True,, 9);
 		}
-
-		//== For the users that have issues with the music in this map, give the backup method something to work with
-		flags.SetName('Song_Name','NYCStreets2_Music',, 9);
 	}
 }
 
@@ -110,6 +107,17 @@ function PreTravel()
 		// make sure that damn helicopter is gone
 		foreach AllActors(class'BlackHelicopter', chopper, 'EntranceCopter')
 			chopper.Destroy();
+	}
+}
+
+function PostPostBeginPlay()
+{
+	Super.PostPostBeginPlay();
+
+	if(localURL == "08_NYC_STREET")
+	{
+		//== For the users that have issues with the music in this map, give the backup method something to work with
+		flags.SetName('Song_Name','NYCStreets2_Music',, 9);
 	}
 }
 

@@ -1205,10 +1205,19 @@ UPDATES:
 	you pick them up it will say (for example) "the Boomstick", rather than
 	"a Boomstick".
 
-	 - Included a method that MAY fix the lack of music in maps like Hell's
-	Kitchen the last time you visit it.  It's not a generic fix, and it
-	requires that I identify each section that needs fixing.  If there are
-	any sections besides Hell's Kitchen that need fixing, let me know.
+	 - Slightly reworked how the script-given email is processed by my new
+	method.  Before it would simply stop once it got to an entry that was
+	blank; now it'll actually check the entire list of new email, just in
+	case there's email, say, at the end of the list or something.
+
+	 - Reworked JC Office Storage a little so it positions the items right
+	and also works from mission 4 to mission 5.  Well, sort of on the last
+	bit.  It works, but differently.  See below.
+
+	 - Added in a new grouping of content I call "The Downward Spiral of
+	Daniel Matsuma: an Interactive Drama in Three Acts."  It's related to
+	the Office Storage feature, and will be most obvious during the escape
+	from UNATCO in mission 5.
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 

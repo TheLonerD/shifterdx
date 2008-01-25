@@ -129,7 +129,7 @@ function FirstFrame()
 				}
 				else
 				{
-					if(txPos + item.CollisionRadius >= 310.000)
+					if(txPos + item.CollisionRadius >= -310.000)
 						txPos = -384.0000;
 	
 					txPos += item.CollisionRadius;
@@ -230,6 +230,99 @@ function FirstFrame()
 
 		}until(item == None);
 
+		//== Process snarky email and Janitorial retaliation
+		if(flags.GetBool('M03_JC_LeftHeavyItemOnFloor'))
+		{
+			if(!flags.GetBool('M01_JC_LeftHeavyItemOnFloor'))
+			{
+				for(count = 0; count < 25; count++)
+				{
+					if(dxInfo.emailSubject[count] == "About your office...")
+					{
+						dxInfo.emailFrom[count] = "";
+						dxInfo.emailTo[count] = "";
+						dxInfo.emailSubject[count] = "";
+						dxInfo.emailCC[count] = "";
+						dxInfo.emailString[count] = "";
+					}
+	
+					if(emailSubject[count] == "About your office...")
+					{
+						emailFrom[count] = "";
+						emailTo[count] = "";
+						emailSubject[count] = "";
+						emailCC[count] = "";
+						emailString[count] = "";
+					}
+				}
+			}
+			else
+			{
+				for(count = 0; count < 25; count++)
+				{
+					if(dxInfo.emailSubject[count] == "Please help us keep your office clean")
+					{
+						dxInfo.emailFrom[count] = "";
+						dxInfo.emailTo[count] = "";
+						dxInfo.emailSubject[count] = "";
+						dxInfo.emailCC[count] = "";
+						dxInfo.emailString[count] = "";
+					}
+	
+					if(emailSubject[count] == "Please help us keep your office clean")
+					{
+						emailFrom[count] = "";
+						emailTo[count] = "";
+						emailSubject[count] = "";
+						emailCC[count] = "";
+						emailString[count] = "";
+					}
+				}
+
+				//== Do not irritate the Janitor, or he will fill your office with trash
+				spawn(class'Trashbag',None,, vect(-239.690125, 1078.260620, 268));
+				spawn(class'Trashbag',None,, vect(-158.902451, 1115.894287, 268));
+				spawn(class'Trashbag',None,, vect(-324.937714, 1182.858643, 268));
+				spawn(class'Trashbag',None,, vect(-375.875244, 1279.035400, 268));
+				spawn(class'Trashbag',None,, vect(-140.177994, 1395.822266, 268));
+				spawn(class'Trashbag',None,, vect(-191.508240, 1391.217285, 268));
+				spawn(class'Trashbag',None,, vect(-140.984344, 1354.483643, 268));
+
+				spawn(class'Trashbag2',None,, vect(-244.478699, 1045.090454, 268));
+				spawn(class'Trashbag2',None,, vect(-246.277832, 1112.638672, 268));
+				spawn(class'Trashbag2',None,, vect(-208.886200, 1117.331177, 268));
+				spawn(class'Trashbag2',None,, vect(-308.693726, 1286.664429, 268));
+				spawn(class'Trashbag2',None,, vect(-410.909485, 1402.909790, 268));
+				spawn(class'Trashbag2',None,, vect(-245.599792, 1245.005981, 302.80));
+				spawn(class'Trashbag2',None,, vect(-191.306396, 1279.779907, 302.80));
+				spawn(class'Trashbag2',None,, vect(-133.090500, 1402.909790, 330));
+
+
+			}
+		}
+		else
+		{
+			for(count = 0; count < 25; count++)
+			{
+				if(dxInfo.emailFrom[count] == "JanitDept")
+				{
+					dxInfo.emailFrom[count] = "";
+					dxInfo.emailTo[count] = "";
+					dxInfo.emailSubject[count] = "";
+					dxInfo.emailCC[count] = "";
+					dxInfo.emailString[count] = "";
+				}
+
+				if(emailFrom[count] == "JanitDept")
+				{
+					emailFrom[count] = "";
+					emailTo[count] = "";
+					emailSubject[count] = "";
+					emailCC[count] = "";
+					emailString[count] = "";
+				}
+			}
+		}
 	}
 }
 
@@ -690,4 +783,12 @@ function Timer()
 
 defaultproperties
 {
+    emailSubject(0)="Please help us keep your office clean"
+    emailFrom(0)="JanitDept"
+    emailTo(0)="JCD"
+    emailString(0)="Agent Denton,|n|n     Welcome to UNATCO!  Allow me to introduce myself: I'm Dan, the head of Janitorial Services here at HQ.|n|n     Let me cut to the chase: the Janitorial Services Department is not as well-equipped as I would like it.  Rather than the industrial cleaning robots you find in the private sector, we're only able to get the basic model.  ('Budget considerations', Manderley says)  This model has no real pushing power and is impossible to reprogram.  If anybody leaves something heavier than a desk chair on the floor the little things burn out trying to push it out of the way to clean, which is exactly what happened in your office.  Three of our cleaning bots had to have their drive motors replaced after trying to push that... thing up against the shelf in your office.|n|n     Since you're new here I can't blame you for not knowing, but in the future please try not to leave anything heavy on the floor of your office.|n|n|nThanks,|n|nDaniel Matsuma|nHead of Janitorial Services"
+    emailSubject(1)="About your office..."
+    emailFrom(1)="JanitDept"
+    emailTo(1)="JCD"
+    emailString(1)="Agent Denton,|n|n     I have to apologize for the 'unusual' state of your office.  It appears that one of our cleaning bots malfunctioned and for some reason decided to push all the trash it could find into your office.  I would have stopped the little thing before it made a real mess, but I was too busy trying to repair the four other cleaning bots which burned out after trying to push more of the heavy items you left on the floor.|n|n     I will have your office cleaned when time permits, but these repairs will take some time and they do come first.  Perhaps in the future you will heed my warnings about what you can and cannot leave on the floor.|n|n|nDaniel Matsuma|nHead of Janitorial Services"
 }

@@ -18,7 +18,7 @@ var localized String msgNoText;
 var Bool bFirstParagraph;
 var localized String ImageLabel;
 var localized String AddedToDatavaultLabel;
-var localized String SpecialText;
+var String SpecialText;					// Special, script-given text
 
 // ----------------------------------------------------------------------
 // Destroyed()

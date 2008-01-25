@@ -599,22 +599,25 @@ function ProcessScriptEmail(optional int Index, optional TextWindow winText)
 	{
 		info = player.GetLevelInfo();
 
-		for(i = 0; info.emailSubject[i] != ""; i++)
+		for(i = 0; i<ArrayCount(info.emailTo); i++)
 		{
-			if(info.emailTo[i] == winTerm.GetUserName())
+			if(info.emailTo[i] != "")
 			{
-				emailIndex++;
+				if(info.emailTo[i] == winTerm.GetUserName())
+				{
+					emailIndex++;
+		
+					if(emailIndex >= 9)
+						return;
 	
-				if(emailIndex >= 9)
-					return;
-
-				if(emailIndex < 0)
-					emailIndex = 0;
-	
-				emailInfo[emailIndex].emailSubject = info.emailSubject[i];
-				emailInfo[emailIndex].emailFrom = info.emailFrom[i];
-				emailInfo[emailIndex].emailTo = info.emailTo[i];
-				emailInfo[emailIndex].emailString = info.emailString[i];
+					if(emailIndex < 0)
+						emailIndex = 0;
+		
+					emailInfo[emailIndex].emailSubject = info.emailSubject[i];
+					emailInfo[emailIndex].emailFrom = info.emailFrom[i];
+					emailInfo[emailIndex].emailTo = info.emailTo[i];
+					emailInfo[emailIndex].emailString = info.emailString[i];
+				}
 			}
 		}
 	}

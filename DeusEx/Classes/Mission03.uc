@@ -154,7 +154,7 @@ function FirstFrame()
 				}
 				else
 				{
-					if(txPos + item.CollisionRadius >= 310.000)
+					if(txPos + item.CollisionRadius >= -310.000)
 						txPos = -384.0000;
 	
 					txPos += item.CollisionRadius;
@@ -812,5 +812,4 @@ defaultproperties
     emailSubject(0)="Please help us keep your office clean"
     emailFrom(0)="JanitDept"
     emailTo(0)="JCD"
-    emailString(0)="Agent Denton,|n|n     Welcome to UNATCO!  Allow me to introduce myself: I'm Dan, the head of Janitorial Services here at HQ.|n|n     Let me cut to the chase: the Janitorial Services Department is not as well-equipped as I would like it.  Rather than the state-of-the-art industrial cleaning robots you might find in the private sector, we're only able to requisition the basic model cleaning robot.  ('Budget considerations' is what Manderley keeps telling me)  This model is pretty limited, has no real pushing power to speak of, and is all but impossible to reprogram.  Every time anybody leaves something heavier than a desk chair on the floor the little things burn themselves out trying to push it out of the way so they can clean, which is exactly what happened earlier in your office.  Three of our cleaning bots had to have their drive motors completely replaced after trying to push that... whatever it is up against the shelf in your office.|n|n     As this only happened on your first day I can hardly blame you for not knowing.  However, in the future please try not to leave anything particularly heavy on the floor of your office.|n|n|nThanks,|n|nDaniel Matsuma|nHead of Janitorial Services"
-}
+    emailString(0)="Agent Denton,|n|n     Welcome to UNATCO!  Allow me to introduce myself: I'm Dan, the head of Janitorial Services here at HQ.|n|n     Let me cut to the chase: the Janitorial Services Department is not as well-equipped as I would like it.  Rather than the industrial cleaning robots you find in the private sector, we're only able to get the basic model.  ('Budget considerations', Manderley says)  This model has no real pushing power and is impossible to reprogram.  If anybody leaves something heavier than a desk chair on the floor the little things burn out trying to push it out of the way to clean, which is exactly what happened in your office.  Three of our cleaning bots had to have their drive motors replaced after trying to push that... thing up against the shelf in your office.|n|n     As this happened on your first day I can't blame you for not knowing, but in the future please try not to leave anything heavy on the floor of your office.|n|n|nThanks,|n|nDaniel Matsuma|nHead of Janitorial Services"
