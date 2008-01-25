@@ -120,6 +120,11 @@ auto state Pickup
 	}
 }
 
+function bool TestCycleable()
+{
+	return False;
+}
+
 defaultproperties
 {
      HitDamage=15
@@ -128,7 +133,7 @@ defaultproperties
      Misc1Sound=Sound'DeusExSounds.Weapons.NanoSwordHitFlesh'
      InventoryGroup=52
      ItemName="Prototype NanoSword (o' Doom)"
-     Description="Some kind of sword.  The only other information available is the following ops note:|n|n<UNATCO OPS FILE NOTE DM333-MAUVE> Congrats, you found the ultra-secret hidden unique weapon.  Pretty, innit? Just don't stab yourself in the eye while you're oggling it. -- Dan Matsuma <END NOTE>"
+     Description="Some kind of sword.  The only other information available is the following ops note:|n|n<UNATCO OPS FILE NOTE DM333-MAUVE> Congrats, you found the ultra-secret hidden unique weapon.  Pretty, innit? Just don't stab yourself in the eye while you're looking at it. -- Dan Matsuma <END NOTE>"
      beltDescription="DOOMSWORD"
      LightType=LT_Steady
      LightEffect=LE_WateryShimmer

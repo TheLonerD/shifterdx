@@ -22,6 +22,11 @@ simulated function PreBeginPlay()
 	}
 }
 
+function bool TestCycleable()
+{
+	return true;
+}
+
 //Damage increased from 15
 
 defaultproperties

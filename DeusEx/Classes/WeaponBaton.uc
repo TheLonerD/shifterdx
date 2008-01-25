@@ -58,6 +58,11 @@ function name WeaponDamageType()
 	return 'KnockedOut';
 }
 
+function bool TestCycleable()
+{
+	return true;
+}
+
 //Increased damage from 7 to 8
 
 defaultproperties

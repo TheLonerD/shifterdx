@@ -732,94 +732,10 @@ function bool LoadAmmo(int ammoNum)
 
 	newAmmoClass = AmmoNames[ammoNum];
 
-	if (newAmmoClass != None || TestCycleable() || (bHandToHand && Level.NetMode == NM_Standalone)) //|| bHasAltFire == True 
+	if (newAmmoClass != None || TestCycleable()) 
 	{
-		if ((newAmmoClass != AmmoName && !bHandToHand) || TestCycleable()) //|| bHasAltFire == True 
+		if (newAmmoClass != AmmoName) 
 		{
-
-			//TestCycleable() returns true if the item is a grenade, and if 
-			// it isn't a Scramble grenade if the call is made in an MP game
-			if(TestCycleable()) 
-			{
-
-				SwitchItem();
-
-/*				if(Self.IsA('WeaponLAM'))
-				{
-					W1 = P.FindInventoryType(Class'DeusEx.WeaponEMPGrenade');
-					Ws1 = "EMP Grenades";
-					W2 = P.FindInventoryType(Class'DeusEx.WeaponGasGrenade');
-					Ws2 = "Gas Grenades";
-					W3 = P.FindInventoryType(Class'DeusEx.WeaponNanoVirusGrenade');
-					Ws3 = "Scramble Grenades";
-				}
-				else if(Self.IsA('WeaponEMPGrenade'))
-				{
-					W1 = P.FindInventoryType(Class'DeusEx.WeaponGasGrenade');
-					Ws1 = "Gas Grenades";
-					W2 = P.FindInventoryType(Class'DeusEx.WeaponNanoVirusGrenade');
-					Ws2 = "Scramble Grenades";
-					W3 = P.FindInventoryType(Class'DeusEx.WeaponLAM');
-					Ws3 = "LAMs";
-				}
-				else if(Self.IsA('WeaponGasGrenade'))
-				{
-					W1 = P.FindInventoryType(Class'DeusEx.WeaponNanoVirusGrenade');
-					Ws1 = "Scramble Grenades";
-					W2 = P.FindInventoryType(Class'DeusEx.WeaponLAM');
-					Ws2 = "LAMs";
-					W3 = P.FindInventoryType(Class'DeusEx.WeaponEMPGrenade');
-					Ws3 = "EMP Grenades";
-				}
-				else if(Self.IsA('WeaponNanoVirusGrenade'))
-				{
-					W1 = P.FindInventoryType(Class'DeusEx.WeaponLAM');
-					Ws1 = "LAMs";
-					W2 = P.FindInventoryType(Class'DeusEx.WeaponEMPGrenade');
-					Ws2 = "EMP Grenades";
-					W3 = P.FindInventoryType(Class'DeusEx.WeaponGasGrenade');
-					Ws3 = "Gas Grenades";
-				}
-				if(W1 != None && DeusExWeapon(W1).TestCycleable())
-				{
-					P.ClientMessage(Sprintf("Switching to %d", Ws1));
-					AddObjectToBelt(W1,Self.beltPos,false);
-					DeusExPlayer(P).PutInHand(W1);
-					PutDown();
-				}
-				else if(W2 != None && DeusExWeapon(W2).TestCycleable())
-				{
-					if(DeusExWeapon(W1).TestCycleable())
-						P.ClientMessage(Sprintf(msgOutOf, Ws1));
-					P.ClientMessage(Sprintf("Switching to %d", Ws2));
-					AddObjectToBelt(W2,Self.beltPos,false);
-					DeusExPlayer(P).PutInHand(W2);
-					PutDown();
-				}
-				else if(W3 != None && DeusExWeapon(W3).TestCycleable())
-				{
-					if(DeusExWeapon(W1).TestCycleable())
-						P.ClientMessage(Sprintf(msgOutOf, Ws1));
-					if(DeusExWeapon(W2).TestCycleable())
-						P.ClientMessage(Sprintf(msgOutOf, Ws2));
-					P.ClientMessage(Sprintf("Switching to %d", Ws3));
-					AddObjectToBelt(W3,Self.beltPos,false);
-					DeusExPlayer(P).PutInHand(W3);
-					PutDown();
-				}
-				else
-				{
-					if(DeusExWeapon(W1).TestCycleable())
-						P.ClientMessage(Sprintf(msgOutOf, Ws1));
-					if(DeusExWeapon(W2).TestCycleable())
-						P.ClientMessage(Sprintf(msgOutOf, Ws2));
-					if(DeusExWeapon(W3).TestCycleable())
-						P.ClientMessage(Sprintf(msgOutOf, Ws3));
-				}
-*/				//Get the item to come up HERE
-				return false;
-			}
-
 			newAmmo = Ammo(P.FindInventoryType(newAmmoClass));
 			if (newAmmo == None)
 			{
@@ -923,8 +839,15 @@ function bool LoadAmmo(int ammoNum)
 //				return True;
 //			}
 		}
-		else if(bHandToHand && !TestCycleable())
+		else if(TestCycleable())
 		{
+			if(!bHandToHand)
+			{
+				SwitchItem();
+				return False;
+			}
+
+			//=== We need to replace this with instances of SwitchItem already
 			j = 0;
 			i = -1;
 			if(IsA('WeaponPrototypeSwordC'))
@@ -1119,10 +1042,11 @@ function CycleAmmo()
 {
 	local int i, last;
 
-	if (NumAmmoTypesAvailable() < 2 && (bHandToHand || TestCycleable()))
+	if (NumAmmoTypesAvailable() < 2)
 	{
 		//Call the item cycling option
-		LoadAmmo(0);
+		if(TestCycleable())
+			LoadAmmo(0);
 		return;
 	}
 
@@ -5413,8 +5337,7 @@ simulated function bool TestMPBeltSpot(int BeltSpot)
 
 // ----------------------------------------------------------------------
 // TestCycleable()
-// Returns true for the four grenade types, or all but scramble grenades
-// if the function is called in MP
+// Determines whether or not the weapon is part of a "cycle" group.
 // ----------------------------------------------------------------------
 function bool TestCycleable()
 {

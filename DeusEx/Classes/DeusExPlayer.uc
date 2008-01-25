@@ -1523,18 +1523,38 @@ function UpdateDynamicMusic(float deltaTime)
 	local ScriptedPawn npc;
 	local Pawn CurPawn;
 	local DeusExLevelInfo info;
-	local Music Song;
+	local Music LevelSong;
+	local String SongString;
+	local byte LevelSongSection;
 
 	//== In case any of the mission song info gets all f%$#ed up (like NYC in mission 8)
-	if (Level.Song == None || Music(DynamicLoadObject(String(Level.Song), class'Music', True)) == None)
+	if (Level.Song == None)
 	{
-		Song = Music(DynamicLoadObject(FlagBase.GetName('Song_Name') $"."$ FlagBase.GetName('Song_Name'), class'Music'));
+		//== If we have music playing we may as well just stick with that
+		LevelSong = Song;
 
-		if(Song == None)
+		if(LevelSong == None || LevelSong.Class.Name == '')
+		{
+			SongString = FlagBase.GetName('Song_Name1') $"."$ FlagBase.GetName('Song_Name2');
+
+			if(SongString != "None.None")
+			{
+				LevelSong = Music(DynamicLoadObject(SongString, class'Music'));
+				LevelSongSection = FlagBase.GetInt('Song_Section');
+
+				//=== Set the music mode incorrectly (probably) to force an update
+				musicMode = MUS_Conversation;
+			}
+		}
+
+		if(LevelSong == None)
 			return;
 	}
 	else
-		Song = Level.Song;
+	{
+		LevelSongSection = Level.SongSection;
+		LevelSong = Level.Song;
+	}
 
    // DEUS_EX AMSD In singleplayer, do the old thing.
    // In multiplayer, we can come out of dying.
@@ -1565,7 +1585,7 @@ function UpdateDynamicMusic(float deltaTime)
 
 		if (musicMode != MUS_Outro)
 		{
-			ClientSetMusic(Song, 5, 255, MTRAN_FastFade);
+			ClientSetMusic(LevelSong, 5, 255, MTRAN_FastFade);
 			musicMode = MUS_Outro;
 		}
 	}
@@ -1579,7 +1599,7 @@ function UpdateDynamicMusic(float deltaTime)
 			else
 				savedSection = 255;
 
-			ClientSetMusic(Song, 4, 255, MTRAN_Fade);
+			ClientSetMusic(LevelSong, 4, 255, MTRAN_Fade);
 			musicMode = MUS_Conversation;
 		}
 	}
@@ -1587,7 +1607,7 @@ function UpdateDynamicMusic(float deltaTime)
 	{
 		if (musicMode != MUS_Dying)
 		{
-			ClientSetMusic(Song, 1, 255, MTRAN_Fade);
+			ClientSetMusic(LevelSong, 1, 255, MTRAN_Fade);
 			musicMode = MUS_Dying;
 		}
 	}
@@ -1626,9 +1646,9 @@ function UpdateDynamicMusic(float deltaTime)
 						savedSection = 255;
 
 					if(musicChangeTimer >= 20.0)
-						ClientSetMusic(Song, 3, 255, MTRAN_Instant);
+						ClientSetMusic(LevelSong, 3, 255, MTRAN_Instant);
 					else
-						ClientSetMusic(Song, 3, 255, MTRAN_FastFade);
+						ClientSetMusic(LevelSong, 3, 255, MTRAN_FastFade);
 					musicMode = MUS_Combat;
 				}
 
@@ -1641,15 +1661,15 @@ function UpdateDynamicMusic(float deltaTime)
 				{
 					// use the default ambient section for this map
 					if (savedSection == 255)
-						savedSection = Level.SongSection;
+						savedSection = LevelSongSection;
 
 					if(musicChangeTimer >= 20.0)
-						ClientSetMusic(Song, savedSection, 255, MTRAN_Instant);
+						ClientSetMusic(LevelSong, savedSection, 255, MTRAN_Instant);
 					// fade slower for combat transitions
 					else if (musicMode == MUS_Combat)
-						ClientSetMusic(Song, savedSection, 255, MTRAN_SlowFade);
+						ClientSetMusic(LevelSong, savedSection, 255, MTRAN_SlowFade);
 					else
-						ClientSetMusic(Song, savedSection, 255, MTRAN_Fade);
+						ClientSetMusic(LevelSong, savedSection, 255, MTRAN_Fade);
 
 					savedSection = 255;
 					musicMode = MUS_Ambient;

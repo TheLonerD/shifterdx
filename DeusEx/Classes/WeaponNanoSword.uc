@@ -45,6 +45,11 @@ auto state Pickup
 	}
 }
 
+function bool TestCycleable()
+{
+	return true;
+}
+
 defaultproperties
 {
      LowAmmoWaterMark=0

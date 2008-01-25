@@ -52,7 +52,8 @@ event InitWindow()
 event DestroyWindow()
 {
 	// Shut down the music
-	player.ClientSetMusic(player.Level.Song, savedSongSection, 255, MTRAN_FastFade);
+	if(player.Level.Song != None) // But only if there's music to go back to
+		player.ClientSetMusic(player.Level.Song, savedSongSection, 255, MTRAN_FastFade);
 }
 
 // ----------------------------------------------------------------------

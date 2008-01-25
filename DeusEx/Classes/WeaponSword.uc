@@ -18,6 +18,11 @@ simulated function PreBeginPlay()
 	}
 }
 
+function bool TestCycleable()
+{
+	return True;
+}
+
 defaultproperties
 {
      LowAmmoWaterMark=0

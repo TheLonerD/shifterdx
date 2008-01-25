@@ -80,6 +80,11 @@ function Facelift(bool bOn)
 
 }
 
+function bool TestCycleable()
+{
+	return true;
+}
+
 //Damage up to 12 from 10
 
 defaultproperties

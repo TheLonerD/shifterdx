@@ -142,6 +142,11 @@ simulated function bool ClientFire( float value )
 	return true;
 }
 
+function bool TestCycleable()
+{
+	return true;
+}
+
 defaultproperties
 {
      LowAmmoWaterMark=0

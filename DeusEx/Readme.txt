@@ -55,6 +55,7 @@ run!
 into your C:\DeusEx\Textures folder for Shifter to work properly with HDTP.
 This file is installed to C:\DeusEx\HDTP\Textures by default.
 
+
 A BRIEF FAQ-TYPE THING:
 
 	No readme would be complete without a FAQ, and believe me, I do hear a
@@ -1195,12 +1196,6 @@ UPDATES:
 	them ammo, I wasn't setting the variable in their weapons which tracked
 	what ammo went to the gun.
 
-	 - Added in a method to specify "backup" music for a level if the music
-	specified (or the specification) it somehow corrupted/etc.  This most
-	commonly shows up in Hell's Kitchen the last time you make it back to
-	NYC, though personally I've always had music in that level.  Still, for
-	those of you who have no music this fix should solve the problem.
-
 	 - Changed the article on a number of Unique weapons to "the", so when
 	you pick them up it will say (for example) "the Boomstick", rather than
 	"a Boomstick".
@@ -1218,6 +1213,20 @@ UPDATES:
 	Daniel Matsuma: an Interactive Drama in Three Acts."  It's related to
 	the Office Storage feature, and will be most obvious during the escape
 	from UNATCO in mission 5.
+
+	 - Fixed the music in Hell's Kitchen the last time you make it back, or
+	rather fixed the lack OF music.  The new method allows me to specify a
+	"backup" music name in missionscript, which so far is only used for the
+	final Hell's Kitchen map.
+
+	 - Related to the music fix, changed the Play Music cheat window so
+	that it won't stop the music if there's no music to go back to.  This
+	will only be relevant on the aforementioned NYC Streets map (only for
+	Game Of The Year users) plus any mod maps which have no music set.
+
+	 - Fixed a problem in my code which could show up when a hand-to-hand
+	weapon with ammo ran out of ammo.  (An infinite loop actually)  All
+	a-ok now.
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 
