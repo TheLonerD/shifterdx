@@ -538,8 +538,20 @@ simulated function Destroyed()
 
 	player = DeusExPlayer(GetPlayerPawn());
 
-	if ((player != None) && (player.conPlay != None))
-		player.conPlay.ActorDestroyed(Self);
+	if (player != None)
+	{
+		if (player.conPlay != None)
+			player.conPlay.ActorDestroyed(Self);
+
+		//== Offload any relevant stealth skillpoint bonuses before this NPC is destroyed
+		if(PendingSkillPoints > 0)
+		{
+			PendingSkillPoints += player.FlagBase.GetInt('PendingSkillPoints');
+			player.FlagBase.SetInt('PendingSkillPoints', PendingSkillPoints,, 0);
+			PendingSkillPoints = 0; // Cover our Asses
+		}
+		
+	}
 
 	Super.Destroyed();
 }
@@ -3003,10 +3015,39 @@ function Carcass SpawnCarcass()
 						item.Destroy();
 					else
 					{
-						if(item.IsA('DeusExWeapon') && Weapon(item).AmmoType.AmmoAmount == 0)
-							Weapon(item).AmmoType.AmmoAmount = 1;
-						if(item.IsA('WeaponCombatKnife'))
-							Weapon(item).PickupAmmoCount = 1;
+						if(item.IsA('DeusExWeapon'))
+						{
+							if(Weapon(item).AmmoType != None)
+							{
+								//== Clear out any non-standard ammo the NPC might be using
+								if(DeusExAmmo(Weapon(item).AmmoType).bIsNonStandard && DeusExWeapon(item).AmmoNames[1] != None)
+								{
+									//== We don't want non-standard ammo in the chamber, no matter what
+									Weapon(item).AmmoType = None;
+									DeusExWeapon(item).AmmoName = DeusExWeapon(item).Default.AmmoName;
+
+									for(i = 0; i < 3; i++)
+									{
+										nextItem = FindInventoryType(DeusExWeapon(item).AmmoNames[i]);
+										if(nextItem != None)
+										{
+											if(!DeusExAmmo(nextItem).bIsNonStandard)
+											{
+												Weapon(item).AmmoName = DeusExWeapon(item).AmmoNames[i];
+												Weapon(item).AmmoType = DeusExAmmo(nextItem);
+											}
+										}
+									}
+									nextItem = item.Inventory;
+								}
+
+								if(Weapon(item).AmmoType.AmmoAmount == 0)
+									Weapon(item).AmmoType.AmmoAmount = 1;
+							}
+
+							if(item.IsA('WeaponCombatKnife'))
+								Weapon(item).PickupAmmoCount = 1;
+						}
 
 						carc.AddInventory(item);
 					}
@@ -3026,6 +3067,7 @@ function Carcass SpawnCarcass()
 function bool GenerateRandomInventory()
 {
 	local Inventory item;
+	local DeusExAmmo ammo;
 	local bool bHadWeapon, bHadPowerfulWeapon;
 	local DeusExPlayer dxPlayer;
 
@@ -3192,6 +3234,8 @@ function bool GenerateRandomInventory()
       	}
      	if(item != None)
      	{
+		ammo = DeusExAmmo(item);
+
 		item.InitialState='Idle2';
 		item.GiveTo(Self);
 		item.SetBase(Self);
@@ -3217,7 +3261,47 @@ function bool GenerateRandomInventory()
 				}
      			}
      		}
-		log("ScriptedPawn==>Item Given: " $item$ " " $Self);
+		log("ScriptedPawn==>Item Given: " $item$ " to " $Self);
+
+		if(dxPlayer.combatDifficulty >= 2.0 && ammo != None)
+		{
+			//== For some kinds of alternate ammo we want to let NPCs use it if they have it
+			if(item.IsA('AmmoDartFlare'))
+			{
+				item = Inventory;
+	
+				while(item != None)
+				{
+					if(WeaponMiniCrossbow(item) != None)
+					{
+						DeusExWeapon(item).AmmoType = ammo;
+						DeusExWeapon(item).AmmoName = ammo.Class;
+						DeusExWeapon(item).ClipCount = DeusExWeapon(item).ReloadCount;
+						item = None;
+						break;
+					}
+					item = item.Inventory;
+				}
+			}
+			else if(item.IsA('Ammo10mmEX'))
+			{
+				item = Inventory;
+	
+				while(item != None)
+				{
+					if(WeaponPistol(item) != None || WeaponStealthPistol(item) != None)
+					{
+						DeusExWeapon(item).AmmoType = ammo;
+						DeusExWeapon(item).AmmoName = ammo.Class;
+						DeusExWeapon(item).ClipCount = DeusExWeapon(item).ReloadCount;
+						item = None;
+						break;
+					}
+					item = item.Inventory;
+				}
+			}
+		}
+
      		item = None;
 
 		//== If we have a weapon in hand, make sure we're using the best one now
@@ -9161,6 +9245,9 @@ function Died(pawn Killer, name damageType, vector HitLocation)
 
 	if( (player == DeusExPlayer(Killer) || robokill) && skillon && player != None)
 	{
+		//== Killing the NPC pretty much takes out that stealth bonus
+		PendingSkillPoints = 0;
+
 		skillpt = default.HealthHead; //Skill points based on the health of the enemy
 
 		if(GetPawnAllianceType(player) == ALLIANCE_Hostile)

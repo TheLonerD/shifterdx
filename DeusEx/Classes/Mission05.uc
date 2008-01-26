@@ -44,8 +44,10 @@ function FirstFrame()
 		{
 			foreach AllActors(class'PaulDentonCarcass', carc)
 			{
-				//Spawn(Class'WeaponBlackjack', carc,, carc.Location + vect(0,0,10));
-				carc.FrobItems[0] = Class'WeaponBlackjack';
+				//== We don't want to place a second one, do we?
+				if(!flags.GetBool('M02_Blackjack_Placed'))
+					carc.FrobItems[0] = Class'WeaponBlackjack';
+
 				flags.SetBool('M05_Blackjack_Placed', true);
 			}
 		}
@@ -215,7 +217,11 @@ function FirstFrame()
 		if(!flags.GetBool('M05_Janitor_Note_Placed'))
 		{
 			dCube = spawn(class'Datacube',None,, vect(-258.821838,1236.736450,287.50));
-			flags.SetBool('M05_Janitor_Note_Placed',True,, 6);
+			if(dCube != None)
+			{
+				dCube.bAddToVault = False;
+				flags.SetBool('M05_Janitor_Note_Placed',True,, 6);
+			}
 		}
 
 		c = 0;
@@ -232,6 +238,7 @@ function FirstFrame()
 			if(dmatsuma != None)
 			{
 				dmatsuma.FamiliarName = "Daniel Matsuma";
+				dmatsuma.BindName = "DanMatsuma";
 				dmatsuma.setLocation(vect(-1478.937012, 712.059082, 575.173706));
 				dmatsuma.SpeechTargetAcquired = Sound'DeusExSounds.Player.MaleLaugh';
 				dmatsuma.ChangeAlly('Player', -1.0, true);

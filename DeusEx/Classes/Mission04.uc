@@ -20,6 +20,8 @@ function FirstFrame()
 	local vector loc;
 	local Class<Actor> spawnclass;
 	local name tname;
+	local Datacube dCube;
+	local Phone aPhone;
 
 	Super.FirstFrame();
 
@@ -84,8 +86,12 @@ function FirstFrame()
 		//== Set the phone in the room because it was there last time
 		if (!flags.GetBool('M04_Ans_Mach_Placed'))
 		{
-			if(Spawn(class'Phone',None,, vect(-613.23, -3236.47, 117.19)) != None)
+			aPhone = Spawn(class'Phone',None,, vect(-613.23, -3236.47, 117.19));
+			if(aPhone != None)
+			{
+				aPhone.AnswerSound = AS_Locked;
 				flags.SetBool('M04_Ans_Mach_Placed', True,, 5);
+			}
 		}
 	}
 	else if (localURL == "04_NYC_NSFHQ")
@@ -108,6 +114,7 @@ function FirstFrame()
 	}
 	else if (localURL == "04_NYC_UNATCOHQ")
 	{
+
 		//== Spawn all the stuff JC "stores" in his office
 		count = 0;
 		txPos = -384.0000;
@@ -293,7 +300,6 @@ function FirstFrame()
 				spawn(class'Trashbag2',None,, vect(-208.886200, 1117.331177, 268));
 				spawn(class'Trashbag2',None,, vect(-308.693726, 1286.664429, 268));
 				spawn(class'Trashbag2',None,, vect(-410.909485, 1402.909790, 268));
-				spawn(class'Trashbag2',None,, vect(-245.599792, 1245.005981, 302.80));
 				spawn(class'Trashbag2',None,, vect(-191.306396, 1279.779907, 302.80));
 				spawn(class'Trashbag2',None,, vect(-133.090500, 1402.909790, 330));
 
@@ -321,6 +327,24 @@ function FirstFrame()
 					emailCC[count] = "";
 					emailString[count] = "";
 				}
+			}
+		}
+
+		//== If you're a ruthless sonofabitch, Anna will give you a present.  Aww, how sweet
+		if(!flags.GetBool('M04_Anna_Present_Placed') && (Int(flags.GetBool('BatteryParkSlaughter')) + Int(flags.GetBool('M01PlayerAggressive')) + Int(flags.GetBool('TenderloinSlaughter')) > 1) )
+		{
+			if(spawn(class'Ammo10mmEX',None,, vect(-245.881714, 1241.609985, 290.25)) != None)
+			{
+				spawn(class'Ammo10mmEX',None,, vect(-245.881714, 1241.609985, 300.25));
+
+				dCube = spawn(class'Datacube',None,, vect(-258.821838,1236.736450,287.50));
+				if(dCube != None)
+				{
+					dCube.SpecialText = emailString[2];
+					dCube.bAddToVault = False;
+				}
+
+				flags.SetBool('M04_Anna_Present_Placed', True);
 			}
 		}
 	}
@@ -791,4 +815,5 @@ defaultproperties
     emailFrom(1)="JanitDept"
     emailTo(1)="JCD"
     emailString(1)="Agent Denton,|n|n     I have to apologize for the 'unusual' state of your office.  It appears that one of our cleaning bots malfunctioned and for some reason decided to push all the trash it could find into your office.  I would have stopped the little thing before it made a real mess, but I was too busy trying to repair the four other cleaning bots which burned out after trying to push more of the heavy items you left on the floor.|n|n     I will have your office cleaned when time permits, but these repairs will take some time and they do come first.  Perhaps in the future you will heed my warnings about what you can and cannot leave on the floor.|n|n|nDaniel Matsuma|nHead of Janitorial Services"
+    emailString(2)="Agent Denton,|n|n     I notice that command has been slow to issue you an Assault Rifle.  It has not stopped you from showing great efficiency in handling the NSF, but it must be frustrating to be so lightly armed.  I have obtained for you this special ammo in the hopes of lessening that frustration.|n|n     I have just been instructed to meet you and assist with the Lebedev assignment.  Perhaps I will demonstrate the usefulness of this ammo there.|n|n|nAnna Navarre"
 }

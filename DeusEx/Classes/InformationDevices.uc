@@ -141,6 +141,13 @@ function CreateInfoWindow()
 			while(parser.ProcessText())
 				ProcessTag(parser);
 
+			//== Special stuff.  Append the SpecialText string to this if specified by script
+			if(SpecialText != "" && winText != None)
+			{
+				winText.AppendText(SpecialText);
+				vaultString = vaultString $ SpecialText;
+			}
+
 			parser.CloseText();
 
 			// Check to see if we need to save this string in the 

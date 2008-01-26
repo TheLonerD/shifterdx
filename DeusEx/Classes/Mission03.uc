@@ -3,7 +3,8 @@
 //=============================================================================
 class Mission03 expands MissionScript;
 
-var localized String VoIPText, VoIPTText, VoIPNText;
+var localized String VoIPText, VoIPTText, VoIPNText, VoIPJoin;
+var String VoIPNumber;
 
 // ----------------------------------------------------------------------
 // FirstFrame()
@@ -28,6 +29,7 @@ function FirstFrame()
 	local vector loc;
 	local Class<Actor> spawnclass;
 	local name tname;
+	local Phone aPhone;
 
 	Super.FirstFrame();
 
@@ -46,6 +48,10 @@ function FirstFrame()
 			foreach AllActors(class'UNATCOTroop', troop, 'UNATCOTroop')
 				troop.EnterWorld();
 
+			//== All the phones should now play the "locked" message
+			foreach AllActors(class'Phone', aPhone)
+				aPhone.AnswerSound = AS_Locked;
+
 			//== clear the VoIP conversation if we didn't hear it already
 			if(flags.GetBool('M03ConversationAdded'))
 			{
@@ -53,7 +59,7 @@ function FirstFrame()
 				{
 					for(count = 0; count < 4; count++)
 					{
-						if(comp.specialOptions[count].Text == "Join active VoIP session")
+						if(comp.specialOptions[count].Text == VoIPText)
 						{
 							comp.specialOptions[count].Text = "";
 							comp.specialOptions[count].TriggerEvent = '';
@@ -62,12 +68,33 @@ function FirstFrame()
 								if(comp.specialOptions[count + 1].Text != "")
 								{
 									comp.specialOptions[count].bAlreadyTriggered = True;
-									comp.specialOptions[count].Text = "No VoIP sessions currently active";
+									comp.specialOptions[count].Text = VoIPNText;
 								}
 							}
 						}
 					}
 				}
+			}
+		}
+		else if(!flags.GetBool('M03_Helibase_Phones_Active'))
+		{
+			count = 0;
+			foreach AllActors(class'Phone', aPhone)
+			{
+				//== There's a phone in a rather secure part of the helibase we can use for the lebedev convo
+				if(count == 1)
+				{
+					aPhone.AnswerSound = AS_Dialtone;
+					aPhone.DialEvent = 'LebVoIP';
+					aPhone.validNumber = VoIPNumber;
+					aPhone.bEventOnlyOnce = True;
+				}
+				else
+					aPhone.AnswerSound = AS_Unrecognized;
+
+				count++;
+
+				flags.SetBool('M03_Helibase_Phones_Active', True);
 			}
 		}
 	}
@@ -410,6 +437,7 @@ function Timer()
 	local ConversationTrigger contrig;
 	local ComputerPersonal comp;
 	local FlagTrigger flagtrig;
+	local Phone aPhone;
 
 	Super.Timer();
 
@@ -511,8 +539,8 @@ function Timer()
 				if(Juan != None)
 				{
 					Juan.bInvincible = True;
-					Juan.UnfamiliarName = "JL//NYNet.3994.293.700";
-					Juan.FamiliarName = "JL//NYNet.3994.293.700";
+					Juan.UnfamiliarName = "juan//NYCNET.7786.786.658"; //Juan's name is the one Paul's bounced email was sent to, but corrected
+					Juan.FamiliarName = "juan//NYCNET.7786.786.658";
 					Juan.LeaveWorld();
 				}
 			}until(Juan != None);
@@ -533,7 +561,7 @@ function Timer()
 
 			foreach AllActors(class'ComputerPersonal', comp)
 			{
-				if(comp.GetUserName(0) == "USER")
+				if(comp.GetUserName(0) == "USER") //"etodd" for the other computer
 				{
 					for(count = 0; count < 4; count++)
 					{
@@ -543,9 +571,9 @@ function Timer()
 	
 					if(count < 4)
 					{
-						comp.specialOptions[count].Text = VoIPText; //"Join active VoIP session";
-						comp.specialOptions[count].TriggerEvent = 'LebVoIP';
-						comp.specialOptions[count].TriggerText = VoIPTText; //"Establishing Datalink connection to VoIP socket...";
+						comp.specialOptions[count].Text = VoIPText;
+						//comp.specialOptions[count].TriggerEvent = 'LebVoIP'; //Disabled due to new activation method
+						comp.specialOptions[count].TriggerText = VoIPTText $ " " $ VoIPNumber;
 						comp.specialOptions[count].bTriggerOnceOnly = True;
 						break;
 					}
@@ -569,7 +597,7 @@ function Timer()
 				foreach AllActors(class'TracerTong', ttong)
 					ttong.EnterWorld();
 
-				Player.ClientMessage("VoIP socket connection established");
+				Player.ClientMessage(VoIPJoin);
 				Player.StartConversationByName('OverhearLebedev', Player);
 				flags.SetBool('LebConvoInit', false);
 				flags.SetBool('LebConvoPlaying', true);
@@ -700,7 +728,27 @@ function Timer()
 				flags.GetBool('JuanLebedev_Dead'))
 			{
 				foreach AllActors(class'AnnaNavarre', Anna)
+				{
 					Anna.EnterWorld();
+
+					//== Anna gets a pistol and some explosive ammo, with which to blow shit up
+					pistol = spawn(class'WeaponPistol',None);
+					if(pistol != None)
+					{
+						pistol.InitialState='Idle2';
+						pistol.GiveTo(Anna);
+						pistol.SetBase(Anna);
+
+						pistol.AmmoType = spawn(class'Ammo10mmEX',Anna);
+						if(pistol.AmmoType != None)
+						{
+							pistol.AmmoType.InitialState='Idle2';
+							pistol.AmmoType.GiveTo(Anna);
+							pistol.AmmoType.SetBase(Anna);
+							pistol.AmmoType.AmmoAmount += 45;
+						}
+					}
+				}
 				flags.SetBool('MS_AnnaUnhidden', True,, 4);
 			}
 		}
@@ -806,9 +854,11 @@ function Timer()
 
 defaultproperties
 {
-    VoIPText="Join active VoIP session"
-    VoIPTText="Establishing Datalink connection to VoIP socket..."
+    VoIPText="Display VoIP status and details"
+    VoIPTText="VoIP session active on telephony node"
     VoIPNText="No VoIP sessions currently active"
+    VoIPJoin="VoIP socket connection established via datalink"
+    VoIPNumber="5839009"
     emailSubject(0)="Please help us keep your office clean"
     emailFrom(0)="JanitDept"
     emailTo(0)="JCD"

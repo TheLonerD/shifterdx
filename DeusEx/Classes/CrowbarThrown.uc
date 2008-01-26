@@ -38,22 +38,10 @@ simulated function Tick(float deltaTime)
 
 auto simulated state Flying
 {
-	simulated function ProcessTouch (Actor Other, Vector HitLocation)
-	{
-		Super.ProcessTouch(Other, HitLocation);
-	}
-	simulated function HitWall(vector HitNormal, actor Wall)
-	{
-		Super.HitWall(HitNormal, Wall);
-	}
 	simulated function Explode(vector HitLocation, vector HitNormal)
 	{
 		spawn(spawnWeaponClass, None,, HitLocation + (HitNormal * 0.1));
 		Super.Explode(HitLocation, HitNormal);
-	}
-	simulated function BeginState()
-	{
-		Super.BeginState();
 	}
 }
 
@@ -68,7 +56,7 @@ defaultproperties
      ItemArticle="a"
      speed=750.000000
      MaxSpeed=750.000000
-     Damage=20.000000
+     Damage=24.000000
      MomentumTransfer=1000
      ImpactSound=Sound'DeusExSounds.Generic.MetalHit2'
      Mesh=LodMesh'DeusExItems.CrowbarPickup'

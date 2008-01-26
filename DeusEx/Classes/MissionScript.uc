@@ -129,7 +129,8 @@ function FirstFrame()
 	// Check to see which NPCs should be dead from prevous missions
 	foreach AllActors(class'ScriptedPawn', P)
 	{
-		if(P.PendingSkillPoints > 0)
+		//== Also handle pending skill points for stealth bonuses
+		if(P.PendingSkillPoints > 0 && i > 0)
 		{
 			i -= P.PendingSkillPoints;
 		}

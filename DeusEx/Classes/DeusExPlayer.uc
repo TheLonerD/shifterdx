@@ -1537,13 +1537,19 @@ function UpdateDynamicMusic(float deltaTime)
 		{
 			SongString = FlagBase.GetName('Song_Name1') $"."$ FlagBase.GetName('Song_Name2');
 
+			log("UpdateDynamicMusic()============> No music specified in map, loading from flags.  Attempted load name is "$ SongString);
+
 			if(SongString != "None.None")
 			{
 				LevelSong = Music(DynamicLoadObject(SongString, class'Music'));
 				LevelSongSection = FlagBase.GetInt('Song_Section');
 
-				//=== Set the music mode incorrectly (probably) to force an update
-				musicMode = MUS_Conversation;
+				//== We'll just assume this is the appropriate song type.  Later updates will catch us if we're wrong
+				musicMode = MUS_Ambient;
+
+				//== If there's no music then we want to
+				ClientSetMusic(LevelSong, LevelSongSection, 255, MTRAN_Instant);
+				return;
 			}
 		}
 

@@ -1181,6 +1181,8 @@ function name WeaponDamageType()
 				damageType = 'Sabot';
 			else if(AmmoType.IsA('AmmoShell'))
 				damageType = 'Shell';
+			else if(AmmoType.IsA('Ammo10mmEX'))
+				damageType = 'Exploded';
 		}
 	}
 	else if (projClass != None)
@@ -4125,78 +4127,44 @@ simulated function bool UpdateInfo(Object winObject)
 
 	winInfo.AddAmmoTypesItem(msgInfoAmmo, str);
 
+	if(Level.NetMode != NM_Standalone)
+		dmg = Default.mpHitDamage;
+	else
+		dmg = HitDamage;
+
+	//== For explosive, instant-hit weapons the damage is lowballed by default
+	if(bInstantHit && WeaponDamageType() == 'Exploded')
+		dmg *= 5;
+
 	// base damage
 	if (AreaOfEffect == AOE_Cone)
 	{
 		if (bInstantHit)
 		{
-			if (Level.NetMode != NM_Standalone)
-			{
-				dmg = Default.mpHitDamage * 5;
-				str = String(Default.mpHitDamage) $" (x5)";
-			}
-			else
-			{
-				dmg = HitDamage * 5; //Default.HitDamage * 5;
-				str = String(HitDamage) $" (x5)";
-			}
+			str = String(dmg) $" (x5)";
+			dmg *= 5;
 		}
 		else
 		{
-			if (Level.NetMode != NM_Standalone)
-			{
-				dmg = Default.mpHitDamage * 3;
-				str = String(Default.mpHitDamage) $" (x3)";
-			}
-			else
-			{
-				dmg = HitDamage * 3;
-				str = String(HitDamage) $" (x3)";
-			}
+			str = String(dmg) $" (x3)";
+			dmg *= 3;
 		}
 	}
 	else if(AreaOfEffect == AOE_Sphere)
 	{
 		if (bInstantHit)
 		{
-			if (Level.NetMode != NM_Standalone)
-			{
-				dmg = Default.mpHitDamage * 15;
-				str = String(Default.mpHitDamage) $" (x15)";
-			}
-			else
-			{
-				dmg = HitDamage * 15; //Default.HitDamage * 15;
-				str = String(HitDamage) $" (x15)";
-			}
+			str = String(dmg) $" (x15)";
+			dmg *= 15;
 		}
 		else
 		{
-			if (Level.NetMode != NM_Standalone)
-			{
-				dmg = Default.mpHitDamage * 7;
-				str = String(Default.mpHitDamage) $" (x7)";
-			}
-			else
-			{
-				dmg = HitDamage * 7;
-				str = String(HitDamage) $" (x7)";
-			}
+			str = String(dmg) $" (x7)";
+			dmg *= 7;
 		}
 	}
 	else
-	{
-		if (Level.NetMode != NM_Standalone)
-		{
-			dmg = Default.mpHitDamage;
-			str = String(dmg);
-		}
-		else
-		{
-			dmg = HitDamage; //Default.HitDamage;
-			str = String(dmg);
-		}
-	}
+		str = String(dmg);
 
 	//str = String(dmg);
 	mod = 1.0 - GetWeaponSkill();

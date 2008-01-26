@@ -167,6 +167,7 @@ function Timer()
 	local ConListItem conList;
 	local ComputerPublic compPub;
 	local Pillow fluffy;
+	local DataCube dCube;
 
 	Super.Timer();
 
@@ -493,12 +494,28 @@ function Timer()
 				amach.BindName = "AnsweringMachine";
 				amach.bUsing = True;
 				conList = New class'ConListItem';
-				conList.con = Conversation(DynamicLoadObject("DeusExConText.Conversation354",class'Conversation'));
+				conList.con = Conversation(DynamicLoadObject("DeusExConText.Conversation354",class'Conversation')); //Took me forever to find this
 				amach.ConListItems = conList;
 				amach.ringFreq = 0.0;
 
 				flags.SetBool('M02_Ans_Mach_Placed', True,, 3);
 			}
+		}
+
+		//== If the player's been all non-violent and crap, give him an extra tool to continue doing so
+		if(!flags.GetBool('M02_Blackjack_Placed') && !flags.GetBool('M01PlayerAggressive') && !flags.GetBool('BatteryParkSlaughter'))
+		{
+			foreach AllActors(class'Datacube', dCube)
+			{
+				if(dCube.textTag == '02_Datacube07')
+				{
+					dCube.SpecialText = emailString[0];
+					break;
+				}
+			}
+
+			if(spawn(class'WeaponBlackjack', None,, vect(-103.00, -2685.00, 94.00), rot(0,16383,0)) != None)
+				flags.SetBool('M02_Blackjack_Placed', True,, 9); //== Further placements of the blackjack are sorta moot
 		}
 	}
 	else if (localURL == "02_NYC_UNDERGROUND")
@@ -530,4 +547,5 @@ function Timer()
 
 defaultproperties
 {
+   emailString(0)="|n|nP.S. You've managed to keep the casualties to a minimum so far, but I know it hasn't been easy.  I've left you a baton I modified that should make the use of minimal force less challenging."
 }

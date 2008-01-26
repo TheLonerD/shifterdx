@@ -14,6 +14,7 @@ var bool bInstantSuccess;		// we had the skill, so grant access immediately
 var bool bWait;
 
 var Keypad keypadOwner;			// what keypad owns this window?
+var Phone phoneOwner;			// what Phone owns this window?
 
 var Texture texBackground;
 var Texture texBorder;
@@ -67,7 +68,16 @@ event DestroyWindow()
 {
 	Super.DestroyWindow();
 
-	keypadOwner.keypadwindow = None;
+	if(keypadOwner != None)
+		keypadOwner.keypadwindow = None;
+
+	if(phoneOwner != None)
+	{
+		phoneOwner.dialwindow = None;
+		phoneOwner.bUsing = False;
+		if(phoneOwner.AmbientSound != None && phoneOwner.TimerRate <= 0.0)
+			phoneOwner.AmbientSound = None;
+	}
 }
 
 // ----------------------------------------------------------------------
@@ -90,15 +100,20 @@ function InitData()
 
 function Tick(float deltaTime)
 {
+	local string theValidCode;
+
 	if (!bFirstFrameDone)
 	{
 		SetCursorPos(width, height);
 		bFirstFrameDone = True;
 
-		if (bInstantSuccess || keypadOwner.validCode == "")
+		if(keypadOwner != None)
 		{
-			inputCode = keypadOwner.validCode;
-			ValidateCode();
+			if (bInstantSuccess || keypadOwner.validCode == "")
+			{
+				inputCode = keypadOwner.validCode;
+				ValidateCode();
+			}
 		}
 	}
 }
@@ -306,8 +321,16 @@ function PressButton(int num)
 	winText.SetTextColor(colHeaderText);
 	winText.SetText(msgEnterCode);
 
-	if (Len(inputCode) == Len(keypadOwner.validCode))
-		ValidateCode();
+	if(keypadOwner != None)
+	{
+		if (Len(inputCode) == Len(keypadOwner.validCode))
+			ValidateCode();
+	}
+	else if(phoneOwner != None)
+	{
+		if (Len(inputCode) == Len(phoneOwner.validNumber))
+			ValidateCode();
+	}
 }
 
 // ----------------------------------------------------------------------
@@ -321,39 +344,73 @@ function ValidateCode()
 	local Actor A;
 	local int i;
 
-	if (inputCode == keypadOwner.validCode && (inputCode != "" || bInstantSuccess))
+	if(keypadOwner != None)
 	{
-		if (keypadOwner.Event != '')
+		if (inputCode == keypadOwner.validCode && (inputCode != "" || bInstantSuccess))
 		{
-			if (keypadOwner.bToggleLock)
+			if (keypadOwner.Event != '')
 			{
-				// Toggle the locked/unlocked state of the DeusExMover
-            player.KeypadToggleLocks(keypadOwner);
+				if (keypadOwner.bToggleLock)
+				{
+					// Toggle the locked/unlocked state of the DeusExMover
+	            player.KeypadToggleLocks(keypadOwner);
+				}
+				else
+				{
+					// Trigger the successEvent
+	            player.KeypadRunEvents(keypadOwner, True);
+				}
+			}
+	
+			// UnTrigger event (if used)
+	      // DEUS_EX AMSD Export to player(and then to keypad), for multiplayer.
+	      player.KeypadRunUntriggers(keypadOwner);
+	
+			player.PlaySound(keypadOwner.successSound, SLOT_None);
+			winText.SetTextColor(colGreen);
+			winText.SetText(msgAccessGranted);
+		}
+		else
+		{
+			//Trigger failure event
+	      if (keypadOwner.FailEvent != '')      
+	         player.KeypadRunEvents(keypadOwner, False);
+	
+			player.PlaySound(keypadOwner.failureSound, SLOT_None);
+			winText.SetTextColor(colRed);
+			winText.SetText(msgAccessDenied);
+		}
+	}
+	else if(phoneOwner != None)
+	{
+		if(inputCode == phoneOwner.validNumber && inputCode != "")
+		{
+			player.PlaySound(Sound'DeusExSounds.Generic.Beep2', SLOT_None);
+
+			//== Disable the dialtone
+			phoneOwner.AmbientSound = None;
+
+			if(phoneOwner.DialEvent != '')
+			{
+				foreach player.AllActors(class'Actor', A, phoneOwner.DialEvent)
+					A.Trigger(phoneOwner, player);
+
+				if(phoneOwner.bEventOnlyOnce)
+					phoneOwner.DialEvent = '';
 			}
 			else
-			{
-				// Trigger the successEvent
-            player.KeypadRunEvents(keypadOwner, True);
-			}
+				player.PlaySound(Sound'Menu_SpeechTest', SLOT_None);
+
+			winText.SetTextColor(colGreen);
+			winText.SetText(msgAccessGranted);
 		}
-
-		// UnTrigger event (if used)
-      // DEUS_EX AMSD Export to player(and then to keypad), for multiplayer.
-      player.KeypadRunUntriggers(keypadOwner);
-
-		player.PlaySound(keypadOwner.successSound, SLOT_None);
-		winText.SetTextColor(colGreen);
-		winText.SetText(msgAccessGranted);
-	}
-	else
-	{
-		//Trigger failure event
-      if (keypadOwner.FailEvent != '')      
-         player.KeypadRunEvents(keypadOwner, False);
-
-		player.PlaySound(keypadOwner.failureSound, SLOT_None);
-		winText.SetTextColor(colRed);
-		winText.SetText(msgAccessDenied);
+		else
+		{
+			phoneOwner.AmbientSound = Sound'PhoneBusy';
+			phoneOwner.SetTimer(3.0, False);
+			winText.SetTextColor(colRed);
+			winText.SetText(msgAccessDenied);
+		}
 	}
 
 	bWait = True;
@@ -368,10 +425,18 @@ function ValidateCode()
 
 function KeypadDelay(int timerID, int invocations, int clientData)
 {
+	local string theValidCode;
+
 	bWait = False;
 
 	// if we entered a valid code, get out
-	if (inputCode == keypadOwner.validCode)
+	if(keypadOwner != None)
+		theValidCode = keypadOwner.validCode;
+	else if(phoneOwner != None)
+		theValidCode = phoneOwner.validNumber;
+
+	//== One chance only with phones, then we hang up
+	if (inputCode == theValidCode || phoneOwner != None)
 		root.PopWindow();
 	else
 	{
@@ -416,10 +481,16 @@ function string IndexToString(int num)
 function GenerateKeypadDisplay()
 {
 	local int i;
+	local string theValidCode;
 
 	msgEnterCode = "";
 
-	for (i=0; i<Len(keypadOwner.validCode); i++)
+	if(keypadOwner != None)
+		theValidCode = keypadOwner.validCode;
+	else if(phoneOwner != None)
+		theValidCode = phoneOwner.validNumber;
+
+	for (i=0; i<Len(theValidCode); i++)
 	{
 		if (i == Len(inputCode))
 			msgEnterCode = msgEnterCode $ "|p5";

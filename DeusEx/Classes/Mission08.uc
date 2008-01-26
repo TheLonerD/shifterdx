@@ -15,6 +15,7 @@ function FirstFrame()
 	local FordSchick Ford;
 	local vector loc;
 	local name tname, songname;
+	local Phone aPhone;
 
 	Super.FirstFrame();
 
@@ -62,7 +63,7 @@ function FirstFrame()
 	}
 	else if(localURL == "08_NYC_HOTEL")
 	{
-		if(!flags.GetBool('PaulDenton_Dead') && !flags.GetBool('M08_Blackjack_Placed'))
+		if(!flags.GetBool('PaulDenton_Dead') && !flags.GetBool('M08_Blackjack_Placed') && !flags.GetBool('M02_Blackjack_Placed'))
 		{
 			loc.X = -880.00;
 			loc.Y = -1203.00;
@@ -74,8 +75,12 @@ function FirstFrame()
 		//== We need to set the phone here one last time
 		if (!flags.GetBool('M08_Ans_Mach_Placed'))
 		{
-			if(Spawn(class'Phone',None,, vect(-613.23, -3236.47, 117.19)) != None)
+			aPhone = Spawn(class'Phone',None,, vect(-613.23, -3236.47, 117.19));
+			if(aPhone != None)
+			{
+				aPhone.AnswerSound = AS_ShutDown;
 				flags.SetBool('M08_Ans_Mach_Placed', True,, 9);
+			}
 		}
 	}
 	else if(localURL == "08_NYC_STREET")

@@ -1215,9 +1215,10 @@ UPDATES:
 	from UNATCO in mission 5.
 
 	 - Fixed the music in Hell's Kitchen the last time you make it back, or
-	rather fixed the lack OF music.  The new method allows me to specify a
+	rather fixed the lack of music.  The new method allows me to specify a
 	"backup" music name in missionscript, which so far is only used for the
-	final Hell's Kitchen map.
+	final Hell's Kitchen map.  Game of the Year users seem to be the only
+	people who are affected by this, oddly enough.
 
 	 - Related to the music fix, changed the Play Music cheat window so
 	that it won't stop the music if there's no music to go back to.  This
@@ -1227,6 +1228,53 @@ UPDATES:
 	 - Fixed a problem in my code which could show up when a hand-to-hand
 	weapon with ammo ran out of ammo.  (An infinite loop actually)  All
 	a-ok now.
+
+	 - Added in code for Stealth Skillpoint Bonuses which handles a type
+	of situation I hadn't allowed for previously: if the NPC is removed
+	from the game in a manner other than being killed by you.  This will
+	probably result in far larger bonuses for players opting to go the
+	stealth route.
+
+	 - Moved the Blackjack to a new location, at least if you behave a
+	certain way during the first few missions.  If you behave in a
+	different manner you will instead find two boxes of 10mmEX ammo in a
+	later game location.
+
+	 - Renamed Juan Lebedev in the restored conversation so his name is
+	similar to the bounced email you find in Paul's inbox.  (It looks like
+	Paul forgot to add a period to the address in that bounced email)
+
+	 - Made sure that the WeaponDamageType function would report the right
+	damage type (Exploded) for 10mm EX ammo.  This should change things for
+	both AI routines as well as what shows up on the item info screen.
+
+	 - Reworked the weapon info display window so that it properly shows
+	the increased damage of weapons using explosive rounds.  The code is
+	also a lot more efficient than the old code.
+
+	 - Implemented some unused code for Phones which allowed the sound you
+	hear when frobbing a phone to be set via a variable.  Only a few phones
+	in the game used anything but the default variable, so you won't notice
+	much difference.  Those that do use the default variable will use the
+	normal "random sound" behavior.  That is, save for the ones I decide to
+	alter via script now that I've got this new code to play with.
+
+	 - Okay, I couldn't stop there.  I've now added code to allow for
+	WORKING phones, as in when you frob them you get a dialtone and you can
+	dial numbers via a keypad.  So far this is only going to be used in one
+	area: a certain private airport.  Guess why.
+
+	 - Added code to the random inventory functions so that when NPCs are
+	given certain non-standard ammo types they will load them into any of
+	their weapons that can take it. (Medium and above, anyway)  This will
+	not allow you to pick up any of their ammo early due to some other code
+	I've added, with the possible exception of Flare Darts since if they
+	miss you can pull the damm things out of the nearby terrain.  Since
+	Flare Darts are so relatively early in the game though I figured the
+	risk of screwing up normal game progress was minimal.
+
+	 - Upped the damage on thrown Crowbars a little.  Somehow the damage
+	didn't seem high enough.
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 
