@@ -109,7 +109,7 @@ function BeginAlarm()
 	SoundVolume = 128;
 	SoundRadius = 64;
 	SoundPitch = 64;
-	lastAlarmTime = Level.TimeSeconds;
+	lastAlarmTime = 0; //Level.TimeSeconds;
 	AIStartEvent('Alarm', EAITYPE_Audio, SoundVolume/255.0, 25*(SoundRadius+1));
 
 	// make sure we can't go into stasis while we're alarming
@@ -122,7 +122,7 @@ function EndAlarm()
 	SoundVolume = Default.SoundVolume;
 	SoundRadius = Default.SoundRadius;
 	SoundPitch = Default.SoundPitch;
-	lastAlarmTime = 0;
+	lastAlarmTime = alarmTimeout + 1; //0;
 	AIEndEvent('Alarm', EAITYPE_Audio);
 
 	// reset our stasis info
@@ -133,16 +133,20 @@ function Tick(float deltaTime)
 {
 	Super.Tick(deltaTime);
 
+	if(lockoutTime <= lockoutDelay)
+		lockoutTime += deltaTime;
+
+	lastHackTime += deltaTime;
+
    // DEUS_EX AMSD IN multiplayer, set lockout to 0
    if (Level.NetMode != NM_Standalone)
       bLockedOut = False;
 
 	// shut off the alarm if the timeout has expired
-	if (lastAlarmTime != 0)
-	{
-		if (Level.TimeSeconds - lastAlarmTime >= alarmTimeout)
-			EndAlarm();
-	}
+	if(lastAlarmTime >= alarmTimeout) //(Level.TimeSeconds - lastAlarmTime >= alarmTimeout)
+		EndAlarm();
+	else
+		lastAlarmTime += deltaTime;
 }
 // ----------------------------------------------------------------------
 // ChangePlayerVisibility()
@@ -324,7 +328,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 			// computer skill shortens the lockout duration
 			delay = lockoutDelay / player.SkillSystem.GetSkillLevelValue(class'SkillComputer');
 
-			elapsed = Level.TimeSeconds - lockoutTime;
+			elapsed = lockoutTime; //Level.TimeSeconds - lockoutTime;
 			if (elapsed < delay)
 				player.ClientMessage(Sprintf(msgLockedOut, Int(delay - elapsed)));
 			else
@@ -449,7 +453,8 @@ defaultproperties
 {
      bOn=True
      lockoutDelay=30.000000
-     lastHackTime=-9999.000000
+     lockoutTime=31.000000
+     lastHackTime=9999.000000
      msgLockedOut="Terminal is locked out for %d more seconds"
      nodeName="UNATCO"
      titleString="United Nations Anti-Terrorist Coalition (UNATCO)"

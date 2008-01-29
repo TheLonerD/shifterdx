@@ -27,7 +27,7 @@ function BeginAlarm()
 	AmbientSound = Sound'Klaxon2';
 	SoundVolume = 128;
 	SoundRadius = 64;
-	lastAlarmTime = Level.TimeSeconds;
+	lastAlarmTime = 0; //Level.TimeSeconds;
 	AIStartEvent('Alarm', EAITYPE_Audio, SoundVolume/255.0, 25*(SoundRadius+1));
 
 	// make sure we can't go into stasis while we're alarming
@@ -37,7 +37,7 @@ function BeginAlarm()
 function EndAlarm()
 {
 	AmbientSound = None;
-	lastAlarmTime = 0;
+	lastAlarmTime = alarmTimeout + 1;
 	AIEndEvent('Alarm', EAITYPE_Audio);
 
 	// reset our stasis info
@@ -53,11 +53,10 @@ function Tick(float deltaTime)
 	if (emitter != None)
 	{
 		// shut off the alarm if the timeout has expired
-		if (lastAlarmTime != 0)
-		{
-			if (Level.TimeSeconds - lastAlarmTime >= alarmTimeout)
-				EndAlarm();
-		}
+		if (lastAlarmTime >= alarmTimeout) //(Level.TimeSeconds - lastAlarmTime >= alarmTimeout)
+			EndAlarm();
+		else
+			lastAlarmTime += deltaTime;
 
 		// if we've been EMP'ed, act confused
 		if (bConfused && bIsOn)

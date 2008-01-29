@@ -153,6 +153,12 @@ function FirstFrame()
 	}
 	else if (localURL == "05_NYC_UNATCOHQ")
 	{
+		if(!flags.GetBool('M05_AmmoDragon_Placed'))
+		{
+			if(spawn(class'AmmoDragon',None,, vect(836.209473,-1053.622070,-4.00)) != None)
+				flags.SetBool('M05_AmmoDragon_Placed',True);
+		}
+
 		// if Miguel is following the player, unhide him
 		if (flags.GetBool('MiguelFollowing'))
 		{

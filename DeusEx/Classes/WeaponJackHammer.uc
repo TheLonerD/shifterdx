@@ -13,7 +13,7 @@ function bool loadAmmo(int ammonum)
 	if(AmmoType.IsA('AmmoSabot'))
 	{
 		AreaOfEffect = AOE_Cone;
-		HitDamage = 3;
+		HitDamage = Default.HitDamage * 3;
 	}
 	else
 	{

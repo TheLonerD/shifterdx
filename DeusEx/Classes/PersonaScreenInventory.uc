@@ -1195,7 +1195,7 @@ function EnableButtons()
 
 function UpdateDragMouse(float newX, float newY)
 {
-	local Window findWin;
+	local Window findWin, itemWindow;
 	local Float relX, relY;
 	local Int slotX, slotY;
 	local PersonaInventoryItemButton invButton;
@@ -1217,6 +1217,18 @@ function UpdateDragMouse(float newX, float newY)
 
 		bValidDrop = False;
 		bOverrideButtonColor = False;
+
+		//== Just reset all the highlights at first
+		if(dragButton.GetClientObject().IsA('WeaponMod'))
+		{
+			itemWindow = winItems.GetTopChild();
+			while(itemWindow != None)
+			{
+				if(PersonaInventoryItemButton(itemWindow) != None)
+					PersonaInventoryItemButton(itemWindow).ResetFill();
+				itemWindow = itemWindow.GetLowerSibling();
+			}
+		}
 
 		if ((findWin == winItems) || (findWin == dragButton ))
 		{
@@ -1243,6 +1255,27 @@ function UpdateDragMouse(float newX, float newY)
 			if (HUDObjectSlot(findWin).item != None)
 				if (HUDObjectSlot(findWin).item.IsA('NanoKeyRing'))
 					bValidDrop = False;
+
+			if (dragButton.GetClientObject().IsA('WeaponMod') && HUDObjectSlot(findWin).item != None)
+			{
+				if(HUDObjectSlot(findWin).item.IsA('DeusExWeapon'))
+				{
+					bValidDrop = False;
+					if (WeaponMod(dragButton.GetClientObject()).CanUpgradeWeapon(DeusExWeapon(HUDObjectSlot(findWin).item)))
+					{
+						bValidDrop = True;
+						itemWindow = winItems.GetTopChild();
+						while(itemWindow != None)
+						{
+							if(PersonaInventoryItemButton(itemWindow).GetClientObject() != None)
+								if(DeusExWeapon(PersonaInventoryItemButton(itemWindow).GetClientObject()) == DeusExWeapon(HUDObjectSlot(findWin).item))
+									PersonaInventoryItemButton(itemWindow).HighlightWeapon(True);
+
+							itemWindow = itemWindow.GetLowerSibling();
+						}
+					}
+				}
+			}
 
 			HUDObjectSlot(findWin).SetDropFill(bValidDrop);
 		}
@@ -1455,6 +1488,7 @@ function FinishButtonDrag()
 	local Inventory dragInv;
 	local PersonaInventoryItemButton dragTarget;
 	local HUDObjectSlot itemSlot;
+	local DeusExWeapon upgWeapon;
 
 	// Take a look at the last window we were over to determine
 	// what to do now.  If we were over the Inventory Items window,
@@ -1472,10 +1506,17 @@ function FinishButtonDrag()
 		dragInv    = Inventory(dragButton.GetClientObject());
 		dragTarget = PersonaInventoryItemButton(lastDragOverButton);
 
+		itemSlot = HUDObjectSlot(lastDragOverButton);
+
 		// Check if this is a weapon mod and we landed on a weapon
-		if ( (dragInv.IsA('WeaponMod')) && (dragTarget != None) && (dragTarget.GetClientObject().IsA('DeusExWeapon')) )
+		if ( (dragInv.IsA('WeaponMod')) && ( (dragTarget != None && dragTarget.GetClientObject().IsA('DeusExWeapon')) || (itemSlot != None && itemSlot.item.IsA('DeusExWeapon')) ) )
 		{
-			if (WeaponMod(dragInv).CanUpgradeWeapon(DeusExWeapon(dragTarget.GetClientObject())))
+			if(itemSlot != None)
+				upgWeapon = DeusExWeapon(itemSlot.item);
+			else
+				upgWeapon = DeusExWeapon(dragTarget.GetClientObject());
+
+			if (WeaponMod(dragInv).CanUpgradeWeapon(upgWeapon))
 			{
 				// 0.  Unhighlight highlighted weapons
 				// 1.  Apply the weapon upgrade
@@ -1483,20 +1524,23 @@ function FinishButtonDrag()
 				// 3.  Destroy the upgrade (will cause button to be destroyed)
 				// 4.  Highlight the weapon.
 
-				WeaponMod(dragInv).ApplyMod(DeusExWeapon(dragTarget.GetClientObject()));
+				WeaponMod(dragInv).ApplyMod(upgWeapon);
 				
-            Player.RemoveObjectFromBelt(dragInv);
-            //invBelt.objBelt.RemoveObjectFromBelt(dragInv);
+				Player.RemoveObjectFromBelt(dragInv);
+				//invBelt.objBelt.RemoveObjectFromBelt(dragInv);
 
 				// Send status message
-				winStatus.AddText(Sprintf(WeaponUpgradedLabel, DeusExWeapon(dragTarget.GetClientObject()).itemName));
+				winStatus.AddText(Sprintf(WeaponUpgradedLabel, upgWeapon.itemName));
 
-            //DEUS_EX AMSD done here for multiplayer propagation.
-            WeaponMod(draginv).DestroyMod();
+				//DEUS_EX AMSD done here for multiplayer propagation.
+				WeaponMod(draginv).DestroyMod();
 				//player.DeleteInventory(dragInv);
 
 				dragButton = None;
-				SelectInventory(dragTarget);
+				if(dragTarget != None)
+					SelectInventory(dragTarget);
+				else if(itemSlot != None)
+					itemSlot.SetToggle(True);
 			}
 			else
 			{
@@ -1548,13 +1592,13 @@ function FinishButtonDrag()
 	}
 	else		// 'ObjectSlot'
 	{
+		itemSlot = HUDObjectSlot(lastDragOverButton);
+
 		// Check to see if this is a valid drop location (which are only 
 		// other object slots).
 		//
 		// Swap the two items and select the one that was dragged
 		// but make sure the target isn't the NanoKeyRing
-
-		itemSlot = HUDObjectSlot(lastDragOverButton);
 
 		if (itemSlot != None) 
 		{

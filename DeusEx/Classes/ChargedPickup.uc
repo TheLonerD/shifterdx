@@ -89,9 +89,6 @@ function ChargedPickupEnd(DeusExPlayer Player)
 	if (LoopSound != None)
 		AmbientSound = None;
 
-//	if(IsA('ZymeCharged'))
-//		Player.drugEffectTimer += 75.0;
-
 	// remove it from our inventory if this is a one
 	// use item
 	if (bOneUseOnly)

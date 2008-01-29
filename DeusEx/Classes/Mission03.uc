@@ -86,7 +86,9 @@ function FirstFrame()
 				{
 					aPhone.AnswerSound = AS_Dialtone;
 					aPhone.DialEvent = 'LebVoIP';
-					aPhone.validNumber = VoIPNumber;
+					aPhone.validNumber = "658????"; // The question marks indicate random-gen numbers
+					aPhone.CleanValidNumber(); // Clean the code (and randomly generate the last four digits)
+					VoIPNumber = aPhone.validNumber; // So the status message can track the new valid code
 					aPhone.bEventOnlyOnce = True;
 				}
 				else
@@ -574,7 +576,7 @@ function Timer()
 						comp.specialOptions[count].Text = VoIPText;
 						//comp.specialOptions[count].TriggerEvent = 'LebVoIP'; //Disabled due to new activation method
 						comp.specialOptions[count].TriggerText = VoIPTText $ " " $ VoIPNumber;
-						comp.specialOptions[count].bTriggerOnceOnly = True;
+						//comp.specialOptions[count].bTriggerOnceOnly = True;
 						break;
 					}
 				}

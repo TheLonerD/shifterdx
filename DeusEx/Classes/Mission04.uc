@@ -286,24 +286,27 @@ function FirstFrame()
 					}
 				}
 
-				//== Do not irritate the Janitor, or he will fill your office with trash
-				spawn(class'Trashbag',None,, vect(-239.690125, 1078.260620, 268));
-				spawn(class'Trashbag',None,, vect(-158.902451, 1115.894287, 268));
-				spawn(class'Trashbag',None,, vect(-324.937714, 1182.858643, 268));
-				spawn(class'Trashbag',None,, vect(-375.875244, 1279.035400, 268));
-				spawn(class'Trashbag',None,, vect(-140.177994, 1395.822266, 268));
-				spawn(class'Trashbag',None,, vect(-191.508240, 1391.217285, 268));
-				spawn(class'Trashbag',None,, vect(-140.984344, 1354.483643, 268));
-
-				spawn(class'Trashbag2',None,, vect(-244.478699, 1045.090454, 268));
-				spawn(class'Trashbag2',None,, vect(-246.277832, 1112.638672, 268));
-				spawn(class'Trashbag2',None,, vect(-208.886200, 1117.331177, 268));
-				spawn(class'Trashbag2',None,, vect(-308.693726, 1286.664429, 268));
-				spawn(class'Trashbag2',None,, vect(-410.909485, 1402.909790, 268));
-				spawn(class'Trashbag2',None,, vect(-191.306396, 1279.779907, 302.80));
-				spawn(class'Trashbag2',None,, vect(-133.090500, 1402.909790, 330));
-
-
+				if(!flags.GetBool('Trash_Placed'))
+				{
+					//== Do not irritate the Janitor, or he will fill your office with trash
+					spawn(class'Trashbag',None,, vect(-239.690125, 1078.260620, 268));
+					spawn(class'Trashbag',None,, vect(-158.902451, 1115.894287, 268));
+					spawn(class'Trashbag',None,, vect(-324.937714, 1182.858643, 268));
+					spawn(class'Trashbag',None,, vect(-375.875244, 1279.035400, 268));
+					spawn(class'Trashbag',None,, vect(-140.177994, 1395.822266, 268));
+					spawn(class'Trashbag',None,, vect(-191.508240, 1391.217285, 268));
+					spawn(class'Trashbag',None,, vect(-140.984344, 1354.483643, 268));
+	
+					spawn(class'Trashbag2',None,, vect(-244.478699, 1045.090454, 268));
+					spawn(class'Trashbag2',None,, vect(-246.277832, 1112.638672, 268));
+					spawn(class'Trashbag2',None,, vect(-208.886200, 1117.331177, 268));
+					spawn(class'Trashbag2',None,, vect(-308.693726, 1286.664429, 268));
+					spawn(class'Trashbag2',None,, vect(-410.909485, 1402.909790, 268));
+					spawn(class'Trashbag2',None,, vect(-191.306396, 1279.779907, 302.80));
+					spawn(class'Trashbag2',None,, vect(-133.090500, 1402.909790, 330));
+			
+					flags.SetBool('Trash_Placed',True);
+				}
 			}
 		}
 		else

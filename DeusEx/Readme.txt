@@ -198,8 +198,22 @@ SPECIFICS:
 	some were added in via other means.  You'll have to keep your eyes
 	peeled and your curiosity high to find them.
 
+	 - Weapon Accuracy: Originally, Deus Ex was somewhat inconsistent in how
+	it displayed and calculated the accuracy of a weapon.  Firstly, the
+	crosshair's range in no way reflected the spread of the weapon.
+	Secondly, the spread of two bullet-based weapons with the same accuracy
+	could be wildly different depending on their maximum range.  Shifter
+	addresses both of these issues.  While it may appear, based on the
+	crosshair, that all weapons are now more accurate, weapon accuracy is in
+	fact (mostly) the same.  (Slightly better for some weapons, slightly
+	worse for others, depending on the range of the weapon)
+
 
 	Augmentation Modifications:
+
+	 - "AugAdd" cheat: Using the "AugAdd" cheat for an augmentation you
+	already have will upgrade that augmentation, rather than simply failing
+	as was the case in normal Deus Ex.
 
 	 - Augmentation Cannisters: Cannisters for augmentations you have
 	already	installed will now allow you to upgrade that augmentation once.
@@ -207,12 +221,19 @@ SPECIFICS:
 	"overwrite" an existing augmentation with a new one if no slots are
 	available, though the new augmentation will be installed at level 1,
 	with no upgrades. Cannisters with no augmentations specified for them
-	will contain a pair of randomly determined augs.  In the future such
-	Cannisters may be incorporated into NPC Random Inventory.
+	will contain a pair of randomly determined augs.  (Meaning that if you
+	use the cheat "summon AugmentationCannister" you'll actually get
+	something useful)
 
 	 - Environmental Resistance: Enviro Resist will now decrease the length
 	of time you will experience "drunk" effects when it is active by an
 	amount based on the level of the augmentation.
+
+	 - Light: The light augmentation is also upgradeable, similar to how it
+	is in Hardcore.  However, unlike Hardcore the distance the flashlight
+	effect can travel also increases with each level, and the boost of
+	"radiant" light around you increases at higher levels, but is actually
+	LOWER than normal at the aug's lowest level.
 
 	 - Power Recirculator: Power Recirculator will now automatically
 	activate whenever using it would decrease overall power use, and
@@ -298,16 +319,6 @@ SPECIFICS:
 	if the speed is REALLY high the Muscle aug is not checked for) This will
 	also damage the item thrown; in general one or two throws will shatter
 	the item if it is breakable.
-
-	 - Weapon Accuracy: Originally, Deus Ex was somewhat inconsistent in how
-	it displayed and calculated the accuracy of a weapon.  Firstly, the
-	crosshair's range in no way reflected the spread of the weapon.
-	Secondly, the spread of two bullet-based weapons with the same accuracy
-	could be wildly different depending on their maximum range.  Shifter
-	addresses both of these issues.  While it may appear, based on the
-	crosshair, that all weapons are now more accurate, weapon accuracy is in
-	fact (mostly) the same.  (Slightly better for some weapons, slightly
-	worse for others, depending on the range of the weapon)
 
 	 - Zyme: Since Zyme was pretty much useless in the original game, I have
 	modified it so it provides a temporary speed and skill boost.  It also
@@ -489,9 +500,6 @@ THINGS TO EXPECT IN THE FUTURE:
 
 	 - You will be able to pet cats.  Yes, I'm serious, I'm going to make a
 	system for petting cats.
-
-	 - Dragging a Weapon Mod over a belt slot will not replace the item in
-	the slot.  It will instead upgrade the item if applicable.
 
 	 - If I get bored enough I may make dead animals cookable, wherin they
 	will subsequently become edible.  I warn you, I'm bored a lot.
@@ -1275,6 +1283,62 @@ UPDATES:
 
 	 - Upped the damage on thrown Crowbars a little.  Somehow the damage
 	didn't seem high enough.
+
+	 - Added in Dragon's Breath Shells for the various shotguns.  The
+	visuals aren't exactly like I wanted them, but I'm somewhat limited by
+	what the Unreal 1 engine has to offer.
+
+	 - Placed Dragon's Breath Shells in a few places in the game, and added
+	them to NPC Random Inventory. (Actually, replaced Sabot ammo with the
+	new Dragon ammo in the randomizer routines)
+
+	 - Fixed the other half of the "lockpick/multitool + pause" exploit.
+	Pausing the game in the middle of hacking/picking/etc. will not make
+	any difference now.
+
+	 - Also fixed some related but lesser known exploits using similar
+	updates to code.  The classes affected were, in no particular order:
+	Repair Bots, the Spy Drone aug, Computers, ATMs, Medical Bots, and
+	Laser Tripwires.  Computers and ATMs in particular took a good deal of
+	code to sort out.
+
+	 - Under the "pointless but thematically accurate" heading, made it so
+	if you are on fire you can be seen, regardless of any cloaking/etc.
+
+	 - FINALLY added in that whole "weapon mods dragged over weapons in the
+	item belt will upgrade the item".  This is mostly only useful for those
+	of you who have cheats enabled so you can "stack" weapons on top of
+	each other in the inventory.  Also, this only applies to weapon mods
+	dragged FROM THE INVENTORY SCREEN PROPER to the item belt.
+
+	 - Added in my own version of the upgradeable Light augmentation.  It
+	works similar to how the Light aug in Hardcore works, except that the
+	distance the beam travels is also increased with each level, and at the
+	lowest level the usual radius light effect around the player is
+	DECREASED compared to normal DX.
+
+	 - Fixed a minorly annoying issue with Scope zoom that would force you
+	back into a zoomed state after reload even if you used the scope to
+	zoom in/out while reloading.
+
+	 - Stopped "charged" items from being automatically deactivated when
+	you switch to another item.
+
+	 - You can now pick up the various "Information Devices" (Datacubes,
+	Books, etc.) found within the game.  In order to do so you need to have
+	activated the item so the text screen is visible, then frob it again
+	with the text screen still visible.  For those items which have nothing
+	written or shown inside, they will simply become immediately grab-able
+	once you have looked at them and seen that they are blank.
+
+	 - Added code to Keypads so that on first level load (and any other
+	time I feel like) the validCode variable will be checked to make sure
+	that it's actually enterable, barring some specific exceptions. (An all
+	"X" keypad code or zero-length code is considered unenterable on
+	purpose)  Any invalid characters will be replaced by stars. (*) Also
+	added support for random numbers as part of the code; any quesiton
+	marks (?) in the code will be replaced by a random digit. (0-9)  This
+	new feature also applies to "active" phones.
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 

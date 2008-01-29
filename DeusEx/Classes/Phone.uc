@@ -31,6 +31,13 @@ var bool bEventOnlyOnce;
 
 var HUDKeypadWindow dialwindow;
 
+simulated function PreBeginPlay()
+{
+	if(validNumber != "")
+		CleanValidNumber();
+	Super.PreBeginPlay();
+}
+
 function Facelift(bool bOn)
 {
 	if(bOn)
@@ -38,6 +45,59 @@ function Facelift(bool bOn)
 
 	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
+}
+
+//== Strips out illegal characters so we have an enterable code for the keypad
+function CleanValidNumber()
+{
+	local string tCode, tChar;
+	local int i;
+	local bool bAllXes; //Special case.  An all-X code means a purposefully unenterable code
+
+	bAllXes = true;
+	tCode = "";
+
+	for(i = 0; i < len(validNumber); i++)
+	{
+		tChar = Mid(validNumber, i, 1);
+
+		if(Caps(tChar) != "X")
+			bAllXes = False;
+
+		switch(tChar)
+		{
+			case "0":
+			case "1":
+			case "2":
+			case "3":
+			case "4":
+			case "5":
+			case "6":
+			case "7":
+			case "8":
+			case "9":
+			case "#":
+			case "*":
+				tCode = tCode $ tChar;
+				tChar = "";
+				break;
+			case "?":	// Another special case.  A question mark indicates a random number
+				tCode = tCode $ Rand(10);
+				tChar = "";
+				break;
+		}
+
+		//== If the tChar variable hasn't been cleared out then it's an invalid character.  Replace with a star
+		if(tChar != "")
+			tCode = tCode $ "*";
+	}
+
+	//== If we have a purposefully unenterable code (including zero-length) use the uncleaned version
+	if(bAllXes)
+		tCode = validNumber;
+
+	//== Set the valid code equal to the tCode
+	validNumber = tCode;
 }
 
 function Tick(float deltaTime)

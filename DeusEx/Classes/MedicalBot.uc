@@ -112,7 +112,7 @@ function Frob(Actor Frobber, Inventory frobWith)
       }
       else
       {
-         Pawn(Frobber).ClientMessage("Medbot still charging, "$int(healRefreshTime - (Level.TimeSeconds - lastHealTime))$" seconds to go.");
+         Pawn(Frobber).ClientMessage("Medbot still charging, "$int(healRefreshTime - lastHealTime)$" seconds to go."); //(Level.TimeSeconds - lastHealTime))$" seconds to go.");
       }
    }   
 }
@@ -128,7 +128,7 @@ function int HealPlayer(DeusExPlayer player)
 	if (player != None)
 	{
 		healedPoints = player.HealPlayer(healAmount);
-		lastHealTime = Level.TimeSeconds;
+		lastHealTime = 0; //Level.TimeSeconds;
 	}
 	return healedPoints;
 }
@@ -141,7 +141,7 @@ function int HealPlayer(DeusExPlayer player)
 
 function bool CanHeal()
 {	
-	return (Level.TimeSeconds - lastHealTime > healRefreshTime);
+	return lastHealTime > healRefreshTime; //(Level.TimeSeconds - lastHealTime > healRefreshTime);
 }
 
 // ----------------------------------------------------------------------
@@ -150,7 +150,7 @@ function bool CanHeal()
 
 function Float GetRefreshTimeRemaining()
 {
-	return healRefreshTime - (Level.TimeSeconds - lastHealTime);
+	return healRefreshTime - lastHealTime; //(Level.TimeSeconds - lastHealTime);
 }
 
 // ----------------------------------------------------------------------

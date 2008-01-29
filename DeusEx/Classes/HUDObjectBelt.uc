@@ -154,9 +154,7 @@ function UpdateInHand()
 	if ((player != None) && (!bInteractive))
 	{
 		bPressed = False;
-		//=== Changed to iterate through the belt slot backwards, so that multi-slot weapons in DXMP highlight properly
 		for (slotIndex=0; slotIndex<ArrayCount(objects); slotIndex++)
-//		for (slotIndex=(ArrayCount(objects) - 1); slotIndex >= 0; slotIndex--)
 		{
 			// Highlight the object in the player's hand
 			if ((player.inHand != None) && (objects[slotIndex].item == player.inHand))

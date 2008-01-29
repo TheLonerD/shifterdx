@@ -49,6 +49,12 @@ function PreTravel()
 
 	if(localURL == "01_NYC_UNATCOHQ")
 	{
+		if(!flags.GetBool('M01_AmmoDragon_Placed'))
+		{
+			if(spawn(class'AmmoDragon', None,, vect(836.209473, -1053.622070, -4.00)) != None)
+				flags.SetBool('M01_AmmoDragon_Placed',True);
+		}
+
 		c = 0;
 		foreach AllActors(class'Inventory', item)
 		{

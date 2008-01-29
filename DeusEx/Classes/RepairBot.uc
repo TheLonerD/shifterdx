@@ -38,7 +38,15 @@ function PostBeginPlay()
    if (IsImmobile())
       bAlwaysRelevant = True;
 
-   lastChargeTime = -chargeRefreshTime;
+   lastChargeTime = chargeRefreshTime + 1; //-chargeRefreshTime;
+}
+
+function Tick(float deltaTime)
+{
+	if(lastChargeTime <= chargeRefreshTime)
+		lastChargeTime += deltaTime;
+
+	Super.Tick(deltaTime);
 }
 
 // ----------------------------------------------------------------------
@@ -79,7 +87,7 @@ function Frob(Actor Frobber, Inventory frobWith)
       }
       else
       {
-         Pawn(Frobber).ClientMessage("Repairbot still charging, "$int(chargeRefreshTime - (Level.TimeSeconds - lastChargetime))$" seconds to go.");
+         Pawn(Frobber).ClientMessage("Repairbot still charging, "$int(chargeRefreshTime - lastChargeTime)$" seconds to go."); //(Level.TimeSeconds - lastChargetime)
       }
    }
 }
@@ -113,7 +121,7 @@ function int ChargePlayer(DeusExPlayer PlayerToCharge)
 	if ( CanCharge() )
 	{
 		chargedPoints = PlayerToCharge.ChargePlayer( chargeAmount );
-		lastChargeTime = Level.TimeSeconds;
+		lastChargeTime = 0;//Level.TimeSeconds;
 	}
    return chargedPoints;
 }
@@ -126,7 +134,7 @@ function int ChargePlayer(DeusExPlayer PlayerToCharge)
 
 simulated function bool CanCharge()
 {	
-	return ( (Level.TimeSeconds - int(lastChargeTime)) > chargeRefreshTime);
+	return lastChargeTime > chargeRefreshTime; //( (Level.TimeSeconds - int(lastChargeTime)) > chargeRefreshTime);
 }
 
 // ----------------------------------------------------------------------
@@ -135,7 +143,7 @@ simulated function bool CanCharge()
 
 simulated function Float GetRefreshTimeRemaining()
 {
-	return chargeRefreshTime - (Level.TimeSeconds - lastChargeTime);
+	return chargeRefreshTime - lastChargeTime; //(Level.TimeSeconds - lastChargeTime);
 }
 
 // ----------------------------------------------------------------------

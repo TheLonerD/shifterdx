@@ -2447,7 +2447,7 @@ function InvokeComputerScreen(Computers computerToActivate, float CompHackTime, 
    local NetworkTerminal termwindow;
    local DeusExRootWindow root;
 
-   computerToActivate.LastHackTime = CompHackTime + (Level.TimeSeconds - ServerLevelTime);
+   computerToActivate.LastHackTime = CompHackTime; //+ (Level.TimeSeconds - ServerLevelTime);
 
    ActiveComputer = ComputerToActivate;
 
@@ -2503,7 +2503,7 @@ function CloseComputerScreen(Computers computerToClose)
 //client->server (window to player)
 function SetComputerHackTime(Computers computerToSet, float HackTime, float ClientLevelTime)
 {
-   computerToSet.lastHackTime = HackTime + (Level.TimeSeconds - ClientLevelTime);
+   computerToSet.lastHackTime = HackTime; // + (Level.TimeSeconds - ClientLevelTime);
 }
 
 //client->server (window to player)
@@ -5385,7 +5385,7 @@ function UpdateInHand()
 		if (inHand != None)
 		{
 			// turn it off if it is on
-			if (inHand.bActive)
+			if (inHand.bActive && !inHand.IsA('ChargedPickup'))
 				inHand.Activate();
 
 			if (inHand.IsA('SkilledTool'))
@@ -10777,6 +10777,10 @@ function float CalculatePlayerVisibility(ScriptedPawn P)
 				vis = 0.0;
 			}
 	}
+
+	//== If you're on fire, sorry buddy, they can see you
+	if(bOnFire && vis <= 0.5)
+		vis += 0.5;
 
 	return vis;
 }

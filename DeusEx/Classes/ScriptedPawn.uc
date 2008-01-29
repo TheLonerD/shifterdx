@@ -3108,7 +3108,7 @@ function bool GenerateRandomInventory()
 					else if (!bHadWeapon)
 						item = spawn(Class'WeaponSawedOffShotgun',self);
 					else
-						item = spawn(Class'AmmoSabot',self);
+						item = spawn(Class'AmmoDragon',self);
 					break;
 				case 1:
 					item = spawn(Class'Ammo20mm',self);
@@ -3266,7 +3266,7 @@ function bool GenerateRandomInventory()
 		if(dxPlayer.combatDifficulty >= 2.0 && ammo != None)
 		{
 			//== For some kinds of alternate ammo we want to let NPCs use it if they have it
-			if(item.IsA('AmmoDartFlare'))
+			if(ammo.IsA('AmmoDartFlare'))
 			{
 				item = Inventory;
 	
@@ -3274,16 +3274,14 @@ function bool GenerateRandomInventory()
 				{
 					if(WeaponMiniCrossbow(item) != None)
 					{
-						DeusExWeapon(item).AmmoType = ammo;
-						DeusExWeapon(item).AmmoName = ammo.Class;
-						DeusExWeapon(item).ClipCount = DeusExWeapon(item).ReloadCount;
+						DeusExWeapon(item).LoadAmmo(2);
 						item = None;
 						break;
 					}
 					item = item.Inventory;
 				}
 			}
-			else if(item.IsA('Ammo10mmEX'))
+			else if(ammo.IsA('Ammo10mmEX'))
 			{
 				item = Inventory;
 	
@@ -3291,9 +3289,22 @@ function bool GenerateRandomInventory()
 				{
 					if(WeaponPistol(item) != None || WeaponStealthPistol(item) != None)
 					{
-						DeusExWeapon(item).AmmoType = ammo;
-						DeusExWeapon(item).AmmoName = ammo.Class;
-						DeusExWeapon(item).ClipCount = DeusExWeapon(item).ReloadCount;
+						DeusExWeapon(item).LoadAmmo(1);
+						item = None;
+						break;
+					}
+					item = item.Inventory;
+				}
+			}
+			else if(ammo.IsA('AmmoDragon'))
+			{
+				item = Inventory;
+	
+				while(item != None)
+				{
+					if(WeaponAssaultShotgun(item) != None || WeaponSawedOffShotgun(item) != None)
+					{
+						DeusExWeapon(item).LoadAmmo(2);
 						item = None;
 						break;
 					}

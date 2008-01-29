@@ -60,6 +60,8 @@ function Facelift(bool bOn)
 	}
 
 	MultiSkins[1] = Skin;
+	Icon = Default.Icon;
+	LargeIcon = Default.LargeIcon;
 
 	switch(skinnum)
 	{
@@ -67,8 +69,6 @@ function Facelift(bool bOn)
 		case 1:
 			ItemName = default.ItemName $ " (Nuke!)";
 			beltDescription = "NUKE!";
-			Icon = Default.Icon;
-			LargeIcon = Default.LargeIcon;
 			break;
 		case 2:
 			ItemName = default.ItemName $ " (Zap!)";
@@ -83,23 +83,14 @@ function Facelift(bool bOn)
 				if(otherIcon != None)
 					LargeIcon = otherIcon;
 			}
-			else
-			{
-				Icon = Default.Icon;
-				LargeIcon = Default.LargeIcon;
-			}
 			break;
 		case 3:
 			ItemName = default.ItemName $ " (Burn!)";
 			beltDescription = "BURN!";
-			Icon = Default.Icon;
-			LargeIcon = Default.LargeIcon;
 			break;
 		case 4:
 			ItemName = default.ItemName $ " (Blast!)";
 			beltDescription = "BLAST!";
-			Icon = Default.Icon;
-			LargeIcon = Default.LargeIcon;
 			break;
 	}
 

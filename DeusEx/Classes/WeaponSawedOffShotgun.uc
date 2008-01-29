@@ -193,6 +193,8 @@ defaultproperties
      BaseAccuracy=0.600000
      AmmoNames(0)=Class'DeusEx.AmmoShell'
      AmmoNames(1)=Class'DeusEx.AmmoSabot'
+     AmmoNames(2)=Class'DeusEx.AmmoDragon'
+     ProjectileNames(2)=Class'DeusEx.FireballDragon'
      AreaOfEffect=AOE_Cone
      recoilStrength=0.500000
      mpReloadTime=0.500000
@@ -212,6 +214,7 @@ defaultproperties
      FireOffset=(X=-11.000000,Y=4.000000,Z=13.000000)
      shakemag=50.000000
      FireSound=Sound'DeusExSounds.Weapons.SawedOffShotgunFire'
+     FireSound2=Sound'DeusExSounds.Weapons.SawedOffShotgunFire'
      AltFireSound=Sound'DeusExSounds.Weapons.SawedOffShotgunReloadEnd'
      CockingSound=Sound'DeusExSounds.Weapons.SawedOffShotgunReload'
      SelectSound=Sound'DeusExSounds.Weapons.SawedOffShotgunSelect'

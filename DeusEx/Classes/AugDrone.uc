@@ -12,9 +12,9 @@ var float lastDroneTime;
 state Active
 {
 Begin:
-	if (Level.TimeSeconds - lastDroneTime < reconstructTime)
+	if (lastDroneTime < reconstructTime) //(Level.TimeSeconds - lastDroneTime < reconstructTime)
 	{
-		Player.ClientMessage("Reconstruction will be complete in" @ Int(reconstructTime - (Level.TimeSeconds - lastDroneTime)) @ "seconds");
+		Player.ClientMessage("Reconstruction will be complete in" @ Int(reconstructTime - lastDroneTime) @ "seconds"); //(Level.TimeSeconds - lastDroneTime)) @ "seconds");
 		Deactivate();
 	}
 	else
@@ -25,13 +25,21 @@ Begin:
 	}
 }
 
+function Tick(float deltaTime)
+{
+	if(lastDroneTime < reconstructTime)
+		lastDroneTime += deltaTime;
+
+	Super.Tick(deltaTime);
+}
+
 function Deactivate()
 {
 	Super.Deactivate();
 
 	// record the time if we were just active
 	if (Player.bSpyDroneActive)
-		lastDroneTime = Level.TimeSeconds;
+		lastDroneTime = 0; //Level.TimeSeconds;
 
 	Player.bSpyDroneActive = False;
 }
@@ -53,7 +61,7 @@ defaultproperties
      mpAugValue=100.000000
      mpEnergyDrain=20.000000
      reconstructTime=30.000000
-     lastDroneTime=-30.000000
+     lastDroneTime=30.000000
      EnergyRate=150.000000
      Icon=Texture'DeusExUI.UserInterface.AugIconDrone'
      smallIcon=Texture'DeusExUI.UserInterface.AugIconDrone_Small'

@@ -32,7 +32,7 @@ function SetBeamLocation()
 			HitLocation = EndTrace;
 
 		dist       = VSize(HitLocation - StartTrace);
-		size       = fclamp(dist/LevelValues[CurrentLevel], 0, 1);
+		size       = dist/1024.0; //fclamp(dist/1024.0, 0, 1);
 		radius     = size*5.12 + 4.0;
 		brightness = fclamp(size-0.5, 0, 1)*2*-192 + 192;
 		b1.SetLocation(HitLocation-vector(Player.ViewRotation)*64);
@@ -71,7 +71,7 @@ state Active
 		{
 			AIStartEvent('Beam', EAITYPE_Visual);
 			b1.LightHue = 32;
-			b1.LightRadius = 4;
+			b1.LightRadius = byte(FMin(4 * currentLevel, 1));
 			b1.LightSaturation = 140;
 			b1.LightBrightness = 192;
 			SetBeamLocation();
@@ -80,7 +80,7 @@ state Active
 		if (b2 != None)
 		{
 			b2.LightHue = 32;
-			b2.LightRadius = 4;
+			b2.LightRadius = byte(FMin(4 * currentLevel, 1));
 			b2.LightSaturation = 140;
 			b2.LightBrightness = 220;
 			SetGlowLocation();
@@ -104,13 +104,16 @@ function Deactivate()
 defaultproperties
 {
      EnergyRate=10.000000
-     MaxLevel=0
+     MaxLevel=3
      Icon=Texture'DeusExUI.UserInterface.AugIconLight'
      smallIcon=Texture'DeusExUI.UserInterface.AugIconLight_Small'
      AugmentationName="Light"
      Description="Bioluminescent cells within the retina provide coherent illumination of the agent's field of view.|n|nNO UPGRADES"
      LevelValues(0)=1024.000000
-     LevelValues(1)=784.000000
+     LevelValues(1)=1280.000000
+     LevelValues(2)=1600.000000
+     LevelValues(3)=2000.000000
+     LevelValues(4)=2500.000000
      AugmentationLocation=LOC_Default
      MPConflictSlot=10
 }

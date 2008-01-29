@@ -93,19 +93,6 @@ function FirstFrame()
 			spawn(class'WeaponPrototypeSwordA',None,, loc);
 			flags.SetBool('M08_SwordA_Placed', True,, 9);
 		}
-
-		//== For the users that have issues with the music in this map, give the backup method something to work with
-		songname = DeusExRootWindow(Player.rootWindow).StringToName("NYCStreets2_Music");
-
-		tname = DeusExRootWindow(Player.rootWindow).StringToName("Song_Name1");
-		Player.flagBase.SetName(tname, songname);
-		Player.flagBase.SetExpiration(tname, FLAG_Name, 9);
-
-		tname = DeusExRootWindow(Player.rootWindow).StringToName("Song_Name2");
-		Player.flagBase.SetName(tname, songname);
-		Player.flagBase.SetExpiration(tname, FLAG_Name, 9);
-
-		Player.flagBase.SetInt('Song_Section', 0,, 9);
 	}
 }
 
@@ -146,6 +133,7 @@ function Timer()
 	local BlackHelicopter chopper;
 	local FordSchick Ford;
 	local int count;
+	local name tname, songname;
 
 	Super.Timer();
 
@@ -160,6 +148,23 @@ function Timer()
 	}
 	else if (localURL == "08_NYC_STREET")
 	{
+		//== Set the "backup" song variable here for the GOTY players who don't normally get music in this level
+		if(flags.GetName('Song_Name1') != 'NYCStreets2_Music' || flags.GetName('Song_Name2') != 'NYCStreets2_Music')
+		{
+			//== For the users that have issues with the music in this map, give the backup method something to work with
+			songname = DeusExRootWindow(Player.rootWindow).StringToName("NYCStreets2_Music");
+	
+			tname = DeusExRootWindow(Player.rootWindow).StringToName("Song_Name1");
+			flags.SetName(tname, songname);
+			flags.SetExpiration(tname, FLAG_Name, 9);
+	
+			tname = DeusExRootWindow(Player.rootWindow).StringToName("Song_Name2");
+			flags.SetName(tname, songname);
+			flags.SetExpiration(tname, FLAG_Name, 9);
+	
+			flags.SetInt('Song_Section', 0,, 9);
+		}
+
 		// spawn reinforcements as cops are killed
 		if (!flags.GetBool('MS_UnhideTroop1'))
 		{

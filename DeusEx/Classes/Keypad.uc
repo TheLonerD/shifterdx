@@ -23,6 +23,65 @@ replication
       bToggleLock, FailEvent, validCode;
 }
 
+simulated function PreBeginPlay()
+{
+	CleanValidCode();
+	Super.PreBeginPlay();
+}
+
+//== Strips out illegal characters so we have an enterable code for the keypad
+function CleanValidCode()
+{
+	local string tCode, tChar;
+	local int i;
+	local bool bAllXes; //Special case.  An all-X code means a purposefully unenterable code
+
+	bAllXes = true;
+	tCode = "";
+
+	for(i = 0; i < len(validCode); i++)
+	{
+		tChar = Mid(validCode, i, 1);
+
+		if(Caps(tChar) != "X")
+			bAllXes = False;
+
+		switch(tChar)
+		{
+			case "0":
+			case "1":
+			case "2":
+			case "3":
+			case "4":
+			case "5":
+			case "6":
+			case "7":
+			case "8":
+			case "9":
+			case "#":
+			case "*":
+				tCode = tCode $ tChar;
+				tChar = "";
+				break;
+			case "?":	// Another special case.  A question mark indicates a random number
+				tCode = tCode $ Rand(10);
+				tChar = "";
+				break;
+		}
+
+		//== If the tChar variable hasn't been cleared out then it's an invalid character.  Replace with a star
+		if(tChar != "")
+			tCode = tCode $ "*";
+	}
+
+	//== If we have a purposefully unenterable code (including zero-length) use the uncleaned version
+	if(bAllXes)
+		tCode = validCode;
+
+	//== Set the valid code equal to the tCode
+	validCode = tCode;
+}
+
 // ----------------------------------------------------------------------
 // HackAction()
 // ----------------------------------------------------------------------

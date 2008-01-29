@@ -716,9 +716,6 @@ function bool LoadAmmo(int ammoNum)
 	local Ammo newAmmo;
 	local Pawn P;
 	local int i, j;
-	local Inventory Weap;
-	local Inventory W1, W2, W3;
-	local string Ws1, Ws2, Ws3;
 	local class<DeusExWeapon> Wep;
 
 	if ((ammoNum < 0) || (ammoNum > 2))
@@ -827,17 +824,8 @@ function bool LoadAmmo(int ammoNum)
 
 			ReloadAmmo();
 
-//			if(bHasAltFire != True)  //exclude Plasma Rifle (and any other weapon) alt fire, since it's a special case
-//			{
-				P.ClientMessage(Sprintf(msgNowHas, ItemName, newAmmoClass.Default.ItemName));
-				return True;
-//			}
-//			else
-//			{
-//				ModeString = ProjectileString[ammoNum];
-//				P.ClientMessage(Sprintf(msgNowSetMode, ItemName, ModeString));
-//				return True;
-//			}
+			P.ClientMessage(Sprintf(msgNowHas, ItemName, newAmmoClass.Default.ItemName));
+			return True;
 		}
 		else if(TestCycleable())
 		{
@@ -847,7 +835,7 @@ function bool LoadAmmo(int ammoNum)
 				return False;
 			}
 
-			//=== We need to replace this with instances of SwitchItem already
+			//=== We need to replace this with instances of SwitchItem
 			j = 0;
 			i = -1;
 			if(IsA('WeaponPrototypeSwordC'))
@@ -883,47 +871,36 @@ function bool LoadAmmo(int ammoNum)
 				{
 					case 0:
 						Wep = class'WeaponBaton';
-						Ws1 = "Switching to Baton";
 						break;
 					case 1:
 						Wep = class'WeaponCombatKnife';
-						Ws1 = "Switching to Combat Knife";
 						break;
 					case 2:
 						Wep = class'WeaponCrowbar';
-						Ws1 = "Switching to Crowbar";
 						break;
 					case 3:
 						Wep = class'WeaponShuriken';
-						Ws1 = "Switching to Throwing Knives";
 						break;
 					case 4:
 						Wep = class'WeaponSword';
-						Ws1 = "Switching to Sword"; 
 						break;
 					case 5:
 						Wep = class'WeaponNanoSword';
-						Ws1 = "Switching to Dragon's Tooth Sword";
 						break;
 					case 6:
 						Wep = class'WeaponBlackjack';
-						Ws1 = "Switching to Blackjack";
 						break;
 					case 7:
 						Wep = class'WeaponToxinBlade';
-						Ws1 = "Switching to Toxin Blade";
 						break;
 					case 8:
 						Wep = class'WeaponPrototypeSwordA';
-						Ws1 = "Switching to Prototype NanoSword (Mk I)";
 						break;
 					case 9:
 						Wep = class'WeaponPrototypeSwordB';
-						Ws1 = "Switching to Prototype NanoSword (Mk 2)";
 						break;
 					case 10:
 						Wep = class'WeaponPrototypeSwordC';
-						Ws1 = "Switching to Prototype NanoSword (Mk 3)";
 						break;
 
 				}
@@ -933,7 +910,7 @@ function bool LoadAmmo(int ammoNum)
 					{
 						AddObjectToBelt(P.FindInventoryType(Wep), beltPos, false);
 						DeusExPlayer(P).PutInHand(P.FindInventoryType(Wep));
-						P.ClientMessage(Ws1);
+						P.ClientMessage(Sprintf(msgSwitchingTo, Wep.Default.ItemName));
 						j = 11;
 					}
 				}
@@ -1179,6 +1156,8 @@ function name WeaponDamageType()
 		{
 			if (AmmoType.IsA('AmmoSabot'))
 				damageType = 'Sabot';
+			else if(AmmoType.IsA('AmmoDragon'))
+				damageType = 'Flamed';
 			else if(AmmoType.IsA('AmmoShell'))
 				damageType = 'Shell';
 			else if(AmmoType.IsA('Ammo10mmEX'))
@@ -1684,6 +1663,9 @@ function ScopeOff()
 	if (bZoomed && (Owner != None) && Owner.IsA('DeusExPlayer'))
 	{
 		bZoomed = False;
+		//== If we disable the scope in the middle of a reload, don't go back
+		if(bWasZoomed)
+			bWasZoomed = False;
 		// Hide the Scope View
 		RefreshScopeDisplay(DeusExPlayer(Owner), False, bZoomed);
 		//DeusExRootWindow(DeusExPlayer(Owner).rootWindow).scopeView.DeactivateView();
@@ -3739,6 +3721,20 @@ simulated function ProcessTraceHit(Actor Other, Vector HitLocation, Vector HitNo
 			}
 
 			SelectiveSpawnEffects( HitLocation, HitNormal, Other, HitDamage * mult);
+
+			if(damageType == 'Flamed')
+			{
+				theSpark = spawn(class'Spark',,, HitLocation);
+				if(theSpark != None)
+				{
+					theSpark.drawScale *= 0.90 + FRand();
+					theSpark.Skin = FireTexture'Effects.Fire.Fireball1';
+
+					//== Underwater hits create air bubbles
+					if(theSpark.Region.Zone.bWaterZone)
+						spawn(class'AirBubble',,, theSpark.Location);
+				}
+			}
 		}
 		else if ((Other != self) && (Other != Owner))
 		{
@@ -3778,6 +3774,19 @@ simulated function ProcessTraceHit(Actor Other, Vector HitLocation, Vector HitNo
 			if (bPenetrating && Other.IsA('Pawn') && !Other.IsA('Robot'))
 				SpawnBlood(HitLocation, HitNormal);
 
+			if(damageType == 'Flamed')
+			{
+				theSpark = spawn(class'Spark',,, HitLocation);
+				if(theSpark != None)
+				{
+					theSpark.drawScale *= 0.90 + FRand();
+					theSpark.Skin = FireTexture'Effects.Fire.Fireball1';
+
+					//== Underwater hits create air bubbles
+					if(theSpark.Region.Zone.bWaterZone)
+						spawn(class'AirBubble',,, theSpark.Location);
+				}
+			}
 
 			//=== This amazingly simple line of code makes it so weapons can do non-stunned damage and still
 			//===  stun NPCs.  Later this will put the player into a "stunned" state.
@@ -4784,9 +4793,12 @@ Begin:
 		}
 		else
 		{
-			bWasZoomed = bZoomed;
-			if (bWasZoomed)
+			bWasZoomed = False;
+			if (bZoomed)
+			{
 				ScopeOff();
+				bWasZoomed = True;
+			}
 
 			if(DeusExPlayer(GetPlayerPawn()).DrugEffectTimer < 0)
 				Owner.PlaySound(CockingSound, SLOT_None,,, 1024, 0.5);		// CockingSound is reloadbegin
@@ -5117,9 +5129,12 @@ Begin:
 	bInProcess = False;
 	bFiring=False;
 
-	bWasZoomed = bZoomed;
-	if (bWasZoomed)
+	bWasZoomed = False;
+	if (bZoomed)
+	{
 		ScopeOff();
+		bWasZoomed = True;
+	}
 
 	if(DeusExPlayer(GetPlayerPawn()).DrugEffectTimer < 0)
 		Owner.PlaySound(CockingSound, SLOT_None,,, 1024, 0.5);		// CockingSound is reloadbegin

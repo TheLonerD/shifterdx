@@ -31,6 +31,16 @@ function Facelift(bool bOn)
 		Mesh = Default.Mesh;
 }
 
+function Tick(float deltaTime)
+{
+	Super.Tick(deltaTime);
+
+	lastHackTime += deltaTime;
+
+	if(lockoutTime <= lockoutDelay)
+		lockoutTime += deltaTime;
+}
+
 // ----------------------------------------------------------------------
 // Frob()
 // ----------------------------------------------------------------------
@@ -56,7 +66,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 			// computer skill shortens the lockout duration
 			delay = lockoutDelay / Player.SkillSystem.GetSkillLevelValue(class'SkillComputer');
 
-			elapsed = Level.TimeSeconds - lockoutTime;
+			elapsed = lockoutTime; //Level.TimeSeconds - lockoutTime;
 			if (elapsed < delay)
 				Player.ClientMessage(Sprintf(msgLockedOut, Int(delay - elapsed)));
 			else
@@ -183,7 +193,8 @@ function string GetPIN(int userIndex)
 defaultproperties
 {
      lockoutDelay=60.000000
-     lastHackTime=-9999.000000
+     lockoutTime=61.000000
+     lastHackTime=9999.000000
      msgLockedOut="Terminal is locked out for %d more seconds"
      ItemName="Public Banking Terminal"
      Physics=PHYS_None

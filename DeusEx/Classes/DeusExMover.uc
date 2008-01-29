@@ -383,10 +383,9 @@ function Timer()
 	if (bPicking)
 	{
 		curPick.PlayUseAnim();
-	  //== I don't think timer events happen during pause, but if they do, hold off on this
-	  if(!DeusExRootWindow(pickPlayer.rootWindow).bUIPaused)
-		  TicksSinceLastPick += (Level.TimeSeconds - LastTickTime) * 10;
-	  LastTickTime = Level.TimeSeconds;
+
+	  TicksSinceLastPick += LastTickTime * 10; //(Level.TimeSeconds - LastTickTime) * 10;
+	  LastTickTime = 0; //Level.TimeSeconds;
       //TicksSinceLastPick = TicksSinceLastPick + 1;
       //== Only loop through for as many uses as the pick has, lest we instantly unlock the object
       while (TicksSinceLastPick > TicksPerPick && numPicks > 0)
@@ -443,6 +442,10 @@ function Timer()
 //
 function Tick(float deltaTime)
 {
+   //== LastTickTime now just tracks how much "ticked" time has elapsed between timer intervals
+   if(bPicking)
+	LastTickTime += deltaTime;
+
    TimeSinceReset = TimeSinceReset + deltaTime;
    //only reset in multiplayer, if we aren't picking it, and if it has been completely unlocked
    if ((!bPicking) && (Level.NetMode != NM_Standalone) && (lockStrength == 0.0) && !(bLocked))
@@ -591,7 +594,7 @@ function Frob(Actor Frobber, Inventory frobWith)
                if (Level.Netmode != NM_Standalone)
                   pickTime = default.pickTime / (pickValue * pickValue);
                TicksPerPick = (PickTime * 10.0) / numPicks;
-			   LastTickTime = Level.TimeSeconds;
+			   LastTickTime = 0; //Level.TimeSeconds;
                TicksSinceLastPick = 0;
 					SetTimer(0.1, True);
 					msg = msgPicking;

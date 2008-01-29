@@ -70,6 +70,9 @@ function Tick(float deltaTime)
 	if ((aReader != None) && (infoWindow != None))
 		if (aReader.FrobTarget != Self)
 			DestroyWindow();
+
+	if(bPushable != Default.bPushable && DeusExPlayer(Base) == None && infoWindow == None && (imageClass != None || textTag != '' || specialText != ""))
+		bPushable = Default.bPushable;
 }
 
 // ----------------------------------------------------------------------
@@ -99,6 +102,10 @@ function Frob(Actor Frobber, Inventory frobWith)
 			}
 			else
 				player.ClientMessage(msgNoText);
+
+			//== Once we've read it, we can pick it up
+			if(!Default.bPushable)
+				bPushable = True;
 		}
 		else
 		{

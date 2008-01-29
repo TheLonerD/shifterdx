@@ -40,8 +40,8 @@ auto simulated state Flying
 {
 	simulated function Explode(vector HitLocation, vector HitNormal)
 	{
-		spawn(spawnWeaponClass, None,, HitLocation + (HitNormal * 0.1));
 		Super.Explode(HitLocation, HitNormal);
+		spawn(spawnWeaponClass, None,, HitLocation + (HitNormal * 0.1));
 	}
 }
 
