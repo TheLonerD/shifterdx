@@ -518,7 +518,11 @@ auto simulated state Flying
 		}
 
 		if (Wall.IsA('BreakableGlass'))
+		{
 			bDebris = False;
+			if(Role == ROLE_Authority) //== Glass should be broken by projectiles
+				Wall.TakeDamage(Damage, Pawn(Owner), Wall.Location, MomentumTransfer*Normal(Velocity), damageType);
+		}
 
 		SpawnEffects(Location, HitNormal, Wall);
 

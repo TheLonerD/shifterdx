@@ -17,11 +17,11 @@ function Facelift(bool bOn)
 		if(temptex != None)
 			Icon = temptex;
 
-		temptex = Texture(DynamicLoadObject("ShifterTextures.Weapons.Magnum",class'Texture', True));
+		temptex = Texture(DynamicLoadObject("ShifterEX.Weapons.MagnumTex1",class'Texture', True));
 		if(temptex != None)
 			MultiSkins[3] = temptex;
 
-		temptex = Texture(DynamicLoadObject("ShifterTextures.Weapons.MagnumWorld",class'Texture', True));
+		temptex = Texture(DynamicLoadObject("ShifterEX.Weapons.Magnum3rdTex1",class'Texture', True));
 		if(temptex != None)
 			Skin = temptex;
 	}

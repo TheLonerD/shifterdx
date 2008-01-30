@@ -1,79 +1,11 @@
 //=============================================================================
 // SoyFood.
 //=============================================================================
-class SoyFood extends DeusExPickup;
-
-//== Look ma, we can switch between food items now
-function SwitchItem()
-{
-	local Class<DeusExPickup> SwitchList[7];
-	local Inventory inv;
-	local int i;
-	local DeusExPlayer P;
-
-	P = DeusExPlayer(Owner);
-
-	i = 0;
-
-	//== Comment out the self reference here and we're done
-//	SwitchList[i++] = class'SoyFood';
-	SwitchList[i++] = class'WineBottle';
-	SwitchList[i++] = class'VialCrack';
-	SwitchList[i++] = class'Candybar';
-	SwitchList[i++] = class'Cigarettes';
-	SwitchList[i++] = class'Liquor40oz';
-	SwitchList[i++] = class'LiquorBottle';
-	SwitchList[i++] = class'Sodacan';
-
-	for(i = 0; i < 6; i++)
-	{
-		inv = P.FindInventoryType(SwitchList[i]);
-
-		if(inv != None)
-		{
-			if(inv.beltPos == -1)
-			{
-				P.ClientMessage(Sprintf(SwitchingTo,inv.ItemName));
-				P.AddObjectToBelt(inv,Self.beltPos,false);
-				P.PutInHand(inv);
-				i = 7;
-				break;
-			}
-		}
-	}
-}
-
-state Activated
-{
-	function Activate()
-	{
-		// can't turn it off
-	}
-
-	function BeginState()
-	{
-		local DeusExPlayer player;
-		local int mult;
-		
-		Super.BeginState();
-
-		player = DeusExPlayer(Owner);
-		if (player != None)
-		{
-			if(player.SkillSystem != None)
-				mult += player.SkillSystem.GetSkillLevel(class'SkillMedicine') + 1;
-
-//			player.HealPlayer(5, False);
-			player.HealPlayer(4 + mult, False);
-		}
-		
-		UseOnce();
-	}
-Begin:
-}
+class SoyFood extends Consumable;
 
 defaultproperties
 {
+     healthEffect=5
      maxCopies=10
      bCanHaveMultipleCopies=True
      bActivatable=True

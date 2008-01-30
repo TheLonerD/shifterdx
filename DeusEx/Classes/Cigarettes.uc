@@ -1,7 +1,7 @@
 //=============================================================================
 // Cigarettes.
 //=============================================================================
-class Cigarettes extends DeusExPickup;
+class Cigarettes extends Consumable;
 
 enum ECigType
 {
@@ -55,53 +55,9 @@ function Facelift(bool bOn)
 
 }
 
-//== Look ma, we can switch between food items now
-function SwitchItem()
-{
-	local Class<DeusExPickup> SwitchList[7];
-	local Inventory inv;
-	local int i;
-	local DeusExPlayer P;
-
-	P = DeusExPlayer(Owner);
-
-	i = 0;
-
-	//== Comment out the self reference here and we're done
-//	SwitchList[i++] = class'Cigarettes';
-	SwitchList[i++] = class'Liquor40oz';
-	SwitchList[i++] = class'LiquorBottle';
-	SwitchList[i++] = class'Sodacan';
-	SwitchList[i++] = class'SoyFood';
-	SwitchList[i++] = class'WineBottle';
-	SwitchList[i++] = class'VialCrack';
-	SwitchList[i++] = class'Candybar';
-
-	for(i = 0; i < 6; i++)
-	{
-		inv = P.FindInventoryType(SwitchList[i]);
-
-		if(inv != None)
-		{
-			if(inv.beltPos == -1)
-			{
-				P.ClientMessage(Sprintf(SwitchingTo,inv.ItemName));
-				P.AddObjectToBelt(inv,Self.beltPos,false);
-				P.PutInHand(inv);
-				i = 6;
-				break;
-			}
-		}
-	}
-}
-
+//== We can't just use the parent class, since we gotta do some complex stuff
 state Activated
 {
-	function Activate()
-	{
-		// can't turn it off
-	}
-
 	function BeginState()
 	{
 		local Pawn P;
@@ -109,12 +65,9 @@ state Activated
 		local rotator rot;
 		local CigSmoke puff; //SmokeTrail puff;
 		
-		Super.BeginState();
-
 		P = Pawn(Owner);
 		if (P != None)
 		{
-			P.TakeDamage(5, P, P.Location, vect(0,0,0), 'PoisonGas');
 			loc = Owner.Location;
 			rot = Owner.Rotation;
 			loc += 2.0 * Owner.CollisionRadius * vector(P.ViewRotation);
@@ -123,7 +76,6 @@ state Activated
 			if (puff != None)
 			{
 				puff.DrawScale = 1.0;
-//				puff.origScale = puff.DrawScale;
 				if(Frand() >= 0.5)
 					puff.DamageType = 'TearGas';
 			}
@@ -137,13 +89,14 @@ state Activated
 			}
 		}
 
-		UseOnce();
+		Super.BeginState();
 	}
 Begin:
 }
 
 defaultproperties
 {
+     healthEffect=-5
      maxCopies=20
      bCanHaveMultipleCopies=True
      bActivatable=True

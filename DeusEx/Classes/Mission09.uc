@@ -42,6 +42,12 @@ function FirstFrame()
 			spawn(class'VialVirus',None,, vect(2668.00, 498.70, 517.99));
 			flags.setBool('M09_10mmEX_Placed',True,,10);
 		}
+
+		if(!flags.getBool('M09_PrototypePlaced'))
+		{
+			if(spawn(Class'WeaponPrototypeSwordC', None,, vect(2640.00, 168.00, 933.200012), rot(0, -4800, 0)) != None);
+				flags.setBool('M09_PrototypePlaced', True,, 10);
+		}
 	}
 	else if (localURL == "09_NYC_DOCKYARD")
 	{
@@ -104,12 +110,6 @@ function Timer()
 			flags.SetBool('M09SimonsDisappears', False,, 10);
 			flags.SetBool('MS_SimonsAppeared', False,, 10);
 			flags.SetBool('SummonSimons', False,, 10);
-		}
-
-		if(!flags.getBool('M09_PrototypePlaced'))
-		{
-			spawn(Class'WeaponPrototypeSwordC', None,, vect(2640.00, 168.00, 933.200012), rot(0, -4800, 0));
-			flags.setBool('M09_PrototypePlaced', True,, 8);
 		}
 
 		// randomly play explosions and shake the view

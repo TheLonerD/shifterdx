@@ -27,6 +27,9 @@ Begin:
 
 function Tick(float deltaTime)
 {
+	if(lastDroneTime < 0)
+		lastDroneTime = reconstructTime;
+
 	if(lastDroneTime < reconstructTime)
 		lastDroneTime += deltaTime;
 

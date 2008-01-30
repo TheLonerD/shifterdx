@@ -1340,6 +1340,33 @@ UPDATES:
 	marks (?) in the code will be replaced by a random digit. (0-9)  This
 	new feature also applies to "active" phones.
 
+	 - Fixed an oversight in my new code which effectively disabled grenade
+	cycling in multiplayer.
+
+	 - Attached the proper jump/etc. sounds to several of the female multi-
+	player models, which previously had been using male noises.
+
+	 - Found an odd glitch in the game: if a non-explosive projectile hits
+	glass it won't break it.  The only projectiles that qualify are the
+	"thrown" versions of various hand-to-hand weapons.  Now fixed.
+
+	 - Improved the weapon switch code so that it will be easier for me to
+	add weapons to the list in the future.  Also reorganized it so it
+	progresses through the list alphabetically.
+
+	 - Made all the grenade types (LAM, EMP, etc.) part of an abstract
+	parent class, WeaponGrenade.  It's unspawnable (that's what abstract
+	means in UnrealScript terms) and there's no actual change to gameplay
+	by doing this, but behind-the-scenes I've saved a lot of code by doing
+	this one little thing.
+
+	 - Made a similar parent class for the various "consumables" (Soda,
+	Zyme, etc.) in the game.
+
+	 - Cleaned up code in various other classes relating to the four basic
+	grenade types, mostly by switching the code over to check for the new
+	"WeaponGrenade" class, rather than each of the four individually.
+
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 
 	 - Cleaned up some issues relating to NPCs picking up weapons, in

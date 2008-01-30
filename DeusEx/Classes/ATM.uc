@@ -35,7 +35,13 @@ function Tick(float deltaTime)
 {
 	Super.Tick(deltaTime);
 
+	if(lastHackTime < 0)
+		lastHackTime = 60;
+
 	lastHackTime += deltaTime;
+
+	if(lockoutTime < 0)
+		lockoutTime = lockoutDelay;
 
 	if(lockoutTime <= lockoutDelay)
 		lockoutTime += deltaTime;

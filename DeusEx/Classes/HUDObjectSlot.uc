@@ -160,10 +160,7 @@ function UpdateItemText()
 				itemText = weapon.AmmoType.beltDescription;
 
 			// If this is a grenade
-			if (weapon.IsA('WeaponNanoVirusGrenade') || 
-				weapon.IsA('WeaponGasGrenade') || 
-				weapon.IsA('WeaponEMPGrenade') ||
-				weapon.IsA('WeaponLAM') || //)
+			if (weapon.IsA('WeaponGrenade') ||
 				weapon.IsA('WeaponHideAGun'))
 			{
 				if (weapon.AmmoType.AmmoAmount > 1)

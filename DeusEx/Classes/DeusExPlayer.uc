@@ -906,6 +906,14 @@ exec function GlobalFacelift(bool bOn)
 	}
 }
 
+//== Takes a "clean" screenshot, with no HUD, GUI, etc.
+exec function CleanShot()
+{
+	rootWindow.Hide();
+	SShot();
+	rootWindow.Show();
+}
+
 exec function AltFire( optional float F )
 {
 	if(DeusExWeapon(Weapon) != None)
@@ -5086,10 +5094,7 @@ function bool HandleItemPickup(Actor FrobTarget, optional bool bSearchOnly)
 
 			// If this is a grenade or LAM (what a pain in the ass) then also check
 			// to make sure we don't have too many grenades already
-			else if ((foundItem.IsA('WeaponEMPGrenade')) || 
-			    	(foundItem.IsA('WeaponGasGrenade')) || 
-				(foundItem.IsA('WeaponNanoVirusGrenade')) || 
-				(foundItem.IsA('WeaponLAM')))
+			else if (foundItem.IsA('WeaponGrenade'))
 			{
 				if (DeusExWeapon(foundItem).AmmoType.AmmoAmount >= DeusExWeapon(foundItem).AmmoType.MaxAmmo)
 				{
@@ -6297,7 +6302,7 @@ exec function bool DropItem(optional Inventory inv, optional bool bDrop)
 	// themselves by dropping grenades.
 	if(DeusExWeapon(item) != None)
 	{
-		if(DeusExWeapon(item).TestCycleable() && Level.NetMode != NM_Standalone)
+		if(Level.NetMode != NM_Standalone && DeusExWeapon(item).IsA('WeaponGrenade') && DeusExWeapon(item).TestCycleable())
 		{
 			ClientMessage("You cannot drop grenades in Shifter MP.  Use the Change Ammo button to switch grenades");
 			return False;

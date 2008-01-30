@@ -133,14 +133,23 @@ function Tick(float deltaTime)
 {
 	Super.Tick(deltaTime);
 
+	if(lockoutTime < 0)
+		lockoutTime = lockoutDelay;
+
 	if(lockoutTime <= lockoutDelay)
 		lockoutTime += deltaTime;
+
+	if(lastHackTime < 0)
+		lastHackTime = 60;
 
 	lastHackTime += deltaTime;
 
    // DEUS_EX AMSD IN multiplayer, set lockout to 0
    if (Level.NetMode != NM_Standalone)
       bLockedOut = False;
+
+	if(lastAlarmTime < 0)
+		lastAlarmTime = alarmTimeout;
 
 	// shut off the alarm if the timeout has expired
 	if(lastAlarmTime >= alarmTimeout) //(Level.TimeSeconds - lastAlarmTime >= alarmTimeout)

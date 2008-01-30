@@ -43,6 +43,9 @@ function PostBeginPlay()
 
 function Tick(float deltaTime)
 {
+	if(lastChargeTime < 0)
+		lastChargeTime = chargeRefreshTime;
+
 	if(lastChargeTime <= chargeRefreshTime)
 		lastChargeTime += deltaTime;
 

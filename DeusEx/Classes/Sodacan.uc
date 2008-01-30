@@ -1,7 +1,7 @@
 //=============================================================================
 // Sodacan.
 //=============================================================================
-class Sodacan extends DeusExPickup;
+class Sodacan extends Consumable;
 
 enum ESkinColor
 {
@@ -172,88 +172,25 @@ function UseOnce()
 		Facelift(True);
 }
 
-//== Look ma, we can switch between food items now
-function SwitchItem()
-{
-	local Class<DeusExPickup> SwitchList[7];
-	local Inventory inv;
-	local int i;
-	local DeusExPlayer P;
-
-	P = DeusExPlayer(Owner);
-
-	i = 0;
-
-	//== Comment out the self reference here and we're done
-//	SwitchList[i++] = class'Sodacan';
-	SwitchList[i++] = class'SoyFood';
-	SwitchList[i++] = class'WineBottle';
-	SwitchList[i++] = class'VialCrack';
-	SwitchList[i++] = class'Candybar';
-	SwitchList[i++] = class'Cigarettes';
-	SwitchList[i++] = class'Liquor40oz';
-	SwitchList[i++] = class'LiquorBottle';
-
-	for(i = 0; i < 6; i++)
-	{
-		inv = P.FindInventoryType(SwitchList[i]);
-
-		if(inv != None)
-		{
-			if(inv.beltPos == -1)
-			{
-				P.ClientMessage(Sprintf(SwitchingTo,inv.ItemName));
-				P.AddObjectToBelt(inv,Self.beltPos,false);
-				P.PutInHand(inv);
-				i = 7;
-				break;
-			}
-		}
-	}
-}
-
 state Activated
 {
-	function Activate()
-	{
-		// can't turn it off
-	}
-
 	function BeginState()
 	{
-		local DeusExPlayer player;
-		local int mult;
-		
-		Super.BeginState();
-
 		if(numCopies > 0 && numCopies <= 10)
-			mult = StackSkins[numCopies - 1];
+			healthEffect = StackSkins[numCopies - 1] + 1;
 		else
-			mult = StackSkins[0];
-
-		player = DeusExPlayer(Owner);
-		if (player != None)
-		{
-			if(player.SkillSystem != None)
-				mult += player.SkillSystem.GetSkillLevel(class'SkillMedicine') + 1;
-
-			//== Health gained is based on the color of the can
-			player.HealPlayer(mult, False);
-			//Either reduces your drunkenness or extends your zyme high
-			if(player.drugEffectTimer > 4.0 || player.drugEffectTimer < 0.0)
-				player.drugEffectTimer -= 4.0;
-			else
-				player.drugEffectTimer = 0.0;			
-		}
+			healthEffect = StackSkins[0] + 1;		
 
 		PlaySound(sound'MaleBurp');
-		UseOnce();
+		Super.BeginState();
 	}
 Begin:
 }
 
 defaultproperties
 {
+     healthEffect=3
+     drugEffect=-4.0
      maxCopies=10
      bCanHaveMultipleCopies=True
      bActivatable=True

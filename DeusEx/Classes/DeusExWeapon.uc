@@ -260,7 +260,7 @@ replication
     // Functions client calls on server
     reliable if ( Role < ROLE_Authority )
         ReloadAmmo, LoadAmmo, CycleAmmo, LaserOn, LaserOff, LaserToggle, ScopeOn, ScopeOff, ScopeToggle, PropagateLockState, ServerForceFire, 
-		  ServerGenerateBullet, ServerGotoFinishFire, ServerHandleNotify, StartFlame, StopFlame, ServerDoneReloading, DestroyOnFinish;
+		  ServerGenerateBullet, ServerGotoFinishFire, ServerHandleNotify, StartFlame, StopFlame, ServerDoneReloading, DestroyOnFinish, SwitchItem, TestCycleable;
 
     // Functions Server calls in client
     reliable if ( Role == ROLE_Authority )
@@ -715,8 +715,6 @@ function bool LoadAmmo(int ammoNum)
 	local class<Ammo> newAmmoClass;
 	local Ammo newAmmo;
 	local Pawn P;
-	local int i, j;
-	local class<DeusExWeapon> Wep;
 
 	if ((ammoNum < 0) || (ammoNum > 2))
 		return False;
@@ -729,7 +727,7 @@ function bool LoadAmmo(int ammoNum)
 
 	newAmmoClass = AmmoNames[ammoNum];
 
-	if (newAmmoClass != None || TestCycleable()) 
+	if (newAmmoClass != None) 
 	{
 		if (newAmmoClass != AmmoName) 
 		{
@@ -827,96 +825,6 @@ function bool LoadAmmo(int ammoNum)
 			P.ClientMessage(Sprintf(msgNowHas, ItemName, newAmmoClass.Default.ItemName));
 			return True;
 		}
-		else if(TestCycleable())
-		{
-			if(!bHandToHand)
-			{
-				SwitchItem();
-				return False;
-			}
-
-			//=== We need to replace this with instances of SwitchItem
-			j = 0;
-			i = -1;
-			if(IsA('WeaponPrototypeSwordC'))
-				i = 0;
-			else if(IsA('WeaponBaton'))
-				i = 1;
-			else if(IsA('WeaponCombatKnife'))
-				i = 2;
-			else if(IsA('WeaponCrowbar'))
-				i = 3;
-			else if(IsA('WeaponShuriken'))
-				i = 4;
-			else if(IsA('WeaponSword'))
-				i = 5;
-			else if(IsA('WeaponNanoSword'))
-				i = 6;
-			if(IsA('WeaponBlackjack'))
-				i = 7;
-			if(IsA('WeaponToxinBlade'))
-				i = 8;
-			if(IsA('WeaponPrototypeSwordA'))
-				i = 9;
-			if(IsA('WeaponPrototypeSwordB'))
-				i = 10;
-			if(i < 0)
-				j = 11;
-			for(j = j; j < 11; i++)
-			{
-				if(i > 10)
-					i = 0;
-
-				switch(i)
-				{
-					case 0:
-						Wep = class'WeaponBaton';
-						break;
-					case 1:
-						Wep = class'WeaponCombatKnife';
-						break;
-					case 2:
-						Wep = class'WeaponCrowbar';
-						break;
-					case 3:
-						Wep = class'WeaponShuriken';
-						break;
-					case 4:
-						Wep = class'WeaponSword';
-						break;
-					case 5:
-						Wep = class'WeaponNanoSword';
-						break;
-					case 6:
-						Wep = class'WeaponBlackjack';
-						break;
-					case 7:
-						Wep = class'WeaponToxinBlade';
-						break;
-					case 8:
-						Wep = class'WeaponPrototypeSwordA';
-						break;
-					case 9:
-						Wep = class'WeaponPrototypeSwordB';
-						break;
-					case 10:
-						Wep = class'WeaponPrototypeSwordC';
-						break;
-
-				}
-				if(P.FindInventoryType(Wep) != None)
-				{
-					if((P.FindInventoryType(Wep)).beltPos == -1)
-					{
-						AddObjectToBelt(P.FindInventoryType(Wep), beltPos, false);
-						DeusExPlayer(P).PutInHand(P.FindInventoryType(Wep));
-						P.ClientMessage(Sprintf(msgSwitchingTo, Wep.Default.ItemName));
-						j = 11;
-					}
-				}
-				j++;
-			}
-		}
 		else
 		{
 			P.ClientMessage(Sprintf(MsgAlreadyHas, ItemName, newAmmoClass.Default.ItemName));
@@ -926,7 +834,56 @@ function bool LoadAmmo(int ammoNum)
 	return False;
 }
 
-function SwitchItem(){}
+simulated function SwitchItem()
+{
+	local int i, j;
+	local class<Weapon> SwitchList[12];
+	local Pawn P;
+
+	P = Pawn(Owner);
+
+	if(P == None)
+		return;
+
+	i = 0;
+
+	SwitchList[i++] = class'WeaponBaton';
+	SwitchList[i++] = class'WeaponBlackjack';
+	SwitchList[i++] = class'WeaponCombatKnife';
+	SwitchList[i++] = class'WeaponCrowbar';
+	SwitchList[i++] = class'WeaponNanoSword';
+	SwitchList[i++] = class'WeaponPrototypeSword';
+	SwitchList[i++] = class'WeaponPrototypeSwordA';
+	SwitchList[i++] = class'WeaponPrototypeSwordB';
+	SwitchList[i++] = class'WeaponPrototypeSwordC';
+	SwitchList[i++] = class'WeaponSword';
+	SwitchList[i++] = class'WeaponShuriken';
+	SwitchList[i++] = class'WeaponToxinBlade';
+
+	for(i = 0; i < ArrayCount(SwitchList); i++)
+	{
+		if(Class == SwitchList[i])
+			break;
+	}
+
+	for(j = 0; j < ArrayCount(SwitchList); j++)
+	{
+		i++;
+		if(i >= ArrayCount(SwitchList))
+			i = 0;
+
+		if(P.FindInventoryType(SwitchList[i]) != None && SwitchList[i] != Class)
+		{
+			if((P.FindInventoryType(SwitchList[i])).beltPos == -1)
+			{
+				AddObjectToBelt(P.FindInventoryType(SwitchList[i]), beltPos, false);
+				DeusExPlayer(P).PutInHand(P.FindInventoryType(SwitchList[i]));
+				P.ClientMessage(Sprintf(msgSwitchingTo, SwitchList[i].Default.ItemName));
+				break;
+			}
+		}
+	}
+}
 
 // ----------------------------------------------------------------------
 //
@@ -1019,11 +976,12 @@ function CycleAmmo()
 {
 	local int i, last;
 
-	if (NumAmmoTypesAvailable() < 2)
+	if(NumAmmoTypesAvailable() < 2)
 	{
-		//Call the item cycling option
+		//Call the item cycling option, if applicable
 		if(TestCycleable())
-			LoadAmmo(0);
+			SwitchItem();
+
 		return;
 	}
 
@@ -3107,7 +3065,7 @@ simulated function Projectile ProjectileFire(class<projectile> ProjClass, float 
 			if (( Role == ROLE_Authority ) || (DeusExPlayer(Owner) == DeusExPlayer(GetPlayerPawn())) )
 			{
 				// Do it the old fashioned way if it can track, or if we are a projectile that we could pick up again
-				if ( bCanTrack || Self.IsA('WeaponShuriken') || Self.IsA('WeaponMiniCrossbow') || Self.IsA('WeaponLAM') || Self.IsA('WeaponEMPGrenade') || Self.IsA('WeaponGasGrenade'))
+				if ( bCanTrack || Self.IsA('WeaponShuriken') || Self.IsA('WeaponMiniCrossbow') || Self.IsA('WeaponGrenade'))
 				{
 					if ( Role == ROLE_Authority )
 					{
@@ -3246,7 +3204,7 @@ simulated function Projectile ProjectileAltFire(class<projectile> ProjClass, flo
 			if (( Role == ROLE_Authority ) || (DeusExPlayer(Owner) == DeusExPlayer(GetPlayerPawn())) )
 			{
 				// Do it the old fashioned way if it can track, or if we are a projectile that we could pick up again
-				if ( bCanTrack || Self.IsA('WeaponShuriken') || Self.IsA('WeaponMiniCrossbow') || Self.IsA('WeaponLAM') || Self.IsA('WeaponEMPGrenade') || Self.IsA('WeaponGasGrenade'))
+				if ( bCanTrack || Self.IsA('WeaponShuriken') || Self.IsA('WeaponMiniCrossbow') || Self.IsA('WeaponGrenade'))
 				{
 					if ( Role == ROLE_Authority )
 					{
@@ -5322,9 +5280,9 @@ simulated function bool TestMPBeltSpot(int BeltSpot)
 // TestCycleable()
 // Determines whether or not the weapon is part of a "cycle" group.
 // ----------------------------------------------------------------------
-function bool TestCycleable()
+simulated function bool TestCycleable()
 {
-   return (IsA('WeaponLAM') || IsA('WeaponEMPGrenade') || IsA('WeaponGasGrenade') || (IsA('WeaponNanoVirusGrenade') && Level.NetMode == NM_Standalone));
+   return (bHandToHand && AmmoType == None);
 }
 
 defaultproperties

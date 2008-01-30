@@ -1,75 +1,11 @@
 //=============================================================================
 // WeaponNanoVirusGrenade.
 //=============================================================================
-class WeaponNanoVirusGrenade extends DeusExWeapon;
+class WeaponNanoVirusGrenade extends WeaponGrenade;
 
-function Fire(float Value)
+simulated function bool TestCycleable()
 {
-	// if facing a wall, affix the NanoVirusGrenade to the wall
-	if (Pawn(Owner) != None)
-	{
-		if (bNearWall)
-		{
-			bReadyToFire = False;
-			GotoState('NormalFire');
-			bPointing = True;
-			PlayAnim('Place',, 0.1);
-			return;
-		}
-	}
-
-	// otherwise, throw as usual
-	Super.Fire(Value);
-}
-
-function Projectile ProjectileFire(class<projectile> ProjClass, float ProjSpeed, bool bWarn)
-{
-	local Projectile proj;
-
-	proj = Super.ProjectileFire(ProjClass, ProjSpeed, bWarn);
-
-	if (proj != None)
-		proj.PlayAnim('Open');
-}
-
-//== For switching between grenade types, including Zodiac's C4
-function SwitchItem()
-{
-	local Class<DeusExWeapon> SwitchList[5];
-	local Inventory inv;
-	local int i;
-	local DeusExPlayer P;
-
-	P = DeusExPlayer(Owner);
-
-	i = 0;
-
-	SwitchList[i++] = class'WeaponNanoVirusGrenade';
-	SwitchList[i++] = class'WeaponLAM';
-	SwitchList[i++] = Class<DeusExWeapon>(DynamicLoadObject("Zodiac.WeaponC4", class'Class', True)); //I am such a badass
-	SwitchList[i++] = class'WeaponEMPGrenade';
-	SwitchList[i++] = class'WeaponGasGrenade';
-
-	for(i = 0; i < 5; i++)
-	{
-		if(SwitchList[i] != None && SwitchList[i] != Class)
-		{
-			inv = P.FindInventoryType(SwitchList[i]);
-
-			if(inv != None)
-			{
-				if(inv.beltPos == -1 && DeusExWeapon(inv).TestCycleable())
-				{
-					if(!bDestroyOnFinish)
-						P.ClientMessage(Sprintf(msgSwitchingTo,inv.ItemName));
-					P.AddObjectToBelt(inv,Self.beltPos,false);
-					P.PutInHand(inv);
-					i = 5; //Just to be sure
-					break;
-				}
-			}
-		}
-	}
+	return (Level.NetMode == NM_Standalone);
 }
 
 //     MultiSkins(4)=FireTexture'Effects.liquid.Virus_SFX'

@@ -1,7 +1,7 @@
 //=============================================================================
 // Liquor40oz.
 //=============================================================================
-class Liquor40oz extends DeusExPickup;
+class Liquor40oz extends Consumable;
 
 enum ESkinColor
 {
@@ -93,81 +93,10 @@ function TransferSkin(Inventory inv)
 	}
 }
 
-//== Look ma, we can switch between food items now
-function SwitchItem()
-{
-	local Class<DeusExPickup> SwitchList[7];
-	local Inventory inv;
-	local int i;
-	local DeusExPlayer P;
-
-	P = DeusExPlayer(Owner);
-
-	i = 0;
-
-	//== Comment out the self reference here and we're done
-//	SwitchList[i++] = class'Liquor40oz';
-	SwitchList[i++] = class'LiquorBottle';
-	SwitchList[i++] = class'Sodacan';
-	SwitchList[i++] = class'SoyFood';
-	SwitchList[i++] = class'WineBottle';
-	SwitchList[i++] = class'VialCrack';
-	SwitchList[i++] = class'Candybar';
-	SwitchList[i++] = class'Cigarettes';
-
-	for(i = 0; i < 6; i++)
-	{
-		inv = P.FindInventoryType(SwitchList[i]);
-
-		if(inv != None)
-		{
-			if(inv.beltPos == -1)
-			{
-				P.ClientMessage(Sprintf(SwitchingTo,inv.ItemName));
-				P.AddObjectToBelt(inv,Self.beltPos,false);
-				P.PutInHand(inv);
-				i = 7;
-				break;
-			}
-		}
-	}
-}
-
-state Activated
-{
-	function Activate()
-	{
-		// can't turn it off
-	}
-
-	function BeginState()
-	{
-		local DeusExPlayer player;
-		local int mult;
-		
-		Super.BeginState();
-
-		player = DeusExPlayer(Owner);
-		if (player != None)
-		{
-			if(player.SkillSystem != None)
-				mult = player.SkillSystem.GetSkillLevel(class'SkillMedicine') + 1;
-
-//			player.HealPlayer(5, False);
-			player.HealPlayer(4 + mult, False);
-			if(player.drugEffectTimer < 0.0 && player.drugEffectTimer >= -7.0)
-				player.drugEffectTimer = -0.01;
-			else
-				player.drugEffectTimer += 7.0;
-		}
-
-		UseOnce();
-	}
-Begin:
-}
-
 defaultproperties
 {
+     healthEffect=5
+     drugEffect=7.0
      bBreakable=True
      maxCopies=10
      bCanHaveMultipleCopies=True

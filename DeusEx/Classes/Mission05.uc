@@ -131,7 +131,7 @@ function FirstFrame()
 
 						// restore any ammo amounts for a weapon to default
 						//  EXCEPT Grenades, etc. -- Y|yukichigai
-						if (item.IsA('Weapon') && (Weapon(item).AmmoType != None) && !item.IsA('WeaponGasGrenade') && !item.IsA('WeaponLAM') && !item.IsA('WeaponEMPGrenade') && !item.IsA('WeaponNanoVirusGrenade'))
+						if (item.IsA('Weapon') && (Weapon(item).AmmoType != None) && !item.IsA('WeaponGrenade'))
 							Weapon(item).PickupAmmoCount = Weapon(item).Default.PickupAmmoCount;
 					}
 					//== Finally, confiscate all the player's credits as well, then exit the loop.

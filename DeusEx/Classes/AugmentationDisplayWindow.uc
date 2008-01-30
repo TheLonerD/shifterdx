@@ -688,13 +688,10 @@ function DrawMiscStatusMessages( GC gc )
 	weap = DeusExWeapon(Player.inHand);
 	if (( weap != None ) && ( weap.AmmoLeftInClip() == 0 ) && (weap.NumClips() == 0) )
 	{
-		if ( weap.IsA('WeaponLAM') ||
-			  weap.IsA('WeaponGasGrenade') || 
-			  weap.IsA('WeaponEMPGrenade') ||
+		if ( weap.IsA('WeaponGrenade') ||
 			  weap.IsA('WeaponShuriken') ||
 			  weap.IsA('WeaponHideAGun') ||
-			  weap.IsA('WeaponLAW') ||//)
-			  weap.IsA('WeaponHideAGun'))
+			  weap.IsA('WeaponLAW'))
 		{
 		}
 		else

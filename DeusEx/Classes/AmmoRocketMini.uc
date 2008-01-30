@@ -8,7 +8,7 @@ function Facelift(bool bOn)
 	local Texture temptex;
 	if(bOn)
 	{
-		temptex = Texture(DynamicLoadObject("ShifterTextures.Ammo.AmmoRocketMini",class'Texture', True));
+		temptex = Texture(DynamicLoadObject("ShifterEX.Ammo.AmmoRocketMini",class'Texture', True));
 		if(temptex != None)
 			Skin = temptex;
 	}
@@ -36,5 +36,5 @@ defaultproperties
      CollisionRadius=18.000000
      CollisionHeight=7.800000
      bCollideActors=True
-     DynamicLoadIcon="ShifterTextures.Icons.IconRocketMini"
+     DynamicLoadIcon="ShifterEX.Icons.BeltIconAmmoRocketMini"
 }

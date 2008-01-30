@@ -7,7 +7,7 @@ var bool bSmartass;
 
 simulated function PreBeginPlay()
 {
-	if(fRand() > 0.82 && !bSmartass)
+	if(fRand() > 0.82)
 		bSmartass = True;
 
 	Super.PreBeginPlay();
@@ -27,10 +27,10 @@ function Facelift(bool bOn)
 	{
 		Mesh = Default.Mesh;
 		if(bSmartass && bOn)
-			lSkin = Texture(DynamicLoadObject("ShifterTextures.Decos.SignFloorS", class'Texture', True));
+			lSkin = Texture(DynamicLoadObject("ShifterEX.Decos.SignFloorS", class'Texture', True));
 	}
 	else if(bSmartass)
-		lSkin = Texture(DynamicLoadObject("ShifterTextures.Decos.HDTPSignFloorS", class'Texture', True));
+		lSkin = Texture(DynamicLoadObject("ShifterEX.Decos.HDTPSignFloorS", class'Texture', True));
 
 	if(lSkin != None)
 		Skin = lSkin;

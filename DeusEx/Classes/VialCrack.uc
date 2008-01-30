@@ -7,58 +7,13 @@
 //less than zero.  The code that calculates drug effects has been modified so
 //that values that are less than zero provide a boost rather than an impairment.
 
-class VialCrack extends DeusExPickup;
+class VialCrack extends Consumable;
 
-//== Look ma, we can switch between food items now
-function SwitchItem()
-{
-	local Class<DeusExPickup> SwitchList[7];
-	local Inventory inv;
-	local int i;
-	local DeusExPlayer P;
-
-	P = DeusExPlayer(Owner);
-
-	i = 0;
-
-	//== Comment out the self reference here and we're done
-//	SwitchList[i++] = class'VialCrack';
-	SwitchList[i++] = class'Candybar';
-	SwitchList[i++] = class'Cigarettes';
-	SwitchList[i++] = class'Liquor40oz';
-	SwitchList[i++] = class'LiquorBottle';
-	SwitchList[i++] = class'Sodacan';
-	SwitchList[i++] = class'SoyFood';
-	SwitchList[i++] = class'WineBottle';
-
-	for(i = 0; i < 6; i++)
-	{
-		inv = P.FindInventoryType(SwitchList[i]);
-
-		if(inv != None)
-		{
-			if(inv.beltPos == -1)
-			{
-				P.ClientMessage(Sprintf(SwitchingTo,inv.ItemName));
-				P.AddObjectToBelt(inv,Self.beltPos,false);
-				P.PutInHand(inv);
-				i = 7;
-				break;
-			}
-		}
-	}
-}
 state Activated
 {
-	function Activate()
-	{
-		// can't turn it off
-	}
-
 	function BeginState()
 	{
 		local DeusExPlayer player;
-		local Inventory inv;
 
 		player = DeusExPlayer(Owner);
 
@@ -67,34 +22,29 @@ state Activated
 
 		if(player.drugEffectTimer < 0.0)
 			return;
+		else
+			player.drugEffectTimer = -1.0;
 		
-		Super.BeginState();
-
-		if (player != None)
-		{
-			//=== Here begin the bullet time effects.  Neat how simple it is, huh?
-			//=== The values are relative and not set in stone so that users who must
-			//===  modify the GameSpeed for play (usually laptop users) don't get
-			//===  messed up when they use Zyme.  There is still a risk if the speed has been
-			//===  lowered to something below 0.2, since the absolute lowest the game can run
-			//===  is 0.1 speed.
-			if(player.Level.NetMode == NM_Standalone)
-				player.Level.Game.SetGameSpeed(player.Level.Game.GameSpeed / 2.000);
-			else
-				log("VialCrack: Some smartass put Zyme in a multiplayer map.  Hit them.");
-
-			//=== Since game speed is halved the time is doubled.  15 seconds is actually 30 seconds
-			player.drugEffectTimer = -15.0;
-			player.HealPlayer(-10, False);
-		}
-
-		UseOnce();
+		//=== Here begin the bullet time effects.  Neat how simple it is, huh?
+		//=== The values are relative and not set in stone so that users who must
+		//===  modify the GameSpeed for play (usually laptop users) don't get
+		//===  messed up when they use Zyme.  There is still a risk if the speed has been
+		//===  lowered to something below 0.2, since the absolute lowest the game can run
+		//===  is 0.1 speed.
+		if(player.Level.NetMode == NM_Standalone)
+			player.Level.Game.SetGameSpeed(player.Level.Game.GameSpeed / 2.000);
+		else
+			log("VialCrack: Some smartass put Zyme in a multiplayer map.  Hit them.");
+	
+		Super.BeginState(); //The parent class handles setting the drug effect and all that
 	}
 Begin:
 }
 
 defaultproperties
 {
+     healthEffect=-10
+     drugEffect=-14.0
      maxCopies=20
      bCanHaveMultipleCopies=True
      bActivatable=True

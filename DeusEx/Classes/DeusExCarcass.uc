@@ -561,10 +561,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 			               W = DeusExWeapon(item);
                
 			               // Grenades and LAMs always pickup 1
-			               if (W.IsA('WeaponNanoVirusGrenade') || 
-			                  W.IsA('WeaponGasGrenade') || 
-			                  W.IsA('WeaponEMPGrenade') ||
-			                  W.IsA('WeaponLAM') || //)
+			               if (W.IsA('WeaponGrenade') ||
 					  W.IsA('WeaponHideAGun') )
 			                  W.PickupAmmoCount = 1;
 			               else if (Level.NetMode == NM_Standalone)

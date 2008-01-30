@@ -10,15 +10,15 @@ function Facelift(bool bOn)
 	local Texture temptex;
 	if(bOn)
 	{
-		temptex = Texture(DynamicLoadObject("ShifterTextures.Items.WeaponModAuto",class'Texture', True));
+		temptex = Texture(DynamicLoadObject("ShifterEX.Items.WeaponModTexAuto",class'Texture', True));
 		if(temptex != None)
 			Skin = temptex;
 
-		temptex = Texture(DynamicLoadObject("ShifterTextures.Icons.IconModAuto",class'Texture', True));
+		temptex = Texture(DynamicLoadObject("ShifterEX.Icons.LargeIconModAuto",class'Texture', True));
 		if(temptex != None)
 			largeIcon = temptex;
 
-		temptex = Texture(DynamicLoadObject("ShifterTextures.Icons.BeltModAuto",class'Texture', True));
+		temptex = Texture(DynamicLoadObject("ShifterEX.Icons.BeltIconModAuto",class'Texture', True));
 		if(temptex != None)
 			Icon = temptex;		
 	}

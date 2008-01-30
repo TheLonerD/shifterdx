@@ -297,21 +297,17 @@ function SwitchItem()
 		Ws = (Class'Medkit').Default.ItemName;
 	}
 
-	if(Ws != "-1")
+	if(W != None)
 	{
-		if(W != None)
-		{
-			if(W.beltPos == -1)
-			{
-				P.ClientMessage(sprintf(SwitchingTo, Ws));
-				P.AddObjectToBelt(W,Self.beltPos,false);
-				P.PutInHand(W);
-			}
-		}
-		else
-		{
-			P.ClientMessage(sprintf(OutOf, Ws));
-		}
+		if(Ws != "-1")
+			P.ClientMessage(sprintf(SwitchingTo, Ws));
+		if(W.beltPos == -1)
+			P.AddObjectToBelt(W,Self.beltPos,false);
+		P.PutInHand(W);
+	}
+	else
+	{
+		P.ClientMessage(sprintf(OutOf, Ws));
 	}
 }
 

@@ -34,7 +34,18 @@ function PostBeginPlay()
    if (IsImmobile())
       bAlwaysRelevant = True;
 
-	lastHealTime = -healRefreshTime;
+	lastHealTime = healRefreshTime + 1;
+}
+
+function Tick(float deltaTime)
+{
+	if(lastHealTime < 0)
+		lastHealTime = healRefreshTime;
+
+	if(lastHealTime <= healRefreshTime)
+		lastHealTime += deltaTime;
+
+	Super.Tick(deltaTime);
 }
 
 // ----------------------------------------------------------------------
