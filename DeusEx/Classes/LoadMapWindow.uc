@@ -184,7 +184,7 @@ function LoadMap(int rowID)
 	root.ClearWindowStack();
 
 	if (bTravel)
-		localPlayer.ClientTravel(mapFileName, TRAVEL_Relative, True);
+		localPlayer.ClientTravel(mapFileName$"?Difficulty="$localPlayer.combatDifficulty, TRAVEL_Relative, True);
 	else
 		localPlayer.ConsoleCommand("Open" @ mapFileName $ "?loadonly");
 }

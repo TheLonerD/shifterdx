@@ -71,7 +71,7 @@ function Timer()
 			!flags.GetBool('MS_PlayerTeleported'))
 		{
 			flags.SetBool('MS_PlayerTeleported', True,, 12);
-			Level.Game.SendPlayer(Player, "11_PARIS_EVERETT");
+			Level.Game.SendPlayer(Player, "11_PARIS_EVERETT?Difficulty="$Player.combatDifficulty);
 		}
 	}
 	else if (localURL == "11_PARIS_EVERETT")

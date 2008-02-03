@@ -11,6 +11,9 @@ var TextWindow winLabel;
 var Color colText;
 var Font fontLabel;
 
+var Class<Inventory> itemClass; //The class of the item we're displaying
+var int itemCount; //The number of items we're tracking
+
 // ----------------------------------------------------------------------
 // InitWindow()
 //
@@ -41,11 +44,26 @@ event InitWindow()
 event SetItem(Inventory invItem, int count)
 {
 	local String labelText;
+	local Texture icontex;
 
 	winIcon = NewChild(Class'Window');
 	winIcon.SetSize(42, 37);
 	winIcon.SetBackgroundStyle(DSTY_Masked);
-	winIcon.SetBackground(invItem.Icon);
+
+	if(invItem.IsA('DeusExAmmo'))
+		if(DeusExAmmo(invItem).DynamicLoadIcon != "")
+			icontex = Texture(DynamicLoadObject(DeusExAmmo(invItem).DynamicLoadIcon, class'Texture', True));
+
+	if(icontex == None)
+		icontex = invItem.Icon;
+
+	if(icontex == None)
+		icontex = invItem.Default.Icon;
+
+	winIcon.SetBackground(icontex);
+
+	itemClass = invItem.Class; //For tracking duplicates
+	itemCount = count;
 
 	winLabel = TextWindow(NewChild(Class'TextWindow'));
 	winLabel.SetFont(fontLabel);
@@ -53,7 +71,9 @@ event SetItem(Inventory invItem, int count)
 	winLabel.SetTextAlignments(HALIGN_Center, VALIGN_Top);
 
 	labelText = invItem.beltDescription;
-	if (count > 1)
+	if(labelText == "") //== Weird bug with robots, no idea why
+		labelText = invItem.Default.beltDescription;
+	if (count > 1 || invItem.IsA('Ammo'))
 		labelText = labelText $ " (" $ String(count) $ ")";
 
 	winLabel.SetText(labelText);

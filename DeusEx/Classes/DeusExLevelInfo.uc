@@ -20,7 +20,6 @@ var() String emailTo[25];
 var() String emailCC[25];
 var() String emailString[25];
 
-
 function SpawnScript()
 {
 	local MissionScript scr;

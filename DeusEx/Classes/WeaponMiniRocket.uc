@@ -29,6 +29,7 @@ defaultproperties
      PickupViewMesh=LodMesh'DeusExItems.AssaultShotgunPickup'
      ThirdPersonMesh=LodMesh'DeusExItems.AssaultShotgun3rd'
      LandSound=Sound'DeusExSounds.Generic.DropMediumWeapon'
+     FireSound=Sound'DeusExSounds.Robot.RobotFireRocket'
      CockingSound=Sound'DeusExSounds.Weapons.AssaultShotgunReload'
      AltFireSound=Sound'DeusExSounds.Weapons.LAWSelect'
      Icon=Texture'DeusExUI.Icons.BeltIconAssaultShotgun'

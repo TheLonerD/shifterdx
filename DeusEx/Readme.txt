@@ -1367,6 +1367,86 @@ UPDATES:
 	grenade types, mostly by switching the code over to check for the new
 	"WeaponGrenade" class, rather than each of the four individually.
 
+	 - Fixed a tiny issue with the new phone code that could stop the dial
+	tone while you were dialing if the phone was used multiple times in
+	quick succession.
+
+	 - Disabled the cats attacking rats thing for now.  The AI routines
+	require some serious editing before it will work right.
+
+	 - Stopped Robots and Animals from taking weapons from corpses and
+	using them.  I'll admit, the description I got of a security bot using
+	pepper spray on someone was pretty funny, but not what I had in mind.
+	Except maybe in Unrealistic.
+
+	 - Forget "maybe in Unrealistic", definitely in Unrealistic.  Robots
+	and Animals can now pick up nearby weapons and use them.  Watch out for
+	Karkians with Gep Guns.
+
+	 - Added support for Hejhujka's Alt-Fire addon/mutator for Deus Ex.
+	My code effectively disabled the ability of his new weapons to use
+	alt-fire, so I added a special case to look specifically for those new
+	weapons.
+
+	 - In Unrealistic your player model will be whatever you selected for
+	your non-team multiplayer model.  The sounds are still updated but the
+	conversation files aren't, meaning that you could, say, hear JC's voice
+	coming out of Tiffany Savage's mouth.  Or a child's.  Or a gray's.
+
+	 - Disabled Robots are now frobbable in Unrealistic, just like corpses
+	are.  Considering the ludicrous amount of ammo they carry it's really
+	worth it to disable them and loot 'em if you can.  (I did put a cap on
+	how much ammo you can get from them though)
+
+	 - Robots and Animals are now givent NPC Random Inventory, at least in
+	Unrealistic.  Karkians with Gep Guns; that is all you need to know.
+
+	 - Reworked my fix of the "time while paused" exploits so that the fix
+	isn't screwed up by objects which aren't being "ticked" (updated) due
+	to the player being a certain distance away.  The new code isn't
+	perfect; if you pause twice while something isn't being updated and
+	then get close enough to where it is it'll only adjust the time limit
+	as though you have paused just once.
+
+	 - Added support for custom ammo icons to the "item received" window
+	you see when frobbing bodies.  Also did some checking to make sure it
+	shows a name if, say, the ammo has been overwritten to use a blank
+	name, as in the case of robots.
+
+	 - Reworked the way ammo amounts are calculated when frobbing a body.
+	The old amount used a fixed scale of 1 to 4 that I had to override with
+	specific code.  The number of overrides I was doing got to the point of
+	being excessive, so I just redid the method to use a scale of 1 to
+	whatever pickup amount is the default for the corresponding weapon.
+	Some specific ranges are 1 to 4 on the crossbow, 1 to 6 on the pistol,
+	and 1 to 30 on the Assault Rifle.
+
+	 - Adjusted the new firing effect on the Railgun so the duration is
+	shorter and so the beam will fade out.  Still doesn't go through walls
+	though.  (The effect, that is.  The gun still shoots though walls)
+
+	 - In Unrealistic you will now be given any ammo type found on a body
+	if you don't already have it.  This means that it is possible to get a
+	few rounds of 10mm explosive ammo in the first mission via NPC Random
+	Inventory.
+
+	 - Re-activated some unused code that allows the received items window
+	to show you how many of a particular item you've picked up.  The normal
+	behavior is to only show the count when above 1, but I've adjusted it
+	to always show the count for ammo.
+
+	 - Added a little code to the window that shows you what items you've
+	picked up from a body which will check for duplicate entries.  Rather
+	than displaying the item twice (or more) the code will make sure that
+	the item count for an existing displayed item is simply updated.
+
+	 - Reworked the received items display to also show you the ammo you've
+	picked up (and the amount) when you pick up a new weapon.
+
+	 - Removed a bit of code which prevented weapons loaded with 10mmEX
+	ammo from doing the full, ludicrous amount of damage to the player.
+
+
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 
 	 - Cleaned up some issues relating to NPCs picking up weapons, in

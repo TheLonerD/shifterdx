@@ -5,6 +5,9 @@ class DeusExGameInfo expands GameInfo
 	config;
 
 var() config bool bNewSkillSystem;	//toggles the new skill system
+
+var Float PauseStartTime;
+var Float PauseEndTime;
 	
 // ----------------------------------------------------------------------
 // Login()
@@ -23,10 +26,19 @@ event playerpawn Login
 	local byte InTeam;
 	local DumpLocation dump;
 
-   //DEUS_EX AMSD In non multiplayer games, force JCDenton.
-   if (!ApproveClass(SpawnClass))
+   //== In Unrealistic we can be whoever the hell we want
+   if(float(ParseOption( Options, "Difficulty")) > 4.0)
    {
-      SpawnClass=class'JCDentonMale';
+	if(!ClassIsChildOf(SpawnClass, class'Human'))
+		SpawnClass=class'JCDentonMale';
+   }
+   else
+   {
+	//DEUS_EX AMSD In non multiplayer games, force JCDenton.
+	if (!ApproveClass(SpawnClass))
+	{
+		SpawnClass=class'JCDentonMale';
+	}
    }
 
 	player = DeusExPlayer(Super.Login(Portal, Options, Error, SpawnClass));
@@ -142,7 +154,19 @@ function FailConsoleCheck(PlayerPawn FailPlayer)
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
 
+function bool SetPause(BOOL bPause, PlayerPawn P)
+{
+	if(bPause && Level.Pauser == "")
+		PauseStartTime = Level.TimeSeconds;
+	if(!bPause && Level.Pauser != "")
+		PauseEndTime = Level.TimeSeconds;
+
+	Super.SetPause(bPause, P);
+}
+
 defaultproperties
 {
      bNewSkillSystem=True
+     PauseStartTime=-999999
+     PauseEndTime=-999999
 }

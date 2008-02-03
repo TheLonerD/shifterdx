@@ -128,9 +128,46 @@ function bool ChildRequestedReconfiguration(window child)
 function AddItem(Inventory invItem, Int count)
 {
 	local HUDReceivedDisplayItem item;
+	local Window itemWindow, nextWindow;
+	local string labelText;
 
-	item = HUDReceivedDisplayItem(winTile.NewChild(Class'HUDReceivedDisplayItem'));
-	item.SetItem(invItem, count);
+	if(count <= 0)
+		return;
+
+	if(invItem == None || invItem.IsA('AmmoNone'))
+		return;
+
+	//== Check for duplicate items
+	if(winTile != None)
+		itemWindow = winTile.GetTopChild();
+	while( itemWindow != None )
+	{
+		nextWindow = itemWindow.GetLowerSibling();
+		if(itemWindow.IsA('HudReceivedDisplayItem'))
+		{
+			if(HudReceivedDisplayItem(itemWindow).itemClass == invItem.Class && invItem.Class != None) //== Duplicate entry, we should just update the number
+			{
+				labelText = invItem.beltDescription;
+				if(labelText == "")
+					labelText = invItem.Default.beltDescription;
+	
+				HudReceivedDisplayItem(itemWindow).itemCount += count;
+	
+				if(HudReceivedDisplayItem(itemWindow).itemCount > 1)
+					labelText = labelText $ " (" $ string(HudReceivedDisplayItem(itemWindow).itemCount) $ ")";
+	
+				if(HudReceivedDisplayItem(itemWindow).winLabel != None)
+					HudReceivedDisplayItem(itemWindow).winLabel.SetText(labelText);
+			}
+		}
+		itemWindow = nextWindow;
+	}
+
+	if(labelText == "")
+	{
+		item = HUDReceivedDisplayItem(winTile.NewChild(Class'HUDReceivedDisplayItem'));
+		item.SetItem(invItem, count);
+	}
 
 	displayTimer = 0.0;
 	Show();

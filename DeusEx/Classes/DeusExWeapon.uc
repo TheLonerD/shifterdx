@@ -2207,7 +2207,7 @@ simulated function bool ClientAltFire( float value )
 	local bool bWaitOnAnim;
 	local vector shake;
 
-	if(!bHasAltFire)
+	if(!bHasAltFire && !IsA('TnagWeapon'))
 	{
 		ScopeToggle();
 		return false;
@@ -2344,7 +2344,7 @@ function AltFire(float Value)
 	local float sndVolume;
 	local bool bListenClient;
 
-	if(!bHasAltFire)
+	if(!bHasAltFire && !IsA('TnagWeapon'))
 	{
 		ScopeToggle();
 		return;
@@ -3836,7 +3836,7 @@ simulated function ProcessTraceHitExplosive(Actor Other, Vector HitLocation, Vec
 						Other.TakeDamage(HitDamage * mult, Pawn(Owner), HitLocation, 3000.0*X, damageType);
 					//== Only do one direct explosive hit on the player (since the only time that will happen
 					//==  is in Unrealistic) or 3 on Robots
-					if(DeusExPlayer(Other) != None || (i >= 2 && Robot(Other) != None) )
+					if((DeusExPlayer(Other) != None && !AmmoType.IsA('Ammo10mmEX')) || (i >= 2 && Robot(Other) != None) )
 						break;
 				}
 

@@ -58,6 +58,11 @@ function Facelift(bool bOn)
 //== We can't just use the parent class, since we gotta do some complex stuff
 state Activated
 {
+	function Activate()
+	{
+
+	}
+
 	function BeginState()
 	{
 		local Pawn P;

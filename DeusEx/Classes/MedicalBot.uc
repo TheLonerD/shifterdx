@@ -7,6 +7,7 @@ var int healAmount;
 var int healRefreshTime;
 var int mphealRefreshTime;
 var Float lastHealTime;
+var Float lastTickTime;
 
 // ----------------------------------------------------------------------
 // Network replication
@@ -34,16 +35,16 @@ function PostBeginPlay()
    if (IsImmobile())
       bAlwaysRelevant = True;
 
-	lastHealTime = healRefreshTime + 1;
+	lastHealTime = -healRefreshTime;
 }
 
 function Tick(float deltaTime)
 {
-	if(lastHealTime < 0)
-		lastHealTime = healRefreshTime;
+	//== Track the time shift from pausing
+	if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime)
+		lastHealTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
 
-	if(lastHealTime <= healRefreshTime)
-		lastHealTime += deltaTime;
+	lastTickTime = Level.TimeSeconds;
 
 	Super.Tick(deltaTime);
 }
@@ -123,7 +124,7 @@ function Frob(Actor Frobber, Inventory frobWith)
       }
       else
       {
-         Pawn(Frobber).ClientMessage("Medbot still charging, "$int(healRefreshTime - lastHealTime)$" seconds to go."); //(Level.TimeSeconds - lastHealTime))$" seconds to go.");
+         Pawn(Frobber).ClientMessage("Medbot still charging, "$int(healRefreshTime - (Level.TimeSeconds - lastHealTime))$" seconds to go.");
       }
    }   
 }
@@ -139,7 +140,7 @@ function int HealPlayer(DeusExPlayer player)
 	if (player != None)
 	{
 		healedPoints = player.HealPlayer(healAmount);
-		lastHealTime = 0; //Level.TimeSeconds;
+		lastHealTime = Level.TimeSeconds;
 	}
 	return healedPoints;
 }
@@ -152,7 +153,7 @@ function int HealPlayer(DeusExPlayer player)
 
 function bool CanHeal()
 {	
-	return lastHealTime > healRefreshTime; //(Level.TimeSeconds - lastHealTime > healRefreshTime);
+	return (Level.TimeSeconds - lastHealTime > healRefreshTime);
 }
 
 // ----------------------------------------------------------------------
@@ -161,7 +162,7 @@ function bool CanHeal()
 
 function Float GetRefreshTimeRemaining()
 {
-	return healRefreshTime - lastHealTime; //(Level.TimeSeconds - lastHealTime);
+	return healRefreshTime - (Level.TimeSeconds - lastHealTime);
 }
 
 // ----------------------------------------------------------------------

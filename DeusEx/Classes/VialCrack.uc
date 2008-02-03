@@ -11,6 +11,11 @@ class VialCrack extends Consumable;
 
 state Activated
 {
+	function Activate()
+	{
+
+	}
+
 	function BeginState()
 	{
 		local DeusExPlayer player;

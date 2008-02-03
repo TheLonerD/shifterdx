@@ -74,7 +74,7 @@ event DestroyWindow()
       else if (player.ActiveComputer == CompOwner)
       {
          if (bHacked)
-            player.SetComputerHackTime(Computers(compOwner),0,player.level.TimeSeconds); //player.level.TimeSeconds, player.level.TimeSeconds);
+            player.SetComputerHackTime(Computers(compOwner),player.level.TimeSeconds, player.level.TimeSeconds);
          player.CloseComputerScreen(Computers(compOwner));
          player.ActiveComputer = None;
       }
@@ -85,7 +85,7 @@ event DestroyWindow()
 	{
 		// Keep track of the last time this computer was hacked
 		if (bHacked)
-			ATM(compOwner).lastHackTime = 0; //player.Level.TimeSeconds;
+			ATM(compOwner).lastHackTime = player.Level.TimeSeconds;
 
 		ATM(compOwner).atmWindow = None;
 	}
@@ -442,10 +442,10 @@ function UpdateHackDetectionTime()
 
 		if (compOwner.IsA('Computers')) 
       {
-			diff = Computers(compOwner).lastHackTime; //player.Level.TimeSeconds - Computers(compOwner).lastHackTime;
+			diff = player.Level.TimeSeconds - Computers(compOwner).lastHackTime;
       }
 		else
-			diff = Computers(compOwner).lastHackTime; //player.Level.TimeSeconds - ATM(compOwner).lastHackTime;
+			diff = player.Level.TimeSeconds - ATM(compOwner).lastHackTime;
 
 		if (diff < detectionTime)
 			winHack.UpdateDetectionTime(diff + 0.5);
@@ -542,12 +542,12 @@ function HackDetected(optional bool bDamageOnly)
 	if (compOwner.IsA('Computers'))
 	{
 		Computers(compOwner).bLockedOut = True;
-		Computers(compOwner).lockoutTime = 0; //player.Level.TimeSeconds;
+		Computers(compOwner).lockoutTime = player.Level.TimeSeconds;
 	}
 	else
 	{
 		ATM(compOwner).bLockedOut = True;
-		ATM(compOwner).lockoutTime = 0; //player.Level.TimeSeconds;
+		ATM(compOwner).lockoutTime = player.Level.TimeSeconds;
 	}
 
 	// Shock the crap out of the player (drain BE and play a sound)

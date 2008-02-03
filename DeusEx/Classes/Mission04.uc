@@ -553,7 +553,7 @@ function Timer()
 				}
 				DeusExRootWindow(Player.rootWindow).hud.belt.ClearBelt();
 				Player.GoalCompleted('EscapeToBatteryPark');
-				Level.Game.SendPlayer(Player, "05_NYC_UNATCOMJ12Lab");
+				Level.Game.SendPlayer(Player, "05_NYC_UNATCOMJ12Lab?Difficulty="$Player.combatDifficulty);
 			}
 		}
 	}

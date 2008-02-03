@@ -31,7 +31,7 @@ function LoadMap(Actor Other)
 			Player.NextMap = DestMap;
 		}
 		else
-			Level.Game.SendPlayer(Player, DestMap);
+			Level.Game.SendPlayer(Player, DestMap$"?Difficulty="$Player.combatDifficulty);
 	}
 }
 

@@ -514,7 +514,7 @@ function Timer()
 				}
 			}
 
-			if(spawn(class'WeaponBlackjack', None,, vect(-103.00, -2685.00, 94.00), rot(0,16383,0)) != None)
+			if(spawn(class'WeaponBlackjack', None,, (dCube.Location + vect(0,0,4)), rot(0,16383,0)) != None)
 				flags.SetBool('M02_Blackjack_Placed', True,, 9); //== Further placements of the blackjack are sorta moot
 		}
 	}

@@ -63,10 +63,12 @@ state Attacking
 	function Tick(float deltaSeconds)
 	{
 		Super.Tick(deltaSeconds);
-		if (Enemy != None)
+		if (Enemy != None) // && !Enemy.IsA('Rat'))
 			GotoState('Fleeing');
 	}
 }
+
+//     InitialAlliances(0)=(AllianceName=Rat,AllianceLevel=-1.000000,bPermanent=True)
 
 defaultproperties
 {
@@ -76,7 +78,6 @@ defaultproperties
      MinHealth=0.000000
      CarcassType=Class'DeusEx.CatCarcass'
      WalkingSpeed=0.111111
-     InitialAlliances(0)=(AllianceName=Rat,AllianceLevel=-1.000000,bPermanent=True)
      InitialInventory(0)=(Inventory=Class'DeusEx.WeaponCatScratch')
      GroundSpeed=180.000000
      WaterSpeed=50.000000

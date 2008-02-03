@@ -8,6 +8,7 @@ var int chargeRefreshTime;
 var int mpChargeRefreshTime;
 var int mpChargeAmount;
 var Float lastchargeTime;
+var Float lastTickTime;
 
 // ----------------------------------------------------------------------
 // Network replication
@@ -38,16 +39,16 @@ function PostBeginPlay()
    if (IsImmobile())
       bAlwaysRelevant = True;
 
-   lastChargeTime = chargeRefreshTime + 1; //-chargeRefreshTime;
+   lastChargeTime = -chargeRefreshTime;
 }
 
 function Tick(float deltaTime)
 {
-	if(lastChargeTime < 0)
-		lastChargeTime = chargeRefreshTime;
+	//== Track the time shift from pausing
+	if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime)
+		lastChargeTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
 
-	if(lastChargeTime <= chargeRefreshTime)
-		lastChargeTime += deltaTime;
+	lastTickTime = Level.TimeSeconds;
 
 	Super.Tick(deltaTime);
 }
@@ -90,7 +91,7 @@ function Frob(Actor Frobber, Inventory frobWith)
       }
       else
       {
-         Pawn(Frobber).ClientMessage("Repairbot still charging, "$int(chargeRefreshTime - lastChargeTime)$" seconds to go."); //(Level.TimeSeconds - lastChargetime)
+         Pawn(Frobber).ClientMessage("Repairbot still charging, "$int(chargeRefreshTime - (Level.TimeSeconds - lastChargetime))$" seconds to go.");
       }
    }
 }
@@ -124,7 +125,7 @@ function int ChargePlayer(DeusExPlayer PlayerToCharge)
 	if ( CanCharge() )
 	{
 		chargedPoints = PlayerToCharge.ChargePlayer( chargeAmount );
-		lastChargeTime = 0;//Level.TimeSeconds;
+		lastChargeTime = Level.TimeSeconds;
 	}
    return chargedPoints;
 }
@@ -137,7 +138,7 @@ function int ChargePlayer(DeusExPlayer PlayerToCharge)
 
 simulated function bool CanCharge()
 {	
-	return lastChargeTime > chargeRefreshTime; //( (Level.TimeSeconds - int(lastChargeTime)) > chargeRefreshTime);
+	return ( (Level.TimeSeconds - int(lastChargeTime)) > chargeRefreshTime);
 }
 
 // ----------------------------------------------------------------------
@@ -146,7 +147,7 @@ simulated function bool CanCharge()
 
 simulated function Float GetRefreshTimeRemaining()
 {
-	return chargeRefreshTime - lastChargeTime; //(Level.TimeSeconds - lastChargeTime);
+	return chargeRefreshTime - (Level.TimeSeconds - lastChargeTime);
 }
 
 // ----------------------------------------------------------------------

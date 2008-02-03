@@ -162,6 +162,10 @@ function Tick(float deltaTime)
 			bFrozen = False;
 		else if (proxy != None)
 		{
+			//== If there's a definite lifespan on this thing then we want to fade out
+			if(LifeSpan > 0 && LifeSpan <= 0.25)
+				proxy.ScaleGlow = LifeSpan/0.25;
+
 			// if we are close, say 60 feet
 			if (proxy.DistanceFromPlayer < 960)
 				bFrozen = False;

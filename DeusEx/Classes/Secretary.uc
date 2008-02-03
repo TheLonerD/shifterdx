@@ -3,6 +3,11 @@
 //=============================================================================
 class Secretary extends HumanCivilian;
 
+function bool HasTwoHandedWeapon()
+{
+	return false;
+}
+
 defaultproperties
 {
      CarcassType=Class'DeusEx.SecretaryCarcass'

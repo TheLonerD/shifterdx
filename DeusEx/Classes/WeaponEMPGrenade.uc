@@ -3,6 +3,12 @@
 //=============================================================================
 class WeaponEMPGrenade extends WeaponGrenade;
 
+//== Minty's Mod needs this to work, because specified super(WeaponEMPGrenade).  DON'T DO THAT.
+function Fire(float Value)
+{
+	Super.Fire(Value);
+}
+
 // ----------------------------------------------------------------------
 // TestMPBeltSpot()
 // Returns true if the suggested belt location is ok for the object in mp.

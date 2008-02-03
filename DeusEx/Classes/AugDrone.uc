@@ -9,12 +9,14 @@ var float mpEnergyDrain;
 var float reconstructTime;
 var float lastDroneTime;
 
+var float lastTickTime;
+
 state Active
 {
 Begin:
-	if (lastDroneTime < reconstructTime) //(Level.TimeSeconds - lastDroneTime < reconstructTime)
+	if (Level.TimeSeconds - lastDroneTime < reconstructTime)
 	{
-		Player.ClientMessage("Reconstruction will be complete in" @ Int(reconstructTime - lastDroneTime) @ "seconds"); //(Level.TimeSeconds - lastDroneTime)) @ "seconds");
+		Player.ClientMessage("Reconstruction will be complete in" @ Int(reconstructTime - (Level.TimeSeconds - lastDroneTime)) @ "seconds");
 		Deactivate();
 	}
 	else
@@ -27,13 +29,12 @@ Begin:
 
 function Tick(float deltaTime)
 {
-	if(lastDroneTime < 0)
-		lastDroneTime = reconstructTime;
-
-	if(lastDroneTime < reconstructTime)
-		lastDroneTime += deltaTime;
+	if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime) //== Pause time offset
+		lastDroneTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
 
 	Super.Tick(deltaTime);
+
+	lastTickTime = Level.TimeSeconds;
 }
 
 function Deactivate()
@@ -42,7 +43,7 @@ function Deactivate()
 
 	// record the time if we were just active
 	if (Player.bSpyDroneActive)
-		lastDroneTime = 0; //Level.TimeSeconds;
+		lastDroneTime = Level.TimeSeconds;
 
 	Player.bSpyDroneActive = False;
 }

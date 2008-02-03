@@ -21,30 +21,29 @@ var float lockoutTime;				// time when ATM was locked out
 var float lastHackTime;				// last time the ATM was hacked
 var localized String msgLockedOut;
 var bool bSuckedDryByHack;
+var float lastTickTime;
 
-function Facelift(bool bOn)
+simulated function PreBeginPlay()
 {
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPATM", class'mesh', True));
+	Super.PreBeginPlay();
 
-	if(Mesh == None || !bOn)
+	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPATM", class'mesh', True));
+
+	if(Mesh == None)
 		Mesh = Default.Mesh;
 }
 
 function Tick(float deltaTime)
 {
+	if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime) //== Pause time offset
+	{
+		lastHackTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
+		lockoutTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
+	}
+
 	Super.Tick(deltaTime);
 
-	if(lastHackTime < 0)
-		lastHackTime = 60;
-
-	lastHackTime += deltaTime;
-
-	if(lockoutTime < 0)
-		lockoutTime = lockoutDelay;
-
-	if(lockoutTime <= lockoutDelay)
-		lockoutTime += deltaTime;
+	lastTickTime = Level.TimeSeconds;
 }
 
 // ----------------------------------------------------------------------
@@ -72,7 +71,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 			// computer skill shortens the lockout duration
 			delay = lockoutDelay / Player.SkillSystem.GetSkillLevelValue(class'SkillComputer');
 
-			elapsed = lockoutTime; //Level.TimeSeconds - lockoutTime;
+			elapsed = Level.TimeSeconds - lockoutTime;
 			if (elapsed < delay)
 				Player.ClientMessage(Sprintf(msgLockedOut, Int(delay - elapsed)));
 			else
@@ -199,8 +198,7 @@ function string GetPIN(int userIndex)
 defaultproperties
 {
      lockoutDelay=60.000000
-     lockoutTime=61.000000
-     lastHackTime=9999.000000
+     lastHackTime=-9999.000000
      msgLockedOut="Terminal is locked out for %d more seconds"
      ItemName="Public Banking Terminal"
      Physics=PHYS_None

@@ -79,6 +79,7 @@ simulated function TraceFire( float Accuracy )
 		if(FireBeamEmitter.proxy != None)
 			FireBeamEmitter.proxy.Skin = Texture'Wepn_Prifle_SFX';
 		FireBeamEmitter.TurnOn();
+		FireBeamEmitter.Lifespan = 0.5;
 
 		for(j=0; j<ArrayCount(FireBeamEmitter.spot); j++)
 		{
@@ -88,6 +89,7 @@ simulated function TraceFire( float Accuracy )
 			}
 		}
 
+		//== This code is supposed to make the beam go through walls, but it doesn't
 /*		for (j=0; j<ArrayCount(FireBeamEmitter.spot); j++)
 		{
 			if (FireBeamEmitter.spot[j] != None)
@@ -110,7 +112,7 @@ simulated function TraceFire( float Accuracy )
 */
 		
 
-		SetTimer(3, False);
+		SetTimer(0.6, False); //== Deactivate the laser trail after a little while
 	}
 
 	EndTrace = Pawn(Owner).Location;
@@ -167,33 +169,21 @@ function Timer()
 	if(FireBeamEmitter != None)
 	{
 		FireBeamEmitter.bIsOn = True;
+		FireBeamEmitter.TurnOff();
 		FireBeamEmitter.Destroy();
 	}
 }
 
-function DrawLineEffect(vector A, vector B, float Detail)
+function Tick(float deltaTime)
 {
+	Super.Tick(deltaTime);
 
-local int i, NumSprites;
-local vector line, increment, loc;
-local float f, Dist;
-local Cloud BeamBit;
-
-line = A - B;
-
-Dist = VSize(line);
-f = Dist * Detail;
-NumSprites = int(f);
-
-increment = line / NumSprites;
-
-	for( i=0; i < NumSprites; i++)
+	//== No timer set and a beam effect active
+	if(FireBeamEmitter != None && TimerRate <=0)
 	{
-		loc = A - (increment * i);
-		BeamBit = Spawn(class'Cloud',,, loc);
-		BeamBit.speed = 0;
-		BeamBit.mindrawscale = 0;
-		BeamBit.Texture = Texture'DeusExItems.Skins.FlatFXTex44';
+		FireBeamEmitter.bIsOn = True;
+		FireBeamEmitter.TurnOff();
+		FireBeamEmitter.Destroy();
 	}
 }
 

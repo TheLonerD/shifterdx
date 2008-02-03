@@ -496,6 +496,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 					while(nextItem.Owner == Frobber)
 					{
 						nextItem = nextItem.Inventory;
+						item.Inventory = nextItem; //== Relink to the appropriate, un-player-owned item
 						if(nextItem == None)
 							break;
 					}
@@ -507,43 +508,45 @@ function Frob(Actor Frobber, Inventory frobWith)
 				{
 					// Only let the player pick up ammo that's already in a weapon
 
-					if(DeusExAmmo(item) != None)
+					if(DeusExAmmo(item) != None && !item.IsA('AmmoCombatKnife') && !item.IsA('AmmoNone'))
 					{
+						if(item.IsA('AmmoSabot') || item.IsA('Ammo10mmEX') || item.IsA('AmmoDragon'))
+							itemCount = 1 + Rand(12);
+						else if(Ammo(item).AmmoAmount <= 4 && Ammo(item).AmmoAmount >= 1)
+							itemCount = Ammo(item).AmmoAmount;
+						else
+							itemCount = 1 + Rand(4);
+
 						// EXCEPT for non-standard ammo -- Y|yukichigai
-						if(DeusExAmmo(item).bIsNonStandard)
+						if(player.FindInventoryType(item.Class) != None)
 						{
-							if(item.IsA('AmmoSabot') || item.IsA('Ammo10mmEX'))
-								itemCount = 1 + Rand(12);
-							else if(Ammo(item).AmmoAmount <= 4 && Ammo(item).AmmoAmount >= 1)
-								itemCount = Ammo(item).AmmoAmount;
-							else
-								itemCount = 1 + Rand(4);
-							if(player.FindInventoryType(item.Class) != None)
+							if(DeusExAmmo(item).bIsNonStandard)
 							{
 		      						Ammo(player.FindInventoryType(item.Class)).AddAmmo(itemCount);
 				                           	AddReceivedItem(player, item, itemCount);
 	                         
 								// Update the ammo display on the object belt
 								player.UpdateAmmoBeltText(Ammo(item));
-								if (item.PickupViewMesh == Mesh'TestBox')
-								{
-									if(item.IsA('AmmoShuriken'))
-										item = player.FindInventoryType(Class'DeusEx.WeaponShuriken');
-								}
+
 								P.ClientMessage(item.PickupMessage @ item.itemArticle @ item.itemName, 'Pickup');
 								bPickedItemUp = True;
 							}
-	
-							//This is the code which would allow randomly-given ammo to be picked up by a player
-							// regardless of if they have picked it up before.  This would (I feel) lead to
-							// Shifter advancing the progress of the game prematurely, something which I am
-							// endeavoring to avoid in the process of my coding -- Y|yukichigai
-	//						else
-	//						{
-	//							item.Class.InitialState='Idle2';
-	//							item.Class.GiveTo(player);
-	//							item.Class.setBase(player);
-	//						}
+						}
+						//This is the code which would allow randomly-given ammo to be picked up by a player
+						// regardless of if they have picked it up before.  This would (I feel) lead to
+						// Shifter advancing the progress of the game prematurely, something which I am
+						// endeavoring to avoid in the process of my coding -- Y|yukichigai
+						else if(player.combatDifficulty > 4.0) //== But in unrealistic, who cares?
+						{
+							tempitem = spawn(item.Class, player);
+							Ammo(tempitem).AmmoAmount = itemCount;
+							tempitem.InitialState='Idle2';
+							tempitem.GiveTo(player);
+							tempitem.setBase(player);
+							player.UpdateAmmoBeltText(Ammo(tempitem));
+							P.ClientMessage(tempitem.PickupMessage @ tempitem.itemArticle @ tempitem.itemName, 'Pickup');
+							AddReceivedItem(player, tempitem, itemCount);
+							bPickedItemUp = True;
 						}
 					}
 
@@ -555,17 +558,19 @@ function Frob(Actor Frobber, Inventory frobWith)
 				{
 			               // Any weapons have their ammo set to a random number of rounds (1-4)
 			               // unless it's a grenade, in which case we only want to dole out one.
-				       // (Or assault rifle ammo, where it should be 1 - 14 rounds -- Y|yukichigai)
+				       //== Except now, where the amount to dole out is randomly determined by the
+				       //==  default PickupAmmoCount variable
 
 			               // DEUS_EX AMSD In multiplayer, give everything away.
 			               W = DeusExWeapon(item);
                
 			               // Grenades and LAMs always pickup 1
 			               if (W.IsA('WeaponGrenade') ||
-					  W.IsA('WeaponHideAGun') )
+					  W.IsA('WeaponHideAGun') ||
+					  W.IsA('WeaponCombatKnife') )
 			                  W.PickupAmmoCount = 1;
 			               else if (Level.NetMode == NM_Standalone)
-			                  W.PickupAmmoCount = Rand(4) + 1;
+			                  W.PickupAmmoCount = Rand(W.Default.PickupAmmoCount) + 1; //Rand(4) + 1;
 				}
 				
 				if (item != None)
@@ -656,22 +661,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 										{
 											if(AmmoType.AmmoAmount < AmmoType.MaxAmmo)
 											{
-												//Modified -- Y|yukichigai
-												// manually define the ammo type for the assault gun since it doesn't seem to work properly
-												if(W.IsA('WeaponAssaultGun') && Level.NetMode == NM_Standalone)
-												{
-													AmmoType = Ammo(player.FindInventoryType(Class'DeusEx.Ammo762mm'));
-													Weapon(item).PickupAmmoCount = Rand(14) + 1;
-												}
-												//Peppergun needs modification as well
-												if(W.IsA('WeaponPepperGun') && Level.NetMode == NM_Standalone)
-												{
-													Weapon(item).PickupAmmoCount = Rand(100) + 1;
-												}
-												if(W.IsA('WeaponCombatKnife'))
-													AmmoType.AddAmmo(1);
-												else
-				                           						AmmoType.AddAmmo(Weapon(item).PickupAmmoCount);
+				                           					AmmoType.AddAmmo(Weapon(item).PickupAmmoCount);
 			
 												if(item.IsA('WeaponShuriken'))
 													AddReceivedItem(player, item, Weapon(item).PickupAmmoCount);
@@ -794,35 +784,28 @@ function Frob(Actor Frobber, Inventory frobWith)
                            						// DEUS_EX AMSD Belt info isn't always getting cleaned up.  Clean it up.
                            						item.bInObjectBelt=False;
                            						item.BeltPos=-1;
-	
-									//== If we're dealing with a script-given item, give it to the player the old-school way
-//									if(FIcount > 0)
-//									{
-//										item.InitialState='Idle2';
-//										item.GiveTo(P);
-//										item.SetBase(P);
-//									}
-//									else								
-										item.SpawnCopy(P);
-
-									if(Weapon(item) != None)
-									{
-										if(Weapon(item).PickupAmmoCount == 0 && Weapon(item).Default.PickupAmmoCount > 0)
-											Weapon(item).PickupAmmoCount = 1;
-									}
+									item.SpawnCopy(P);
 
 									// Show the item received in the ReceivedItems window and also 
 									// display a line in the Log
 									AddReceivedItem(player, item, 1);
+
+									if(Weapon(item) != None)
+									{
+										if(Weapon(item).PickupAmmoCount <= 0 && Weapon(item).Default.PickupAmmoCount > 0)
+											Weapon(item).PickupAmmoCount = 1;
+
+										if(Weapon(item).AmmoType != None && Weapon(item).AmmoName != Class'AmmoNone')
+										{
+											if(Weapon(item).AmmoType.Icon != Weapon(item).Icon && Weapon(item).AmmoType.Icon != None)
+												AddReceivedItem(player, Weapon(item).AmmoType, Weapon(item).PickupAmmoCount);
+											else //== For weapons like the shuriken we just add to the weapon pickup count
+												AddReceivedItem(player, Weapon(item), Weapon(item).PickupAmmoCount - 1);
+										}
+									}
 									
 									P.ClientMessage(Item.PickupMessage @ Item.itemArticle @ Item.itemName, 'Pickup');
 									PlaySound(Item.PickupSound);
-									//Pepper Gun needs more ammo on pickup
-									if(item.IsA('WeaponPepperGun'))
-									{
-										AmmoType = Ammo(player.FindInventoryType(Class'DeusEx.AmmoPepper'));
-										AmmoType.AddAmmo(Rand(34) + 17);
-									}
 
 								}
 								else if(Level.NetMode == NM_Standalone)
@@ -843,16 +826,6 @@ function Frob(Actor Frobber, Inventory frobWith)
 				}
 
 				item = nextItem;
-
-				//== Now we handle the special, script-added frob items
-//				if(item == None && FIcount <= 3)
-//				{
-//					if(FrobItems[FIcount] != None)
-//					{
-//						item = spawn(FrobItems[FIcount],None);
-//						FIcount++;
-//					}
-//				}
 			}
 			until ((item == None) || (item == startItem));
 		}
@@ -934,7 +907,7 @@ function AddReceivedItem(DeusExPlayer player, Inventory item, int count)
 		bSearchMsgPrinted = True;
 	}
 
-   DeusExRootWindow(player.rootWindow).hud.receivedItems.AddItem(item, 1);
+   DeusExRootWindow(player.rootWindow).hud.receivedItems.AddItem(item, count);
 
 	// Make sure the object belt is updated
 	if (item.IsA('Ammo'))

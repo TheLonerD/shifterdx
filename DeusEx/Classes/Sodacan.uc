@@ -174,6 +174,12 @@ function UseOnce()
 
 state Activated
 {
+	//== Zodiac needs this to be specified; otherwise it won't load
+	function Activate()
+	{
+		// can't turn it off
+	}
+
 	function BeginState()
 	{
 		if(numCopies > 0 && numCopies <= 10)

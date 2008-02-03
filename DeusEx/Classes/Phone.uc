@@ -131,8 +131,11 @@ function Tick(float deltaTime)
 
 function Timer()
 {
-	AmbientSound = None;
-	bUsing = False;
+	if(dialWindow == None)
+	{
+		AmbientSound = None;
+		bUsing = False;
+	}
 }
 
 function Frob(actor Frobber, Inventory frobWith)

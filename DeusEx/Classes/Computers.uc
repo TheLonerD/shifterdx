@@ -109,7 +109,7 @@ function BeginAlarm()
 	SoundVolume = 128;
 	SoundRadius = 64;
 	SoundPitch = 64;
-	lastAlarmTime = 0; //Level.TimeSeconds;
+	lastAlarmTime = Level.TimeSeconds;
 	AIStartEvent('Alarm', EAITYPE_Audio, SoundVolume/255.0, 25*(SoundRadius+1));
 
 	// make sure we can't go into stasis while we're alarming
@@ -122,7 +122,7 @@ function EndAlarm()
 	SoundVolume = Default.SoundVolume;
 	SoundRadius = Default.SoundRadius;
 	SoundPitch = Default.SoundPitch;
-	lastAlarmTime = alarmTimeout + 1; //0;
+	lastAlarmTime = 0;
 	AIEndEvent('Alarm', EAITYPE_Audio);
 
 	// reset our stasis info
@@ -133,29 +133,22 @@ function Tick(float deltaTime)
 {
 	Super.Tick(deltaTime);
 
-	if(lockoutTime < 0)
-		lockoutTime = lockoutDelay;
-
-	if(lockoutTime <= lockoutDelay)
-		lockoutTime += deltaTime;
-
-	if(lastHackTime < 0)
-		lastHackTime = 60;
-
-	lastHackTime += deltaTime;
-
    // DEUS_EX AMSD IN multiplayer, set lockout to 0
    if (Level.NetMode != NM_Standalone)
       bLockedOut = False;
 
-	if(lastAlarmTime < 0)
-		lastAlarmTime = alarmTimeout;
+	if(lockoutTime < DeusExGameInfo(Level.Game).PauseStartTime) //== Pause time offset
+		lockoutTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
 
 	// shut off the alarm if the timeout has expired
-	if(lastAlarmTime >= alarmTimeout) //(Level.TimeSeconds - lastAlarmTime >= alarmTimeout)
-		EndAlarm();
-	else
-		lastAlarmTime += deltaTime;
+	if (lastAlarmTime != 0)
+	{
+		if(lastAlarmTime < DeusExGameInfo(Level.Game).PauseStartTime) //== Pause time offset
+			lastAlarmTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
+
+		if (Level.TimeSeconds - lastAlarmTime >= alarmTimeout)
+			EndAlarm();
+	}
 }
 // ----------------------------------------------------------------------
 // ChangePlayerVisibility()
@@ -337,7 +330,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 			// computer skill shortens the lockout duration
 			delay = lockoutDelay / player.SkillSystem.GetSkillLevelValue(class'SkillComputer');
 
-			elapsed = lockoutTime; //Level.TimeSeconds - lockoutTime;
+			elapsed = Level.TimeSeconds - lockoutTime;
 			if (elapsed < delay)
 				player.ClientMessage(Sprintf(msgLockedOut, Int(delay - elapsed)));
 			else
@@ -462,8 +455,7 @@ defaultproperties
 {
      bOn=True
      lockoutDelay=30.000000
-     lockoutTime=31.000000
-     lastHackTime=9999.000000
+     lastHackTime=-9999.000000
      msgLockedOut="Terminal is locked out for %d more seconds"
      nodeName="UNATCO"
      titleString="United Nations Anti-Terrorist Coalition (UNATCO)"

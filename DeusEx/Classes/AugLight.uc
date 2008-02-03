@@ -108,7 +108,7 @@ defaultproperties
      Icon=Texture'DeusExUI.UserInterface.AugIconLight'
      smallIcon=Texture'DeusExUI.UserInterface.AugIconLight_Small'
      AugmentationName="Light"
-     Description="Bioluminescent cells within the retina provide coherent illumination of the agent's field of view.|n|nNO UPGRADES"
+     Description="Bioluminescent cells within the retina provide coherent illumination of the agent's field of view.  Upgrades increase the intensity of the light emitted, improving the maximum effective distance.|n|nTHREE UPGRADES"
      LevelValues(0)=1024.000000
      LevelValues(1)=1280.000000
      LevelValues(2)=1600.000000

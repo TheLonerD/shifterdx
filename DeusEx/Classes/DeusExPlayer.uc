@@ -918,7 +918,7 @@ exec function AltFire( optional float F )
 {
 	if(DeusExWeapon(Weapon) != None)
 	{
-		if(!DeusExWeapon(Weapon).bHasAltFire)
+		if(!DeusExWeapon(Weapon).bHasAltFire && !Weapon.IsA('TnagWeapon')) //That wacky Hejhujka and his alt-fire mutator
 		{
 			DeusExWeapon(Weapon).ScopeToggle();
 			return;
@@ -1096,9 +1096,9 @@ exec function StartNewGame(String startMap)
 
 	// Send the player to the specified map!
 	if (startMap == "")
-		Level.Game.SendPlayer(Self, "01_NYC_UNATCOIsland");		// TODO: Must be stored somewhere!
+		Level.Game.SendPlayer(Self, "01_NYC_UNATCOIsland?Difficulty="$combatDifficulty);		// TODO: Must be stored somewhere!
 	else
-		Level.Game.SendPlayer(Self, startMap);
+		Level.Game.SendPlayer(Self, startMap$"?Difficulty="$combatDifficulty);
 }
 
 // ----------------------------------------------------------------------
@@ -1122,7 +1122,7 @@ function StartTrainingMission()
 	ResetPlayer(True);
 	DeleteSaveGameFiles();
 	bStartingNewGame = True;
-	Level.Game.SendPlayer(Self, "00_Training");
+	Level.Game.SendPlayer(Self, "00_Training?Difficulty="$combatDifficulty);
 }
 
 // ----------------------------------------------------------------------
@@ -1148,7 +1148,7 @@ function ShowIntro(optional bool bStartNewGame)
 	AugmentationSystem.DeactivateAll();
 
 	// Reset the player
-	Level.Game.SendPlayer(Self, "00_Intro");
+	Level.Game.SendPlayer(Self, "00_Intro?Difficulty="$combatDifficulty);
 }
 
 // ----------------------------------------------------------------------
@@ -1459,7 +1459,10 @@ simulated function DrugEffects(float deltaTime)
 			if(drugEffectTimer >= 0.0)
 			{
 				if(Level.NetMode == NM_Standalone)
+				{
+					flagBase.DeleteFlag('Travel_GameSpeed', FLAG_Float); //Just in case it hasn't been set yet
 					Level.Game.SetGameSpeed(Level.Game.GameSpeed * 2.000);
+				}
 				else
 					log("DeusExPlayer: Somehow the zyme effect was activated in a non-singleplayer map.  WTF?");
 				drugEffectTimer = 60.0;
@@ -2455,7 +2458,7 @@ function InvokeComputerScreen(Computers computerToActivate, float CompHackTime, 
    local NetworkTerminal termwindow;
    local DeusExRootWindow root;
 
-   computerToActivate.LastHackTime = CompHackTime; //+ (Level.TimeSeconds - ServerLevelTime);
+   computerToActivate.LastHackTime = CompHackTime + (Level.TimeSeconds - ServerLevelTime);
 
    ActiveComputer = ComputerToActivate;
 
@@ -2511,7 +2514,7 @@ function CloseComputerScreen(Computers computerToClose)
 //client->server (window to player)
 function SetComputerHackTime(Computers computerToSet, float HackTime, float ClientLevelTime)
 {
-   computerToSet.lastHackTime = HackTime; // + (Level.TimeSeconds - ClientLevelTime);
+   computerToSet.lastHackTime = HackTime + (Level.TimeSeconds - ClientLevelTime);
 }
 
 //client->server (window to player)
@@ -4616,7 +4619,7 @@ state Interpolating
 //				if (NextMap == "02_NYC_BatteryPark")
 //					ShowDemoSplash();
 //				else
-					Level.Game.SendPlayer(Self, NextMap);
+					Level.Game.SendPlayer(Self, NextMap$"?Difficulty="$combatDifficulty);
 			}
 	}
 

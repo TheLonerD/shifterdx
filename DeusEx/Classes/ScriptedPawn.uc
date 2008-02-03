@@ -570,7 +570,7 @@ function InitializePawn()
 	if (!bInitialized)
 	{
 		//== Unrealistic difficulty makes us smarter
-		if(Level.Game.Difficulty > 4.0)
+		if(Level.Game.Difficulty >= 4.0)
 			Intelligence = BRAINS_Human;
 
 		InitializeInventory();
@@ -610,6 +610,9 @@ function InitializeInventory()
 	local int       weaponCount;
 	local Weapon    firstWeapon;
 	local int	testRandom;
+	local DeusExPlayer dxPlayer;
+
+	dxPlayer = DeusExPlayer(GetPlayerPawn());
 
 	// Add initial inventory items
 	weaponCount = 0;
@@ -669,7 +672,7 @@ function InitializeInventory()
 
 	testRandom = Rand(22);
 
-	if(testRandom >= 15 && !IsA('Animal') && !IsA('Robot'))
+	if(testRandom >= 15 && (!IsA('Animal') && !IsA('Robot') || dxPlayer.combatDifficulty > 4.0))
 	{
 		if(testRandom <= 15) //Credits
 		{
@@ -683,7 +686,7 @@ function InitializeInventory()
 			inv.setBase(Self);
 			//log("ScriptedPawn==>Gave Credits in amount of " $Credits(inv).numCredits$ " to " $Self);
 		}
-		if(Rand(4) == 2 || (DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0 && Rand(3) > 0))
+		if(Rand(4) == 2 || (dxPlayer.combatDifficulty > 4.0 && Rand(3) > 0))
 			bCheckedCombat = True; //If/when they are carrying a combat knife, replace it with a Crowbar or Sword
 		inv = None;
 		switch(Rand(7))
@@ -3001,7 +3004,7 @@ function Carcass SpawnCarcass()
 		}
 
 		// give the carcass the pawn's inventory if we aren't an animal or robot
-		if (!IsA('Animal') && !IsA('Robot'))
+		if ((!IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0) && !IsA('Robot'))
 		{
 			bHadWeapon = False;
 			if (Inventory != None)
@@ -3090,7 +3093,7 @@ function bool GenerateRandomInventory()
 			bHadWeapon = True;
 
 			//Did they have a powerful weapon?
-			if(item.IsA('WeaponAssaultGun') || item.IsA('WeaponAssaultShotgun') || DeusExWeapon(item).GoverningSkill == Class'DeusEx.SkillWeaponHeavy')
+			if(item.IsA('WeaponAssaultGun') || item.IsA('WeaponAssaultShotgun') || DeusExWeapon(item).GoverningSkill == Class'DeusEx.SkillWeaponHeavy' || IsA('Robot'))
 				bHadPowerfulWeapon = True;
 		}
 
@@ -3168,7 +3171,7 @@ function bool GenerateRandomInventory()
 				case 3:
 					item = spawn(Class'WeaponPepperGun',self);
 					break;
-				case 8: if(!bHadWeapon && Level.Game.Difficulty > 4.0)
+				case 8: if(!bHadWeapon && dxPlayer.combatDifficulty > 4.0)
 						item = spawn(Class'WeaponPistol',self);
 					break;
         		}
@@ -11442,38 +11445,41 @@ State Fleeing
 	function Bump(actor Other)
 	{
 		//== If we bumped a weapon pickup we might want to, say, pick it up
-		if(!bFearWeapon && !ShouldDropWeapon() && Other.isA('DeusExWeapon') && !Self.IsA('Robot') && !Self.IsA('Animal') && Physics == PHYS_Walking && !ShouldFlee())
+		if(!bFearWeapon && !ShouldDropWeapon() && Other.isA('DeusExWeapon') && (!IsA('Robot') && !IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0) && Physics == PHYS_Walking && !ShouldFlee())
 		{
-			if(FindInventoryType(Other.Class) == None)
+			if(!DeusExWeapon(Other).bUnique)
 			{
-				Other.InitialState='Idle2';
-				Inventory(Other).GiveTo(Self);
-				Other.SetBase(Self);
-			}
-
-     			if ((Weapon(Other).AmmoType == None) && (Weapon(Other).AmmoName != None) && (Weapon(Other).AmmoName != Class'AmmoNone'))
-     			{
-     				Weapon(Other).AmmoType = Ammo(FindInventoryType(Weapon(Other).AmmoName));
-      				if ((Weapon(Other).AmmoType == None) && (Weapon(Other).AmmoName != None) && (Weapon(Other).AmmoName != Class'AmmoNone'))
-      				{
-      					Weapon(Other).AmmoType = Ammo(FindInventoryType(Weapon(Other).AmmoName));
-      					if (Weapon(Other).AmmoType == None)
-      					{
-						Weapon(Other).AmmoType = spawn(Weapon(Other).AmmoName,Self);
-      					}
-      				}
-				if(Weapon(Other).AmmoType != None)
+				if(FindInventoryType(Other.Class) == None)
 				{
-					Weapon(Other).AmmoType.InitialState='Idle2';
-					Weapon(Other).AmmoType.GiveTo(Self);
-					Weapon(Other).AmmoType.SetBase(Self);
+					Other.InitialState='Idle2';
+					Inventory(Other).GiveTo(Self);
+					Other.SetBase(Self);
 				}
-     			}
-			else if(Weapon(Other).AmmoType != None && Weapon(Other).AmmoType.AmmoAmount < 1)
-				Weapon(Other).AmmoType.AmmoAmount += (DeusExWeapon(Other).AmmoName).default.AmmoAmount;
-
-			SwitchToBestWeapon();
-			FinishFleeing();
+	
+	     			if ((Weapon(Other).AmmoType == None) && (Weapon(Other).AmmoName != None) && (Weapon(Other).AmmoName != Class'AmmoNone'))
+	     			{
+	     				Weapon(Other).AmmoType = Ammo(FindInventoryType(Weapon(Other).AmmoName));
+	      				if ((Weapon(Other).AmmoType == None) && (Weapon(Other).AmmoName != None) && (Weapon(Other).AmmoName != Class'AmmoNone'))
+	      				{
+	      					Weapon(Other).AmmoType = Ammo(FindInventoryType(Weapon(Other).AmmoName));
+	      					if (Weapon(Other).AmmoType == None)
+	      					{
+							Weapon(Other).AmmoType = spawn(Weapon(Other).AmmoName,Self);
+	      					}
+	      				}
+					if(Weapon(Other).AmmoType != None)
+					{
+						Weapon(Other).AmmoType.InitialState='Idle2';
+						Weapon(Other).AmmoType.GiveTo(Self);
+						Weapon(Other).AmmoType.SetBase(Self);
+					}
+	     			}
+				else if(Weapon(Other).AmmoType != None && Weapon(Other).AmmoType.AmmoAmount < 1)
+					Weapon(Other).AmmoType.AmmoAmount += (DeusExWeapon(Other).AmmoName).default.AmmoAmount;
+	
+				SwitchToBestWeapon();
+				FinishFleeing();
+			}
 		}
 
 		Global.Bump(Other);
@@ -11583,7 +11589,7 @@ State Fleeing
 		else if (!IsFearful())
 			FinishFleeing();
 
-		if(destLoc != vect(0, 0, 0) && VSize(Location - destLoc) <= 16)
+		if(destLoc != vect(0, 0, 0) && VSize(Location - destLoc) <= 16 && (!IsA('Robot') && !IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0))
 		{
 			foreach RadiusActors(class'DeusExCarcass', nearcarc, FMax(CollisionRadius, CollisionHeight))
 			{
@@ -11724,7 +11730,7 @@ State Fleeing
 		if (Enemy != None)
 		{
 			//== If we're fleeing because we have no weapons, try to find another weapon
-			if(!ShouldDropWeapon() && !bFearWeapon && !Self.IsA('Robot') && !Self.IsA('Animal') && !ShouldFlee())
+			if(!ShouldDropWeapon() && !bFearWeapon && (!IsA('Robot') && !IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0) && !ShouldFlee())
 			{
 				foreach RadiusActors(Class'DeusExWeapon', lWeapon, maxDist)
 				{
@@ -12102,7 +12108,7 @@ State Attacking
 	function Bump(actor Other)
 	{
 		//== If we bumped a weapon pickup we might want to, say, pick it up
-		if((Other.IsA('DeusExWeapon') || (Other.IsA('DeusExCarcass') && !bFearCarcass)) && !Self.IsA('Robot') && !Self.IsA('Animal') && Physics == PHYS_Walking)
+		if(Other.IsA('DeusExWeapon') && (!IsA('Robot') && !IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0) && Physics == PHYS_Walking)
 		{
 			//== No picking up Unique weapons
 			if(!DeusExWeapon(Other).bUnique && FindInventoryType(Other.Class) == None)
@@ -12236,11 +12242,11 @@ State Attacking
 		if (bCrouching && (CrouchTimer > 0))
 			destType = DEST_SameLocation;
 
-		//== Every so often, randomly see if you can find a better weapon
+		//== Weapon Search. Every so often, randomly see if you can find a better weapon
 		//== Or, y'know, if you're using a crap weapon
-		if(Weapon != None && Robot(Self) == None && Animal(Self) == None)
+		if(Weapon != None && (!IsA('Robot') && !IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0))
 		{
-			if( ( Rand(18) > 13 || (DeusExWeapon(Weapon).bHandToHand && FMax(DeusExWeapon(Weapon).HitDamage, DeusExWeapon(Weapon).ProjectileDamage) < 20) ) && !Weapon.IsA('WeaponNPCRanged'))
+			if( ( Rand(18) > 13 || (DeusExWeapon(Weapon).bHandToHand && FMax(DeusExWeapon(Weapon).HitDamage, DeusExWeapon(Weapon).ProjectileDamage) < 20) ) && !DeusExWeapon(Weapon).bNativeAttack)
 			{
 				bestWeapon = None;
 				foreach RadiusActors(Class'DeusExWeapon', lWeapon, 240)
@@ -12473,7 +12479,7 @@ State Attacking
 			}
 		}
 
-		if(destLoc != vect(0, 0, 0) && VSize(Location - destLoc) <= 16)
+		if(destLoc != vect(0, 0, 0) && VSize(Location - destLoc) <= 16 && (!IsA('Robot') && !IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0))
 		{
 			foreach RadiusActors(class'DeusExCarcass', nearcarc, FMax(CollisionRadius, CollisionHeight))
 			{

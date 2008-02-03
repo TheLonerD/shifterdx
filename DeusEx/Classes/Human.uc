@@ -39,7 +39,10 @@ function PlayTurning()
 {
 //	ClientMessage("PlayTurning()");
 	if (bForceDuck || bCrouchOn || IsLeaning())
-		TweenAnim('CrouchWalk', 0.1);
+	{
+		if(Mesh == LodMesh'DeusExCharacters.GM_Trench')
+			TweenAnim('CrouchWalk', 0.1);
+	}
 	else
 	{
 		if (HasTwoHandedWeapon())
@@ -53,7 +56,10 @@ function TweenToWalking(float tweentime)
 {
 //	ClientMessage("TweenToWalking()");
 	if (bForceDuck || bCrouchOn)
-		TweenAnim('CrouchWalk', tweentime);
+	{
+		if(Mesh == LodMesh'DeusExCharacters.GM_Trench')
+			TweenAnim('CrouchWalk', tweentime);
+	}
 	else
 	{
 		if (HasTwoHandedWeapon())
@@ -75,7 +81,10 @@ function PlayWalking()
 
 	//	ClientMessage("PlayWalking()");
 	if (bForceDuck || bCrouchOn)
-		LoopAnim('CrouchWalk', newhumanAnimRate);
+	{
+		if(Mesh == LodMesh'DeusExCharacters.GM_Trench')
+			LoopAnim('CrouchWalk', newhumanAnimRate);
+	}
 	else
 	{
 		if (HasTwoHandedWeapon())
@@ -164,7 +173,10 @@ function TweenToWaiting(float tweentime)
 			LoopAnim('Tread');
 	}
 	else if (IsLeaning() || bForceDuck)
-		TweenAnim('CrouchWalk', tweentime);
+	{
+		if(Mesh == LodMesh'DeusExCharacters.GM_Trench')
+			TweenAnim('CrouchWalk', tweentime);
+	}
 	else if (((AnimSequence == 'Pickup') && bAnimFinished) || ((AnimSequence != 'Pickup') && !IsFiring()))
 	{
 		if (HasTwoHandedWeapon())
@@ -185,7 +197,10 @@ function PlayWaiting()
 			LoopAnim('Tread');
 	}
 	else if (IsLeaning() || bForceDuck)
-		TweenAnim('CrouchWalk', 0.1);
+	{
+		if(Mesh == LodMesh'DeusExCharacters.GM_Trench')
+			TweenAnim('CrouchWalk', 0.1);
+	}
 	else if (!IsFiring())
 	{
 		if (HasTwoHandedWeapon())
@@ -233,7 +248,7 @@ function PlayDuck()
 		else
 			PlayAnim('Crouch',,0.1);
 	}
-	else
+	else if(Mesh == LodMesh'DeusExCharacters.GM_Trench')
 		TweenAnim('CrouchWalk', 0.1);
 }
 
@@ -248,7 +263,7 @@ function PlayCrawling()
 //	ClientMessage("PlayCrawling()");
 	if (IsFiring())
 		LoopAnim('CrouchShoot');
-	else
+	else if(Mesh == LodMesh'DeusExCharacters.GM_Trench')
 		LoopAnim('CrouchWalk');
 }
 
