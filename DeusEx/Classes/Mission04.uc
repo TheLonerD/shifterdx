@@ -438,7 +438,7 @@ function PreTravel()
 				Player.flagBase.SetName(tname, item.Class.Name);
 				Player.flagBase.SetExpiration(tname, FLAG_Name, 6);
 
-				if(item.invSlotsX * item.invSlotsY > 4 && item.Location.Z <= 330.000000)
+				if(item.invSlotsX * item.invSlotsY > 4 && item.Location.Z <= 270.000000 && item.Base == Level)
 					Player.flagBase.SetBool('M04_JC_LeftHeavyItemOnFloor', True,, 6);
 
 				if(item.IsA('DeusExWeapon'))
@@ -595,8 +595,14 @@ function Timer()
 			}
 		}
 
-		if (flags.GetBool('GilbertRenton_Equippable') && !flags.GetBool('GilbertRenton_Dead'))
+		if (flags.GetBool('M04_GilbertRenton_Equippable') && !flags.GetBool('GilbertRenton_Dead'))
 		{
+			if(flags.GetBool('GaveRentonGun') || flags.GetBool('JoJoFine_Dead'))
+			{
+				flags.SetBool('M04_GilbertRenton_Equippable',False,,4);
+				flags.SetBool('M04_RentonGiveConvoReduxActive',False,,4);
+			}
+
 			//== If we've given him a weapon, start the "thanks for the weapon" part of the give conversation
 			if(flags.GetBool('GilbertRenton_Equipped') && !flags.GetBool('M04_RentonGiveConvoReduxActive'))
 			{
@@ -608,12 +614,7 @@ function Timer()
 						Gilbert.bCanGiveWeapon = False;
 					}
 				}
-			}
-
-			if(flags.GetBool('GaveRentonGun') || flags.GetBool('JoJoFine_Dead'))
-			{
-				flags.SetBool('M04_GilbertRenton_Equippable',False,,4);
-				flags.SetBool('M04_RentonGiveConvoReduxActive',False,,4);
+				flags.SetBool('GaveRentonGun',True);
 			}
 		}
 

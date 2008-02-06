@@ -61,6 +61,8 @@ function Explode()
 	HurtRadius(explosionDamage, explosionRadius, 'Exploded', explosionDamage*100, Location);
 }
 
+//     InitialAlliances(0)=(AllianceName=Pigeon,AllianceLevel=-1.000000)
+
 defaultproperties
 {
      CarcassType=Class'DeusEx.SeagullCarcass'

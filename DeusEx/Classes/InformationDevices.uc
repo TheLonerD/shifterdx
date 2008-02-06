@@ -19,6 +19,7 @@ var Bool bFirstParagraph;
 var localized String ImageLabel;
 var localized String AddedToDatavaultLabel;
 var String SpecialText;					// Special, script-given text
+var bool bUnmovable;						// Truly needs to be unmovable
 
 // ----------------------------------------------------------------------
 // Destroyed()
@@ -104,7 +105,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 				player.ClientMessage(msgNoText);
 
 			//== Once we've read it, we can pick it up
-			if(!Default.bPushable)
+			if(!Default.bPushable && !bUnmovable)
 				bPushable = True;
 		}
 		else

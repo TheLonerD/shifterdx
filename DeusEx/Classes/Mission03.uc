@@ -339,7 +339,7 @@ function PreTravel()
 				Player.flagBase.SetName(tname, item.Class.Name);
 				Player.flagBase.SetExpiration(tname, FLAG_Name, 5);
 
-				if(item.invSlotsX * item.invSlotsY > 4 && item.Location.Z <= 330.000000)
+				if(item.invSlotsX * item.invSlotsY > 4 && item.Location.Z <= 270.000000 && item.Base == Level)
 					Player.flagBase.SetBool('M03_JC_LeftHeavyItemOnFloor', True,, 6);
 
 				if(item.IsA('DeusExWeapon'))
@@ -777,7 +777,15 @@ function Timer()
 
 			bJuanFound = False;
 			foreach AllActors(class'JuanLebedev', Juan)
+			{
+				if(!flags.GetBool('M03_Juan_Neutral'))
+				{
+					Juan.ChangeAlly('Player',0,false);
+					flags.SetBool('M03_Juan_Neutral',True);
+				}
+
 				bJuanFound = True;
+			}
 
 			if (!bCarcFound && !bJuanFound && flags.GetBool('JuanLebedev_Dead'))
 				flags.SetBool('PlayerKilledLebedev', True,, 6);

@@ -467,4 +467,5 @@ defaultproperties
      bCanFly=True
      MaxStepHeight=2.000000
      bLikesNeutral=False
+     InitialAlliances(7)=(AllianceName=Cat,AllianceLevel=-1.000000)
 }

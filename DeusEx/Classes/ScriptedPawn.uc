@@ -11648,9 +11648,6 @@ State Fleeing
 			if(bPickedUp)
 			{
 				SwitchToBestWeapon();
-
-				if(!ShouldFlee())
-					FinishFleeing();
 			}
 		}
 

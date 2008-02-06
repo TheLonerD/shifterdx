@@ -17,7 +17,7 @@ function bool ShouldBeStartled(Pawn startler)
 	if (startler != None)
 	{
 		speed = VSize(startler.Velocity);
-		if (speed >= 20)
+		if (speed >= 20 && (startler.CollisionRadius * startler.CollisionHeight) > (CollisionRadius * CollisionHeight))
 		{
 			dist = VSize(Location - startler.Location);
 			time = dist/speed;
@@ -66,6 +66,21 @@ state Attacking
 		if (Enemy != None) // && !Enemy.IsA('Rat'))
 			GotoState('Fleeing');
 	}
+}
+
+function PlayTakingHit(EHitLocation hitPos)
+{
+	// nil
+}
+
+function PlayAttack()
+{
+	// nil
+}
+
+function TweenToAttack(float tweentime)
+{
+	// nil
 }
 
 //     InitialAlliances(0)=(AllianceName=Rat,AllianceLevel=-1.000000,bPermanent=True)

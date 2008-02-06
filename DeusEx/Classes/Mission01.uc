@@ -68,7 +68,7 @@ function PreTravel()
 				Player.flagBase.SetExpiration(tname, FLAG_Name, 4);
 
 				//== Check for heavy weapons left on the ground for snarky email purposes
-				if(item.invSlotsX * item.invSlotsY > 4 && item.Location.Z <= 330.000000)
+				if(item.invSlotsX * item.invSlotsY > 4 && item.Location.Z <= 270.000000 && item.Base == Level)
 					Player.flagBase.SetBool('M01_JC_LeftHeavyItemOnFloor', True,, 6);
 
 				if(item.IsA('DeusExWeapon'))

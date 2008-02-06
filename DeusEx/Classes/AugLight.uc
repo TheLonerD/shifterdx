@@ -71,7 +71,7 @@ state Active
 		{
 			AIStartEvent('Beam', EAITYPE_Visual);
 			b1.LightHue = 32;
-			b1.LightRadius = byte(FMin(4 * currentLevel, 1));
+			b1.LightRadius = byte(2 * (CurrentLevel + 1)); //4;
 			b1.LightSaturation = 140;
 			b1.LightBrightness = 192;
 			SetBeamLocation();
@@ -80,7 +80,7 @@ state Active
 		if (b2 != None)
 		{
 			b2.LightHue = 32;
-			b2.LightRadius = byte(FMin(4 * currentLevel, 1));
+			b2.LightRadius = byte(2 * (CurrentLevel + 1)); //4;
 			b2.LightSaturation = 140;
 			b2.LightBrightness = 220;
 			SetGlowLocation();

@@ -103,6 +103,7 @@ function PreTravel()
 {
 	local MJ12Troop mj12;
 	local int count;
+	local FordSchick ford;
 
 	if (localURL == "02_NYC_BATTERYPARK")
 	{
@@ -118,6 +119,14 @@ function PreTravel()
 	}
 	else if (localURL == "02_NYC_UNDERGROUND")
 	{
+		foreach allActors(class'FordSchick', ford)
+		{
+			flags.SetBool('FordSchick_Dead', False);
+
+			if(flags.GetBool('ShickThankedPlayer'))//== If ford has thanked us, he's rescued
+				flags.SetBool('FordSchickRescued', True,, 9);
+		}
+
 		// if you leave the level with Ford Schick, set a flag
 		if (flags.GetBool('MS_FordFollowing') &&
 			!flags.GetBool('FordSchick_Dead'))
@@ -134,6 +143,10 @@ function PreTravel()
 			if(count <= 0)
 				flags.SetBool('FordSchickRescued', True,, 9);
 		}
+
+		//== Make sure the flag duration is set long enough
+		if(flags.GetBool('FordSchickRescued'))
+			flags.SetBool('FordSchickRescued', True,, 9);
 	}
 
 	Super.PreTravel();

@@ -27,6 +27,8 @@ function FirstFrame()
 {
 	local BlackHelicopter chopper;
 	local InterpolateTrigger trig;
+	local DataCube dCube;
+	local int i;
 
 	Super.FirstFrame();
 
@@ -51,6 +53,16 @@ function FirstFrame()
 			jockTimer = Level.TimeSeconds;
 			flags.SetBool('MS_BeginSabotage', True,, 16);
 		}
+	}
+	else if (localURL == "15_AREA51_PAGE")
+	{
+		foreach AllActors(class'Datacube', dCube)
+		{
+			if(i < 4) //== The first four datacubes are for the clone tanks and shouldn't move
+				dCube.bUnmovable = True;
+			i++;
+		}
+
 	}
 }
 

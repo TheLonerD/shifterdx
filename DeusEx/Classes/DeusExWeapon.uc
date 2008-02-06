@@ -574,8 +574,12 @@ simulated function float GetWeaponSkill()
 		{
 			if ((player.AugmentationSystem != None ) && ( player.SkillSystem != None ))
 			{
-				// get the target augmentation
-				value = player.AugmentationSystem.GetAugLevelValue(class'AugTarget');
+				//== Multiplayer only
+				if(Level.NetMode != NM_Standalone)
+				{
+					// get the target augmentation
+					value = player.AugmentationSystem.GetAugLevelValue(class'AugTarget');
+				}
 				if (value == -1.0)
 					value = 0;
 
@@ -604,7 +608,7 @@ simulated function float CalculateAccuracy()
 	local DeusExPlayer player;
 
 	accuracy = BaseAccuracy;		// start with the weapon's base accuracy
-   weapskill = GetWeaponSkill();
+	weapskill = GetWeaponSkill();
 
 	player = DeusExPlayer(Owner);
 
@@ -615,6 +619,12 @@ simulated function float CalculateAccuracy()
 		// check the player's skill
 		// 0.0 = dead on, 1.0 = way off
 		accuracy += weapskill;
+
+		if(player.AugmentationSystem != None && Level.NetMode == NM_Standalone)
+			div = player.AugmentationSystem.GetAugLevelValue(class'AugTarget');
+
+		if(div != -1.0)
+			accuracy += div;
 
 		// get the health values for the player
 		HealthArmRight = player.HealthArmRight;
@@ -3836,7 +3846,7 @@ simulated function ProcessTraceHitExplosive(Actor Other, Vector HitLocation, Vec
 						Other.TakeDamage(HitDamage * mult, Pawn(Owner), HitLocation, 3000.0*X, damageType);
 					//== Only do one direct explosive hit on the player (since the only time that will happen
 					//==  is in Unrealistic) or 3 on Robots
-					if((DeusExPlayer(Other) != None && !AmmoType.IsA('Ammo10mmEX')) || (i >= 2 && Robot(Other) != None) )
+					if((DeusExPlayer(Other) != None && !AmmoType.IsA('Ammo10mmEX') && i >= 1) || (i >= 2 && Robot(Other) != None) )
 						break;
 				}
 

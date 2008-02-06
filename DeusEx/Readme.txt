@@ -1446,6 +1446,37 @@ UPDATES:
 	 - Removed a bit of code which prevented weapons loaded with 10mmEX
 	ammo from doing the full, ludicrous amount of damage to the player.
 
+	 - Readjusted the new upgradeable light aug so that it isn't like (and
+	I quote) "The JC DENTON FIRING RANGE!" on the higher levels.
+
+	 - Fixed the NPC Weapon Pickup functionality so that it won't cause a
+	crash if an unarmed and fleeing NPC finds a weapon.
+
+	 - Ensured that the datacubes used for information display on the clone
+	tanks in Area 51 can't be moved.
+
+	 - Adjusted the targeting aug so that it only provides an accuracy
+	boost in singleplayer, rather than boosts to all weapon skills.  In MP
+	that's what the aug is supposed to do, so I've left that code in place
+	for the Shifter MPers.
+
+	 - Readjusted a check in the "Dan Matsuma" bit which was inaccurately
+	reporting that certain items were on the ground when they were in fact
+	on boxes, tables, etc.
+
+	 - Ensured that in the new "second chance" weapon give situation with
+	Gilbert Renton the appropriate flag is set indicating that you've given
+	him a weapon, and also ensured that the conversation fragment you hear
+	when giving him the weapon will be played.
+
+	 - Made sure that Juan Lebedev is actually neutral.
+
+	 - Made all varieties of Birds actually afraid of Cats.
+
+	 - Increased the default damage done by instant-hit (and now explosive)
+	weapons in Unrealistic.  The damage is now double what it was in
+	earlier verisons of Unrealistic.
+
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 

@@ -67,6 +67,8 @@ function Carcass SpawnCarcass()
 	return Super.SpawnCarcass();
 }
 
+//     InitialAlliances(0)=(AllianceName=Seagull,AllianceLevel=-1.000000)
+
 defaultproperties
 {
      CarcassType=Class'DeusEx.PigeonCarcass'
