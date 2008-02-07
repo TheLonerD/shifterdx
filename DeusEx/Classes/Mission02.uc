@@ -12,6 +12,7 @@ class Mission02 expands MissionScript;
 function FirstFrame()
 {
 	local ScriptedPawn pawn;
+	local FlagTrigger ftrig;
 
 	Super.FirstFrame();
 
@@ -89,6 +90,21 @@ function FirstFrame()
 					pawn.EnterWorld();
 
 			flags.SetBool('SchickThankedPlayer', True);
+		}
+	}
+	else if (localURL == "02_NYC_UNDERGROUND")
+	{
+		//== Fix the duration that the FordSchickRescued flag is relevant
+		if(!flags.GetBool('M02_Rescue_Flag_Fixed'))
+		{
+			foreach AllActors(class'FlagTrigger', ftrig)
+			{
+				if(ftrig.FlagName == 'FordSchickRescued')
+				{
+					ftrig.flagExpiration = 9;
+					flags.SetBool('M02_Rescue_Flag_Fixed',True);
+				}
+			}
 		}
 	}
 }

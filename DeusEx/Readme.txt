@@ -1477,6 +1477,10 @@ UPDATES:
 	weapons in Unrealistic.  The damage is now double what it was in
 	earlier verisons of Unrealistic.
 
+	 - Made the Buddha display case in Maggie Chow's apartment moveable.
+	This was a Game of the Year glitch, so people not running GOTY should
+	not see any difference in gameplay.
+
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 

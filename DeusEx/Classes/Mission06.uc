@@ -28,6 +28,7 @@ function FirstFrame()
 	local Inventory item, nextitem;
 	local AllianceTrigger altrig;
 	local MJ12Troop mjtroop;
+	local Mover thecase;
 
 	Super.FirstFrame();
 
@@ -48,6 +49,21 @@ function FirstFrame()
 				mjtroop.bPlayIdle = False;
 			}
 			flags.SetBool('MJ12_Troops_Silent', True,, 8);
+		}
+
+		if(!flags.GetBool('DisplayCase_Moveable'))
+		{
+			foreach AllActors(class'Mover', thecase, 'Dispalycase')
+			{
+				if(VSize(thecase.KeyPos[1] - thecase.KeyPos[0]) <= 4)
+				{
+					thecase.KeyPos[0] = thecase.Location;
+					thecase.KeyPos[1] = thecase.Location + vect(2, -0000122, -36);
+					flags.SetBool('DisplayCase_WasUnMoveable',True); //== For debug purposes
+				}
+
+				flags.SetBool('DisplayCase_Moveable',True);
+			}
 		}
 	}
 	else if (localURL == "06_HONGKONG_WANCHAI_CANAL")
