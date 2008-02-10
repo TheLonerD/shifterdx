@@ -4,6 +4,7 @@
 class Cat extends Animal;
 
 var float time;
+var name LastStateName;
 
 function bool ShouldBeStartled(Pawn startler)
 {
@@ -47,6 +48,11 @@ function Tick(float deltaTime)
 {
 	Super.Tick(deltaTime);
 
+	if(LastStateName != GetStateName())
+	{
+		LastStateName = GetStateName();
+	}
+
 	time += deltaTime;
 
 	// check for random noises
@@ -58,14 +64,58 @@ function Tick(float deltaTime)
 	}
 }
 
+// ----------------------------------------------------------------------
+// CheckEnemyParams()  [internal use only]
+// ----------------------------------------------------------------------
+
+function CheckEnemyParams(Pawn checkPawn,
+                          out Pawn bestPawn, out int bestThreatLevel, out float bestDist)
+{
+	local int threatLevel;
+
+	if((!checkPawn.IsA('Animal') || checkPawn.IsA('Cat')) && GetPawnAllianceType(checkPawn) != ALLIANCE_Hostile)
+		return;
+
+	if(checkPawn == Self) //Really now...
+		return;
+
+	if(checkPawn.Physics == PHYS_Flying && checkPawn != Enemy)
+		return;
+
+	Super.CheckEnemyParams(checkPawn, bestPawn, bestThreatLevel, bestDist);
+
+	if(checkPawn.CollisionHeight * checkPawn.CollisionRadius <= CollisionHeight * CollisionRadius)
+		threatLevel = 4;
+
+	if(checkPawn.Physics == PHYS_Flying)
+		threatLevel /= 2;
+
+	if(threatLevel > bestThreatLevel)
+	{
+		bestPawn = checkPawn;
+		bestThreatLevel = threatLevel;
+		bestDist = VSize(checkPawn.Location - Location);
+	}
+}
+
 state Attacking
 {
 	function Tick(float deltaSeconds)
 	{
 		Super.Tick(deltaSeconds);
-		if (Enemy != None) // && !Enemy.IsA('Rat'))
-			GotoState('Fleeing');
+		if (Enemy != None)
+		{
+			if(Enemy.CollisionRadius * Enemy.CollisionHeight > CollisionRadius * CollisionHeight && Weapon.IsA('WeaponCatScratch'))
+				GotoState('Fleeing');
+		}
 	}
+}
+
+state Alerting
+{
+ignores all;
+begin:
+	GoToState('Wandering');
 }
 
 function PlayTakingHit(EHitLocation hitPos)
@@ -83,17 +133,40 @@ function TweenToAttack(float tweentime)
 	// nil
 }
 
-//     InitialAlliances(0)=(AllianceName=Rat,AllianceLevel=-1.000000,bPermanent=True)
+function PlayEatingSound()
+{
+	PlaySound(sound'CatPurr', SLOT_None,,, 128);
+}
+
+function PlayStartEating()
+{
+	AmbientSound = Sound'DeusExSounds.Animal.CatPurr';
+}
+
+function PlayEating()
+{
+	LoopAnim('BreatheLight');
+}
+
+function PlayStopEating()
+{
+	AmbientSound = None;
+}
 
 defaultproperties
 {
      bPlayDying=True
      FoodClass=Class'DeusEx.DeusExCarcass'
      bFleeBigPawns=True
+     bFearCarcass=False
      MinHealth=0.000000
      CarcassType=Class'DeusEx.CatCarcass'
      WalkingSpeed=0.111111
      InitialInventory(0)=(Inventory=Class'DeusEx.WeaponCatScratch')
+     InitialAlliances(0)=(AllianceName=Rat,AllianceLevel=-1.000000,bPermanent=True)
+     InitialAlliances(1)=(AllianceName=Seagull,AllianceLevel=-1.000000,bPermanent=True)
+     InitialAlliances(2)=(AllianceName=Pigeon,AllianceLevel=-1.000000,bPermanent=True)
+     InitialAlliances(3)=(AllianceName=Fly,AllianceLevel=1.000000,bPermanent=True)
      GroundSpeed=180.000000
      WaterSpeed=50.000000
      AirSpeed=144.000000
@@ -118,4 +191,5 @@ defaultproperties
      BindName="Cat"
      FamiliarName="Cat"
      UnfamiliarName="Cat"
+     SurprisePeriod=0.000000
 }

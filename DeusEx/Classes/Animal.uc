@@ -503,6 +503,8 @@ function bool IsValidFood(Actor foodActor)
 		return false;
 	else if (foodActor.bDeleteMe)
 		return false;
+	else if (foodActor.bOnFire) //A little too freshly barbecued
+		return false;
 	else if (foodActor.Region.Zone.bWaterZone)
 		return false;
 	else if ((foodActor.Physics == PHYS_Swimming) || (foodActor.Physics == PHYS_Falling))

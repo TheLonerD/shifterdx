@@ -3658,6 +3658,12 @@ simulated function ProcessTraceHit(Actor Other, Vector HitLocation, Vector HitNo
 		// Determine damage type
 		damageType = WeaponDamageType();
 
+		if(damageType == 'ShotSoft')
+		{
+			damageType = 'Shot';
+			X = vect(0,0,0);
+		}
+
 		if (Other != None)
 		{
 			if (Other.bOwned)

@@ -35,25 +35,35 @@ function bool SendActorOnPath()
 
 	// find the target actors to start on the path
 	foreach AllActors (class'Actor', A, Event)
-		if ((A != None) && !A.IsA('InterpolationPoint'))
+	{
+		if (A != None)
 		{
-			foreach AllActors (class'InterpolationPoint', I, A.Event)
+			if (!A.IsA('InterpolationPoint'))
 			{
-				if (I.Position == 1)		// start at 1 instead of 0 - put 0 at the object's initial position
+				foreach AllActors (class'InterpolationPoint', I, A.Event)
 				{
-					A.SetCollision(False, False, False);
-					A.bCollideWorld = False;
-					A.Target = I;
-					A.SetPhysics(PHYS_Interpolating);
-					A.PhysRate = 1.0;
-					A.PhysAlpha = 0.0;
-					A.bInterpolating = True;
-					A.bStasis = False;
-					A.GotoState('Interpolating');
-					break;
+					if(I != None)
+					{
+						if (I.Position == 1)		// start at 1 instead of 0 - put 0 at the object's initial position
+						{
+							A.SetCollision(False, False, False);
+							A.bCollideWorld = False;
+							A.Target = I;
+							A.SetPhysics(PHYS_Interpolating);
+							A.PhysRate = 1.0;
+							A.PhysAlpha = 0.0;
+							A.bInterpolating = True;
+							A.bStasis = False;
+
+							if(A.IsA('Vehicles') || A.IsA('DeusExPlayer')) //Only classes with an interpolation state
+								A.GotoState('Interpolating');
+							break;
+						}
+					}
 				}
 			}
 		}
+	}
 
 	return True;
 }

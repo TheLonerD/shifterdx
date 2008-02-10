@@ -1481,6 +1481,15 @@ UPDATES:
 	This was a Game of the Year glitch, so people not running GOTY should
 	not see any difference in gameplay.
 
+	 - Adjusted a small bit of the Kills/KOs skillpoint system and removed
+	the hard-coded bonus for KOing Terrorists (and a few other classes)
+	rather than outright killing them.  It occured to me that the system
+	should reward skill, not morality.  As such I've replaced the old bonus
+	with one for KOing MiBs, WiBs, and MJ12 Commandos.
+
+	 - Fixed the whole "Cats attack Rats" thing.  They'll now attack Rats
+	(and Birds) and eat the bodies, all very efficiently.
+
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
 

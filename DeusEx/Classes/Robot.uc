@@ -174,7 +174,8 @@ function TakeDamageBase(int Damage, Pawn instigatedBy, Vector hitlocation, Vecto
 				//== Points for disabling a robot
 				if(DeusExPlayer(instigatedBy) != None)
 				{
-					skillpt = Default.EMPHitPoints;
+					skillpt = FMax(Default.EMPHitPoints, oldEMPHitPoints);
+
 					if(GetPawnAllianceType(DeusExPlayer(instigatedBy)) == ALLIANCE_Hostile)
 						skillpt *= 5;
 					else if(GetPawnAllianceType(DeusExPlayer(instigatedBy)) == ALLIANCE_Friendly && crazedTimer <= 0.0)
@@ -185,7 +186,7 @@ function TakeDamageBase(int Damage, Pawn instigatedBy, Vector hitlocation, Vecto
 					if(oldEMPHitPoints >= Default.EMPHitPoints)
 						skillpt *= 3;
 					else if(oldEMPHitPoints >= Default.EMPHitPoints / 2)
-						skillpt += (skillpt * 2) / 3;
+						skillpt *= 2;
 
 					skillpt /= 20;
 

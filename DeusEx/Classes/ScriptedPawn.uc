@@ -3683,7 +3683,10 @@ function TakeDamageBase(int Damage, Pawn instigatedBy, Vector hitlocation, Vecto
 		momentum *= 3.000000;
 
 	// Impart momentum
-	ImpartMomentum(momentum, instigatedBy);
+	if(damageType != 'ShotSoft')
+		ImpartMomentum(momentum, instigatedBy);
+	else
+		damageType = 'Shot';
 
 	actualDamage = ModifyDamage(Damage, instigatedBy, hitLocation, offset, damageType);
 
@@ -7322,7 +7325,7 @@ function FindBestEnemy(bool bIgnoreCurrentEnemy)
 	if (!bIgnoreCurrentEnemy && (Enemy != None))
 		CheckEnemyParams(Enemy, bestPawn, bestThreatLevel, bestDist);
 	foreach RadiusActors(Class'Pawn', nextPawn, 2000)  // arbitrary
-		if (enemy != nextPawn)
+		if (enemy != nextPawn && nextPawn != Self) //We are not out own worst enemy, I assure you
 			CheckEnemyParams(nextPawn, bestPawn, bestThreatLevel, bestDist);
 
 	if (bestPawn != Enemy)
@@ -9188,7 +9191,12 @@ function HandToHandAttack()
 
 	dxWeapon = DeusExWeapon(Weapon);
 	if (dxWeapon != None)
-		dxWeapon.OwnerHandToHandAttack();
+	{
+		if(dxWeapon.bOwnerWillNotify)
+			dxWeapon.OwnerHandToHandAttack();
+		else
+			dxWeapon.HandToHandAttack();
+	}
 }
 
 
@@ -9298,16 +9306,15 @@ function Died(pawn Killer, name damageType, vector HitLocation)
 			if(default.Health > 350) //Bigger bots
 				skillpt *= 2;
 		}
+		else if(Mass > 200) //Anything that big must have taken a lot
+			skillpt *= 2;
 
 		if(damageType == 'Exploded') //So you had to use explosives to get your kills.  For shame
 			skillpt /= 2;
 
-		if((Mass > 200 && !IsA('Robot'))) //Anything that big must have taken a lot
-			skillpt *= 2;
-
 		temp = skillpt;
 
-		if(bStunned && (IsA('Terrorist') || IsA('Cop') || IsA('RiotCop') || IsA('HumanThug') || IsA('HumanCivilian') || bImportant))	//If you stunned them, way to be you
+		if(bStunned && (IsA('MIB') || IsA('WIB') || IsA('MJ12Commando')))	//If you stunned them, way to be you
 		{
 			skillpt += temp/2;
 		}

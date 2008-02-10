@@ -151,6 +151,7 @@ defaultproperties
      Health=1
      UnderWaterTime=20.000000
      AttitudeToPlayer=ATTITUDE_Fear
+     Alliance=Fly
      bTransient=True
      Physics=PHYS_Flying
      DrawType=DT_Mesh
