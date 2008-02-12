@@ -3,6 +3,32 @@
 //============================================================================
 class MPGUNTHER extends Human;
 
+function Facelift(bool bOn)
+{
+	local int i;
+
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPcharacters.HDTPGunther", class'mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
+		Texture = Default.Texture;
+		Mesh = Default.Mesh;
+		for(i = 0; i < 8; i++)
+		{
+			MultiSkins[i] = Default.MultiSkins[i];
+		}
+	}
+	else
+	{
+		Texture = None;
+		for(i = 0; i < 8; i++)
+		{
+			MultiSkins[i] = None;
+		}
+	}
+}
+
 // ----------------------------------------------------------------------
 // TravelPostAccept()
 // ----------------------------------------------------------------------

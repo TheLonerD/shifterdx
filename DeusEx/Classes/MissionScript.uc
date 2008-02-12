@@ -81,7 +81,7 @@ function InitStateMachine()
 				dxInfo.emailString[i] = emailString[i];
 			}
 
-			log("**** InitStateMachine() -"@player@"started mission state machine for"@localURL);
+			log("**** InitStateMachine() -"@player@" started mission state machine for "@localURL);
 		}
 		else
 		{
@@ -283,9 +283,9 @@ function Timer()
 				}
 			}
 		}
-		if(bCheck)
+		if(bCheck && player.CombatDifficulty <= 4.0) //In unrealistic spawned animals can get random inventory
 		{
-			flags.SetBool('NPCInventoryChecked',True,, 0);
+			flags.SetBool('NPCInventoryChecked',True,, -1);
 		}
 	}
 }

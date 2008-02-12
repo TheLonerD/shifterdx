@@ -46,6 +46,15 @@ var float BurnPeriod;
 
 var class<Inventory> FrobItems[4]; // Items to spawn on frob.  Used to give items to corpses after they are spawned
 
+function PreBeginPlay()
+{
+	Super.PreBeginPlay();
+	if(Level.NetMode == NM_Standalone)
+		Facelift(true);
+}
+
+function Facelift(bool bOn){}
+
 // ----------------------------------------------------------------------
 // InitFor()
 // ----------------------------------------------------------------------

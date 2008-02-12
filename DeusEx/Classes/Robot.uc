@@ -314,13 +314,16 @@ function ComputeFallDirection(float totalTime, int numFrames,
 }
 
 
-function Explode(vector HitLocation)
+function Explode(optional vector HitLocation)
 {
 	local int i, num;
 	local float explosionRadius;
 	local Vector loc;
 	local DeusExFragment s;
 	local ExplosionLight light;
+
+	if(HitLocation == vect(0,0,0))
+		HitLocation = Location;
 
 	explosionRadius = (CollisionRadius + CollisionHeight) / 2;
 	PlaySound(explosionSound, SLOT_None, 2.0,, explosionRadius*32);

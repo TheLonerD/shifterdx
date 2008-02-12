@@ -1488,7 +1488,61 @@ UPDATES:
 	with one for KOing MiBs, WiBs, and MJ12 Commandos.
 
 	 - Fixed the whole "Cats attack Rats" thing.  They'll now attack Rats
-	(and Birds) and eat the bodies, all very efficiently.
+	(and Birds) and eat the bodies, all very efficiently.  It's sorta...
+	soothing to watch.
+
+	 - Switched the Rockets shot by robots to use the existing Mini-Rocket
+	ammo used by MJ12 Commandos. (and the ILAW)  This will allow you to get
+	some useful ammo from the larger bots in Unrealistic.
+
+	 - Added a check to prevent players from picking up "native" ammo from
+	NPC weapons (like the ammo for the Cat Scratch weapon) in Unrealistic.
+
+	 - Ensured that if a runaway loop WAS detected in some inventory-
+	related functions that the loop would be stopped before it went too far
+	and the inventory would attempt to be fixed if possible.
+
+	 - Fixed a DX code oversight that could cause numerous log errors when
+	an NPC weilding a GEP Gun (or any other locking weapon) attempted to
+	lock on to the player.
+
+	 - Found some badly-written code which indicates that GEP Guns aren't
+	supposed to be able to "lock on" when weilded by an NPC.  I've fixed
+	the code for now, but if you ask me making NPCs capable of shooting
+	homing rockets at the player sounds like an excellent way of making the
+	game more difficult.  Perhaps I'll enable it later.
+
+	 - Added a workaround for an odd "infinite loop" crash that can happen
+	when Animals (or Robots, I think) use non-"native" weapons.  I'm not
+	entirely sure what causes the problem, all I know is what happens and
+	where.  I've added a few 50-millisecond delays to a few of the Attack-
+	related functions that are only triggered when Animals and Robots use
+	non-"native" weapons. (e.g. GEP Guns) That seems to have fixed the
+	problem for now.
+
+	 - Made sure that Gunther Hermann's body is given the HDTP facelift if
+	you somehow manage to kill or K.O. him, or if you're using him for your
+	Unrealistic player model.
+
+	 - And also made sure that if you're using Gunther as your Unrealistic
+	player model he gets the HDTP Facelift.
+
+	 - Made sure Jordan Shea uses the female sounds, as I'd overlooked her.
+
+	 - Ensured that NPC Random Inventory and related checks are always
+	available in Unrealistic, as spawned NPCs like Fish, Pigeons, Rats, and
+	even Cats can be given weapons in Unrealistic.
+
+	 - Moved the Explode() function (used by MiBs, WiBs, etc.) to the more
+	general ScriptedPawn class.  This means that I can now make ANY NPC up
+	and explode whenever I want.  MWA HA HA HA HA HA HA HAAAAAA!!!!
+
+	 - Seagulls and Flies will now drop any items they had on them when
+	they die, and Pigeons will transfer their inventory to the Rats they
+	turn into, should they do so.  This only matters for Unrealistic.
+
+	 - Limited the Exploding Seagulls and Rats-with-Wings Pigeons things to
+	Unrealistic only, since, well, they are.
 
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)

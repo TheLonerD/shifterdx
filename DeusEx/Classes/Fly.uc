@@ -3,6 +3,46 @@
 //=============================================================================
 class Fly extends Animal;
 
+function Carcass SpawnCarcass()
+{
+	local Inventory item;
+
+	if(DeusExPlayer(GetPlayerPawn()).combatDifficulty <= 4.0)
+		return Super.SpawnCarcass();
+
+	item = Inventory;
+
+	while(item != None)
+	{
+		if(item.Base != Self)
+			break;
+
+		if(item.IsA('DeusExWeapon') && DeusExWeapon(item).bNativeAttack)
+		{}
+		else if(item.IsA('DeusExAmmo') && (!DeusExAmmo(item).bIsNonStandard || item.PickupViewMesh == LodMesh'DeusExItems.TestBox' || item.Description == (class'DeusExAmmo').Default.Description))
+		{}
+		else
+		{
+			if(item.IsA('DeusExWeapon'))
+			{
+				DeusExWeapon(item).AmmoType = None;
+				DeusExWeapon(item).PickupAmmoCount = Rand(DeusExWeapon(item).Default.PickupAmmoCount) + 1;
+			}
+
+			DeleteInventory(item);
+			item.DropFrom(Location);
+		}
+		item = item.Inventory;
+
+		if(item == Inventory) // looping inventory
+			item = None;
+	}
+
+	Explode();
+
+	return None;
+}
+
 
 function bool IsNearHome(vector position)
 {

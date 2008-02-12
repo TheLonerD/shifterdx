@@ -275,8 +275,40 @@ function LoopBaseConvoAnim()
 	}
 
 	// if we're not playing an animation, loop the breathe
-	if (!IsAnimating() && HasAnim('BreathLight'))
+	if (!IsAnimating() && HasAnim('BreatheLight'))
 		LoopAnim('BreatheLight',, 0.4);
+}
+
+// ----------------------------------------------------------------------
+// PlayReloadBegin()
+// ----------------------------------------------------------------------
+
+function PlayReloadBegin()
+{
+	if(HasAnim('ReloadBegin'))
+		PlayAnimPivot('ReloadBegin',, 0.1);
+}
+
+
+// ----------------------------------------------------------------------
+// PlayReload()
+// ----------------------------------------------------------------------
+
+function PlayReload()
+{
+	if(HasAnim('Reload'))
+		LoopAnimPivot('Reload',,0.2);
+}
+
+
+// ----------------------------------------------------------------------
+// PlayReloadEnd()
+// ----------------------------------------------------------------------
+
+function PlayReloadEnd()
+{
+	if(HasAnim('ReloadEnd'))
+		PlayAnimPivot('ReloadEnd',, 0.1);
 }
 
 state Fleeing
@@ -503,7 +535,7 @@ function bool IsValidFood(Actor foodActor)
 		return false;
 	else if (foodActor.bDeleteMe)
 		return false;
-	else if (foodActor.bOnFire) //A little too freshly barbecued
+	else if (DeusExCarcass(foodActor) != None && DeusExCarcass(foodActor).bOnFire) //A little too freshly barbecued
 		return false;
 	else if (foodActor.Region.Zone.bWaterZone)
 		return false;
@@ -566,7 +598,11 @@ function bool ShouldFlee()
 
 function bool ShouldDropWeapon()
 {
-	return false;
+	if(Weapon != None)
+		if(DeusExWeapon(Weapon).bNativeAttack)
+			return false;
+
+	return Super.ShouldDropWeapon();
 }
 
 function Tick(float deltaSeconds)

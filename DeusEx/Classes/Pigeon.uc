@@ -8,7 +8,9 @@ function Carcass SpawnCarcass()
 {
 	local Fire f;
 	local Rat notcarc;
-	if(!Region.Zone.bWaterZone && Health > -100)
+	local Inventory item;
+
+	if(DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0 && !Region.Zone.bWaterZone && Health > -100)
 	{
 		if(frand() > 0.5)
 		{
@@ -19,6 +21,24 @@ function Carcass SpawnCarcass()
 				notcarc.Velocity = Velocity;
 				notcarc.Acceleration = Acceleration;
 				notcarc.BurnPeriod = BurnPeriod;
+
+				//== Transfer inventory to the pseudo-carcass
+				item = Inventory;
+				while(item != None)
+				{
+					if(item.Owner != Self)
+						break;
+
+					DeleteInventory(item);
+					item.InitialState='Idle2';
+					item.GiveTo(notcarc);
+					item.SetBase(notcarc);
+
+					item = item.Inventory;
+
+					if(item == Inventory)
+						item = None;
+				}
 
 				//== If we're on fire, transfer the fire to the carc
 				if(bOnFire)

@@ -3,6 +3,35 @@
 //=============================================================================
 class GuntherHermannCarcass extends DeusExCarcass;
 
+function Facelift(bool bOn)
+{
+	local int i;
+
+	Mesh = Mesh(DynamicLoadObject("HDTPcharacters.HDTPGuntherCarcassA", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		Mesh2 = Default.Mesh2;
+		Mesh3 = Default.Mesh3;
+
+		Texture = Default.Texture;
+
+		for(i = 0; i < 8; i++)
+			MultiSkins[i] = Default.MultiSkins[i];
+	}
+	else
+	{
+		Texture = None;
+
+		for(i = 0; i < 8; i++)
+			MultiSkins[i] = None;
+
+		Mesh2 = Mesh(DynamicLoadObject("HDTPcharacters.HDTPGuntherCarcassB", class'Mesh', True));
+		Mesh3 = Mesh(DynamicLoadObject("HDTPcharacters.HDTPGuntherCarcassC", class'Mesh', True));
+	}
+}
+
 defaultproperties
 {
      Mesh2=LodMesh'DeusExCharacters.GM_DressShirt_B_CarcassB'

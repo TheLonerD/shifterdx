@@ -18,7 +18,7 @@ simulated function PreBeginPlay()
 		AccurateRange = mpAccurateRange;
 		MaxRange = mpMaxRange;
 		ReloadCount = mpReloadCount;
-      bHasScope = True;
+		bHasScope = True;
 	}
 }
 
@@ -29,6 +29,20 @@ function PostBeginPlay()
 	// don't let NPC geps lock on to targets
 	if ((Owner != None) && !Owner.IsA('DeusExPlayer'))
 		bCanTrack = False;
+}
+
+function GiveTo(Pawn Other)
+{
+	//== Ensure that NPCs can't lock on to targets
+	if(Other != None)
+	{
+		if(Other.IsA('DeusExPlayer'))
+			bCanTrack = True;
+		else
+			bCanTrack = False;
+	}
+
+	Super.GiveTo(Other);
 }
 
 defaultproperties

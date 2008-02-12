@@ -1260,7 +1260,7 @@ simulated function Tick(float deltaTime)
 	local vector loc;
 	local rotator rot;
 	local float beepspeed, recoil;
-	local DeusExPlayer player;
+	local DeusExPlayer player, dxPlayer;
    local Actor RealTarget;
 	local Pawn pawn;
 	local bool bChange;
@@ -1269,6 +1269,7 @@ simulated function Tick(float deltaTime)
 
 	player = DeusExPlayer(Owner);
 	pawn = Pawn(Owner);
+	dxPlayer = DeusExPlayer(GetPlayerPawn());
 
 	Super.Tick(deltaTime);
 
@@ -1370,7 +1371,7 @@ simulated function Tick(float deltaTime)
                //DEUS_EX AMSD Don't allow locks on cloaked targets.
                SetLockMode(LOCK_Invalid);
             }
-            else if ( (Target.IsA('DeusExPlayer')) && (Player.DXGame.IsA('TeamDMGame')) && (TeamDMGame(Player.DXGame).ArePlayersAllied(Player,DeusExPlayer(Target))) )
+            else if ( (Target.IsA('DeusExPlayer')) && Player != None && (Player.DXGame.IsA('TeamDMGame')) && (TeamDMGame(Player.DXGame).ArePlayersAllied(Player,DeusExPlayer(Target))) )
             {
                //DEUS_EX AMSD Don't allow locks on allies.
                SetLockMode(LOCK_Invalid);
@@ -1428,7 +1429,7 @@ simulated function Tick(float deltaTime)
                beepspeed = FClamp((LockTime - LockTimer) / Default.LockTime, 0.2, 1.0);
                if (SoundTimer > beepspeed)
                {
-		  if(DeusExPlayer(GetPlayerPawn()).DrugEffectTimer < 0)
+		  if(dxPlayer.DrugEffectTimer < 0)
 	                  Owner.PlaySound(TrackingSound, SLOT_None,,,, 0.5);
 		  else
 	                  Owner.PlaySound(TrackingSound, SLOT_None);

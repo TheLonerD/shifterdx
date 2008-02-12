@@ -884,8 +884,10 @@ exec function GlobalFacelift(bool bOn)
 	local Actor generic;
 
 	//== HDTP might break multiplayer compatibility
-	if(Level.NetMode != NM_StandAlone)
+	if(Level.NetMode != NM_StandAlone && bOn)
 		return;
+
+	Facelift(bOn); // Make the player's model look all fancy-like
 
 	foreach AllActors(class'Actor', generic)
 	{
@@ -903,8 +905,13 @@ exec function GlobalFacelift(bool bOn)
 
 		if(ScriptedPawn(generic) != None)
 			ScriptedPawn(generic).Facelift(bOn);
+
+		if(DeusExCarcass(generic) != None)
+			DeusExCarcass(generic).Facelift(bOn);
 	}
 }
+
+function Facelift(bool bOn){}
 
 //== Takes a "clean" screenshot, with no HUD, GUI, etc.
 exec function CleanShot()

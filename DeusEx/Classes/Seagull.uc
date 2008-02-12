@@ -5,60 +5,42 @@ class Seagull extends Bird;
 
 function Carcass SpawnCarcass()
 {
-	if (bStunned)
+	local Inventory item;
+
+	if (bStunned || DeusExPlayer(GetPlayerPawn()).combatDifficulty <= 4.0)
 		return Super.SpawnCarcass();
+
+	item = Inventory;
+
+	while(item != None)
+	{
+		if(item.Base != Self)
+			break;
+
+		if(item.IsA('DeusExWeapon') && DeusExWeapon(item).bNativeAttack)
+		{}
+		else if(item.IsA('DeusExAmmo') && (!DeusExAmmo(item).bIsNonStandard || item.PickupViewMesh == LodMesh'DeusExItems.TestBox' || item.Description == (class'DeusExAmmo').Default.Description))
+		{}
+		else
+		{
+			if(item.IsA('DeusExWeapon'))
+			{
+				DeusExWeapon(item).AmmoType = None;
+				DeusExWeapon(item).PickupAmmoCount = Rand(DeusExWeapon(item).Default.PickupAmmoCount) + 1;
+			}
+
+			DeleteInventory(item);
+			item.DropFrom(Location + vect(0,0,2));
+		}
+		item = item.Inventory;
+
+		if(item == Inventory) // looping inventory
+			item = None;
+	}
 
 	Explode();
 
 	return None;
-}
-
-function Explode()
-{
-	local SphereEffect sphere;
-	local ScorchMark s;
-	local ExplosionLight light;
-	local int i;
-	local float explosionDamage;
-	local float explosionRadius;
-
-	explosionDamage = 125;
-	explosionRadius = 128;
-
-	// alert NPCs that I'm exploding
-	AISendEvent('LoudNoise', EAITYPE_Audio, , explosionRadius*16);
-	PlaySound(Sound'LargeExplosion1', SLOT_None,,, explosionRadius*16);
-
-	// draw a pretty explosion
-	light = Spawn(class'ExplosionLight',,, Location);
-	if (light != None)
-		light.size = 4;
-
-	Spawn(class'ExplosionSmall',,, Location + 2*VRand()*CollisionRadius);
-	Spawn(class'ExplosionMedium',,, Location + 2*VRand()*CollisionRadius);
-
-	sphere = Spawn(class'SphereEffect',,, Location);
-	if (sphere != None)
-		sphere.size = explosionRadius / 32.0;
-
-	// spawn a mark
-	s = spawn(class'ScorchMark', Base,, Location-vect(0,0,1)*CollisionHeight, Rotation+rot(16384,0,0));
-	if (s != None)
-	{
-		s.DrawScale = FClamp(explosionDamage/30, 0.1, 3.0);
-		s.ReattachDecal();
-	}
-
-	// spawn some rocks and flesh fragments
-	for (i=0; i<explosionDamage/12; i++)
-	{
-		if (FRand() < 0.3)
-			spawn(class'Rockchip',,,Location);
-		else
-			spawn(class'FleshFragment',,,Location);
-	}
-
-	HurtRadius(explosionDamage, explosionRadius, 'Exploded', explosionDamage*100, Location);
 }
 
 //     InitialAlliances(0)=(AllianceName=Pigeon,AllianceLevel=-1.000000)

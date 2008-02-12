@@ -3015,7 +3015,17 @@ function Carcass SpawnCarcass()
 					nextItem = item.Inventory;
 					DeleteInventory(item);
 					if ((DeusExWeapon(item) != None) && (DeusExWeapon(item).bNativeAttack))
+					{
+						if(DeusExWeapon(item).AmmoType != None)
+						{
+							if(DeusExWeapon(item).AmmoType.PickupViewMesh == LodMesh'DeusExItems.TestBox')
+							{
+								carc.DeleteInventory(DeusExWeapon(item).AmmoType);
+								DeusExWeapon(item).AmmoType.Destroy();
+							}
+						}
 						item.Destroy();
+					}
 					else
 					{
 						if(item.IsA('DeusExWeapon'))
@@ -3065,6 +3075,70 @@ function Carcass SpawnCarcass()
 	return carc;
 }
 
+// ----------------------------------------------------------------------
+// Explode() [Ripped off from MIB/etc., now based on collisionradius]
+// ----------------------------------------------------------------------
+
+
+function Explode(optional vector HitLocation)
+{
+	local SphereEffect sphere;
+	local ScorchMark s;
+	local ExplosionLight light;
+	local int i;
+	local float explosionDamage;
+	local float explosionRadius;
+	local FleshFragment f;
+
+	if(HitLocation == vect(0,0,0))
+		HitLocation = Location;
+
+	explosionDamage = 100;
+	explosionRadius = CollisionRadius * 10; //was 256
+
+	// alert NPCs that I'm exploding
+	AISendEvent('LoudNoise', EAITYPE_Audio, , explosionRadius*16);
+	PlaySound(Sound'LargeExplosion1', SLOT_None,,, explosionRadius*16);
+
+	// draw a pretty explosion
+	light = Spawn(class'ExplosionLight',,, HitLocation);
+	if (light != None)
+		light.size = 4;
+
+	Spawn(class'ExplosionSmall',,, HitLocation + 2*VRand()*CollisionRadius);
+	if(explosionRadius > 96)
+		Spawn(class'ExplosionMedium',,, HitLocation + 2*VRand()*CollisionRadius);
+	if(explosionRadius > 160)
+		Spawn(class'ExplosionMedium',,, HitLocation + 2*VRand()*CollisionRadius);
+	if(explosionRadius > 200)
+		Spawn(class'ExplosionLarge',,, HitLocation + 2*VRand()*CollisionRadius);
+
+	sphere = Spawn(class'SphereEffect',,, HitLocation);
+	if (sphere != None)
+		sphere.size = explosionRadius / 32.0;
+
+	// spawn a mark
+	s = spawn(class'ScorchMark', Base,, HitLocation-vect(0,0,1)*CollisionHeight, Rotation+rot(16384,0,0));
+	if (s != None)
+	{
+		s.DrawScale = FClamp(explosionRadius/76.8, 0.1, 3.0);
+		s.ReattachDecal();
+	}
+
+	// spawn some rocks and flesh fragments
+	for (i=0; i<explosionRadius/15; i++)
+	{
+		if (FRand() < 0.3)
+			spawn(class'Rockchip',,,HitLocation);
+		else
+			f = spawn(class'FleshFragment',,,HitLocation);
+
+		if(f != None)
+			f.DrawScale = ExplosionRadius/256;
+	}
+
+	HurtRadius(explosionDamage, explosionRadius, 'Exploded', explosionDamage*100, HitLocation);
+}
 
 //=== NPC Random Inventory -- Y|yukichigai
 function bool GenerateRandomInventory()
@@ -6462,6 +6536,16 @@ function bool ShouldBeStartled(Pawn startler)
 
 
 // ----------------------------------------------------------------------
+// ShouldCrouch()  [stub function, overridden by subclasses and individual states]
+// ----------------------------------------------------------------------
+
+function bool ShouldCrouch()
+{
+	return false;
+}
+
+
+// ----------------------------------------------------------------------
 // ShouldPlayTurn()
 // ----------------------------------------------------------------------
 
@@ -8375,6 +8459,9 @@ function bool SwitchToBestWeapon()
 				FireTimer = dxWeapon.AIFireDelay;
 			}
 		}
+
+		if(dxWeapon.IsInState('Reload') && Self.IsA('Animal')) //Hack, avoid switching weapons while reloading
+			return true;
 	}
 
 	bestWeapon      = None;
@@ -8410,6 +8497,7 @@ function bool SwitchToBestWeapon()
 		{
 			log("********** RUNAWAY LOOP IN SWITCHTOBESTWEAPON ("$self$") **********");
 			loopInv = Inventory;
+			inv = loopInv;
 			i = 0;
 			while (loopInv != None)
 			{
@@ -8417,8 +8505,16 @@ function bool SwitchToBestWeapon()
 				if (i > 300)
 					break;
 				log("   Inventory "$i$" - "$loopInv);
+
+				if(loopInv.Owner != Self && loopInv.Base != Self) // Attempt to half-assed fix the problem if it's some kind of inventory "sharing" issue
+					DeleteInventory(loopInv);
+
+				if(loopInv.Inventory == inv) // circular-linked inventory
+					loopInv.Inventory = None;
+
 				loopInv = loopInv.Inventory;
 			}
+			inv = None; // break the loop
 		}
 
 		curWeapon = DeusExWeapon(inv);
@@ -9190,7 +9286,7 @@ function HandToHandAttack()
 	local DeusExWeapon dxWeapon;
 
 	dxWeapon = DeusExWeapon(Weapon);
-	if (dxWeapon != None)
+	if (dxWeapon != None && dxWeapon.bHandToHand)
 	{
 		if(dxWeapon.bOwnerWillNotify)
 			dxWeapon.OwnerHandToHandAttack();
@@ -12446,6 +12542,7 @@ State Attacking
 		local float  surpriseTime;
 		local DeusExCarcass nearcarc;
 		local Inventory item, nextitem, ammo;
+		local int count;
 
 		Global.Tick(deltaSeconds);
 		if (CrouchTimer > 0)
@@ -12493,6 +12590,7 @@ State Attacking
 
 					do
 					{
+						count++;
 						ammo = None;
 						nextItem = item.Inventory;
 
@@ -12535,7 +12633,10 @@ State Attacking
 						}
 						item = nextItem;
 
-					}until(item == None);
+					}until(item == None || count >= 9999);
+
+					if(count >= 9999)
+						log("*********** Scripted Pawn - Attack State - Corpse Weapon Frob - RUNAWAY LOOP ***********");
 				}
 			}
 
@@ -12704,6 +12805,8 @@ RunToRange:
 			PlayTurning();
 		TurnToward(enemy);
 	}
+	else if(IsA('Animal'))
+		Sleep(0.05);
 	else
 		Sleep(0);
 	bCanFire = true;
@@ -12756,6 +12859,9 @@ Fire:
 	bReadyToReload = true;
 
 ContinueFire:
+	if((IsA('Animal') || IsA('Robot')) && Weapon != None && !DeusExWeapon(Weapon).bNativeAttack) //Weird glitch... animals using non-native weapons enter infinite loops
+		Sleep(0.05);
+
 	while (!ReadyForWeapon())
 	{
 		if (PickDestination() != DEST_SameLocation)
@@ -12763,6 +12869,8 @@ ContinueFire:
 		CheckAttack(true);
 		if (!IsWeaponReloading() || bCrouching)
 			TurnToward(enemy);
+		else if ((IsA('Animal') || IsA('Robot')) && Weapon != None && !DeusExWeapon(Weapon).bNativeAttack)
+			Sleep(0.05);
 		else
 			Sleep(0);
 	}
