@@ -3630,7 +3630,7 @@ simulated function ProcessTraceHit(Actor Other, Vector HitLocation, Vector HitNo
 	local int	   EMPlev;
 	local float	   EMPDam;
 	local DeusExPlayer dxPlayer;
-	local LaserTrigger lastrig; //For electrostatic discharge
+	local Trigger lastrig; //For electrostatic discharge
 	local Spark        thespark; //For determining radius from the hit loc, plus a pretty effect
 
 	//== If we're using 10mm explosive rounds (or if we're in unrealistic mode and we're an NPC) spawn a bullet explosion instead
@@ -3691,8 +3691,11 @@ simulated function ProcessTraceHit(Actor Other, Vector HitLocation, Vector HitNo
 					Other.TakeDamage(HitDamage * mult * EMPDam * 5, Pawn(Owner), HitLocation, 1000.0*X, 'NanoVirus');
 
 				thespark = Spawn(class'Spark',Owner,, HitLocation);
-				foreach thespark.RadiusActors(class'LaserTrigger', lastrig, 1.25)
-					lastrig.TakeDamage(HitDamage * mult * EMPDam, Pawn(Owner), HitLocation, 1000.0*X, 'EMP');
+				foreach thespark.RadiusActors(class'Trigger', lastrig, 1.25)
+				{
+					LaserTrigger(lastrig).TakeDamage(HitDamage * mult * EMPDam, Pawn(Owner), HitLocation, 1000.0*X, 'EMP');
+					BeamTrigger(lastrig).TakeDamage(HitDamage * mult * EMPDam, Pawn(Owner), HitLocation, 1000.0*X, 'EMP');
+				}
 			}
 
 			SelectiveSpawnEffects( HitLocation, HitNormal, Other, HitDamage * mult);
@@ -3743,7 +3746,12 @@ simulated function ProcessTraceHit(Actor Other, Vector HitLocation, Vector HitNo
 				if((Pawn(Other).Default.Health <= (EMPlev * 100) + 50 || Pawn(Other).Default.Health <= HitDamage * mult * EMPDam * 5 || EMPlev >= 3) && Level.NetMode == NM_Standalone)
 					Other.TakeDamage(HitDamage * mult * EMPDam * 5, Pawn(Owner), HitLocation, 1000.0*X, 'NanoVirus');
 
-				Spawn(class'Spark',Owner,, HitLocation);
+				thespark = Spawn(class'Spark',Owner,, HitLocation);
+				foreach thespark.RadiusActors(class'Trigger', lastrig, 1.25)
+				{
+					LaserTrigger(lastrig).TakeDamage(HitDamage * mult * EMPDam, Pawn(Owner), HitLocation, 1000.0*X, 'EMP');
+					BeamTrigger(lastrig).TakeDamage(HitDamage * mult * EMPDam, Pawn(Owner), HitLocation, 1000.0*X, 'EMP');
+				}
 			}
 
 			if (bPenetrating && Other.IsA('Pawn') && !Other.IsA('Robot'))

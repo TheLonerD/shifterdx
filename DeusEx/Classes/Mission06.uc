@@ -57,8 +57,7 @@ function FirstFrame()
 			{
 				if(VSize(thecase.KeyPos[1] - thecase.KeyPos[0]) <= 4)
 				{
-					thecase.KeyPos[0] = thecase.Location;
-					thecase.KeyPos[1] = thecase.Location + vect(2, -0000122, -36);
+					thecase.KeyPos[1].Z = -136.000000;
 					flags.SetBool('DisplayCase_WasUnMoveable',True); //== For debug purposes
 				}
 

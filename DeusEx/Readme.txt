@@ -1527,7 +1527,8 @@ UPDATES:
 	 - And also made sure that if you're using Gunther as your Unrealistic
 	player model he gets the HDTP Facelift.
 
-	 - Made sure Jordan Shea uses the female sounds, as I'd overlooked her.
+	 - Made sure Jordan Shea uses the female sounds when using her as your
+	multiplayer or Unrealistic model, as I'd overlooked her.
 
 	 - Ensured that NPC Random Inventory and related checks are always
 	available in Unrealistic, as spawned NPCs like Fish, Pigeons, Rats, and
@@ -1543,6 +1544,31 @@ UPDATES:
 
 	 - Limited the Exploding Seagulls and Rats-with-Wings Pigeons things to
 	Unrealistic only, since, well, they are.
+
+	 - Made blue laser triggers affectable by the Electrostatic Discharge
+	augmentation.  Turns out they're actually an entirely separate class
+	from the red variety, hence why my original code didn't work on 'em.
+
+	 - Tweaked the skills for kills system to use the maximum of either the
+	default health or head health of the off'd NPC.  This was mostly an
+	issue for robots, since their default head health (100) was usually
+	less than their default health (anywhere from 150 to 600)
+
+	 - Tweaked Cat AI so they won't go after flying things that aren't near
+	enough to them that they can actually attack them.
+
+	 - Corrected some dodgy coding on the part of the Deus Ex devs: there's
+	a function called PickDestination(), but depending on the state the NPC
+	is in this function can have different parameters or even a different
+	return type.  That's just... dangerous. (As demonstrated by a few
+	"function not found" crashes in Beta 10 that were reported to me) I've
+	renamed some of the functions to something else (since they were only
+	valid within the specific states) and ensured that at the base class
+	level there's a version of each function, so the worst you'll get is
+	some odd NPC behavior, rather than an out-and-out game crash.
+
+	 - If you use the killall cheat in Unrealistic you now get some rather
+	interesting results.
 
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)

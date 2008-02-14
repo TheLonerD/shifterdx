@@ -161,8 +161,6 @@ function Timer()
 			tname = DeusExRootWindow(Player.rootWindow).StringToName("Song_Name2");
 			flags.SetName(tname, songname);
 			flags.SetExpiration(tname, FLAG_Name, 9);
-	
-			flags.SetInt('Song_Section', 0,, 9);
 		}
 
 		// spawn reinforcements as cops are killed

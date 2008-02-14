@@ -18,7 +18,7 @@ function bool ShouldBeStartled(Pawn startler)
 	if (startler != None)
 	{
 		speed = VSize(startler.Velocity);
-		if (speed >= 20 && (startler.CollisionRadius * startler.CollisionHeight) > (CollisionRadius * CollisionHeight))
+		if (speed >= 20 && (startler.CollisionRadius * startler.CollisionHeight) > (CollisionRadius * CollisionHeight * 1.5))
 		{
 			dist = VSize(Location - startler.Location);
 			time = dist/speed;
@@ -73,13 +73,13 @@ function CheckEnemyParams(Pawn checkPawn,
 {
 	local int threatLevel;
 
-	if((!checkPawn.IsA('Animal') || checkPawn.IsA('Cat')) && GetPawnAllianceType(checkPawn) != ALLIANCE_Hostile)
+	if((!checkPawn.IsA('Animal') || checkPawn.IsA('Cat')) && GetPawnAllianceType(checkPawn) != ALLIANCE_Hostile) //== Only go after the truly hostile
 		return;
 
 	if(checkPawn == Self) //Really now...
 		return;
 
-	if(checkPawn.Physics == PHYS_Flying && checkPawn != Enemy)
+	if(checkPawn.Physics == PHYS_Flying && checkPawn != Enemy) //== Only track flying things if we're already watching them
 		return;
 
 	Super.CheckEnemyParams(checkPawn, bestPawn, bestThreatLevel, bestDist);
@@ -88,7 +88,12 @@ function CheckEnemyParams(Pawn checkPawn,
 		threatLevel = 4;
 
 	if(checkPawn.Physics == PHYS_Flying)
-		threatLevel /= 2;
+	{
+		if(VSize(checkPawn.Location - Location) > 128 && checkPawn.Location.Z - Location.Z >= 16) //Flying things which are too far away get ignored
+			threatLevel = -1;
+		else
+			threatLevel /= 2;
+	}
 
 	if(threatLevel > bestThreatLevel)
 	{
@@ -105,7 +110,7 @@ state Attacking
 		Super.Tick(deltaSeconds);
 		if (Enemy != None)
 		{
-			if(Enemy.CollisionRadius * Enemy.CollisionHeight > CollisionRadius * CollisionHeight && Weapon.IsA('WeaponCatScratch'))
+			if(Enemy.CollisionRadius * Enemy.CollisionHeight > CollisionRadius * CollisionHeight * 1.2 && Weapon.IsA('WeaponCatScratch'))
 				GotoState('Fleeing');
 		}
 	}

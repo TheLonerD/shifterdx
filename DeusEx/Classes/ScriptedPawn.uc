@@ -3094,7 +3094,7 @@ function Explode(optional vector HitLocation)
 		HitLocation = Location;
 
 	explosionDamage = 100;
-	explosionRadius = CollisionRadius * 10; //was 256
+	explosionRadius = CollisionRadius * 11.64; //was 256.  When multiplied by the default collisionradius (22) and converted to int it IS 256
 
 	// alert NPCs that I'm exploding
 	AISendEvent('LoudNoise', EAITYPE_Audio, , explosionRadius*16);
@@ -3108,9 +3108,9 @@ function Explode(optional vector HitLocation)
 	Spawn(class'ExplosionSmall',,, HitLocation + 2*VRand()*CollisionRadius);
 	if(explosionRadius > 96)
 		Spawn(class'ExplosionMedium',,, HitLocation + 2*VRand()*CollisionRadius);
-	if(explosionRadius > 160)
+	if(explosionRadius > 192)
 		Spawn(class'ExplosionMedium',,, HitLocation + 2*VRand()*CollisionRadius);
-	if(explosionRadius > 200)
+	if(explosionRadius > 224)
 		Spawn(class'ExplosionLarge',,, HitLocation + 2*VRand()*CollisionRadius);
 
 	sphere = Spawn(class'SphereEffect',,, HitLocation);
@@ -3803,7 +3803,7 @@ function TakeDamageBase(int Damage, Pawn instigatedBy, Vector hitlocation, Vecto
 
 	if (Health <= 0)
 	{
-		if(origHealth == Default.Health)
+		if(origHealth >= Default.Health)
 			bOutInOne = True;
 		ClearNextState();
 		//PlayDeathHit(actualDamage, hitLocation, damageType);
@@ -6544,6 +6544,14 @@ function bool ShouldCrouch()
 	return false;
 }
 
+
+// ----------------------------------------------------------------------
+// PickDestination()  [stub function, overridden by subclasses and individual states]
+// ----------------------------------------------------------------------
+
+function PickDestination(){}
+function bool PickNextDestination(){}
+function EDestinationType GetNewDestination(){}
 
 // ----------------------------------------------------------------------
 // ShouldPlayTurn()
@@ -9366,7 +9374,7 @@ function Died(pawn Killer, name damageType, vector HitLocation)
 		//== Killing the NPC pretty much takes out that stealth bonus
 		PendingSkillPoints = 0;
 
-		skillpt = default.HealthHead; //Skill points based on the health of the enemy
+		skillpt = FMax(default.HealthHead, default.Health); //Skill points based on the health of the enemy
 
 		if(GetPawnAllianceType(player) == ALLIANCE_Hostile)
 			skillpt *= 2;
@@ -9396,11 +9404,14 @@ function Died(pawn Killer, name damageType, vector HitLocation)
 
 			skillpt *= 3;
 
-			if(default.Health > 150) //Big and bigger bots
-				skillpt *= 2;
+			if(damageType != 'Exploded')
+			{
+				if(default.Health > 150 && damageType != 'Sabot') //Big and bigger bots
+					skillpt *= 2;
 
-			if(default.Health > 350) //Bigger bots
-				skillpt *= 2;
+				if(default.Health > 350) //Bigger bots
+					skillpt *= 2;
+			}
 		}
 		else if(Mass > 200) //Anything that big must have taken a lot
 			skillpt *= 2;
@@ -11239,7 +11250,8 @@ State Seeking
 		return (!bDone);
 	}
 
-	function bool PickDestination()
+//	function bool PickDestination()
+	function bool PickNextDestination()
 	{
 		local bool bValid;
 
@@ -11388,7 +11400,7 @@ Begin:
 			PlaySound(Weapon.CockingSound, SLOT_None,,, 1024);
 	}
 	Acceleration = vect(0,0,0);
-	if (!PickDestination())
+	if (!PickNextDestination())
 		Goto('DoneSeek');
 
 GoToLocation:
@@ -11514,7 +11526,7 @@ LookAround:
 
 FindAnotherPlace:
 	SeekLevel--;
-	if (PickDestination())
+	if (PickNextDestination())
 		Goto('GoToLocation');
 
 DoneSeek:
@@ -12244,7 +12256,7 @@ State Attacking
 					StartCrouch();
 	
 				//== New weapon, new tactics
-				PickDestination();
+				GetNewDestination();
 			}
 
 		}
@@ -12315,7 +12327,13 @@ State Attacking
 					TweenToShoot(0);
 	}
 
-	function EDestinationType PickDestination()
+	//function EDestinationType PickDestination() // NO!  BAD!  States are nice and all, but it's still a bad idea to have different return types on the same function
+	function PickDestination()
+	{
+		GetNewDestination();
+	}
+
+	function EDestinationType GetNewDestination()
 	{
 		local vector               distVect;
 		local vector               tempVect;
@@ -12647,7 +12665,7 @@ State Attacking
 					StartCrouch();
 	
 				//== New weapon, new tactics
-				PickDestination();
+				GetNewDestination();
 			}
 		}
 		//UpdateReactionLevel(true, deltaSeconds);
@@ -12810,7 +12828,7 @@ RunToRange:
 	else
 		Sleep(0);
 	bCanFire = true;
-	while (PickDestination() == DEST_NewLocation)
+	while (GetNewDestination() == DEST_NewLocation)
 	{
 		if (bCanStrafe && ShouldStrafe())
 		{
@@ -12864,7 +12882,7 @@ ContinueFire:
 
 	while (!ReadyForWeapon())
 	{
-		if (PickDestination() != DEST_SameLocation)
+		if (GetNewDestination() != DEST_SameLocation)
 			Goto('RunToRange');
 		CheckAttack(true);
 		if (!IsWeaponReloading() || bCrouching)
@@ -12898,10 +12916,12 @@ ContinueFire:
 			TweenToShoot(0);
 	}
 	CheckAttack(true);
-	if (PickDestination() != DEST_NewLocation)
+	if (GetNewDestination() != DEST_NewLocation)
 	{
 		if (!IsWeaponReloading() || bCrouching)
 			TurnToward(enemy);
+		else if ((IsA('Animal') || IsA('Robot')) && Weapon != None && !DeusExWeapon(Weapon).bNativeAttack)
+			Sleep(0.05);
 		else
 			Sleep(0);
 		Goto('ContinueFire');
@@ -12911,7 +12931,7 @@ ContinueFire:
 ContinueAttack:
 ContinueFromDoor:
 	CheckAttack(true);
-	if (PickDestination() != DEST_NewLocation)
+	if (GetNewDestination() != DEST_NewLocation)
 		Goto('Fire');
 	else
 		Goto('RunToRange');
@@ -13080,7 +13100,8 @@ State Alerting
 		return (bestAlarm);
 	}
 
-	function bool PickDestination()
+//	function bool PickDestination()
+	function bool PickNextDestination()
 	{
 		local bool      bDest;
 		local AlarmUnit alarm;
@@ -13149,7 +13170,7 @@ Alert:
 		Goto('Done');
 
 	WaitForLanding();
-	if (!PickDestination())
+	if (!PickNextDestination())
 		Goto('Done');
 
 Moving:
@@ -13307,7 +13328,8 @@ State Shadowing
 		return (VSize(Location-orderActor.Location));
 	}
 
-	function bool PickDestination()
+//	function bool PickDestination()
+	function bool PickNextDestination()
 	{
 		local Actor   destActor;
 		local Vector  distVect;
@@ -13414,7 +13436,7 @@ Moving:
 	Sleep(0.0);
 
 	// Can we go somewhere?
-	if (PickDestination())
+	if (PickNextDestination())
 	{
 		// Are we going to a navigation point?
 		if (destPoint != None)
@@ -13559,7 +13581,8 @@ state Following
 		}
 	}
 
-	function bool PickDestination()
+//	function bool PickDestination()
+	function bool PickNextDestination()
 	{
 		local float   dist;
 		local float   extra;
@@ -13641,7 +13664,7 @@ Begin:
 	if (orderActor == None)
 		GotoState('Standing');
 
-	if (!PickDestination())
+	if (!PickNextDestination())
 		Goto('Wait');
 
 Follow:
@@ -13664,7 +13687,7 @@ Follow:
 		MoveTo(destLoc, MaxDesiredSpeed);
 		CheckDestLoc(destLoc);
 	}
-	if (PickDestination())
+	if (PickNextDestination())
 		Goto('Follow');
 
 Wait:
@@ -13675,7 +13698,7 @@ Wait:
 WaitLoop:
 	Acceleration=vect(0,0,0);
 	Sleep(0.0);
-	if (!PickDestination())
+	if (!PickNextDestination())
 		Goto('WaitLoop');
 	else
 		Goto('Follow');
@@ -13683,7 +13706,7 @@ WaitLoop:
 ContinueFollow:
 ContinueFromDoor:
 	Acceleration=vect(0,0,0);
-	if (PickDestination())
+	if (PickNextDestination())
 		Goto('Follow');
 	else
 		Goto('Wait');
@@ -14385,7 +14408,7 @@ state AvoidingProjectiles
 		PlayWaiting();
 	}
 
-	function PickDestination(bool bGotoWatch)
+	function PickSafeDestination(bool bGotoWatch)
 	{
 		local NearbyProjectileList projList;
 		local bool                 bMove;
@@ -14443,14 +14466,14 @@ state AvoidingProjectiles
 
 Begin:
 	Acceleration = vect(0,0,0);
-	PickDestination(true);
+	PickSafeDestination(true);
 
 RunAway:
 	PlayTurnHead(LOOK_Forward, 1.0, 0.0001);
 	if (ShouldPlayWalk(destLoc))
 		PlayRunning();
 	MoveTo(destLoc, MaxDesiredSpeed);
-	PickDestination(true);
+	PickSafeDestination(true);
 
 Watch:
 	Acceleration = vect(0,0,0);
@@ -14462,7 +14485,7 @@ Watch:
 	{
 		sleepTime -= 0.5;
 		Sleep(0.5);
-		PickDestination(false);
+		PickSafeDestination(false);
 	}
 
 Done:
@@ -14473,7 +14496,7 @@ Done:
 
 ContinueRun:
 ContinueFromDoor:
-	PickDestination(false);
+	PickSafeDestination(false);
 	Goto('Done');
 
 }
@@ -14619,7 +14642,8 @@ state BackingOff
 		CheckOpenDoor(HitNormal, Wall);
 	}
 
-	function bool PickDestination()
+//	function bool PickDestination()
+	function bool PickNextDestination()
 	{
 		local bool    bSuccess;
 		local float   magnitude;
@@ -14662,7 +14686,7 @@ state BackingOff
 
 Begin:
 	useRot = Rotation;
-	if (!PickDestination())
+	if (!PickNextDestination())
 		Goto('Pause');
 	Acceleration = vect(0,0,0);
 

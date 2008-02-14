@@ -913,6 +913,32 @@ exec function GlobalFacelift(bool bOn)
 
 function Facelift(bool bOn){}
 
+exec function KillAll(class<actor> aClass) //== Overridden for unrealistic fun time
+{
+	local Actor A;
+
+	if( !bCheatsEnabled )
+		return;
+	if ( !bAdmin && (Level.Netmode != NM_Standalone) )
+		return;
+	ForEach AllActors(class 'Actor', A)
+		if ( ClassIsChildOf(A.class, aClass) )
+		{
+			if(combatDifficulty > 4.0 && !A.bNoDelete && !A.bStatic) //Don't bother with the undeletable items
+			{
+				if(ScriptedPawn(A) != None)
+					ScriptedPawn(A).Explode();
+				else if(DeusExDecoration(A) != None)
+					DeusExDecoration(A).Explode(A.Location);
+				else if(DeusExProjectile(A) != None && A.IsInState('Flying'))
+					DeusExProjectile(A).Explode(A.Location, vect(0,0,1));
+				else if(DeusExCarcass(A) != None)
+					DeusExCarcass(A).ChunkUp(100);
+			}
+			A.Destroy();
+		}
+}
+
 //== Takes a "clean" screenshot, with no HUD, GUI, etc.
 exec function CleanShot()
 {
@@ -1544,6 +1570,7 @@ function UpdateDynamicMusic(float deltaTime)
 	local Music LevelSong;
 	local String SongString;
 	local byte LevelSongSection;
+	local EMusicMode newMusicMode;
 
 	//== In case any of the mission song info gets all f%$#ed up (like NYC in mission 8)
 	if (Level.Song == None)
@@ -1560,13 +1587,12 @@ function UpdateDynamicMusic(float deltaTime)
 			if(SongString != "None.None")
 			{
 				LevelSong = Music(DynamicLoadObject(SongString, class'Music'));
-				LevelSongSection = FlagBase.GetInt('Song_Section');
 
-				//== We'll just assume this is the appropriate song type.  Later updates will catch us if we're wrong
-				musicMode = MUS_Ambient;
+				//== We'll just assume this is the appropriate song type.  Later updates will catch us if we're wronh
+				newMusicMode = MUS_Ambient;
 
-				//== If there's no music then we want to
-				ClientSetMusic(LevelSong, LevelSongSection, 255, MTRAN_Instant);
+				//== Instant transition
+				ClientSetMusic(LevelSong, newMusicMode, 255, MTRAN_Instant);
 				return;
 			}
 		}
