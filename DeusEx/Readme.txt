@@ -1491,10 +1491,6 @@ UPDATES:
 	(and Birds) and eat the bodies, all very efficiently.  It's sorta...
 	soothing to watch.
 
-	 - Switched the Rockets shot by robots to use the existing Mini-Rocket
-	ammo used by MJ12 Commandos. (and the ILAW)  This will allow you to get
-	some useful ammo from the larger bots in Unrealistic.
-
 	 - Added a check to prevent players from picking up "native" ammo from
 	NPC weapons (like the ammo for the Cat Scratch weapon) in Unrealistic.
 
@@ -1569,6 +1565,10 @@ UPDATES:
 
 	 - If you use the killall cheat in Unrealistic you now get some rather
 	interesting results.
+
+	 - Switched the ammo used by the Robot Rocket weapon to use the basic
+	GEP Gun ammo, so people in Unrealistic will get something useful from
+	frobbing disabled, rocket-weilding robots.
 
 
 	v1.7.2: (BUGFIX RELEASE, PART DEUX)
