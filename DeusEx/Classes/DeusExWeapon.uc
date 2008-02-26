@@ -422,6 +422,13 @@ function bool HandlePickupQuery(Inventory Item)
 	W = DeusExWeapon(Item);
 	if ((W != None) && (W.Class == Class))
 	{
+		//== We should be able to use multiple copies of single-use weapons
+		if(W.PickupAmmoCount == 0 && W.ReloadCount == 0 && W.AmmoName != None && !W.TestCycleable())
+		{
+			return false; //== Returning false makes it so it'll search for another slot to store a second copy of the weapon
+		}
+
+
 		if (W.ModBaseAccuracy > ModBaseAccuracy)
 			ModBaseAccuracy = W.ModBaseAccuracy;
 		if (W.ModReloadCount > ModReloadCount)
@@ -464,7 +471,7 @@ function bool HandlePickupQuery(Inventory Item)
 
 	if (Item.Class == Class)
 	{
-      if (!( (Weapon(item).bWeaponStay && (Level.NetMode == NM_Standalone)) && (!Weapon(item).bHeldItem || Weapon(item).bTossedOut)))
+		if (!( (Weapon(item).bWeaponStay && (Level.NetMode == NM_Standalone)) && (!Weapon(item).bHeldItem || Weapon(item).bTossedOut)))
 		{
 			// Only add ammo of the default type
 			// There was an easy way to get 32 20mm shells, buy picking up another assault rifle with 20mm ammo selected
@@ -853,6 +860,9 @@ simulated function SwitchItem()
 	P = Pawn(Owner);
 
 	if(P == None)
+		return;
+
+	if(Level.NetMode != NM_Standalone) //Cycling in Multiplayer is bad
 		return;
 
 	i = 0;
@@ -3826,12 +3836,12 @@ simulated function ProcessTraceHitExplosive(Actor Other, Vector HitLocation, Vec
 		if (Other != None)
 		{
 			damageType = 'Exploded';
-//			if (Other.bOwned)
-//			{
-				dxPlayer = DeusExPlayer(Owner);
-				if (dxPlayer != None)
-					dxPlayer.AISendEvent('Futz', EAITYPE_Visual);
-//			}
+			if(Other.IsA('DeusExPlayer') && !AmmoType.IsA('Ammo10mmEX'))
+				damageType = 'ExplodeShot'; //== Special damage type so we can invoke ballistic protection in unrealistic
+
+			dxPlayer = DeusExPlayer(Owner);
+			if (dxPlayer != None)
+				dxPlayer.AISendEvent('Futz', EAITYPE_Visual);
 			//Spawn(class'ExplosionSmall',,, HitLoc);
 			for(i = 0; i < 5; i++)
 			{
@@ -3859,7 +3869,7 @@ simulated function ProcessTraceHitExplosive(Actor Other, Vector HitLocation, Vec
 				{
 					if(Pawn(Owner) != None)
 						Other.TakeDamage(HitDamage * mult, Pawn(Owner), HitLocation, 3000.0*X, damageType);
-					//== Only do one direct explosive hit on the player (since the only time that will happen
+					//== Only do two direct explosive hits on the player (since the only time that will happen
 					//==  is in Unrealistic) or 3 on Robots
 					if((DeusExPlayer(Other) != None && !AmmoType.IsA('Ammo10mmEX') && i >= 1) || (i >= 2 && Robot(Other) != None) )
 						break;

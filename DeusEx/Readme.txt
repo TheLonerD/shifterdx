@@ -1,6 +1,6 @@
 //=================================//
         Shifter for Deus Ex
-	    Version 1.8
+	   Version 1.8.1
 //=================================//
 
 INTRODUCTION:
@@ -183,7 +183,8 @@ SPECIFICS:
 	addition to their poisonous spit.
 
 	 - PS20: Increased the damage and the explosion radius of the projectile
-	it fires.  Worth using even late in the game now. 
+	it fires.  Worth using even late in the game now.  You can also carry
+	multiple PS20s in your inventory, should you feel the need.
 
 	 - Scope: You no longer have to wait between shots to zoom in/out.  Much
 	less annoying, much more realistic.
@@ -326,10 +327,35 @@ SPECIFICS:
 	the effects wear off there is a long period of "drunk-vision".
 
 
-	Things I did because I could:
+	Unrealistic Mode:
 
-	 - Seagulls explode on death, similar to the way MiBs do but will less
-	damage and a smaller blast radius.
+	   Unrealistic Mode is a new difficulty level I've added to Shifter for
+	the benefit of players looking for either more of a challenge, or more
+	of a departure from traditional Deus Ex (and Shifter) gameplay.  Though
+	it isn't finished yet, Unrealistic contains a number of modifications
+	which make it a unique experience, somewhat akin to the Hardcore mod.
+	These are, in no particular order:
+
+	 - Player Model: Rather than being stuck with the single choice of JC
+	Denton, Unrealistic will use whatever model you have selected for use
+	in Multiplayer.  I hear using the Child model is particularly amusing.
+
+	 - NPC Weapons: All bullet-based NPC weapons fire explosive rounds now.
+	The damage is not as extreme as a weapon loaded with 10mm EX ammo, but
+	it isn't anything you can easily shrug off either.
+
+	 - NPC Random Inventory: Gives weapons out more often and applies to
+	everyone, including non-armed NPCs, Robots, and Animals.  I hear that
+	the Greasels in the Paris Catacombs often carry GEP Guns.
+
+	 - Corpse looting: You can now check the bodies of Animals and Robots
+	for loot in Unrealistic, which works well with the expanded capability
+	of NPC Random Inventory.
+
+	 - Smarter everything: Every NPC, be it Animal, Human, or Robot, uses
+	the highest Intelligence preset available in the game.  This means that
+	Karkians can open doors and Spider Bots know how to call an elevator.
+	Both can also pick up new weapons in the middle of combat.
 
 
 	Multiplayer Modifications:
@@ -475,11 +501,8 @@ KNOWN GLITCHES:
 
 	 - Clients connecting to a server running ShifterMP may witness some
 	bizarre behavior from the item belt, specifically an odd "scrolling"
-	effect when using multi-slot weapons.  This is definitely some kind of
-	issue with the Unreal engine's "replication" functionality, which
-	unfortunately is one of the hardest Unreal "features" to deal with.  I'm
-	working on fixing it, but in the meantime try to ignore the weird scroll
-	thing; it may take a while for me to get it sorted out.
+	effect when using multi-slot weapons.  Theoretically this is now fixed,
+	but if you notice this odd behavior showing up again please let me know.
 
 	 - Some of the new player models may "freeze" when attempting to perform
 	a certain animation, since that player model doesn't have it.  If this
@@ -514,8 +537,8 @@ OTHER NOTES OF DEADLY DOOM:
 	The name "Shifter" is a tribute to a popular mod for Starsiege: Tribes.
 Shifter was created by emo1313.  Check out his current version of Shifter for
 Tribes 2 at www.shiftermod.com.  Or check out mine, Shifter Classic, which can
-be found (when I get around to distributing new versions) at
-www.tribeshifter.com.
+be found... actually, nobody hosts it anymore, but if you really care you can
+email me and I'll be happy to send you the mod.  (Once I find it)
 
 	As always, if you notice anything amiss or something I haven't covered
 don't hesitate to fill my inbox with your witty and thought-out e-mails.
@@ -549,6 +572,55 @@ mod and how it has affected their everyday lives (in Deus Ex, anyway):
 
 
 UPDATES:
+
+	v1.8.1:
+
+	 - Ensured that the transfer counts for ammunition displayed in convos
+	is accurate.  Previously it was displaying a transfer count of one for
+	all types of ammo, no matter how much was actually being transferred.
+
+	 - Added some COA (cover our asses) code to the Plasma Rifle's "bouncy"
+	plasma bolts.
+
+	 - Per user comments tweaked the way explosive bullet damage is done in
+	Unrealistic so the Ballistic Protection aug isn't useless.  Direct hits
+	from instant-hit (bullet) weapons will be reduced by the Ballistic
+	Protection aug now, though any "radius" hits will only be reduced by
+	the Energy Shield aug.  The damage will still count as Explosive type.
+
+	 - Fixed an issue with the new Robot frob code which could cause some
+	of the "you aren't supposed to see this" weapons to be dropped out of
+	the bottom of the Robot if your inventory was full.
+
+	 - Prevented players from "cycling" hand-to-hand weapons in MP.
+
+	 - When you throw a hand-to-hand weapon the freshly-emptied belt slot
+	will be filled with another hand-to-hand weapon if possible.
+
+	 - Made the Prototype Nanoswords "cycleable", as for some reason I'd
+	accidentally set them to be uncycleable.  You could still switch to any
+	of them with the Weapon Cycling option, but you couldn't switch from
+	them to anything.
+
+	 - Fixed a glitch with PS20s, LAWs and the like which would make it
+	appear that you could pick up two, but in reality would just get rid of
+	the second one.
+
+	 - Since I was already elbow-deep in the code for the PS20 fix I opted
+	to make it so you can hold two (or more) of them at once now.  The same
+	is true for LAWs as well, but not melee weapons.
+
+	 - Moved the Lebedev VoIP convo (again) to somewhere a bit more logical
+	and accessable. (e.g. it'll be way quicker to check what "socket" the
+	convo is happening on and then use that information)
+
+	 - Removed point bonuses for killing any variety of inactive bot, both
+	those that are disabled via EMP/etc. and those which are simply not
+	currently active, like the bots in the MJ12 repair bay.
+
+	 - Fixed a minor issue with the bot in the UNATCO MJ12 lab which could
+	cause it to hate you even after you'd hacked it to be friendly were you
+	or someone else to accidentally break a window, of all things.
 
 	v1.8:
 

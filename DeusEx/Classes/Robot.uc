@@ -858,12 +858,46 @@ state Disabled
 								// than he already has. 
 								if ((W == None) && (!player.FindInventorySlot(item, True)))
 								{
-									P.ClientMessage(Sprintf(Player.InventoryFull, item.itemName));
-									if(Level.NetMode == NM_Standalone)
+									if(!DeusExWeapon(item).bNativeAttack)
 									{
-										tempitem = spawn(item.Class,self);
-										DeleteInventory(item);
-										item.Destroy();
+										P.ClientMessage(Sprintf(Player.InventoryFull, item.itemName));
+										if(Level.NetMode == NM_Standalone)
+										{
+											tempitem = spawn(item.Class,self);
+											DeleteInventory(item);
+											item.Destroy();
+										}
+									}
+									else
+									{
+										if(DeusExWeapon(Item).AmmoType == None && DeusExWeapon(Item).AmmoName != None && DeusExWeapon(Item).AmmoName != Class'AmmoNone')
+											DeusExWeapon(Item).AmmoType = Ammo(FindInventoryType(DeusExWeapon(Item).AmmoName));
+
+										if(DeusExWeapon(Item).AmmoType != None)
+										{
+											AmmoType = Ammo(P.FindInventoryType(DeusExWeapon(Item).AmmoType.Class));
+											if(AmmoType == None)
+											{
+												AmmoType = spawn(DeusExWeapon(Item).AmmoType.Class, P);
+												if(AmmoType != None)
+												{
+													AmmoType.AmmoAmount = 2;
+													AmmoType.InitialState='Idle2';
+													AmmoType.GiveTo(P);
+													AmmoType.SetBase(P);
+												}
+											}
+											if(AmmoType != None && FMin(DeusExWeapon(Item).PickupAmmoCount, DeusExWeapon(Item).AmmoType.AmmoAmount) > 0 && AmmoType.AmmoAmount < AmmoType.MaxAmmo)
+											{
+												bFoundSomething = True;
+												AmmoType.AmmoAmount += FMin(DeusExWeapon(Item).PickupAmmoCount, DeusExWeapon(Item).AmmoType.AmmoAmount);
+												AddReceivedItem(player, DeusExWeapon(Item).AmmoType, FMin(DeusExWeapon(Item).PickupAmmoCount, DeusExWeapon(Item).AmmoType.AmmoAmount));
+												DeusExWeapon(Item).AmmoType.AmmoAmount = 0;
+												DeusExWeapon(Item).PickupAmmoCount = 0;
+											}
+										}
+										DeleteInventory(Item);
+										Item.Destroy();
 									}
 								}
 	

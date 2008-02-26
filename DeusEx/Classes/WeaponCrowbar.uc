@@ -16,6 +16,8 @@ simulated function bool ClientAltFire( float Value )
 	     	PlayerPawn(Owner).PlayFiring();
         	PlayFiringAltSound();
         	ProjectileAltFire(AltProjectileClass, AltProjectileSpeed, bAltWarnTarget);
+		if(Level.NetMode == NM_Standalone)
+			SwitchItem();
         	Destroy();
         	return true;		
 }
@@ -28,6 +30,8 @@ function AltFire( float Value )
 	     	PlayerPawn(Owner).PlayFiring();
         	PlayFiringAltSound();
         	ProjectileAltFire(AltProjectileClass, AltProjectileSpeed, bAltWarnTarget);
+		if(Level.NetMode == NM_Standalone)
+			SwitchItem();
         	Destroy();
 }
 

@@ -1,5 +1,5 @@
 //=============================================================================
-// PlasmaBolt.
+// PlasmaBolt2.  A "bouncing" plasma bolt
 //=============================================================================
 class PlasmaBolt2 expands PlasmaBolt;
 
@@ -25,8 +25,11 @@ auto simulated state Flying
 		{
 			aim = MirrorVectorByNormal(vector(Rotation), HitNormal);
 			proj = Spawn(class'PlasmaBolt2',Owner,,Location,Rotator(aim));
-			proj.Generation = Generation + 1;
-			proj.MaxGeneration = MaxGeneration;
+			if(proj != None)
+			{
+				proj.Generation = Generation + 1;
+				proj.MaxGeneration = MaxGeneration;
+			}
 		}
 		Super.Explode(HitLocation, HitNormal);
 	}

@@ -611,6 +611,7 @@ function Timer()
 	local MIB mblack;
 	local Inventory item;
 	local Janitor dmatsuma;
+	local AllianceTrigger altrig;
 
 	Super.Timer();
 
@@ -724,6 +725,16 @@ function Timer()
 				item.SetBase(mblack);
 				flags.SetBool('SwordA_Placed', True,, 6);
 				break;
+			}
+		}
+
+		//== Once we modify the bot we don't want it to suddenly hate us if we break a window
+		if(flags.GetBool('botmodified') && !flags.GetBool('M05_BotAlliance_Fixed'))
+		{
+			foreach AllActors(Class'AllianceTrigger', altrig, 'botorders')
+			{
+				altrig.Destroy();
+				flags.SetBool('M05_BotAlliance_Fixed',True);
 			}
 		}
 	}

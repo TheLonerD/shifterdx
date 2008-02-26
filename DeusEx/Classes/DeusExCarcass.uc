@@ -575,7 +575,6 @@ function Frob(Actor Frobber, Inventory frobWith)
                
 			               // Grenades and LAMs always pickup 1
 			               if (W.IsA('WeaponGrenade') ||
-					  W.IsA('WeaponHideAGun') ||
 					  W.IsA('WeaponCombatKnife') )
 			                  W.PickupAmmoCount = 1;
 			               else if (Level.NetMode == NM_Standalone)
@@ -942,6 +941,32 @@ function AddReceivedItem(DeusExPlayer player, Inventory item, int count)
 		}
 	}
 }
+
+// ----------------------------------------------------------------------
+// GetItem()
+//
+// Does all the tedious steps of giving items to carcasses in one easy
+// function.
+// ----------------------------------------------------------------------
+
+function GetItem(Inventory item)
+{
+	if(item != None)
+	{
+		if(Pawn(item.Owner) != None) //Remove from any other inventories
+			Pawn(item.Owner).DeleteInventory(item);
+
+		bCollideWorld = True;
+		AddInventory(item);
+		item.InitialState = 'Idle2';
+		item.SetBase(Self);
+		item.Instigator = None;
+		item.BecomeItem();
+		item.GoToState('Idle2');
+		bCollideWorld = False;
+	}
+}
+
 
 // ----------------------------------------------------------------------
 // AddInventory()

@@ -9399,7 +9399,7 @@ function Died(pawn Killer, name damageType, vector HitLocation)
 		if(IsA('Robot')) //Robots, eh?  Moving up the ol' difficulty ladder I see
 		{
 			//== No points for destroying disabled robots.
-			if(Robot(self).EMPHitPoints <= 0)
+			if(Robot(self).EMPHitPoints <= 0 || IsInState('Disabled') || IsInState('Idle'))
 				skillpt = 0;
 
 			skillpt *= 3;

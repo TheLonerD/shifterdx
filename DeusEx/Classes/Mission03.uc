@@ -81,8 +81,8 @@ function FirstFrame()
 			count = 0;
 			foreach AllActors(class'Phone', aPhone)
 			{
-				//== There's a phone in a rather secure part of the helibase we can use for the lebedev convo
-				if(count == 1)
+				//== Use the phone next to the etodd computer for the convo
+				if(count == 0)
 				{
 					aPhone.AnswerSound = AS_Dialtone;
 					aPhone.DialEvent = 'LebVoIP';
@@ -563,7 +563,7 @@ function Timer()
 
 			foreach AllActors(class'ComputerPersonal', comp)
 			{
-				if(comp.GetUserName(0) == "USER") //"etodd" for the other computer
+				if(comp.GetUserName(0) == "etodd") //"USER" for the other computer
 				{
 					for(count = 0; count < 4; count++)
 					{
@@ -574,9 +574,7 @@ function Timer()
 					if(count < 4)
 					{
 						comp.specialOptions[count].Text = VoIPText;
-						//comp.specialOptions[count].TriggerEvent = 'LebVoIP'; //Disabled due to new activation method
 						comp.specialOptions[count].TriggerText = VoIPTText $ " " $ VoIPNumber;
-						//comp.specialOptions[count].bTriggerOnceOnly = True;
 						break;
 					}
 				}

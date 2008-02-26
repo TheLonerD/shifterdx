@@ -4982,18 +4982,18 @@ exec function ParseRightClick()
 				return;
 
 			// if the frob succeeded, put it in the player's inventory
-         //DEUS_EX AMSD ARGH! Because of the way respawning works, the item I pick up
-         //is NOT the same as the frobtarget if I do a pickup.  So how do I tell that
-         //I've successfully picked it up?  Well, if the first item in my inventory 
-         //changed, I picked up a new item.
+		         //DEUS_EX AMSD ARGH! Because of the way respawning works, the item I pick up
+		         //is NOT the same as the frobtarget if I do a pickup.  So how do I tell that
+		         //I've successfully picked it up?  Well, if the first item in my inventory 
+		         //changed, I picked up a new item.
 			if ( ((Level.NetMode == NM_Standalone) && (Inventory(FrobTarget).Owner == Self)) ||
-              ((Level.NetMode != NM_Standalone) && (oldFirstItem != Inventory)) )
+		              ((Level.NetMode != NM_Standalone) && (oldFirstItem != Inventory)) )
 			{
-            if (Level.NetMode == NM_Standalone)
-               FindInventorySlot(Inventory(FrobTarget));
-            else
-               FindInventorySlot(Inventory);
-				FrobTarget = None;
+		            if (Level.NetMode == NM_Standalone)
+		               FindInventorySlot(Inventory(FrobTarget));
+		            else
+		               FindInventorySlot(Inventory);
+			    FrobTarget = None;
 			}
 		}
 		else if (FrobTarget.IsA('Decoration') && Decoration(FrobTarget).bPushable)
@@ -5149,13 +5149,13 @@ function bool HandleItemPickup(Actor FrobTarget, optional bool bSearchOnly)
 				// single use weapon, and if we already have one in our 
 				// inventory another cannot be picked up (puke). 
 
-				bCanPickup = ! ( (Weapon(foundItem).ReloadCount == 0) && 
+				bSlotSearchNeeded = ( (Weapon(foundItem).ReloadCount == 0) &&  //was bCanPickup = !
 				                 (Weapon(foundItem).PickupAmmoCount == 0) && 
 				                 (Weapon(foundItem).AmmoName != None) );
 
-				if (!bCanPickup)
-					ClientMessage(Sprintf(CanCarryOnlyOne, foundItem.itemName));
-			}
+//				if (!bCanPickup)
+//					ClientMessage(Sprintf(CanCarryOnlyOne, foundItem.itemName));
+			} 
 		}
 	}
 	
@@ -5174,8 +5174,6 @@ function bool HandleItemPickup(Actor FrobTarget, optional bool bSearchOnly)
 		if ( (Level.NetMode != NM_Standalone) && (FrobTarget.IsA('DeusExWeapon') || FrobTarget.IsA('DeusExAmmo')) )
 			PlaySound(sound'WeaponPickup', SLOT_Interact, 0.5+FRand()*0.25, , 256, 0.95+FRand()*0.1);
 		DoFrob(Self, inHand);
-		if(FrobTarget.IsA('WeaponHideAGun'))
-			DeusExWeapon(FrobTarget).PickupAmmoCount = 1;
 
 		// This is bad. We need to reset the number so restocking works
 		if ( Level.NetMode != NM_Standalone )
@@ -5432,13 +5430,13 @@ function UpdateInHand()
 			if (inHand.IsA('SkilledTool'))
 			{
 				if (inHand.IsInState('Idle'))
-            {
+				{
 					SkilledTool(inHand).PutDown();
-            }
+				}
 				else if (inHand.IsInState('Idle2'))
-            {
+				{
 					bSwitch = True;
-            }
+				}
 			}
 			else if (inHand.IsA('DeusExWeapon'))
 			{
@@ -5468,7 +5466,22 @@ function UpdateInHand()
 				if (inHand.IsA('SkilledTool'))
 					SkilledTool(inHand).BringUp();
 				else if (inHand.IsA('DeusExWeapon'))
-					SwitchWeapon(DeusExWeapon(inHand).InventoryGroup);
+				{
+					if ( Weapon == None )
+					{
+						PendingWeapon = Weapon(inHand);
+						ChangedWeapon();
+					}
+					else if ( Weapon != Weapon(inHand) )
+					{
+						PendingWeapon = Weapon(inHand);
+						if ( !Weapon.PutDown() )
+							PendingWeapon = None;
+					}
+
+					//== Bad, bad code.  Doesn't let us use multiple copies of the same weapon
+//					SwitchWeapon(DeusExWeapon(inHand).InventoryGroup);
+				}
 			}
 		}
 	}
@@ -5490,7 +5503,22 @@ function UpdateInHand()
 			else if (inHand.IsA('DeusExWeapon'))
 			{
 				if (inHand.IsInState('DownWeapon') && (Weapon == None))
-					SwitchWeapon(DeusExWeapon(inHand).InventoryGroup);
+				{
+					if ( Weapon == None )
+					{
+						PendingWeapon = Weapon(inHand);
+						ChangedWeapon();
+					}
+					else if ( Weapon != Weapon(inHand) )
+					{
+						PendingWeapon = Weapon(inHand);
+						if ( !Weapon.PutDown() )
+							PendingWeapon = None;
+					}
+
+					//== Bad, bad code.  Doesn't let us use multiple copies of the same weapon
+//					SwitchWeapon(DeusExWeapon(inHand).InventoryGroup);
+				}
 			}
 		}
 
@@ -5720,16 +5748,16 @@ function Bool FindInventorySlot(Inventory anItem, optional Bool bSearchOnly)
 	if ((anItem.IsA('DataVaultImage')) || (anItem.IsA('NanoKey')) || (anItem.IsA('Credits')) || (anItem.IsA('Ammo')))
 		return True;
 
-   bPositionFound = False;
-   // DEUS_EX AMSD In multiplayer, due to propagation delays, the inventory refreshers in the
-   // personascreeninventory can keep bouncing items back and forth.  So just return true and
-   // place the item where it already was.
-   if ((anItem.invPosX != -1) && (anItem.invPosY != -1) && (Level.NetMode != NM_Standalone) && (!bSearchOnly))
-   {
-      SetInvSlots(anItem,1);
-      log("Trying to place item "$anItem$" when already placed at "$anItem.invPosX$", "$anItem.invPosY$".");
-      return True;
-   }
+	   bPositionFound = False;
+	   // DEUS_EX AMSD In multiplayer, due to propagation delays, the inventory refreshers in the
+	   // personascreeninventory can keep bouncing items back and forth.  So just return true and
+	   // place the item where it already was.
+	   if ((anItem.invPosX != -1) && (anItem.invPosY != -1) && (Level.NetMode != NM_Standalone) && (!bSearchOnly))
+	   {
+	      SetInvSlots(anItem,1);
+	      log("Trying to place item "$anItem$" when already placed at "$anItem.invPosX$", "$anItem.invPosY$".");
+	      return True;
+	   }
 
 	// Loop through all slots, looking for a fit
 	for (row=0; row<maxInvRows; row++)
@@ -9917,6 +9945,8 @@ function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector mo
 	// add a HUD icon for this damage type
 	if ((damageType == 'Poison') || (damageType == 'PoisonEffect'))  // hack
 		AddDamageDisplay('PoisonGas', offset);
+	else if (damageType == 'ExplodeShot') //hackish
+		AddDamageDisplay('Exploded', offset);
 	else
 		AddDamageDisplay(damageType, offset);
 
@@ -9940,6 +9970,9 @@ function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector mo
 
 	// check for augs or inventory items
 	bDamageGotReduced = DXReduceDamage(Damage, damageType, hitLocation, actualDamage, False);
+
+	if(damageType == 'ExplodeShot')
+		damageType = 'Exploded';
 
    // DEUS_EX AMSD Multiplayer shield
    if (Level.NetMode != NM_Standalone)
@@ -10358,7 +10391,7 @@ function bool DXReduceDamage(int Damage, name damageType, vector hitLocation, ou
 	{
 		// go through the actor list looking for owned BallisticArmor
 		// since they aren't in the inventory anymore after they are used
-      if (UsingChargedPickup(class'BallisticArmor'))
+			if (UsingChargedPickup(class'BallisticArmor'))
 			{
 				skillLevel = SkillSystem.GetSkillLevelValue(class'SkillEnviro');
 				newDamage *= 0.5 * skillLevel;
@@ -10371,7 +10404,7 @@ function bool DXReduceDamage(int Damage, name damageType, vector hitLocation, ou
 			ExtinguishFire();
 	}
 
-	if ((damageType == 'Shot') || (damageType == 'AutoShot') || (damageType == 'Shell'))
+	if ((damageType == 'Shot') || (damageType == 'AutoShot') || (damageType == 'Shell') || (damageType == 'ExplodeShot'))
 	{
 		if (AugmentationSystem != None)
 			augLevel = AugmentationSystem.GetAugLevelValue(class'AugBallistic');

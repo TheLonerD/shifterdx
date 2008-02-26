@@ -681,6 +681,8 @@ log("  event.toActor    = " $ event.toActor );
 				return nextAction;
 			}
 
+			itemsTransferred = Ammo(invItemFrom).AmmoAmount; //== Display the amount transferred properly
+
 			// Destroy our From item
 			invItemFrom.Destroy();		
 		}
@@ -705,6 +707,7 @@ log("  event.toActor    = " $ event.toActor );
 						invItemFrom.Destroy();
 						return nextAction;
 					}
+					itemsTransferred = event.TransferCount; //== Display the amount transferred properly
 				}
 				else
 				{
@@ -964,6 +967,10 @@ log("  event.transferCount = " $ event.transferCount);
 			itemsTransferred = 1;
 		else
 			itemsTransferred = 0;
+	}
+	else if(invItemTo.IsA('DeusExAmmo'))
+	{
+		itemsTransferred = Ammo(invItemTo).AmmoAmount;
 	}
 
 //log("  return itemsTransferred = " $ itemsTransferred);

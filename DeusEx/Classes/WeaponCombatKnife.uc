@@ -50,7 +50,11 @@ function AltFire(float Value)
 		PlayerPawn(Owner).PlayFiring();
 
 	if(AmmoType.AmmoAmount <= 0)
+	{
+		if(Level.NetMode == NM_Standalone)
+			SwitchItem();
 		Destroy();
+	}
 	else
 		PlaySelect();
 

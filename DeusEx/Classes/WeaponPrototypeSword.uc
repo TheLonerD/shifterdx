@@ -122,7 +122,7 @@ auto state Pickup
 
 function bool TestCycleable()
 {
-	return False;
+	return True;
 }
 
 defaultproperties
