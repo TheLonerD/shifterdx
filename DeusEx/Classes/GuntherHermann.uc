@@ -85,6 +85,11 @@ function Carcass SpawnCarcass()
 	return None;
 }
 
+function Explode(optional vector HitLocation) //== For cross-mod compatibility
+{
+	Super.Explode(HitLocation);
+}
+
 function GotoDisabledState(name damageType, EHitLocation hitPos)
 {
 	if (!bCollideActors && !bBlockActors && !bBlockPlayers)

@@ -6,7 +6,7 @@ class HUDObjectSlot expands ToggleWindow;
 var DeusExPlayer player;
 
 var int			objectNum;
-var Inventory	item;
+var Inventory		item;
 var Color		colObjectNum;
 var Color		colObjectDesc;
 var Color		colOutline;
@@ -15,11 +15,11 @@ var Color		colDropGood;
 var Color		colDropBad;
 var Color		colNone;
 var Color		colSelected;
-var Color       colSelectionBorder;
+var Color       	colSelectionBorder;
 var int			slotFillWidth;
 var int			slotFillHeight;
-var int         borderWidth;
-var int         borderHeight;
+var int         	borderWidth;
+var int         	borderHeight;
 
 // Stuff to optimize DrawWindow()
 var String      itemText;
@@ -64,6 +64,14 @@ var Texture texBorders[9];
 var localized String RoundLabel;
 var localized String RoundsLabel;
 var localized String CountLabel;
+
+//== We need to have the server track what's in what slots due to Shifter's new method
+replication
+{
+	reliable if ( player.Role == ROLE_Authority )
+		item;
+
+}
 
 // ----------------------------------------------------------------------
 // InitWindow()
@@ -194,7 +202,7 @@ function Inventory GetItem()
 event DrawWindow(GC gc)
 {
 	// First draw the background
-   DrawHUDBackground(gc);
+   	DrawHUDBackground(gc);
 
 	// Now fill the area under the icon, which can be different 
 	// colors based on the state of the item.
@@ -217,7 +225,7 @@ event DrawWindow(GC gc)
 	if ((item != None) && (item.Icon != None) && (!bDragging))
 	{
 		// Draw the icon
-      DrawHUDIcon(gc);
+      		DrawHUDIcon(gc);
 
 		// Text defaults
 		gc.SetAlignments(HALIGN_Center, VALIGN_Center);

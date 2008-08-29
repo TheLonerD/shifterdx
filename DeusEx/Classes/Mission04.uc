@@ -23,6 +23,9 @@ function FirstFrame()
 	local Datacube dCube;
 	local Phone aPhone;
 
+	if(flags.GetBool('PaulDenton_Dead') && !flags.GetBool('M04RaidTeleportDone')) //== Paul CANNOT die before the raid, period
+		flags.SetBool('PaulDenton_Dead',False,, 0);
+
 	Super.FirstFrame();
 
 	if(flags.GetBool('PlayerBailedOutWindow'))
@@ -67,8 +70,20 @@ function FirstFrame()
 		if(!flags.GetBool('M04RaidTeleportDone'))
 		{
 			// Lesson the first: Paul should never leave until AFTER the raid
+			count = 0;
 			foreach AllActors(Class'PaulDenton', paul)
+			{
 				paul.EnterWorld();
+				count++;
+			}
+
+			//== Lesson the second: Paul shouldn't be able to die
+			if(count == 0)
+			{
+				log("EPIC FAIL!  Paul is dead, you lose.  Sadness consumes your soul and the air is fraught with the wailings and lamentations of your women.");
+				paul = Spawn(class'PaulDenton', None,, vect(-359.133942, -2919.048584, 112.233070));
+				paul.Orders = 'Sitting';
+			}
 		}
 		//== Let's get rid of the damn auto-kill flag so we can intelligently track whether or not Paul is dead.
 		if(!flags.GetBool('M04_Paul_Check_Fixed'))
@@ -536,13 +551,15 @@ function Timer()
 
 	// do this for every map in this mission
 	// if the player is "killed" after a certain flag, he is sent to mission 5
-	if (!flags.GetBool('MS_PlayerCaptured'))
+	if (Player.IsInState('Dying'))
 	{
 		if (flags.GetBool('TalkedToPaulAfterMessage_Played'))
 		{
-			if (Player.IsInState('Dying'))
+			if (!flags.GetBool('MS_PlayerCaptured'))
 			{
 				flags.SetBool('MS_PlayerCaptured', True,, 5);
+
+				//== Clear out the object belt now; otherwise the player will see their items being "confiscated" when they wake up in prison
 				for(count=0; count < 10; count++)
 				{
 					if(DeusExRootWindow(Player.rootWindow).hud.belt.objects[count].GetItem() != None && !DeusExRootWindow(Player.rootWindow).hud.belt.objects[count].GetItem().IsA('NanoKeyRing'))

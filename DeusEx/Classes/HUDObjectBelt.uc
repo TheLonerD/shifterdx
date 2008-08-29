@@ -229,7 +229,11 @@ function RemoveObjectFromBelt(Inventory item)
 {
 	local int i;
 	local int j;
-   local int StartPos;
+	local int StartPos;
+
+	local Inventory itemp;
+
+
 	j = 0;
    StartPos = 1;
    if ( (Player != None) && (Player.Level.NetMode != NM_Standalone) && (Player.bBeltIsMPInventory) )
@@ -270,13 +274,15 @@ function RemoveObjectFromBelt(Inventory item)
 			{
 				if(item.IsA('LockPick') && DeusExPickup(Player.FindInventoryType(Class'DeusEx.Lockpick')).NumCopies <= 0)
 				{
-					if(DeusExPickup(Player.FindInventoryType(Class'DeusEx.Multitool')).NumCopies > 0)
-						AddObjectToBelt(Player.FindInventoryType(Class'DeusEx.Multitool'),i,false);
+					itemp = Player.FindInventoryType(Class'DeusEx.Multitool');
+					if(DeusExPickup(itemp).NumCopies > 0 && (itemp.beltPos == -1 || itemp.beltPos == i))
+						AddObjectToBelt(itemp,i,false);
 				}
 				else if(item.IsA('Multitool') && DeusExPickup(Player.FindInventoryType(Class'DeusEx.Multitool')).NumCopies <= 0)
 				{
-					if(DeusExPickup(Player.FindInventoryType(Class'DeusEx.Lockpick')).NumCopies > 0)
-						AddObjectToBelt(Player.FindInventoryType(Class'DeusEx.Lockpick'),i,false);
+					itemp = Player.FindInventoryType(Class'DeusEx.Lockpick');
+					if(DeusExPickup(itemp).NumCopies > 0 && (itemp.beltPos == -1 || itemp.beltPos == i))
+						AddObjectToBelt(itemp,i,false);
 				}
 				break;
 			}

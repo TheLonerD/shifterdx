@@ -19,6 +19,11 @@ function Carcass SpawnCarcass()
 	return None;
 }
 
+function Explode(optional vector HitLocation) //== For cross-mod compatibility
+{
+	Super.Explode(HitLocation);
+}
+
 defaultproperties
 {
      MinHealth=0.000000

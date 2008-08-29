@@ -9,7 +9,7 @@ enum ERingSound
 	RS_Office2
 };
 
-enum EAnswerSound
+enum EAnswerSound //== Expanded available selections
 {
 	AS_Dialtone,
 	AS_Busy,
@@ -170,13 +170,16 @@ function Frob(actor Frobber, Inventory frobWith)
 		return;
 	}
 
+	//== Sounds play for about 3 seconds
 	SetTimer(3.0, False);
 
 	rnd = 1.0;
 
+	//== Phones using the default value play a random sound effect, as in Vanilla DX
 	if(AnswerSound == AS_Random)
 		rnd = FRand();
 
+	//== New stuff.  The AnswerSound variable can actually matter, for the few phones that use anything but the default value anyway
 	if (rnd < 0.1 || AnswerSound == AS_Busy)
 		PlaySound(sound'PhoneBusy', SLOT_Misc,,, 256);
 	else if (rnd < 0.2 || AnswerSound == AS_Dialtone)

@@ -244,7 +244,10 @@ function TakeDamageBase(int Damage, Pawn instigatedBy, Vector hitlocation, Vecto
 	// hitting robots with a prod won't stun them, and will only do a limited
 	// amount of damage...
 	else if ((damageType == 'Stunned') || (damageType == 'KnockedOut'))
+	{
 		actualDamage *= 0.5;  // half strength
+		damageType = 'Shot'; //== For the purposes of tricking PlayDying
+	}
 
 	// flame attacks don't really hurt robots much, either
 	else if ((damageType == 'Flamed') || (damageType == 'Burned'))

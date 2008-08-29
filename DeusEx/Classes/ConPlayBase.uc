@@ -675,13 +675,16 @@ log("  event.toActor    = " $ event.toActor );
 		{
 			// If this is Ammo and the player already has it, make sure the player isn't
 			// already full of this ammo type! (UGH!)
+			itemsTransferred = Ammo(invItemTo).AmmoAmount; //== For math purposes...
 			if (!Ammo(invItemTo).AddAmmo(Ammo(invItemFrom).AmmoAmount))
 			{
 				invItemFrom.Destroy();
 				return nextAction;
 			}
 
-			itemsTransferred = Ammo(invItemFrom).AmmoAmount; //== Display the amount transferred properly
+			itemsTransferred = Ammo(invItemTo).AmmoAmount - itemsTransferred; //== Subtract what we had from what we have and we will get the correct amount transferred
+
+			if(itemsTransferred <= 0) itemsTransferred = Ammo(invItemFrom).AmmoAmount; //== Just in case though...
 
 			// Destroy our From item
 			invItemFrom.Destroy();		
@@ -707,6 +710,7 @@ log("  event.toActor    = " $ event.toActor );
 						invItemFrom.Destroy();
 						return nextAction;
 					}
+
 					itemsTransferred = event.TransferCount; //== Display the amount transferred properly
 				}
 				else

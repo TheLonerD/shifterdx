@@ -573,6 +573,36 @@ mod and how it has affected their everyday lives (in Deus Ex, anyway):
 
 UPDATES:
 
+	v1.8.2:
+
+	 - Fixed a problem that could cause Multitools or Lockpicks to appear
+	in multiple belt slots if you run out of one while both are occupying
+	belt slots.
+
+	 - Added a little code so that mods or maps which rely on the WiB, MiB,
+	GuntherHermann, or AnnaNavarre classes SPECIFICALLY having an "Explode"
+	function will still work with Shifter.  I'd forgotten that UnrealScript
+	doesn't always pass function calls from one class to the parent class.
+
+	 - Stopped bots from playing the "passed out" sound when they've been
+	felled by some sort of stun weapon. (e.g. Baton, Prod, etc.)
+
+	 - Added code which will ensure you see the actual amount of ammo you
+	receive from conversations if you're given more than you can hold.
+	(e.g. if you receive 3 LAMs but can only hold 1 more it'll say you only
+	received 1)
+
+	 - In a slightly embarassing twist I discovered that I had not adjusted
+	the description on the IFF Aug to reflect the new "Blue = neutral" part
+	of it.  The description (and the DeusEx.int file) have been updated.
+
+	 - Added another layer to the "Paul disappears in the 'Ton" fix.  If
+	Paul has somehow been removed from the map (typically if he is marked
+	as dead due to that damn trigger placed outside the window) the game
+	will now spawn another copy of him, at least before the raid has been
+	done.
+
+
 	v1.8.1:
 
 	 - Ensured that the transfer counts for ammunition displayed in convos

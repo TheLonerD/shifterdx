@@ -362,7 +362,7 @@ function FirstFrame()
 
 					item.SetLocation(loc);
 				}
-				else //== Like I said, steal your stuff, kill you with it
+				else //== Like I said about the janitor: steal your stuff, kill you with it
 				{
 					if(dmatsuma.FindInventoryType(spawnclass) == None)
 					{
