@@ -1,6 +1,6 @@
 //=================================//
         Shifter for Deus Ex
-	   Version 1.8.1
+	   Version 1.8.2
 //=================================//
 
 INTRODUCTION:
@@ -577,7 +577,8 @@ UPDATES:
 
 	 - Fixed a problem that could cause Multitools or Lockpicks to appear
 	in multiple belt slots if you run out of one while both are occupying
-	belt slots.
+	belt slots.  In certain instances this could cause whichever was
+	"doubled up" to disappear completely from your inventory.
 
 	 - Added a little code so that mods or maps which rely on the WiB, MiB,
 	GuntherHermann, or AnnaNavarre classes SPECIFICALLY having an "Explode"
@@ -590,7 +591,7 @@ UPDATES:
 	 - Added code which will ensure you see the actual amount of ammo you
 	receive from conversations if you're given more than you can hold.
 	(e.g. if you receive 3 LAMs but can only hold 1 more it'll say you only
-	received 1)
+	received 1) Most of the time, anyway.
 
 	 - In a slightly embarassing twist I discovered that I had not adjusted
 	the description on the IFF Aug to reflect the new "Blue = neutral" part
