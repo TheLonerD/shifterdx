@@ -62,9 +62,13 @@ function FirstFrame()
 		if (flags.GetBool('SandraRenton_Dead') ||
 			flags.GetBool('GilbertRenton_Dead'))
 		{
-			if (!flags.GetBool('JoJoFine_Dead'))
+			if (!flags.GetBool('JoJoFine_Dead') && !flags.GetBool('MS_JoJoUnhidden'))
+			{
 				foreach AllActors(class'ScriptedPawn', pawn, 'JoJoInLobby')
 					pawn.EnterWorld();
+
+				flags.SetBool('MS_JoJoUnhidden', True,, 5);
+			}	
 		}
 
 		if(!flags.GetBool('M04RaidTeleportDone'))

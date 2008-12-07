@@ -13,6 +13,10 @@ function FirstFrame()
 {
 	local ScriptedPawn pawn;
 	local FlagTrigger ftrig;
+	local Phone amach;
+	local ConversationTrigger contrig;
+	local ConListItem conList;
+	local DataCube dCube;
 
 	Super.FirstFrame();
 
@@ -107,6 +111,51 @@ function FirstFrame()
 			}
 		}
 	}
+	else if (localURL == "02_NYC_HOTEL")
+	{
+		if (!flags.GetBool('M02_Ans_Mach_Placed'))
+		{
+			amach = Spawn(class'Phone',None,, vect(-613.23, -3236.47, 117.19));
+
+			if(amach != None)
+			{
+				contrig = Spawn(class'ConversationTrigger',None,, vect(0,0,-40));
+				if(contrig != None)
+				{
+					contrig.conversationTag = 'M03AnsweringMachineMessage';
+					contrig.BindName = "AnsweringMachine";
+					contrig.Tag = 'PlayAnsweringMachineMessage';
+					contrig.bTriggerOnceOnly = False;
+				}
+
+				amach.Event = 'PlayAnsweringMachineMessage';
+				amach.BindName = "AnsweringMachine";
+				amach.bUsing = True;
+				conList = New class'ConListItem';
+				conList.con = Conversation(DynamicLoadObject("DeusExConText.Conversation354",class'Conversation')); //Took me forever to find this
+				amach.ConListItems = conList;
+				amach.ringFreq = 0.0;
+
+				flags.SetBool('M02_Ans_Mach_Placed', True,, 3);
+			}
+		}
+
+		//== If the player's been all non-violent and crap, give him an extra tool to continue doing so
+		if(!flags.GetBool('M02_Blackjack_Placed') && !flags.GetBool('M01PlayerAggressive') && !flags.GetBool('BatteryParkSlaughter'))
+		{
+			foreach AllActors(class'Datacube', dCube)
+			{
+				if(dCube.textTag == '02_Datacube07')
+				{
+					dCube.SpecialText = emailString[0];
+					break;
+				}
+			}
+
+			if(spawn(class'WeaponBlackjack', None,, (dCube.Location + vect(0,0,4)), rot(0,16383,0)) != None)
+				flags.SetBool('M02_Blackjack_Placed', True,, 9); //== Further placements of the blackjack are sorta moot
+		}
+	}
 }
 
 // ----------------------------------------------------------------------
@@ -191,12 +240,8 @@ function Timer()
 	local Actor A;
 	local SandraRenton Sandra;
 	local int count;
-	local Phone amach;
-	local ConversationTrigger contrig;
-	local ConListItem conList;
 	local ComputerPublic compPub;
 	local Pillow fluffy;
-	local DataCube dCube;
 
 	Super.Timer();
 
@@ -504,48 +549,6 @@ function Timer()
 				flags.SetBool('M02HostagesRescued', True,, 3);
 		}
 
-		if (!flags.GetBool('M02_Ans_Mach_Placed'))
-		{
-			amach = Spawn(class'Phone',None,, vect(-613.23, -3236.47, 117.19));
-
-			if(amach != None)
-			{
-				contrig = Spawn(class'ConversationTrigger',None,, vect(0,0,-40));
-				if(contrig != None)
-				{
-					contrig.conversationTag = 'M03AnsweringMachineMessage';
-					contrig.BindName = "AnsweringMachine";
-					contrig.Tag = 'PlayAnsweringMachineMessage';
-					contrig.bTriggerOnceOnly = False;
-				}
-
-				amach.Event = 'PlayAnsweringMachineMessage';
-				amach.BindName = "AnsweringMachine";
-				amach.bUsing = True;
-				conList = New class'ConListItem';
-				conList.con = Conversation(DynamicLoadObject("DeusExConText.Conversation354",class'Conversation')); //Took me forever to find this
-				amach.ConListItems = conList;
-				amach.ringFreq = 0.0;
-
-				flags.SetBool('M02_Ans_Mach_Placed', True,, 3);
-			}
-		}
-
-		//== If the player's been all non-violent and crap, give him an extra tool to continue doing so
-		if(!flags.GetBool('M02_Blackjack_Placed') && !flags.GetBool('M01PlayerAggressive') && !flags.GetBool('BatteryParkSlaughter'))
-		{
-			foreach AllActors(class'Datacube', dCube)
-			{
-				if(dCube.textTag == '02_Datacube07')
-				{
-					dCube.SpecialText = emailString[0];
-					break;
-				}
-			}
-
-			if(spawn(class'WeaponBlackjack', None,, (dCube.Location + vect(0,0,4)), rot(0,16383,0)) != None)
-				flags.SetBool('M02_Blackjack_Placed', True,, 9); //== Further placements of the blackjack are sorta moot
-		}
 	}
 	else if (localURL == "02_NYC_UNDERGROUND")
 	{

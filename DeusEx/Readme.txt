@@ -600,8 +600,25 @@ UPDATES:
 	 - Added another layer to the "Paul disappears in the 'Ton" fix.  If
 	Paul has somehow been removed from the map (typically if he is marked
 	as dead due to that damn trigger placed outside the window) the game
-	will now spawn another copy of him, at least before the raid has been
-	done.
+	will now spawn another copy of him and un-mark him as dead, at least
+	before the subsequent raid has been initiated.
+
+	 - Adjusted the scripts for a few of the new item placements so that
+	they are done in a different, non-recurring part of the mission script.
+	As it was Paul's answering machine, for example, was placed only once,
+	but the script checked to make sure it was placed every second.  The
+	only possible side-effect this will have is that players who start a
+	game in normal Deus Ex and then add Shifter partway through their play
+	through may not see certain new additions in levels they've already
+	visited.  At the very least they'll have to leave the area and return.
+
+	 - Fixed an existing Deus Ex bug which could cause two JoJo Fines to
+	appear in the lobby of the 'Ton.  This only happened when the JoJo
+	descending the stairs was unhidden, then one of the Rentons died, and
+	finally the player left and returned to the 'Ton WITHOUT killing JoJo.
+
+	 - Updated the DeusEx.int file to include some text that CAN be added
+	to a datacube in Mission 2.
 
 
 	v1.8.1:

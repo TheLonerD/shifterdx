@@ -3419,3 +3419,6 @@ Description="Bioluminescent cells within the retina provide coherent illuminatio
 [AugIFF]
 AugmentationName="IFF"
 Description="Automatic friend or foe identification uses advanced heuristic algorithms to associate visible objects with known threat categories.|n|nTargeting reticle highlights RED over enemies, and GREEN over allies and BLUE over neutrals.|n|nNO UPGRADES"
+
+[Mission02]
+emailString[0]="|n|nP.S. You've managed to keep the casualties to a minimum so far, but I know it hasn't been easy.  I've left you a baton I modified that should make the use of minimal force less challenging."
