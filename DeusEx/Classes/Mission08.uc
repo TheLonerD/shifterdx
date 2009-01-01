@@ -270,7 +270,10 @@ function Timer()
 			{
 				foreach AllActors(class'ScriptedPawn', pawn, 'StantonDowd')
 					if (pawn.IsA('StantonDowd'))
+					{
 						pawn.EnterWorld();
+						pawn.AttitudeToPlayer = ATTITUDE_Friendly; //== Make sure he talks to the player
+					}
 
 				flags.SetBool('MS_StantonUnhidden', True,, 9);
 			}

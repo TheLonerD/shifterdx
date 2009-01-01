@@ -497,6 +497,11 @@ KNOWN GLITCHES:
 	As soon as you move to another map in the area, however, all normal
 	Zyme effects will return.
 
+	 - If you carry a datacube from one area to another such that you
+	encounter a load screen the datacube will be "wiped".  Fixing this will
+	require some fancy code that I haven't quite implemented yet, but it
+	will be done eventually.
+
 	Multiplayer:
 
 	 - Clients connecting to a server running ShifterMP may witness some
