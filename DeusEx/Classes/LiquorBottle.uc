@@ -25,6 +25,20 @@ function Facelift(bool bOn)
 	}
 }
 
+state Activated
+{
+	function Activate()
+	{
+		Super.Activate();
+	}
+
+	function BeginState()
+	{
+		Super.BeginState();
+	}
+Begin:
+}
+
 defaultproperties
 {
      healthEffect=3

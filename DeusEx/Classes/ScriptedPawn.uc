@@ -6549,7 +6549,7 @@ function bool ShouldCrouch()
 // PickDestination()  [stub function, overridden by subclasses and individual states]
 // ----------------------------------------------------------------------
 
-function PickDestination(){}
+//function PickDestination(){}
 function bool PickNextDestination(){}
 function EDestinationType GetNewDestination(){}
 
@@ -9461,7 +9461,19 @@ function Died(pawn Killer, name damageType, vector HitLocation)
 		if(skillpt != 0) //Now if the level is 0 there's really no point to do any of the rest
 		{
 			skillpt /= 20; //Get the skill points down to a reasonable level
-			player.SkillPointsAdd(skillpt);
+			if(LastRendered() <= 1.0 || bImportant)
+				player.SkillPointsAdd(skillpt);
+			else //== Silent award
+			{
+				player.SkillPointsAvail += skillpt;
+				player.SkillPointsTotal += skillpt;
+
+				//== Prevent any potential crashes due to skillpoint awards
+				if(player.SkillPointsAvail > 115900)
+					player.SkillPointsAvail = 115900;
+				if(player.SkillPointsTotal > 115900)
+					player.SkillPointsTotal = 115900;
+			}
 		}
 		
 	}
@@ -11250,7 +11262,11 @@ State Seeking
 		return (!bDone);
 	}
 
-//	function bool PickDestination()
+	function bool PickDestination() //== Obsoleted
+	{
+		return PickNextDestination();
+	}
+
 	function bool PickNextDestination()
 	{
 		local bool bValid;
@@ -13100,7 +13116,11 @@ State Alerting
 		return (bestAlarm);
 	}
 
-//	function bool PickDestination()
+	function bool PickDestination() //== 
+	{
+		return PickNextDestination();
+	}
+
 	function bool PickNextDestination()
 	{
 		local bool      bDest;
@@ -13328,7 +13348,11 @@ State Shadowing
 		return (VSize(Location-orderActor.Location));
 	}
 
-//	function bool PickDestination()
+	function bool PickDestination() //== Obsolted, but kept for TNM
+	{
+		return PickNextDestination();
+	}
+
 	function bool PickNextDestination()
 	{
 		local Actor   destActor;
@@ -13581,7 +13605,11 @@ state Following
 		}
 	}
 
-//	function bool PickDestination()
+	function bool PickDestination() //== Obsolted, but kept for TNM
+	{
+		return PickNextDestination();
+	}
+
 	function bool PickNextDestination()
 	{
 		local float   dist;
@@ -14642,7 +14670,11 @@ state BackingOff
 		CheckOpenDoor(HitNormal, Wall);
 	}
 
-//	function bool PickDestination()
+	function bool PickDestination() //== Obsolted, but kept for TNM
+	{
+		return PickNextDestination();
+	}
+
 	function bool PickNextDestination()
 	{
 		local bool    bSuccess;

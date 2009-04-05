@@ -137,7 +137,9 @@ order whatsoever:
 	SaveFile project page for it, where you can get the latest version.
 	(http://tinyurl.com/2b5k82)  I upload to FilePlanet semi-regularly,
 	though not as often as to SaveFile.  I also update a thread in the Eidos
-	Forums about Shifter.  (http://tinyurl.com/zxehg)
+	Forums about Shifter.  (http://tinyurl.com/zxehg)  Finally, if you want
+	the bleeding-edge latest version you can get my most current source
+	files from Google Code, under the account "shifterdx".
 
 
 SPECIFICS:
@@ -624,6 +626,22 @@ UPDATES:
 
 	 - Updated the DeusEx.int file to include some text that CAN be added
 	to a datacube in Mission 2.
+
+	 - Changed skill point awards for Kills/KOs so that you aren't given a
+	sound/text cue if the NPC hasn't been rendered within a second (i.e.
+	you can't see them) unless they're a significant character.
+
+	 - Redid the way the super-secret access to Unrealistic is done so that
+	it works for people using a localization (int) file.  Before it was
+	examining the button names without considering the different ways that
+	"Realistic" is said in other languages.
+
+	 - Re-enabled some functions I took out of various NPC states so that
+	TNM can work with Shifter.  More accurately, I renamed the functions
+	and made sure that in every state they returned the same type.  Had,
+	anyway.  Apparently NPCs in TNM rely on some of those functions, so
+	it's back to the ever-so-dicey practice of having states containing
+	functions with the same name but different return types.
 
 
 	v1.8.1:

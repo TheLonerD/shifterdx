@@ -66,26 +66,21 @@ function bool ButtonActivatedRight( Window buttonPressed )
 {
 	local int i;
 
-	for(i = 0; i < arrayCount(winButtons); i++)
+	if(buttonPressed == winButtons[3])
 	{
-		if(buttonPressed == winButtons[i])
+		if(buttonDefaults[3].Key == "REALISTIC")
 		{
-			if(winButtons[i].buttonText == "Realistic")
-			{
-				winButtons[i].SetButtonText("Unrealistic");
-				buttonDefaults[i].Key = "UNREALISTIC";
-				PlaySound(Sound'Menu_Press', 0.25);
-				return True;
-			}
-			else if(winButtons[i].buttonText == "Unrealistic")
-			{
-				winButtons[i].SetButtonText("Realistic");
-				buttonDefaults[i].Key = "REALISTIC";
-				PlaySound(Sound'Menu_Press', 0.25);
-				return True;
-			}
-
-			break;
+			winButtons[3].SetButtonText("Unrealistic");
+			buttonDefaults[3].Key = "UNREALISTIC";
+			PlaySound(Sound'Menu_Press', 0.25);
+			return True;
+		}
+		else if(buttonDefaults[3].Key == "UNREALISTIC")
+		{
+			winButtons[3].SetButtonText(ButtonNames[3]);
+			buttonDefaults[3].Key = "REALISTIC";
+			PlaySound(Sound'Menu_Press', 0.25);
+			return True;
 		}
 	}
 }
