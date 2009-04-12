@@ -7,6 +7,7 @@ defaultproperties
 {
      CarcassType=Class'DeusEx.JuanLebedevCarcass'
      WalkingSpeed=0.213333
+     bLikesNeutral=False
      bImportant=True
      BaseAssHeight=-23.000000
      GroundSpeed=180.000000
@@ -24,5 +25,4 @@ defaultproperties
      BindName="JuanLebedev"
      FamiliarName="Juan Lebedev"
      UnfamiliarName="Juan Lebedev"
-     bLikesNeutral=False
 }

@@ -40,6 +40,8 @@ simulated function PreBeginPlay()
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPphone", class'mesh', True));
 
@@ -196,6 +198,7 @@ function Frob(actor Frobber, Inventory frobWith)
 
 defaultproperties
 {
+     AnswerSound=AS_Random
      ringFreq=0.010000
      ItemName="Telephone"
      Mesh=LodMesh'DeusExDeco.Phone'
@@ -203,5 +206,4 @@ defaultproperties
      CollisionHeight=3.780000
      Mass=20.000000
      Buoyancy=15.000000
-     AnswerSound=AS_Random
 }

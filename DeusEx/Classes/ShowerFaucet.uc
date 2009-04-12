@@ -13,6 +13,8 @@ var Vector				sprayOffsets[4];
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPShowerFaucet", class'mesh', True));
 

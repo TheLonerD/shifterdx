@@ -5,6 +5,8 @@ class Tumbleweed extends Trash;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPTumbleWeed", class'mesh', True));
 

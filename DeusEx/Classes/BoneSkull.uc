@@ -5,6 +5,8 @@ class BoneSkull extends DeusExDecoration;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPBoneSkull", class'Texture', True));
 	else

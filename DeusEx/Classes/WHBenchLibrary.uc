@@ -5,6 +5,8 @@ class WHBenchLibrary extends Seat;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPWHBenchLibrary", class'mesh', True));
 

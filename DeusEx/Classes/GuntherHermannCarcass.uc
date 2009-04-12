@@ -7,6 +7,8 @@ function Facelift(bool bOn)
 {
 	local int i;
 
+	Super.Facelift(bOn);
+
 	Mesh = Mesh(DynamicLoadObject("HDTPcharacters.HDTPGuntherCarcassA", class'Mesh', True));
 
 	if(Mesh == None || !bOn)

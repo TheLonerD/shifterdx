@@ -5,6 +5,8 @@ class LiquorBottle extends Consumable;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPLiquorBottle", class'mesh', True));
 
@@ -41,8 +43,8 @@ Begin:
 
 defaultproperties
 {
+     drugEffect=10.000000
      healthEffect=3
-     drugEffect=10.0
      bBreakable=True
      maxCopies=10
      bCanHaveMultipleCopies=True

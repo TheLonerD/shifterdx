@@ -18,6 +18,8 @@ function Facelift(bool bOn)
 {
 	local Texture lSkin;
 
+	Super.Facelift(bOn);
+
 	Skin = None;
 
 	if(bOn)

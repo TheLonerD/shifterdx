@@ -181,6 +181,7 @@ function ReloadAmmo()
 
 defaultproperties
 {
+     msgExtraShells="%d rounds loaded into firing chamber"
      LowAmmoWaterMark=4
      GoverningSkill=Class'DeusEx.SkillWeaponRifle'
      EnviroEffective=ENVEFF_Air
@@ -191,11 +192,13 @@ defaultproperties
      maxRange=2400
      AccurateRange=1200
      BaseAccuracy=0.600000
+     FireSound2=Sound'DeusExSounds.Weapons.SawedOffShotgunFire'
      AmmoNames(0)=Class'DeusEx.AmmoShell'
      AmmoNames(1)=Class'DeusEx.AmmoSabot'
      AmmoNames(2)=Class'DeusEx.AmmoDragon'
      ProjectileNames(2)=Class'DeusEx.FireballDragon'
      AreaOfEffect=AOE_Cone
+     bHasAltFire=True
      recoilStrength=0.500000
      mpReloadTime=0.500000
      mpHitDamage=9
@@ -214,7 +217,6 @@ defaultproperties
      FireOffset=(X=-11.000000,Y=4.000000,Z=13.000000)
      shakemag=50.000000
      FireSound=Sound'DeusExSounds.Weapons.SawedOffShotgunFire'
-     FireSound2=Sound'DeusExSounds.Weapons.SawedOffShotgunFire'
      AltFireSound=Sound'DeusExSounds.Weapons.SawedOffShotgunReloadEnd'
      CockingSound=Sound'DeusExSounds.Weapons.SawedOffShotgunReload'
      SelectSound=Sound'DeusExSounds.Weapons.SawedOffShotgunSelect'
@@ -236,6 +238,4 @@ defaultproperties
      CollisionRadius=12.000000
      CollisionHeight=0.900000
      Mass=15.000000
-     msgExtraShells="%d rounds loaded into firing chamber"
-     bHasAltFire=True
 }

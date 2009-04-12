@@ -7,6 +7,8 @@ var bool bUsing;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPpinball", class'mesh', True));
 

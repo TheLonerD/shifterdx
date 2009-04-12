@@ -19,12 +19,12 @@ defaultproperties
 {
      AmmoAmount=5
      MaxAmmo=25
+     ItemName="Throwing Knives"
+     ItemArticle="some"
      PickupViewMesh=LodMesh'DeusExItems.TestBox'
+     Icon=Texture'DeusExUI.Icons.BeltIconShuriken'
      Mesh=LodMesh'DeusExItems.ShurikenPickup'
      CollisionRadius=22.500000
      CollisionHeight=16.000000
      bCollideActors=True
-     ItemName="Throwing Knives"
-     ItemArticle="some"
-     Icon=Texture'DeusExUI.Icons.BeltIconShuriken'
 }

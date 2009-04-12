@@ -167,6 +167,6 @@ function bool SetPause(BOOL bPause, PlayerPawn P)
 defaultproperties
 {
      bNewSkillSystem=True
-     PauseStartTime=-999999
-     PauseEndTime=-999999
+     PauseStartTime=-999999.000000
+     PauseEndTime=-999999.000000
 }

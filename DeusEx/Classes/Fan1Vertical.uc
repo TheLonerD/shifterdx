@@ -5,6 +5,8 @@ class Fan1Vertical extends DeusExDecoration;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPFan1vertical", class'mesh', True));
 

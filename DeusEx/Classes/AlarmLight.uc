@@ -19,6 +19,8 @@ function Facelift(bool bOn)
 {
 	local String texstr1, texstr2;
 
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPAlarmLightTex1", class'Texture'));
 

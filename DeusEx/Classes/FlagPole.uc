@@ -70,6 +70,8 @@ function SetSkin()
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 	{
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPFlagpole", class'mesh', True));

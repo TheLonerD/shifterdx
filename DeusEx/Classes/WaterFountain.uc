@@ -12,6 +12,8 @@ var localized String msgEmpty;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPWaterFountain", class'mesh', True));
 

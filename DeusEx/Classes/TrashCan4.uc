@@ -5,6 +5,8 @@ class TrashCan4 extends Containers;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPtrashcan4", class'mesh', True));
 

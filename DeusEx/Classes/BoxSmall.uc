@@ -5,6 +5,8 @@ class BoxSmall extends Containers;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPboxsmall", class'mesh', True));
 

@@ -5,6 +5,8 @@ class Plant3 extends DeusExDecoration;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPPlant3", class'mesh', True));
 

@@ -54,8 +54,9 @@ function Tick(float deltaTime)
 
 	if (emitter != None)
 	{
-		if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime) //== Pause time offset
-			lastAlarmTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
+		if(DeusExGameInfo(Level.Game) != None)
+			if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime) //== Pause time offset
+				lastAlarmTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
 
 		lastTickTime = Level.TimeSeconds;
 

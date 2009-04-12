@@ -78,6 +78,8 @@ function Tick(float deltaTime)
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPCart", class'mesh', True));
 

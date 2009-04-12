@@ -47,6 +47,8 @@ function BeginPlay()
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPceilingfanmotor", class'mesh', True));
 

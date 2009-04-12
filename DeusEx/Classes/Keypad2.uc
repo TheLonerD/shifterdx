@@ -5,6 +5,8 @@ class Keypad2 extends Keypad;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPKeypad2Tex1", class'Texture', True));
 

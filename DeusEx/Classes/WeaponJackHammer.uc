@@ -43,6 +43,7 @@ defaultproperties
      HitDamage=1
      AreaOfEffect=AOE_Sphere
      recoilStrength=0.450000
+     bUnique=True
      mpHitDamage=2
      bCanHaveModShotTime=False
      InventoryGroup=93
@@ -50,5 +51,4 @@ defaultproperties
      ItemArticle="the"
      Description="A product of Smuggler's extreme if not appropriate paranoia, the JackHammer is a fully automatic shotgun capable of exhausting a full clip in just under a second.  Unfortunately, Smuggler didn't have time to expand the clip capacity."
      beltDescription="JACKHAMMER"
-     bUnique=True
 }

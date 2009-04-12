@@ -194,15 +194,15 @@ defaultproperties
      NoiseLevel=0.250000
      EnviroEffective=ENVEFF_All
      reloadTime=5.000000
+     HitDamage=25
      maxRange=36000
      AccurateRange=14000
      BaseAccuracy=0.200000
      bHasScope=True
-     HitDamage=25
-     AreaOfEffect=AOE_Cone
      bHasAltFire=False
      bPenetrating=True
      recoilStrength=0.600000
+     bUnique=True
      bCanHaveModReloadCount=False
      ReloadCount=1
      PickupAmmoCount=4
@@ -212,5 +212,4 @@ defaultproperties
      Description="A one-of-a-kind prototype, the Railgun compacts standard plasma slugs into a significantly smaller shape, then magnetically accelerates them to near-light speeds.  The force of the projectile allows it to penetrate multiple objects in succession; to compliment this the Railgun has been equipped with a heat scope."
      beltDescription="RAILGUN"
      MultiSkins(1)=FireTexture'Effects.Electricity.BioCell_SFX'
-     bUnique=True
 }

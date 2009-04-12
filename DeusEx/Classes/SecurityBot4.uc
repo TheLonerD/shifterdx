@@ -5,15 +5,15 @@ class SecurityBot4 extends Robot;
 
 defaultproperties
 {
+     WalkingSpeed=1.000000
+     bEmitDistress=True
+     InitialInventory(0)=(Inventory=Class'DeusEx.WeaponRobotMachinegun')
+     InitialInventory(1)=(Inventory=Class'DeusEx.Ammo762mm',Count=50)
      SpeechTargetAcquired=Sound'DeusExSounds.Robot.SecurityBot3TargetAcquired'
      SpeechTargetLost=Sound'DeusExSounds.Robot.SecurityBot3TargetLost'
      SpeechOutOfAmmo=Sound'DeusExSounds.Robot.SecurityBot3OutOfAmmo'
      SpeechCriticalDamage=Sound'DeusExSounds.Robot.SecurityBot3CriticalDamage'
      SpeechScanning=Sound'DeusExSounds.Robot.SecurityBot3Scanning'
-     WalkingSpeed=1.000000
-     bEmitDistress=True
-     InitialInventory(0)=(Inventory=Class'DeusEx.WeaponRobotMachinegun')
-     InitialInventory(1)=(Inventory=Class'DeusEx.Ammo762mm',Count=50)
      GroundSpeed=95.000000
      WaterSpeed=50.000000
      AirSpeed=144.000000

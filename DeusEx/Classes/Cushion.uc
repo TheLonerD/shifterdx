@@ -5,6 +5,8 @@ class Cushion extends Furniture;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPcushion", class'mesh', True));
 

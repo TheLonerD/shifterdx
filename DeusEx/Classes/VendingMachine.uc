@@ -25,6 +25,8 @@ var localized String msgEmpty;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	Skin = None;
 
 	if(bOn)
@@ -66,15 +68,21 @@ function BeginPlay()
 
 	switch (SkinColor)
 	{
-		case SC_Drink:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPvendingDrinktex1",class'Texture', True));
-				MultiSkins[2] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPvendingDrinktex2",class'Texture', True));
+		case SC_Drink:	if(Skin == None)
+				{
+					MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPvendingDrinktex1",class'Texture', True));
+					MultiSkins[2] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPvendingDrinktex2",class'Texture', True));
+				}
 				if(MultiSkins[1] == None || MultiSkins[2] == None)
 					Skin = Texture'VendingMachineTex1';
 
 				if(VendProductName == "") VendProductName = (class'Sodacan').Default.ItemName; break;
 
-		case SC_Snack:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPvendingSnacktex1",class'Texture', True));
-				MultiSkins[2] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPvendingSnacktex2",class'Texture', True));
+		case SC_Snack:	if(Skin == None)
+				{
+					MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPvendingSnacktex1",class'Texture', True));
+					MultiSkins[2] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPvendingSnacktex2",class'Texture', True));
+				}
 				if(MultiSkins[1] == None || MultiSkins[2] == None)
 					Skin = Texture'VendingMachineTex2';
 

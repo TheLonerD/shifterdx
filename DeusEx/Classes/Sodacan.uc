@@ -21,6 +21,8 @@ function Facelift(bool bOn)
 	local int skinnum;
 	local Texture otherIcon;
 
+	Super.Facelift(bOn);
+
 	if(numCopies > 1 && numCopies <= 10) //Default.maxCopies
 	{
 		skinnum = StackSkins[numCopies - 1];
@@ -195,8 +197,12 @@ Begin:
 
 defaultproperties
 {
+     InvDescription(0)="The can is blank except for the phrase 'PRODUCT PLACEMENT HERE.' It is unclear whether this is a name or an invitation."
+     InvDescription(1)="A can of Zap! soda.  The label reads: '50% more effective than Nuke!'"
+     InvDescription(2)="The only easily visible item is the letter 'B' printed on the front.  The small information label reads 'Beats out Zap! by a factor of 1.3333333333333333333333333333333333....'|n|nThe numbers keep repeating and appear to take up the remaining space on the label."
+     InvDescription(3)="Aside from the bold-face title the can appears to be blank.  Closer inspection shows the original printing has been removed and a new name printed on top.  The words 'got Electrolytes' and 'Thirst Mutilator' are still barely visible."
+     drugEffect=-4.000000
      healthEffect=3
-     drugEffect=-4.0
      maxCopies=10
      bCanHaveMultipleCopies=True
      bActivatable=True
@@ -218,8 +224,4 @@ defaultproperties
      CollisionHeight=4.500000
      Mass=5.000000
      Buoyancy=3.000000
-     InvDescription(0)="The can is blank except for the phrase 'PRODUCT PLACEMENT HERE.' It is unclear whether this is a name or an invitation."
-     InvDescription(1)="A can of Zap! soda.  The label reads: '50% more effective than Nuke!'"
-     InvDescription(2)="The only easily visible item is the letter 'B' printed on the front.  The small information label reads 'Beats out Zap! by a factor of 1.3333333333333333333333333333333333....'|n|nThe numbers keep repeating and appear to take up the remaining space on the label."
-     InvDescription(3)="Aside from the bold-face title the can appears to be blank.  Closer inspection shows the original printing has been removed and a new name printed on top.  The words 'got Electrolytes' and 'Thirst Mutilator' are still barely visible."
 }

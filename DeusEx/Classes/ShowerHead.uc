@@ -5,6 +5,8 @@ class ShowerHead extends DeusExDecoration;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPShowerHead", class'mesh', True));
 

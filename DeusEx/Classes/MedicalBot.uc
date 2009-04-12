@@ -41,8 +41,9 @@ function PostBeginPlay()
 function Tick(float deltaTime)
 {
 	//== Track the time shift from pausing
-	if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime)
-		lastHealTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
+	if(DeusExGameInfo(Level.Game) != None)
+		if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime)
+			lastHealTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
 
 	lastTickTime = Level.TimeSeconds;
 

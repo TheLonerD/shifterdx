@@ -37,12 +37,6 @@ function PlayDisabled()
 
 defaultproperties
 {
-     SearchingSound=Sound'DeusExSounds.Robot.MilitaryBotSearching'
-     SpeechTargetAcquired=Sound'DeusExSounds.Robot.MilitaryBotTargetAcquired'
-     SpeechTargetLost=Sound'DeusExSounds.Robot.MilitaryBotTargetLost'
-     SpeechOutOfAmmo=Sound'DeusExSounds.Robot.MilitaryBotOutOfAmmo'
-     SpeechCriticalDamage=Sound'DeusExSounds.Robot.MilitaryBotCriticalDamage'
-     SpeechScanning=Sound'DeusExSounds.Robot.MilitaryBotScanning'
      EMPHitPoints=200
      explosionSound=Sound'DeusExSounds.Robot.MilitaryBotExplode'
      WalkingSpeed=1.000000
@@ -52,6 +46,12 @@ defaultproperties
      InitialInventory(2)=(Inventory=Class'DeusEx.WeaponRobotRocket')
      InitialInventory(3)=(Inventory=Class'DeusEx.AmmoRocket',Count=10)
      WalkSound=Sound'DeusExSounds.Robot.MilitaryBotWalk'
+     SearchingSound=Sound'DeusExSounds.Robot.MilitaryBotSearching'
+     SpeechTargetAcquired=Sound'DeusExSounds.Robot.MilitaryBotTargetAcquired'
+     SpeechTargetLost=Sound'DeusExSounds.Robot.MilitaryBotTargetLost'
+     SpeechOutOfAmmo=Sound'DeusExSounds.Robot.MilitaryBotOutOfAmmo'
+     SpeechCriticalDamage=Sound'DeusExSounds.Robot.MilitaryBotCriticalDamage'
+     SpeechScanning=Sound'DeusExSounds.Robot.MilitaryBotScanning'
      GroundSpeed=44.000000
      WaterSpeed=50.000000
      AirSpeed=144.000000

@@ -17,6 +17,8 @@ function Facelift(bool bOn)
 {
 	local String texstr;
 
+	Super.Facelift(bOn);
+
 	switch (SkinColor)
 	{
 		case SC_GrayLeather:		texstr = "OfficeChairTex1"; break;

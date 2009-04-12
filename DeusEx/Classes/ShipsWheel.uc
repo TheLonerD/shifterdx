@@ -9,6 +9,8 @@ var int spinDir, spinSpeed;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPshipswheel", class'mesh', True));
 

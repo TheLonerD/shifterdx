@@ -40,6 +40,8 @@ function Facelift(bool bOn)
 {
 	local string texstr;
 
+	Super.Facelift(bOn);
+
 	if(bOn)
 	{
 		switch (Cig)

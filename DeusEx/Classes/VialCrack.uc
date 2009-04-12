@@ -48,8 +48,8 @@ Begin:
 
 defaultproperties
 {
+     drugEffect=-14.000000
      healthEffect=-10
-     drugEffect=-14.0
      maxCopies=20
      bCanHaveMultipleCopies=True
      bActivatable=True

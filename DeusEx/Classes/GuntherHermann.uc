@@ -41,6 +41,8 @@ function Facelift(bool bOn)
 {
 	local int i;
 
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPcharacters.HDTPGunther", class'mesh', True));
 

@@ -88,9 +88,8 @@ function Frob(actor Frobber, Inventory frobWith)
 
 defaultproperties
 {
-     numUses=12
      msgDispErr1="%d credits decuttttt!3kd@t]]i8n^ ERROR -- FOREIGN OBJECT DETECTED"
      msgDispErr2="%d cre4di7ts ded0uct3ed fr3669om your acco322222 PLEASE WAIT -- RESTORING FACTORY DEFAULTS"
+     numUses=12
      VendProduct=Class'DeusEx.Sodacan'
-     SkinColor=SC_Drink
 }

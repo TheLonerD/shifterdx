@@ -16,6 +16,8 @@ var localized String VendProductName;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPcigarettemachine", class'mesh', True));
 	

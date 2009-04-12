@@ -29,8 +29,9 @@ Begin:
 
 function Tick(float deltaTime)
 {
-	if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime) //== Pause time offset
-		lastDroneTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
+	if(DeusExGameInfo(Level.Game) != None)
+		if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime) //== Pause time offset
+			lastDroneTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
 
 	Super.Tick(deltaTime);
 

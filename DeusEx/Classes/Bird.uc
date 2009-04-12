@@ -41,6 +41,7 @@ function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation,
 		//PlayDeathHit(actualDamage, hitLocation, damageType);
 		Enemy = instigatedBy;
 		Died(instigatedBy, damageType, HitLocation);
+		SkillsForKills(instigatedBy, damageType, HitLocation);
 	}
 }
 
@@ -464,8 +465,8 @@ defaultproperties
      Restlessness=1.000000
      Wanderlust=0.050000
      Cowardice=0.200000
-     bCanFly=True
-     MaxStepHeight=2.000000
      bLikesNeutral=False
      InitialAlliances(7)=(AllianceName=Cat,AllianceLevel=-1.000000)
+     bCanFly=True
+     MaxStepHeight=2.000000
 }

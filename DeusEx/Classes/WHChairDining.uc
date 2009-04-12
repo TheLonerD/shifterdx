@@ -5,6 +5,8 @@ class WHChairDining extends Seat;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPWHChairDining", class'mesh', True));
 

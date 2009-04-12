@@ -17,6 +17,8 @@ var localized string awardString;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPToilet", class'mesh', True));
 
@@ -61,15 +63,19 @@ function BeginPlay()
 
 	switch (SkinColor)
 	{
-		case SC_Clean:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.CleanHDTPToiletTex1", class'Texture', True));
-				MultiSkins[2] = Texture(DynamicLoadObject("HDTPDecos.Skins.CleanHDTPToiletTex2", class'Texture', True));
+		case SC_Clean:	if(Skin == None)
+				{
+					MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.CleanHDTPToiletTex1", class'Texture', True));
+					MultiSkins[2] = Texture(DynamicLoadObject("HDTPDecos.Skins.CleanHDTPToiletTex2", class'Texture', True));
+				}
 				if(frand() > 0.5)
 				{
 					bNeedsFlushing = True;
-					MultiSkins[3] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyToiletWaterTex", class'Texture', True));
+					if(Skin == None)
+						MultiSkins[3] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyToiletWaterTex", class'Texture', True));
 					ItemName = unflushedString $ " " $ ItemName;
 				}
-				else
+				else if(Skin == None)
 					MultiSkins[3] = Texture(DynamicLoadObject("HDTPDecos.Skins.CleanToiletWaterTex", class'Texture', True));
 
 				if(MultiSkins[1] == None || MultiSkins[2] == None || MultiSkins[3] == None)
@@ -77,9 +83,12 @@ function BeginPlay()
 
 				break;
 
-		case SC_Filthy:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyHDTPToiletTex1", class'Texture', True));
-				MultiSkins[2] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyHDTPToiletTex2", class'Texture', True));
-				MultiSkins[3] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyToiletWaterTex", class'Texture', True));
+		case SC_Filthy:	if(Skin == None)
+				{
+					MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyHDTPToiletTex1", class'Texture', True));
+					MultiSkins[2] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyHDTPToiletTex2", class'Texture', True));
+					MultiSkins[3] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyToiletWaterTex", class'Texture', True));
+				}
 				bNeedsFlushing = True;
 				ItemName = unflushedString $ " " $ ItemName;
 
@@ -139,11 +148,11 @@ function Frob(actor Frobber, Inventory frobWith)
 
 defaultproperties
 {
+     unflushedString="Unflushed"
+     awardString="Public Hygene Awareness Bonus"
      bInvincible=True
      ItemName="Toilet"
      bPushable=False
-     awardString="Public Hygene Awareness Bonus"
-     unflushedString="Unflushed"
      Physics=PHYS_None
      Mesh=LodMesh'DeusExDeco.Toilet'
      CollisionRadius=28.000000

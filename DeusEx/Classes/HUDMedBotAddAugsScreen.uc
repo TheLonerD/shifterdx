@@ -495,8 +495,8 @@ defaultproperties
      MayUpgradeText="You may upgrade this augmentation instead."
      CannotUpgradeText="This augmentation is at its maximum level and cannot be upgraded."
      SelectReplaceText="Select the augmentation to replace."
-     UpgradedText="Augmentation upgraded to level %d."
      InstalledText="Augmentation installed."
+     UpgradedText="Augmentation upgraded to level %d."
      clientTextures(0)=Texture'DeusExUI.UserInterface.HUDMedbotBackground_1'
      clientTextures(1)=Texture'DeusExUI.UserInterface.HUDMedbotBackground_2'
      clientTextures(2)=Texture'DeusExUI.UserInterface.HUDMedbotBackground_3'

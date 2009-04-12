@@ -380,7 +380,16 @@ function PreBeginPlay()
 		Facelift(true);
 }
 
-function Facelift(bool bOn){}
+function Facelift(bool bOn)
+{
+	//== Only do this for DeusEx classes
+	if(instr(String(Class.Name), ".") > -1 && bOn)
+		if(instr(String(Class.Name), "DeusEx.") <= -1)
+			return;
+	else
+		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && !bOn)
+			return;
+}
 
 //
 // PostBeginPlay
@@ -854,7 +863,7 @@ function bool LoadAmmo(int ammoNum)
 simulated function SwitchItem()
 {
 	local int i, j;
-	local class<Weapon> SwitchList[12];
+	local class<Weapon> SwitchList[28];
 	local Pawn P;
 
 	P = Pawn(Owner);
@@ -868,16 +877,32 @@ simulated function SwitchItem()
 	i = 0;
 
 	SwitchList[i++] = class'WeaponBaton';
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMBaton", class'Class', True));
 	SwitchList[i++] = class'WeaponBlackjack';
 	SwitchList[i++] = class'WeaponCombatKnife';
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMCombatKnife", class'Class', True));
 	SwitchList[i++] = class'WeaponCrowbar';
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMCrowbar", class'Class', True));
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponDaikatana", class'Class', True));
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponKatanaRonin", class'Class', True));
 	SwitchList[i++] = class'WeaponNanoSword';
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponFireBlade", class'Class', True));
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponFoon", class'Class', True));
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponHammer", class'Class', True));
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponKatana", class'Class', True));
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponUniqueNVS", class'Class', True));
 	SwitchList[i++] = class'WeaponPrototypeSword';
 	SwitchList[i++] = class'WeaponPrototypeSwordA';
 	SwitchList[i++] = class'WeaponPrototypeSwordB';
 	SwitchList[i++] = class'WeaponPrototypeSwordC';
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponScrewdriver", class'Class', True));
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponKatanaSlicer", class'Class', True));
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMSpork", class'Class', True));
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMSporkGolden", class'Class', True));
 	SwitchList[i++] = class'WeaponSword';
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMSword", class'Class', True));
 	SwitchList[i++] = class'WeaponShuriken';
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMShuriken", class'Class', True));
 	SwitchList[i++] = class'WeaponToxinBlade';
 
 	for(i = 0; i < ArrayCount(SwitchList); i++)
@@ -892,16 +917,17 @@ simulated function SwitchItem()
 		if(i >= ArrayCount(SwitchList))
 			i = 0;
 
-		if(P.FindInventoryType(SwitchList[i]) != None && SwitchList[i] != Class)
-		{
-			if((P.FindInventoryType(SwitchList[i])).beltPos == -1)
+		if(SwitchList[i] != None)
+			if(P.FindInventoryType(SwitchList[i]) != None && SwitchList[i] != Class)
 			{
-				AddObjectToBelt(P.FindInventoryType(SwitchList[i]), beltPos, false);
-				DeusExPlayer(P).PutInHand(P.FindInventoryType(SwitchList[i]));
-				P.ClientMessage(Sprintf(msgSwitchingTo, SwitchList[i].Default.ItemName));
-				break;
+				if((P.FindInventoryType(SwitchList[i])).beltPos == -1)
+				{
+					AddObjectToBelt(P.FindInventoryType(SwitchList[i]), beltPos, false);
+					DeusExPlayer(P).PutInHand(P.FindInventoryType(SwitchList[i]));
+					P.ClientMessage(Sprintf(msgSwitchingTo, SwitchList[i].Default.ItemName));
+					break;
+				}
 			}
-		}
 	}
 }
 
@@ -5317,7 +5343,7 @@ simulated function bool TestMPBeltSpot(int BeltSpot)
 // ----------------------------------------------------------------------
 simulated function bool TestCycleable()
 {
-   return (bHandToHand && AmmoType == None);
+   return ((bHandToHand && (AmmoType == None || AmmoName == Class'DeusEx.AmmoNone'))); //|| GoverningSkill==Class'DeusEx.SkillDemolition');
 }
 
 defaultproperties
@@ -5396,5 +5422,4 @@ defaultproperties
      bNoSmooth=False
      Mass=10.000000
      Buoyancy=5.000000
-     bUnique=False
 }

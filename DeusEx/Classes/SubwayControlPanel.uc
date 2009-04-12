@@ -5,6 +5,8 @@ class SubwayControlPanel extends DeusExDecoration;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("HDTPanim.Animated.SubwayControlPanel01", class'Texture', True));
 

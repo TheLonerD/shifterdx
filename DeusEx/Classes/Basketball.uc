@@ -26,6 +26,8 @@ event HitWall(vector HitNormal, actor HitWall)
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPBasketBall", class'mesh', True));
 

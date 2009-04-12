@@ -332,12 +332,11 @@ state PlayerWalking
 
 defaultproperties
 {
+     HitSound3=Sound'DeusExSounds.Generic.ArmorRicochet'
      CarcassType=Class'DeusEx.GuntherHermannCarcass'
      JumpSound=Sound'DeusExSounds.Robot.SpiderBotWalk'
-     BaseEyeHeight=40.000000
      HitSound1=Sound'DeusExSounds.Generic.MetalBounce1'
      HitSound2=Sound'DeusExSounds.Generic.GlassBreakSmall'
-     HitSound3=Sound'DeusExSounds.Generic.ArmorRicochet'
      Land=Sound'DeusExSounds.Pickup.PickupDeactivate'
      Die=Sound'DeusExSounds.Generic.GlassBreakLarge'
      Mesh=LodMesh'DeusExDeco.VendingMachine'

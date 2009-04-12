@@ -22,8 +22,8 @@ simulated function Tick(float deltaTime)
 defaultproperties
 {
      maxDrawScale=1.000000
-     LifeSpan=0.300000
-     Speed=1600.000000
+     speed=1600.000000
      MaxSpeed=1600.000000
+     LifeSpan=0.300000
      DrawScale=0.001000
 }

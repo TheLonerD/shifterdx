@@ -5,6 +5,8 @@ class Lamp2 extends Lamp;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPlamp2", class'mesh', True));
 

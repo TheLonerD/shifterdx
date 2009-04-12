@@ -10,6 +10,8 @@ function Facelift(bool bOn)
 {
 	local Name tName;
 
+	Super.Facelift(bOn);
+
 	tName = GetStateName();
 
 	if(bOn)
@@ -80,6 +82,7 @@ defaultproperties
      AccurateRange=80
      BaseAccuracy=1.000000
      FireSound2=Sound'DeusExSounds.Weapons.BatonFire'
+     bHasAltFire=True
      bPenetrating=False
      bHasMuzzleFlash=False
      bHandToHand=True
@@ -111,5 +114,4 @@ defaultproperties
      Mesh=LodMesh'DeusExItems.BatonPickup'
      CollisionRadius=14.000000
      CollisionHeight=1.000000
-     bHasAltFire=True
 }

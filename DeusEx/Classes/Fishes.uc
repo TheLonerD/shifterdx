@@ -432,6 +432,7 @@ defaultproperties
 {
      bFlock=True
      WalkingSpeed=1.000000
+     bLikesNeutral=False
      bHasShadow=False
      bHighlight=False
      bSpawnBubbles=False
@@ -457,5 +458,4 @@ defaultproperties
      Buoyancy=1.000000
      RotationRate=(Pitch=6000,Yaw=25000)
      BindName="Fishes"
-     bLikesNeutral=False
 }

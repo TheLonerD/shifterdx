@@ -5,6 +5,8 @@ class WHRedCouch extends Seat;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPWHredcouch", class'mesh', True));
 

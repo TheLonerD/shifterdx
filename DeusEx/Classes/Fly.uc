@@ -176,6 +176,7 @@ function PlaySwimming() {}
 defaultproperties
 {
      WalkingSpeed=1.000000
+     bLikesNeutral=False
      bHasShadow=False
      bHighlight=False
      bSpawnBubbles=False
@@ -211,5 +212,4 @@ defaultproperties
      BindName="Fly"
      FamiliarName="Fly"
      UnfamiliarName="Fly"
-     bLikesNeutral=False
 }

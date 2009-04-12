@@ -30,6 +30,8 @@ function Facelift(bool bOn)
 {
 	local string texstr;
 
+	Super.Facelift(bOn);
+
 	switch (SkinColor)
 	{
 

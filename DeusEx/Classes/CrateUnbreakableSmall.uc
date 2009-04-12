@@ -5,6 +5,8 @@ class CrateUnbreakableSmall extends Containers;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPcrateUnbreakableSmall", class'mesh', True));
 

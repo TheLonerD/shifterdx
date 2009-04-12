@@ -643,6 +643,43 @@ UPDATES:
 	it's back to the ever-so-dicey practice of having states containing
 	functions with the same name but different return types.
 
+	 - Changed the way the "Facelift" function is defined so that it won't
+	(I think) be overridden for the parent class by the first child
+	function, which (I think) is what was causing some odd issues with HDTP
+	models randomly appearing in other mods like Zodiac and TNM.
+
+	 - Burning corpses will no longer continue burning if for some reason
+	they have no visible fire effects associated with them.  Apparently
+	random gibbing is no fun.
+
+	 - Moved where one of the log messages is placed in relation to the "no
+	music in the last NYC mission" fix, as it was causing problems in mods
+	where certain maps are supposed to have no music.  (Giant log files of
+	doom.) The lack of music will only be noted if it's being fixed now.
+
+	 - Added some COA (cover our asses) code to ATMs, Repair Bots, Medical
+	Bots, and a few other classes which will make sure that one of the
+	classes some of my new code accesses is actually there.  This was
+	causing a few mods to spam the log file with "accessed None" messages.
+	You shouldn't notice any change in gameplay, though the fact that I
+	needed to add this code tells me that my "pause-then-hack" exploit fix
+	may not work in ALL situations, just most.
+
+	 - Reworked the way the "skills-for-kills" system is done.  It is now
+	handled by a separate function which is initiated elsewhere in the game
+	code, which will allow it to work with mods like TNM, Hotel Carone, and
+	so forth.
+
+	 - Made sure the HDTP facelift is only applied to the actual objects
+	they are meant to and NOT child classes in other mods, e.g. the subway
+	ticket machine in TNM.
+
+	 - Discovered that two items weren't having their HDTP facelift applied
+	until save/load: Beam Triggers and thrown Crowbars.  Now fixed.
+
+	 - Added every TNM melee weapon to the weapon cycling function, which
+	includes their version of the Combat Knife/etc.
+
 
 	v1.8.1:
 

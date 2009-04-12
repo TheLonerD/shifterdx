@@ -104,7 +104,6 @@ function Deactivate()
 defaultproperties
 {
      EnergyRate=10.000000
-     MaxLevel=3
      Icon=Texture'DeusExUI.UserInterface.AugIconLight'
      smallIcon=Texture'DeusExUI.UserInterface.AugIconLight_Small'
      AugmentationName="Light"

@@ -35,11 +35,12 @@ simulated function PreBeginPlay()
 
 function Tick(float deltaTime)
 {
-	if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime) //== Pause time offset
-	{
-		lastHackTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
-		lockoutTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
-	}
+	if(DeusExGameInfo(Level.Game) != None)
+		if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime) //== Pause time offset
+		{
+			lastHackTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
+			lockoutTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
+		}
 
 	Super.Tick(deltaTime);
 

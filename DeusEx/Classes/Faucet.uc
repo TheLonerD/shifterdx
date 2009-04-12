@@ -48,6 +48,8 @@ function Frob(actor Frobber, Inventory frobWith)
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPFaucet", class'mesh', True));
 

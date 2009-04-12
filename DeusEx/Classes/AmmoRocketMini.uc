@@ -5,14 +5,12 @@ class AmmoRocketMini extends DeusExAmmo;
 
 function Facelift(bool bOn)
 {
-	local Texture temptex;
+	Super.Facelift(bOn);
+
 	if(bOn)
-	{
-		temptex = Texture(DynamicLoadObject("ShifterEX.Ammo.AmmoRocketMini",class'Texture', True));
-		if(temptex != None)
-			Skin = temptex;
-	}
-	else
+		Skin = Texture(DynamicLoadObject("ShifterEX.Ammo.AmmoRocketMini",class'Texture', True));
+
+	if(!bOn || Skin == None)
 		Skin = Default.Skin;
 }
 
@@ -20,6 +18,7 @@ defaultproperties
 {
      bShowInfo=True
      bIsNonStandard=True
+     DynamicLoadIcon="ShifterEX.Icons.BeltIconAmmoRocketMini"
      AmmoAmount=10
      MaxAmmo=60
      ItemName="Light Rockets"
@@ -36,5 +35,4 @@ defaultproperties
      CollisionRadius=18.000000
      CollisionHeight=7.800000
      bCollideActors=True
-     DynamicLoadIcon="ShifterEX.Icons.BeltIconAmmoRocketMini"
 }

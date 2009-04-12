@@ -24,12 +24,12 @@ event TravelPostAccept()
 
 defaultproperties
 {
+     HitSound3=Sound'DeusExSounds.Animal.GrayPainSmall'
      CarcassType=Class'DeusEx.GrayCarcass'
      JumpSound=Sound'DeusExSounds.Animal.GrayIdle'
      BaseEyeHeight=25.000000
      HitSound1=Sound'DeusExSounds.Animal.GrayPainSmall'
      HitSound2=Sound'DeusExSounds.Animal.GrayPainLarge'
-     HitSound3=Sound'DeusExSounds.Animal.GrayPainSmall'
      Land=Sound'DeusExSounds.Animal.GrayIdle2'
      Die=Sound'DeusExSounds.Animal.GrayDeath'
      Mesh=LodMesh'DeusExCharacters.Gray'

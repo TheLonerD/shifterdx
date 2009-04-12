@@ -732,6 +732,8 @@ function PreBeginPlay()
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPAutoturretbase", class'mesh', True));
 

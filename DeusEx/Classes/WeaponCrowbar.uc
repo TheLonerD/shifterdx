@@ -55,6 +55,8 @@ function Facelift(bool bOn)
 {
 	local Name tName;
 
+	Super.Facelift(bOn);
+
 	tName = GetStateName();
 
 	if(bOn)
@@ -101,6 +103,7 @@ defaultproperties
      maxRange=80
      AccurateRange=80
      FireSound2=Sound'DeusExSounds.Weapons.CrowbarFire'
+     bHasAltFire=True
      bPenetrating=False
      bHasMuzzleFlash=False
      bHandToHand=True
@@ -139,5 +142,4 @@ defaultproperties
      CollisionRadius=19.000000
      CollisionHeight=1.050000
      Mass=15.000000
-     bHasAltFire=True
 }

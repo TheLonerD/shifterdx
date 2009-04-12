@@ -9,6 +9,8 @@ var localized String msgEmpty;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPWaterCooler", class'mesh', True));
 

@@ -163,15 +163,14 @@ defaultproperties
      bPlayDying=True
      FoodClass=Class'DeusEx.DeusExCarcass'
      bFleeBigPawns=True
-     bFearCarcass=False
      MinHealth=0.000000
      CarcassType=Class'DeusEx.CatCarcass'
      WalkingSpeed=0.111111
-     InitialInventory(0)=(Inventory=Class'DeusEx.WeaponCatScratch')
      InitialAlliances(0)=(AllianceName=Rat,AllianceLevel=-1.000000,bPermanent=True)
      InitialAlliances(1)=(AllianceName=Seagull,AllianceLevel=-1.000000,bPermanent=True)
      InitialAlliances(2)=(AllianceName=Pigeon,AllianceLevel=-1.000000,bPermanent=True)
      InitialAlliances(3)=(AllianceName=Fly,AllianceLevel=1.000000,bPermanent=True)
+     InitialInventory(0)=(Inventory=Class'DeusEx.WeaponCatScratch')
      GroundSpeed=180.000000
      WaterSpeed=50.000000
      AirSpeed=144.000000
@@ -196,5 +195,4 @@ defaultproperties
      BindName="Cat"
      FamiliarName="Cat"
      UnfamiliarName="Cat"
-     SurprisePeriod=0.000000
 }

@@ -908,10 +908,25 @@ exec function GlobalFacelift(bool bOn)
 
 		if(DeusExCarcass(generic) != None)
 			DeusExCarcass(generic).Facelift(bOn);
+
+		if(DeusExProjectile(generic) != None)
+			DeusExProjectile(generic).Facelift(bOn);
+
+		if(BeamTrigger(generic) != None)
+			BeamTrigger(generic).Facelift(bOn);
 	}
 }
 
-function Facelift(bool bOn){}
+function Facelift(bool bOn)
+{
+	//== Only do this for DeusEx classes
+	if(instr(String(Class.Name), ".") > -1 && bOn)
+		if(instr(String(Class.Name), "DeusEx.") <= -1)
+			return;
+	else
+		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && !bOn)
+			return;
+}
 
 exec function KillAll(class<actor> aClass) //== Overridden for unrealistic fun time
 {
@@ -1582,10 +1597,10 @@ function UpdateDynamicMusic(float deltaTime)
 		{
 			SongString = FlagBase.GetName('Song_Name1') $"."$ FlagBase.GetName('Song_Name2');
 
-			log("UpdateDynamicMusic()============> No music specified in map, loading from flags.  Attempted load name is "$ SongString);
-
 			if(SongString != "None.None")
 			{
+				log("UpdateDynamicMusic()============> No music specified in map, loading from flags.  Attempted load name is "$ SongString);
+
 				LevelSong = Music(DynamicLoadObject(SongString, class'Music'));
 
 				//== We'll just assume this is the appropriate song type.  Later updates will catch us if we're wronh
@@ -2378,7 +2393,7 @@ exec function DeactivateAllAugs()
 
 exec function SwitchAmmo()
 {
-	if (inHand.IsA('DeusExWeapon'))
+	if (DeusExWeapon(inHand) != None)
 		DeusExWeapon(inHand).CycleAmmo();
 	else if(inHand.IsA('DeusExPickup'))
 		DeusExPickup(inHand).SwitchItem();
@@ -12809,7 +12824,6 @@ defaultproperties
      bAutoReload=True
      bDisplayAllGoals=True
      bHUDShowAllAugs=True
-     UIBackground=1
      bShowAmmoDescriptions=True
      bConfirmSaveDeletes=True
      bConfirmNoteDeletes=True
@@ -12825,6 +12839,9 @@ defaultproperties
      AugPrefs(8)=AugAqualung
      MenuThemeName="Default"
      HUDThemeName="Default"
+     bHUDBordersVisible=True
+     bHUDBordersTranslucent=True
+     bHUDBackgroundTranslucent=True
      InventoryFull="You don't have enough room in your inventory to pick up the %s"
      TooMuchAmmo="You already have enough of that type of ammo"
      TooHeavyToLift="It's too heavy to lift"

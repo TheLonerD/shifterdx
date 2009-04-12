@@ -7,9 +7,9 @@ defaultproperties
 {
      CarcassType=Class'DeusEx.HKMilitaryCarcass'
      WalkingSpeed=0.296000
+     bLikesNeutral=False
      walkAnimMult=0.780000
      GroundSpeed=200.000000
-     bLikesNeutral=False
      Texture=Texture'DeusExItems.Skins.PinkMaskTex'
      Mesh=LodMesh'DeusExCharacters.GM_Jumpsuit'
      MultiSkins(0)=Texture'DeusExCharacters.Skins.SkinTex2'

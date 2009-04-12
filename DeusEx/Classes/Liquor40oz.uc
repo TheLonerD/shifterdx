@@ -19,6 +19,8 @@ function Facelift(bool bOn)
 {
 	local int skinnum;
 
+	Super.Facelift(bOn);
+
 	skinnum = SkinColor;
 
 	if(numCopies > 1 && numCopies <= 10)
@@ -109,8 +111,8 @@ Begin:
 
 defaultproperties
 {
+     drugEffect=7.000000
      healthEffect=5
-     drugEffect=7.0
      bBreakable=True
      maxCopies=10
      bCanHaveMultipleCopies=True

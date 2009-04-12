@@ -80,6 +80,8 @@ function Facelift(bool bLiftOn)
 {
 	local String texstr;
 
+	Super.Facelift(bLiftOn);
+
 	switch (SkinColor)
 	{
 		case SC_1:	texstr = "CageLightTex1";

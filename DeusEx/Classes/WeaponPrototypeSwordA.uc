@@ -127,6 +127,7 @@ defaultproperties
 {
      HitDamage=10
      AreaOfEffect=AOE_Sphere
+     bUnique=True
      mpHitDamage=10
      InventoryGroup=53
      ItemName="Prototype NanoSword (Mk I)"
@@ -137,5 +138,4 @@ defaultproperties
      LightBrightness=224
      LightSaturation=80
      LightRadius=4
-     bUnique=True
 }

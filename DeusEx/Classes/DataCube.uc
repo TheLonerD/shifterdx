@@ -5,6 +5,8 @@ class DataCube extends InformationDevices;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPDatacubetex1", class'Texture', True));
 	if(Skin == None || !bOn)

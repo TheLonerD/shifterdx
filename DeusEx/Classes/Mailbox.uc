@@ -5,6 +5,8 @@ class Mailbox extends Containers;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPmailbox", class'mesh', True));
 

@@ -40,7 +40,16 @@ simulated function PreBeginPlay()
 //  Applies the new HDTP textures and meshes if present, stays the same
 //  otherwise.  Also, the name of this function is made of win
 // ----------------------------------------------------------------------
-function Facelift(bool bOn){}
+function Facelift(bool bOn)
+{
+	//== Only do this for DeusEx classes
+	if(instr(String(Class.Name), ".") > -1 && bOn)
+		if(instr(String(Class.Name), "DeusEx.") <= -1)
+			return;
+	else
+		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && !bOn)
+			return;
+}
 
 // ----------------------------------------------------------------------
 // HandlePickupQuery()
@@ -324,11 +333,11 @@ defaultproperties
      FragType=Class'DeusEx.GlassFragment'
      CountLabel="COUNT:"
      msgTooMany="You can't carry any more of those"
+     SwitchingTo="Switching to %s"
+     OutOf="Out of %s"
      NumCopies=1
      PickupMessage="You found"
      ItemName="DEFAULT PICKUP NAME - REPORT THIS AS A BUG"
      RespawnTime=30.000000
      LandSound=Sound'DeusExSounds.Generic.PaperHit1'
-     SwitchingTo="Switching to %s"
-     OutOf="Out of %s"
 }

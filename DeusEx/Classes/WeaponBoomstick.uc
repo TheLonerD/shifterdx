@@ -11,10 +11,10 @@ defaultproperties
      BaseAccuracy=0.500000
      AreaOfEffect=AOE_Sphere
      recoilStrength=0.400000
+     bUnique=True
      InventoryGroup=56
      ItemName="Boomstick"
      ItemArticle="the"
      Description="A Sawed-off Shotgun, heavily modified by Jock for improved accuracy, higher damage, and minimal recoil.  The name is a testament to Jock's strange taste in movies."
      beltDescription="BOOMSTICK"
-     bUnique=True
 }

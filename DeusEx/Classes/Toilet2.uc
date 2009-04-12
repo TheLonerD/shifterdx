@@ -14,6 +14,8 @@ var bool bUsing;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPToilet2", class'mesh', True));
 
@@ -48,12 +50,14 @@ function BeginPlay()
 
 	switch (SkinColor)
 	{
-		case SC_Clean:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.CleanUrinalTex", class'Texture', True));
+		case SC_Clean:	if(Skin == None)
+					MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.CleanUrinalTex", class'Texture', True));
 				if(MultiSkins[1] == None)
 					Skin = Texture'Toilet2Tex1';
 				break;
 
-		case SC_Filthy:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyUrinalTex", class'Texture', True));
+		case SC_Filthy:	if(Skin == None)
+					MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.DirtyUrinalTex", class'Texture', True));
 				if(MultiSkins[1] == None)
 					Skin = Texture'Toilet2Tex2';
 				break;

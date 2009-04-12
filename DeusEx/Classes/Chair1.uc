@@ -5,6 +5,8 @@ class Chair1 extends Seat;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPchair1", class'mesh', True));
 

@@ -37,12 +37,6 @@ function PlayDisabled()
 
 defaultproperties
 {
-     SearchingSound=Sound'DeusExSounds.Robot.SecurityBot2Searching'
-     SpeechTargetAcquired=Sound'DeusExSounds.Robot.SecurityBot2TargetAcquired'
-     SpeechTargetLost=Sound'DeusExSounds.Robot.SecurityBot2TargetLost'
-     SpeechOutOfAmmo=Sound'DeusExSounds.Robot.SecurityBot2OutOfAmmo'
-     SpeechCriticalDamage=Sound'DeusExSounds.Robot.SecurityBot2CriticalDamage'
-     SpeechScanning=Sound'DeusExSounds.Robot.SecurityBot2Scanning'
      EMPHitPoints=100
      explosionSound=Sound'DeusExSounds.Robot.SecurityBot2Explode'
      WalkingSpeed=1.000000
@@ -50,6 +44,12 @@ defaultproperties
      InitialInventory(0)=(Inventory=Class'DeusEx.WeaponRobotMachinegun')
      InitialInventory(1)=(Inventory=Class'DeusEx.Ammo762mm',Count=50)
      WalkSound=Sound'DeusExSounds.Robot.SecurityBot2Walk'
+     SearchingSound=Sound'DeusExSounds.Robot.SecurityBot2Searching'
+     SpeechTargetAcquired=Sound'DeusExSounds.Robot.SecurityBot2TargetAcquired'
+     SpeechTargetLost=Sound'DeusExSounds.Robot.SecurityBot2TargetLost'
+     SpeechOutOfAmmo=Sound'DeusExSounds.Robot.SecurityBot2OutOfAmmo'
+     SpeechCriticalDamage=Sound'DeusExSounds.Robot.SecurityBot2CriticalDamage'
+     SpeechScanning=Sound'DeusExSounds.Robot.SecurityBot2Scanning'
      GroundSpeed=95.000000
      WaterSpeed=50.000000
      AirSpeed=144.000000

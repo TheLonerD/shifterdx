@@ -8,8 +8,10 @@ class Valve extends DeusExDecoration;
 
 var() bool bOpen;
 
- function Facelift(bool bOn)
+function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPValve", class'Mesh', True));
 

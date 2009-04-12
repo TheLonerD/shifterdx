@@ -84,6 +84,8 @@ function Facelift(bool bOn)
 {
 	local String texstr;
 
+	Super.Facelift(bOn);
+
 	switch (SkinColor)
 	{
 		case SC_Biohazard:			texstr = "Barrel1Tex1";	break;

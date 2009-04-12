@@ -5,6 +5,8 @@ class CrateExplosiveSmall extends Containers;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPcrateExplosive", class'mesh', True));
 

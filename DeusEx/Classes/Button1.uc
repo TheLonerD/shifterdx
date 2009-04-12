@@ -98,6 +98,8 @@ function Facelift(bool bOn)
 {
 	local String texstr;
 
+	Super.Facelift(bOn);
+
 	switch (ButtonType)
 	{
 		case BT_Up:			if(bLit)	texstr = "Button1Tex2";
@@ -178,7 +180,7 @@ function TakeDamage(int Damage, Pawn EventInstigator, vector HitLocation, vector
 {
 	//log("Event Instigator = " $ EventInstigator $ " and DamageType = " $ DamageType);
 
-	if(DeusExPlayer(EventInstigator) != None && DamageType == 'Shot')
+	if(DeusExPlayer(EventInstigator) != None && (DamageType == 'Shot' || DamageType == 'Shell'))
 		Frob(EventInstigator, None);
 
 	Super.TakeDamage(Damage, EventInstigator, HitLocation, Momentum, DamageType);

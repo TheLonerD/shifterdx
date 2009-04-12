@@ -483,7 +483,16 @@ function PreBeginPlay()
 		Facelift(true);
 }
 
-function Facelift(bool bOn){}
+function Facelift(bool bOn)
+{
+	//== Only do this for DeusEx classes
+	if(instr(String(Class.Name), ".") > -1 && bOn)
+		if(instr(String(Class.Name), "DeusEx.") <= -1)
+			return;
+	else
+		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && !bOn)
+			return;
+}
 
 // ----------------------------------------------------------------------
 // PostBeginPlay()
@@ -3818,6 +3827,7 @@ function TakeDamageBase(int Damage, Pawn instigatedBy, Vector hitlocation, Vecto
 			Health = -1;
 
 		Died(instigatedBy, damageType, HitLocation);
+		SkillsForKills(instigatedBy, damageType, HitLocation);
 
 		//== Now to be really, really cool we'll make the death shot apply extra momentum
 		momentum *= 2.000000;
@@ -9323,11 +9333,7 @@ function Died(pawn Killer, name damageType, vector HitLocation)
 {
 	local DeusExPlayer player;
 	local name flagName;
-	local int skillpt;
-	local int temp;
-	local bool skillon, robokill;
 	local Vector offset;
-	local EHitLocation hitPos;
 
 	// Set a flag when NPCs die so we can possibly check it later
 	player = DeusExPlayer(GetPlayerPawn());
@@ -9351,16 +9357,54 @@ function Died(pawn Killer, name damageType, vector HitLocation)
 
 	offset = (hitLocation - Location) << Rotation;
 
-	// == do a whopping one point of damage to acquire the EHitLocation Enumeration value
-	hitPos = handleDamage(1, HitLocation, offset, damageType);
-
 	Super.Died(Killer, damageType, HitLocation);  // bStunned is set here
 
 	if(bUnStunnable)
 		bStunned = false;
 
+
+	if (player != None)
+	{
+		if (bImportant)
+		{
+			flagName = player.rootWindow.StringToName(BindName$"_Dead");
+			player.flagBase.SetBool(flagName, True);
+
+			// make sure the flag never expires
+			player.flagBase.SetExpiration(flagName, FLAG_Bool, 0);
+
+			if (bStunned)
+			{
+				flagName = player.rootWindow.StringToName(BindName$"_Unconscious");
+				player.flagBase.SetBool(flagName, True);
+
+				// make sure the flag never expires
+				player.flagBase.SetExpiration(flagName, FLAG_Bool, 0);
+			}
+		}
+	}
+}
+
+function SkillsForKills(pawn Killer, name damageType, vector HitLocation)
+{
+	local DeusExPlayer player;
+	local int skillpt;
+	local int temp;
+	local bool skillon, robokill;
+	local Vector offset;
+	local EHitLocation hitPos;
+
+	player = DeusExPlayer(GetPlayerPawn());
+
+	offset = (hitLocation - Location) << Rotation;
+
+	// == do a whopping one point of damage to acquire the EHitLocation Enumeration value
+	hitPos = handleDamage(1, HitLocation, offset, damageType);
+
 	//Skill point stuff -- Y|yukichigai
-	skillon = DeusExGameInfo(Level.Game).bNewSkillSystem; //Makes sure the skillpoint system is enabled
+	skillon = true;
+	if(DeusExGameInfo(Level.Game) != None)
+		skillon = DeusExGameInfo(Level.Game).bNewSkillSystem; //Makes sure the skillpoint system is enabled
 
 	robokill = False;
 	if(skillon && Robot(Killer) != None)
@@ -9477,30 +9521,7 @@ function Died(pawn Killer, name damageType, vector HitLocation)
 		}
 		
 	}
-
-	if (player != None)
-	{
-		if (bImportant)
-		{
-			flagName = player.rootWindow.StringToName(BindName$"_Dead");
-			player.flagBase.SetBool(flagName, True);
-
-			// make sure the flag never expires
-			player.flagBase.SetExpiration(flagName, FLAG_Bool, 0);
-
-			if (bStunned)
-			{
-				flagName = player.rootWindow.StringToName(BindName$"_Unconscious");
-				player.flagBase.SetBool(flagName, True);
-
-				// make sure the flag never expires
-				player.flagBase.SetExpiration(flagName, FLAG_Bool, 0);
-			}
-		}
-	}
 }
-
-
 
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
@@ -15605,7 +15626,6 @@ defaultproperties
      CloakThreshold=50
      walkAnimMult=0.700000
      runAnimMult=1.000000
-     bCanGiveWeapon=False
      PendingSkillPoints=-1
      bCanStrafe=True
      bCanWalk=True

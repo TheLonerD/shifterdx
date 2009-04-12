@@ -15,6 +15,8 @@ function Facelift(bool bOn)
 {
 	local Texture lSkin;
 
+	Super.Facelift(bOn);
+
 	lSkin = Skin;
 
 	if(bOn && lSkin != Texture'CandybarTex2')

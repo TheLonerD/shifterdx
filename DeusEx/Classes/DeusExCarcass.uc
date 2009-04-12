@@ -53,7 +53,16 @@ function PreBeginPlay()
 		Facelift(true);
 }
 
-function Facelift(bool bOn){}
+function Facelift(bool bOn)
+{
+	//== Only do this for DeusEx classes
+	if(instr(String(Class.Name), ".") > -1 && bOn)
+		if(instr(String(Class.Name), "DeusEx.") <= -1)
+			return;
+	else
+		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && !bOn)
+			return;
+}
 
 // ----------------------------------------------------------------------
 // InitFor()
@@ -248,7 +257,8 @@ function Tick(float deltaSeconds)
 		{
 			burnTimer += deltaSeconds;
 			UpdateFire(deltaSeconds);
-			if (burnTimer >= BurnPeriod)
+			//== If there are no visible fire effects then we need to stop burning, lest this get very confusing
+			if (burnTimer >= BurnPeriod || f == None)
 				ExtinguishFire();
 		}
 	}

@@ -206,6 +206,7 @@ defaultproperties
      MinHealth=2.000000
      CarcassType=Class'DeusEx.RatCarcass'
      WalkingSpeed=0.360000
+     bLikesNeutral=False
      GroundSpeed=250.000000
      WaterSpeed=24.000000
      AirSpeed=150.000000
@@ -237,5 +238,4 @@ defaultproperties
      BindName="Rat"
      FamiliarName="Rat"
      UnfamiliarName="Rat"
-     bLikesNeutral=False
 }

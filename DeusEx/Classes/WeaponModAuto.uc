@@ -8,6 +8,8 @@ class WeaponModAuto extends WeaponMod;
 function Facelift(bool bOn)
 {
 	local Texture temptex;
+	Super.Facelift(bOn);
+
 	if(bOn)
 	{
 		temptex = Texture(DynamicLoadObject("ShifterEX.Items.WeaponModTexAuto",class'Texture', True));

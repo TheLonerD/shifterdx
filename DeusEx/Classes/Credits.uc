@@ -8,6 +8,8 @@ var localized String msgCreditsAdded;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPCreditstex1", class'Texture', True));
 

@@ -5,6 +5,8 @@ class Flask extends DeusExDecoration;
 
 function Facelift(bool bOn)
 {
+	Super.Facelift(bOn);
+
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPFlaskTex1", class'Texture', True));
 

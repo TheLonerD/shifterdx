@@ -49,6 +49,7 @@ defaultproperties
 {
      HitDamage=12
      AreaOfEffect=AOE_Cone
+     bUnique=True
      mpHitDamage=10
      Misc1Sound=Sound'DeusExSounds.Weapons.NanoSwordHitFlesh'
      InventoryGroup=55
@@ -61,5 +62,4 @@ defaultproperties
      LightHue=160
      LightSaturation=80
      LightRadius=4
-     bUnique=True
 }

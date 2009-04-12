@@ -7,6 +7,8 @@ var bool bOn;
 
 function Facelift(bool bLiftOn)
 {
+	Super.Facelift(bLiftOn);
+
 	if(bLiftOn)
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPLightswitchTex1",class'Texture', True));
 

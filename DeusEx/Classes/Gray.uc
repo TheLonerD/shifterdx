@@ -258,7 +258,6 @@ state Fleeing
 	}
 }
 
-
 defaultproperties
 {
      DamageRadius=256.000000

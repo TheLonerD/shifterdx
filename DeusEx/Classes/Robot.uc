@@ -273,6 +273,7 @@ function TakeDamageBase(int Damage, Pawn instigatedBy, Vector hitlocation, Vecto
 			Health = -1 * actualDamage;
 		Enemy = instigatedBy;
 		Died(instigatedBy, damageType, HitLocation);
+		SkillsForKills(instigatedBy, damageType, HitLocation);
 	}
 	MakeNoise(1.0);
 
