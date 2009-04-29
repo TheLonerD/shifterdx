@@ -362,7 +362,7 @@ function InstallAugmentation(optional int level)
 	{
 		winInfo.Clear();
 		winInfo.SetTitle(selectedAug.AugmentationName);
-		winInfo.SetText(SelectReplaceText);
+		winInfo.SetText(Sprintf(SelectReplaceText,selectedAug.AugLocsText[selectedAug.AugmentationLocation]));
 		return;
 	}
 		
@@ -494,7 +494,7 @@ defaultproperties
      SelectAnotherText="Please select another augmentation to install."
      MayUpgradeText="You may upgrade this augmentation instead."
      CannotUpgradeText="This augmentation is at its maximum level and cannot be upgraded."
-     SelectReplaceText="Select the augmentation to replace."
+     SelectReplaceText="Select the augmentation to replace.  The augmentation must be in the %s slot."
      InstalledText="Augmentation installed."
      UpgradedText="Augmentation upgraded to level %d."
      clientTextures(0)=Texture'DeusExUI.UserInterface.HUDMedbotBackground_1'

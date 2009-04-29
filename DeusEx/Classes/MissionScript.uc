@@ -209,11 +209,6 @@ function PreTravel()
 
 function Timer()
 {
-	local ScriptedPawn S;
-	local Inventory inv, itemp;
-	local bool bWhatever, bCheck;
-	local int check; //Guard against infinite inventory
-
 	// make sure our flags are initialized correctly
 	if (flags == None)
 	{
@@ -222,71 +217,6 @@ function Timer()
 		// Don't want to do this if the user just loaded a savegame
 		if ((player != None) && (flags.GetBool('PlayerTraveling')))
 			FirstFrame();
-	}
-
-
-	if(!flags.getBool('NPCInventoryChecked'))
-	{
-		bCheck = true;
-		foreach AllActors(Class'ScriptedPawn', S)
-		{
-			if(S.bNPCRandomCheck && !S.bNPCRandomGiven)
-			{
-				bCheck = false;
-				bWhatever = false;
-				inv = S.Inventory;
-				check = 0;
-				while(inv != None && check <= 10)
-				{
-					check++;
-					itemp = None;
-					if(DeusExWeapon(inv) != None || player.combatDifficulty > 4.0)
-					{
-						bWhatever = true;
-					}
-					if(inv.IsA('WeaponCombatKnife') && S.bCheckedCombat)
-					{
-						switch(Rand(4))
-						{
-							case 2:
-							case 3:
-							case 0:
-								itemp = spawn(Class'WeaponCrowbar', S);
-								break;
-							case 1:
-								itemp = spawn(Class'WeaponSword', S);
-								break;
-						}
-						if(itemp != None)
-						{
-							itemp.InitialState='Idle2';
-							itemp.GiveTo(S);
-							itemp.setBase(S);
-	
-							S.bCheckedCombat = False;
-						}
-					}
-					if(itemp != None)
-						itemp = inv;
-					inv = inv.Inventory;
-					if(itemp != None)
-					{
-						S.DeleteInventory(itemp);
-						itemp.destroy();
-					}
-	
-				}
-				if(bWhatever)
-				{
-					S.GenerateRandomInventory();
-					S.bNPCRandomGiven = True;
-				}
-			}
-		}
-		if(bCheck && player.CombatDifficulty <= 4.0) //In unrealistic spawned animals can get random inventory
-		{
-			flags.SetBool('NPCInventoryChecked',True,, -1);
-		}
 	}
 }
 

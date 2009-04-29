@@ -603,6 +603,7 @@ function InitializePawn()
 		PlayTurnHead(LOOK_Forward, 1.0, 0.0001);
 
 		bInitialized = true;
+		SetTimer(5.0, True); //== Random inventory checker
 	}
 }
 
@@ -620,6 +621,8 @@ function InitializeInventory()
 	local Weapon    firstWeapon;
 	local int	testRandom;
 	local DeusExPlayer dxPlayer;
+
+	local class<Inventory>	Consumables[6]; //== A list of consumables for NPC Random Inventory
 
 	dxPlayer = DeusExPlayer(GetPlayerPawn());
 
@@ -677,12 +680,28 @@ function InitializeInventory()
 	//Modified -- Y|yukichigai
 	//Give the pawn some random extra items based on chance
 	// Better known as NPC Random Inventory.  Some is done here, some is done by the GenerateRandomInventory() function
-	// Anything not done here is initiated by the MissionScript.Timer() function
+	// Anything not done here is initiated by the ScriptedPawn.Timer() function
 
 	testRandom = Rand(22);
 
 	if(testRandom >= 15 && (!IsA('Animal') && !IsA('Robot') || dxPlayer.combatDifficulty > 4.0))
 	{
+		Consumables[0] = class'SoyFood';
+		Consumables[1] = class'Candybar';
+		Consumables[2] = class'Sodacan';
+		Consumables[3] = class'Medkit';
+		Consumables[4] = class'VialCrack';
+		Consumables[5] = class'Cigarettes';
+
+		//== Some substitutions for TNM
+		if(dxPlayer.Class.Name == 'trestkon')
+		{
+			Consumables[0] = Class<Inventory>(DynamicLoadObject("TNMItems.Beans", class'Class', False));
+			Consumables[1] = Class<Inventory>(DynamicLoadObject("TNMItems.KetchupBar", class'Class', False));
+			Consumables[4] = Class<Inventory>(DynamicLoadObject("TNMItems.TNMVialCrack", class'Class', False));
+			Consumables[5] = Class<Inventory>(DynamicLoadObject("TNMItems.PlasticCoffee", class'Class', False));
+		}
+
 		if(testRandom <= 15) //Credits
 		{
 			inv = spawn(Class'Credits',self);
@@ -698,31 +717,15 @@ function InitializeInventory()
 		if(Rand(4) == 2 || (dxPlayer.combatDifficulty > 4.0 && Rand(3) > 0))
 			bCheckedCombat = True; //If/when they are carrying a combat knife, replace it with a Crowbar or Sword
 		inv = None;
-		switch(Rand(7))
+		i = Rand(7);
+		switch(i)
 		{
 			case 2:
-				switch(Rand(3))
-				{
-					case 0:
-						inv = spawn(Class'SoyFood',self);
-						break;
-					case 1:
-						inv = spawn(Class'Candybar',self);
-						break;
-					case 2:
-						inv = spawn(Class'Sodacan',self);
-						break;
-				}
-				break;
+				inv = spawn(Consumables[Rand(3)], self);
 			case 3:
-				inv = spawn(Class'Medkit',self);
-				break;
 			case 4:
-				//Crack: it's not just for junkies anymore
-				inv = spawn(Class'VialCrack',self);
-				break;
 			case 5:
-				inv = spawn(Class'Cigarettes',self);
+				inv = spawn(Consumables[i], self);
 				break;
 		}
 		bNPCRandomCheck = True;
@@ -3009,7 +3012,8 @@ function Carcass SpawnCarcass()
 			// Do everything in ExtinguishFire manually, save the clearing of the fires
 			bOnFire = False;
 			burnTimer = 0;
-			SetTimer(0, False);
+			//SetTimer(0, False); //== Handled by the timer now
+			SetTimer(5.0, True);
 		}
 
 		// give the carcass the pawn's inventory if we aren't an animal or robot
@@ -3157,12 +3161,49 @@ function bool GenerateRandomInventory()
 	local bool bHadWeapon, bHadPowerfulWeapon;
 	local DeusExPlayer dxPlayer;
 
+	local class<Inventory> Am20mm, AmDragon, AmFlare, Am10mmEx, GepGun, SawedOff, PepperGun, PS20, Prod, Shuriken, Pistol, Flamethrower, LAW;
+
+
+	Am20mm 		= class'Ammo20mm';
+	AmDragon 	= class'AmmoDragon';
+	AmFlare		= class'AmmoDartFlare';
+	Am10mmEX	= class'Ammo10mmEX';
+
+
+	GepGun		= class'WeaponGEPGun';
+	SawedOff	= class'WeaponSawedOffShotgun';
+	PepperGun	= class'WeaponPepperGun';
+	PS20		= class'WeaponHideAGun';
+	Prod		= class'WeaponProd';
+	Shuriken	= class'WeaponShuriken';
+	Pistol		= class'WeaponPistol';
+	Flamethrower	= class'WeaponFlamethrower';
+	LAW		= class'WeaponLAW';
+
 	dxPlayer = DeusExPlayer(GetPlayerPawn());
 
 	item = Inventory;
 
 	bHadWeapon = False;
 	bHadPowerfulWeapon = False;
+
+	//== For TNM we need to redo the list completely
+	if(dxPlayer.Class.Name == 'trestkon')
+	{
+		GepGun		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMGepGun", class'Class', True));
+		SawedOff	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMSawedOffShotgun", class'Class', True));
+		PepperGun	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMPepperGun", class'Class', True));
+		PS20		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMHideAGun", class'Class', True));
+		Prod		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMProd", class'Class', True));
+		Shuriken	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMShuriken", class'Class', True));
+		Pistol		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMPistol", class'Class', True));
+		Flamethrower	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMFlamethrower", class'Class', True));
+		LAW		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMLAW", class'Class', True));
+
+		AmDragon	= Pistol;
+		Am10mmEX	= PS20;
+	}
+
 
 	while(item != None && !(bHadWeapon && bHadPowerfulWeapon))
 	{	
@@ -3176,7 +3217,7 @@ function bool GenerateRandomInventory()
 			bHadWeapon = True;
 
 			//Did they have a powerful weapon?
-			if(item.IsA('WeaponAssaultGun') || item.IsA('WeaponAssaultShotgun') || DeusExWeapon(item).GoverningSkill == Class'DeusEx.SkillWeaponHeavy' || IsA('Robot'))
+			if(InStr(String(item.Class.Name), "Assault") > -1 || DeusExWeapon(item).GoverningSkill == Class'DeusEx.SkillWeaponHeavy' || IsA('Robot'))
 				bHadPowerfulWeapon = True;
 		}
 
@@ -5718,7 +5759,8 @@ function ExtinguishFire()
 
 	bOnFire = False;
 	burnTimer = 0;
-	SetTimer(0, False);
+	//SetTimer(0, False);
+	SetTimer(5.0, True);
 
 	foreach BasedActors(class'Fire', f)
 		f.Destroy();
@@ -8236,7 +8278,75 @@ function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector mo
 
 function Timer()
 {
-	UpdateFire();
+	local Inventory inv, itemp;
+	local bool bWhatever, bCheck;
+	local int check; //Guard against infinite inventory
+
+	local class<Inventory>	CombatReplace[4];
+
+	if(bOnFire)
+		UpdateFire();
+
+	if(bNPCRandomCheck && !bNPCRandomGiven)
+	{
+		CombatReplace[0] = class'WeaponCrowbar';
+		CombatReplace[1] = class'WeaponSword';
+		CombatReplace[2] = class'WeaponCrowbar';
+		CombatReplace[3] = class'WeaponCrowbar';
+
+		if(GetPlayerPawn().Class.Name == 'trestkon')
+		{
+			CombatReplace[0]	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMCrowbar", class'Class', False));
+			CombatReplace[1]	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMSword", class'Class', False));
+			CombatReplace[2]	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponHammer", class'Class', False));
+			CombatReplace[3]	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponWrench", class'Class', False));
+		}
+
+		bCheck = false;
+		bWhatever = false;
+		inv = Inventory;
+		check = 0;
+		while(inv != None && check <= 10)
+		{
+			check++;
+			itemp = None;
+			if(DeusExWeapon(inv) != None || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0)
+			{
+				bWhatever = true;
+			}
+			if(InStr(String(inv.Class.Name), "CombatKnife") > -1 && bCheckedCombat)
+			{
+
+				if(Rand(4) < 4)
+					itemp = spawn(CombatReplace[Rand(3)], self);
+
+				if(itemp != None)
+				{
+					itemp.InitialState='Idle2';
+					itemp.GiveTo(Self);
+					itemp.setBase(Self);
+
+					bCheckedCombat = False;
+				}
+			}
+			if(itemp != None)
+				itemp = inv;
+			inv = inv.Inventory;
+			if(itemp != None)
+			{
+				DeleteInventory(itemp);
+				itemp.destroy();
+			}
+
+		}
+		if(bWhatever)
+		{
+			GenerateRandomInventory();
+			bNPCRandomGiven = True;
+		}
+	}
+	else if(!bOnFire)
+		SetTimer(0, False);
 }
 
 

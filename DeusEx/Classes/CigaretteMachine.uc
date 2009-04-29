@@ -5,11 +5,12 @@ class CigaretteMachine extends ElectronicDevices;
 
 #exec OBJ LOAD FILE=Ambient
 
+var() int Cost;
+
 var localized String msgDispensed;
 var localized String msgNoCredits;
 var int numUses;
 var localized String msgEmpty;
-var int Cost;
 var localized String CostUnit;
 var Class<Actor> VendProduct;
 var localized String VendProductName;
@@ -39,6 +40,13 @@ function String GetDecoName()
 {
 	if(numUses > 0)
 	{
+		if(ClassIsChildOf(Class, class'CigaretteMachine'))
+		{
+			if(Cost <= 0)
+				return ItemName $ " (Free!)";
+			return ItemName $ " (" $ Cost $" Credits)";
+		}
+
 		if(Cost <= 0)
 			return ItemName $ " (" $ VendProductName $ " - Free!)";
 		return ItemName $ " (" $ VendProductName $ " - " $ Cost $ " " $ CostUnit $ ")";

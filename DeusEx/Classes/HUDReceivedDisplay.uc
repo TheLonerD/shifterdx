@@ -137,6 +137,10 @@ function AddItem(Inventory invItem, Int count)
 	if(invItem == None || invItem.IsA('AmmoNone'))
 		return;
 
+	if(Ammo(invItem) != None)
+		if(Ammo(invItem).AmmoAmount > count)
+			count = Ammo(invItem).AmmoAmount;
+
 	//== Check for duplicate items
 	if(winTile != None)
 		itemWindow = winTile.GetTopChild();

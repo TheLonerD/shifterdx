@@ -3221,7 +3221,7 @@ SlotFullText="The slot that this augmentation occupies is already full. To insta
 SelectAnotherText="Please select another augmentation to install."
 MayUpgradeText="You may upgrade this augmentation instead."
 CannotUpgradeText="This augmentation is at its maximum level and cannot be upgraded."
-SelectReplaceText="Select the augmentation to replace."
+SelectReplaceText="Select the augmentation to replace.  The augmentation must be in the %s slot."
 UpgradedText="Augmentation upgraded to level %d."
 InstalledText="Augmentation installed."
 

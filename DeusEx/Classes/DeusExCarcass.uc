@@ -530,11 +530,17 @@ function Frob(Actor Frobber, Inventory frobWith)
 					if(DeusExAmmo(item) != None && !item.IsA('AmmoCombatKnife') && !item.IsA('AmmoNone'))
 					{
 						if(item.IsA('AmmoSabot') || item.IsA('Ammo10mmEX') || item.IsA('AmmoDragon'))
+						{
 							itemCount = 1 + Rand(12);
+							if(Ammo(item).AmmoAmount >= 5 && Ammo(item).AmmoAmount <= 12)
+								itemCount = Ammo(item).AmmoAmount;
+						}
 						else if(Ammo(item).AmmoAmount <= 4 && Ammo(item).AmmoAmount >= 1)
 							itemCount = Ammo(item).AmmoAmount;
 						else
 							itemCount = 1 + Rand(4);
+
+						Ammo(item).AmmoAmount = itemCount;
 
 						// EXCEPT for non-standard ammo -- Y|yukichigai
 						if(player.FindInventoryType(item.Class) != None)

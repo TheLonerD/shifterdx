@@ -680,6 +680,31 @@ UPDATES:
 	 - Added every TNM melee weapon to the weapon cycling function, which
 	includes their version of the Combat Knife/etc.
 
+	 - Modified the Augmentation Replacement method in the Medbot menu so
+	that it SPECIFICALLY reminds you that you need to select an aug that is
+	installed in the proper slot.
+
+	 - Adjusted the item received display so that it will try to display
+	the amount of ammo you were given whenever possible.  This MAY fix some
+	of the issues in TNM and other mods where it lists you as having
+	received only one unit of ammo, rather than X bullets/etc.
+
+	 - Changed the Dead Body search functions so that they will ALWAYS set
+	the amount of ammo in the ammo pickup you find equal to whatever you
+	are given.  This has no real effect other than working better with the
+	change I made above.
+
+	 - Moved part of NPC Random Inventory so that it is only done in the
+	Timer event for each NPC, not for the entire missionscript.  This will
+	use less system resources since the missionscript version was checking
+	every second and was checking EVERY NPC.
+
+	 - Adjusted NPC Random Inventory to give out appropriate TNM items when
+	the game is being run with TNM.  Generally this just means that the TNM
+	-specific version of the Assault Rifle/etc. will be given out, but
+	there are a few substitutions that have been made, e.g. instead of Soy
+	Food NPCs will be given Beans.
+
 
 	v1.8.1:
 
