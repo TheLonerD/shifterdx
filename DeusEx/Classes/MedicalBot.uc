@@ -20,6 +20,34 @@ replication
 }
 
 // ----------------------------------------------------------------------
+// PreBeginPlay()
+// ----------------------------------------------------------------------
+
+//== Because TNM's medbots have the Upgrade Aug feature but NOT the overwrite
+//==  feature we need to completely replace all instances of their medbots
+//==  with the Shifter-ized ones to get both features.
+function PreBeginPlay()
+{
+	local MedicalBot medbot;
+
+	if(String(Class.Name) == "TNM_Medbot")
+	{
+		medbot = spawn(Class'Medicalbot', Owner);
+
+		//== Oy vey.  Make sure there aren't any tags we're messing up
+		medbot.FamiliarName = FamiliarName;
+		medbot.UnfamiliarName = UnfamiliarName;
+		medbot.BindName = BindName;
+		medbot.Tag = Tag;
+
+		Destroy();
+		return;
+	}
+
+	Super.PreBeginPlay();
+}
+
+// ----------------------------------------------------------------------
 // PostBeginPlay()
 // ----------------------------------------------------------------------
 

@@ -705,6 +705,12 @@ UPDATES:
 	there are a few substitutions that have been made, e.g. instead of Soy
 	Food NPCs will be given Beans.
 
+	 - The TNM Medical Bots will now be replaced by Shifter's Medical Bots.
+	This will allow you to replace existing augmentations as well as
+	upgrading them using an existing augmentation cannister and a medbot;
+	the latter feature was already present in TNM and was the reason for a
+	specialized Medbot for the mod.
+
 
 	v1.8.1:
 
