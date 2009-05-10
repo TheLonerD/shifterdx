@@ -23,9 +23,10 @@ var Class<Actor> VendProduct; //what the machine vends.  Using the Actor class m
 			      // make it vend pretty much anything: pickups, weapons, grenades, NPCs....
 var localized String msgEmpty;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	Skin = None;
 
@@ -57,6 +58,8 @@ function Facelift(bool bOn)
 					break;
 		}
 	}
+
+	return true;
 }
 
 function BeginPlay()

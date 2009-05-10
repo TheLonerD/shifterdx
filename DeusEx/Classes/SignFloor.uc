@@ -14,11 +14,12 @@ simulated function PreBeginPlay()
 }
 
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local Texture lSkin;
 
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	Skin = None;
 
@@ -36,6 +37,8 @@ function Facelift(bool bOn)
 
 	if(lSkin != None)
 		Skin = lSkin;
+
+	return true;
 }
 
 defaultproperties

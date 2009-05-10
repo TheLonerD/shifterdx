@@ -3,9 +3,12 @@
 //=============================================================================
 class WeaponMagnum expands WeaponPistol;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local Texture temptex;
+
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 	{
@@ -32,6 +35,8 @@ function Facelift(bool bOn)
 		Icon = Default.Icon;
 		Skin = Default.Skin;
 	} 
+
+	return true;
 }
 
 defaultproperties

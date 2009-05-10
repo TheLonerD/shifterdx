@@ -18,9 +18,7 @@ function BeginPlay()
 {
 	Super.BeginPlay();
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPceilingfan", class'mesh', True));
-
-	if(Mesh == None)
+	if(Mesh == None || Mesh == Default.Mesh)
 	{
 		Mesh = Default.Mesh;
 		switch (SkinColor)
@@ -45,9 +43,10 @@ function BeginPlay()
 	}
 }
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPceilingfan", class'mesh', True));
@@ -77,6 +76,7 @@ function Facelift(bool bOn)
 		}
 	}
 
+	return true;
 }
 
 defaultproperties

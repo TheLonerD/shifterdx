@@ -3,14 +3,17 @@
 //=============================================================================
 class BoneSkull extends DeusExDecoration;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPBoneSkull", class'Texture', True));
 	else
 		Skin = None;
+
+	return true;
 }
 
 defaultproperties

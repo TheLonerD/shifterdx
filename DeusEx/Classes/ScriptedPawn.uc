@@ -483,15 +483,17 @@ function PreBeginPlay()
 		Facelift(true);
 }
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	//== Only do this for DeusEx classes
 	if(instr(String(Class.Name), ".") > -1 && bOn)
 		if(instr(String(Class.Name), "DeusEx.") <= -1)
-			return;
+			return false;
 	else
-		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && !bOn)
-			return;
+		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
+			return false;
+
+	return true;
 }
 
 // ----------------------------------------------------------------------
@@ -721,11 +723,11 @@ function InitializeInventory()
 		switch(i)
 		{
 			case 2:
-				inv = spawn(Consumables[Rand(3)], self);
+				inv = spawn(Consumables[Rand(3)], Self);
 			case 3:
 			case 4:
 			case 5:
-				inv = spawn(Consumables[i], self);
+				inv = spawn(Consumables[i], Self);
 				break;
 		}
 		bNPCRandomCheck = True;
@@ -758,7 +760,7 @@ function InitializeInventory()
 			//log("ScriptedPawn==>Item Given: " $inv$ " " $Self);
 			inv = None;
 		}
-		else
+		//else
 			//log("ScriptedPawn==>No item given for random inventory to " $Self $", setting flag to check for later weapon possession.");
 	}
 

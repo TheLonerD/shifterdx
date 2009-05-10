@@ -36,11 +36,12 @@ function SetSkin()
 		Skin = lSkin;
 }
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local string texstr;
 
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 	{
@@ -55,9 +56,11 @@ function Facelift(bool bOn)
 	if(Skin == None || !bOn)
 		Skin = None;
 
+	return true;
+
 }
 
-//== We can't just use the parent class, since we gotta do some complex stuff
+//== We can't just use the parent Consumable class, since we gotta do some complex stuff
 state Activated
 {
 	function Activate()

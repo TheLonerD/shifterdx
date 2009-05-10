@@ -76,11 +76,12 @@ function BeginPlay()
 	}
 }
 
-function Facelift(bool bLiftOn)
+function bool Facelift(bool bLiftOn)
 {
 	local String texstr;
 
-	Super.Facelift(bLiftOn);
+	if(!Super.Facelift(bLiftOn))
+		return false;
 
 	switch (SkinColor)
 	{
@@ -115,6 +116,8 @@ function Facelift(bool bLiftOn)
 		MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP" $ texstr, class'Texture', True));
 		MultiSkins[2] = MultiSkins[1];
 	}
+
+	return true;
 }
 
 function PostBeginPlay()

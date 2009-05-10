@@ -26,11 +26,12 @@ enum ESkinColor
 var() ESkinColor SkinColor;
 var bool bJustHit;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local string texstr;
 
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	switch (SkinColor)
 	{
@@ -68,6 +69,8 @@ function Facelift(bool bOn)
 	{
 		MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP"$ texstr, class'Texture', True));
 	}
+
+	return true;
 }
 
 function BeginPlay()
@@ -97,9 +100,13 @@ function BeginPlay()
 		case SC_Cue:		texstr = "PoolballTex16"; break;
 	}
 
-	MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP"$ texstr, class'Texture', True));
-	if(MultiSkins[1] == None)
+	if(Mesh != Default.Mesh)
+		MultiSkins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP"$ texstr, class'Texture', True));
+	if(Mesh == Default.Mesh || MultiSkins[1] == None)
+	{
+		Mesh = Default.Mesh;
 		Skin = Texture(DynamicLoadObject("DeusExDeco."$ texstr, class'Texture'));
+	}
 }
 
 function Tick(float deltaTime)

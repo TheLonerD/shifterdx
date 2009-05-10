@@ -16,12 +16,13 @@ var() ESkinColor StackSkins[10]; //Should match the maxCopies var
 
 var localized String InvDescription[4];
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local int skinnum;
 	local Texture otherIcon;
 
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(numCopies > 1 && numCopies <= 10) //Default.maxCopies
 	{
@@ -106,7 +107,7 @@ function PreBeginPlay()
 	//== Hack.  Check for Zodiac's Zap! Soda and replace it with a normal Soda can
 	//==  set to SkinType SC_Zap and delete the existing... but only if we aren't
 	//==  in someone's inventory already
-	if(String(Class.Name) == "ZapSodaCan" && Pawn(Owner) == None)
+	if(IsA('ZapSodaCan') && Pawn(Owner) == None)
 	{
 		soda = spawn(class'Sodacan', Owner);
 		soda.StackSkins[0] = SC_Zap;

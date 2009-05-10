@@ -3,9 +3,10 @@
 //=============================================================================
 class CrateBreakableMedCombat extends Containers;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 	{
@@ -18,6 +19,8 @@ function Facelift(bool bOn)
 		Mesh = Default.Mesh;
 		Skin = Default.Skin;
 	}
+
+	return true;
 }
 
 defaultproperties

@@ -15,11 +15,12 @@ var() ESkinColor SkinColor;
 var() bool bIsOn;
 var() Texture onTex;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local String texstr1, texstr2;
 
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPAlarmLightTex1", class'Texture'));
@@ -67,6 +68,8 @@ function Facelift(bool bOn)
 	}
 
 	onTex = MultiSkins[1];
+
+	return true;
 }
 
 //== This function is never used anymore, but I'm leaving it just in case some antequated code decides to call it

@@ -5,10 +5,12 @@
 //=============================================================================
 class WeaponModAuto extends WeaponMod;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local Texture temptex;
-	Super.Facelift(bOn);
+
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 	{
@@ -30,6 +32,8 @@ function Facelift(bool bOn)
 		largeIcon = Default.largeIcon;
 		Icon = Default.Icon;
 	}
+
+	return true;
 }
 
 // ----------------------------------------------------------------------

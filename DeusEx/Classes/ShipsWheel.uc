@@ -7,15 +7,18 @@ var bool bSpinning;
 var float spinTime, spinDuration;
 var int spinDir, spinSpeed;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPshipswheel", class'mesh', True));
 
 	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
+
+	return true;
 }
 
 function Tick(float deltaTime)

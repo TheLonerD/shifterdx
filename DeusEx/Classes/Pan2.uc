@@ -3,9 +3,10 @@
 //=============================================================================
 class Pan2 extends DeusExDecoration;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPPan2",class'mesh', True));
@@ -17,6 +18,8 @@ function Facelift(bool bOn)
 	}
 	else
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPPan2Tex1",class'Texture'));
+
+	return true;
 }
 
 defaultproperties

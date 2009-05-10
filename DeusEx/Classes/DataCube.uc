@@ -3,9 +3,10 @@
 //=============================================================================
 class DataCube extends InformationDevices;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPDatacubetex1", class'Texture', True));
@@ -20,6 +21,8 @@ function Facelift(bool bOn)
 		Texture = Texture'Effects.Corona.Corona_G';
 		MultiSkins[2] = Skin;
 	}
+
+	return true;
 }
 
 event FellOutOfWorld()

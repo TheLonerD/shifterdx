@@ -3,11 +3,12 @@
 //=============================================================================
 class GuntherHermannCarcass extends DeusExCarcass;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local int i;
 
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	Mesh = Mesh(DynamicLoadObject("HDTPcharacters.HDTPGuntherCarcassA", class'Mesh', True));
 
@@ -32,6 +33,8 @@ function Facelift(bool bOn)
 		Mesh2 = Mesh(DynamicLoadObject("HDTPcharacters.HDTPGuntherCarcassB", class'Mesh', True));
 		Mesh3 = Mesh(DynamicLoadObject("HDTPcharacters.HDTPGuntherCarcassC", class'Mesh', True));
 	}
+
+	return true;
 }
 
 defaultproperties

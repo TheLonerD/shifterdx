@@ -1,0 +1,46 @@
+//=================================//
+        Shifter for Deus Ex
+    GameTap Version Instructions
+//=================================//
+
+	Shifter can be installed on the GameTap version of Deus Ex, but the
+process is not precisely easy.  Fortunately the process requires no special
+knowledge, just a little time and patience.
+
+
+Step 1: Load Deus Ex via GameTap. The game will have to be running while you
+	perform some configuration steps.
+
+Step 2: Press "T" to open the chat prompt.
+
+Step 3: Press backspace a few times to remove the word "Say", then type in
+	"preferences".
+
+Step 4: Hit enter to bring up the Advanced Preferences window. The game will
+	probably drop out of fullscreen mode at this point.
+
+Step 5: Navigate to the following location (click the "+" to expand the
+	categories): Advanced -> File System -> Paths -> [0]. "[0]" should not
+	have a plus sign next to it.
+
+Step 6: Press the "Insert" button to the far right of "[0]". This will move
+	everything down one and create a new, blank "[0]" entry. You will need
+	to select "[0]" for the Insert button to appear.
+
+Step 7: Select the new "[0]" and enter the path to a folder on your hard drive
+	in the text box. This is just as it would appear (mostly) when viewing
+	the files in Windows. I recommend something really, really simple like
+	"C:\DeusEx".
+
+Step 8: In that same text box, add "\*.u" to the end of whatever path you
+	entered. You should wind up with something like "C:\DeusEx\*.u".
+
+Step 9: Close the Advanced Preferences window by clicking the small "x" in the
+	upper right.
+
+Step 10: Exit Deus Ex.
+
+Step 11: Download Shifter and extract the "DeusEx.u" file to the folder you
+	 entered in Step 7 (e.g. "C:\DeusEx").
+
+Step 12: Run Deus Ex via GameTap again. Enjoy the Shifter awesomeness.

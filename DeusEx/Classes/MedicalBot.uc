@@ -23,7 +23,7 @@ replication
 // PreBeginPlay()
 // ----------------------------------------------------------------------
 
-//== Because TNM's medbots have the Upgrade Aug feature but NOT the overwrite
+//== Because TNM's medbots have the Upgrade Aug feature but NOT the Overwrite
 //==  feature we need to completely replace all instances of their medbots
 //==  with the Shifter-ized ones to get both features.
 function PreBeginPlay()

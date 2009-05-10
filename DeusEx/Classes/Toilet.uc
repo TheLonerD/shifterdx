@@ -15,9 +15,10 @@ var bool bNeedsFlushing;
 var localized string unflushedString;
 var localized string awardString;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPToilet", class'mesh', True));
@@ -53,6 +54,8 @@ function Facelift(bool bOn)
 			MultiSkins[3] = Texture(DynamicLoadObject("HDTPDecos.Skins.CleanToiletWaterTex", class'Texture', True));
 
 	}
+
+	return true;
 }
 
 function BeginPlay()

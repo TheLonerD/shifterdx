@@ -68,9 +68,10 @@ function SetSkin()
 	}
 }
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 	{
@@ -107,6 +108,8 @@ function Facelift(bool bOn)
 		if(MultiSkins[1] == None)
 			Mesh = Default.Mesh;
 	}
+
+	return true;
 }
 
 // ----------------------------------------------------------------------

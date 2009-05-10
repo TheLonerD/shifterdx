@@ -6,15 +6,18 @@ class Credits extends DeusExPickup;
 var() int numCredits;
 var localized String msgCreditsAdded;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPCreditstex1", class'Texture', True));
 
 	if(Skin == None || !bOn)
 		Skin = None;
+
+	return true;
 }
 
 // ----------------------------------------------------------------------

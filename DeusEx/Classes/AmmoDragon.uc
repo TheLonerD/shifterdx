@@ -3,15 +3,18 @@
 //=============================================================================
 class AmmoDragon extends AmmoShell;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("ShifterEX.Ammo.AmmoDragon", class'Texture', True));
 
 	if(Skin == None || !bOn)
 		Skin = Default.Skin;
+
+	return true;
 }
 
 defaultproperties

@@ -380,15 +380,17 @@ function PreBeginPlay()
 		Facelift(true);
 }
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	//== Only do this for DeusEx classes
 	if(instr(String(Class.Name), ".") > -1 && bOn)
 		if(instr(String(Class.Name), "DeusEx.") <= -1)
-			return;
+			return false;
 	else
-		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && !bOn)
-			return;
+		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
+			return false;
+
+	return true;
 }
 
 //
@@ -838,6 +840,14 @@ function bool LoadAmmo(int ammoNum)
 				FireSound=Default.FireSound2;
 				FireSound2=Default.FireSound;
 			}
+			//== We'll save this ancient code for mod weapons that don't inherit the new sound variables
+			//==  Case in point: TNM
+			else if ( Ammo20mm(newAmmo) != None )
+				FireSound=Sound'AssaultGunFire20mm';
+			else if ( AmmoRocketWP(newAmmo) != None )
+				FireSound=Sound'GEPGunFireWP';
+			else if ( AmmoRocket(newAmmo) != None )
+				FireSound=Sound'GEPGunFire';
 
 			if ( Level.NetMode != NM_Standalone )
 				SetClientAmmoParams( bInstantHit, bAutomatic, ShotTime, FireSound, ProjectileClass, ProjectileSpeed );
@@ -863,7 +873,7 @@ function bool LoadAmmo(int ammoNum)
 simulated function SwitchItem()
 {
 	local int i, j;
-	local class<Weapon> SwitchList[28];
+	local class<Weapon> SwitchList[30];
 	local Pawn P;
 
 	P = Pawn(Owner);
@@ -901,7 +911,9 @@ simulated function SwitchItem()
 	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMSporkGolden", class'Class', True));
 	SwitchList[i++] = class'WeaponSword';
 	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMSword", class'Class', True));
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponThrowFoon", class'Class', True));
 	SwitchList[i++] = class'WeaponShuriken';
+	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponThrowSpork", class'Class', True));
 	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMShuriken", class'Class', True));
 	SwitchList[i++] = class'WeaponToxinBlade';
 
@@ -918,7 +930,7 @@ simulated function SwitchItem()
 			i = 0;
 
 		if(SwitchList[i] != None)
-			if(P.FindInventoryType(SwitchList[i]) != None && SwitchList[i] != Class)
+			if(P.FindInventoryType(SwitchList[i]) != None && P.FindInventoryType(SwitchList[i]).Class != Class)
 			{
 				if((P.FindInventoryType(SwitchList[i])).beltPos == -1)
 				{
@@ -2092,7 +2104,7 @@ simulated function bool ClientFire( float value )
 			if ( Ammo20mm(AmmoType) == None )
 				PlaySelectiveFiring();
 
-			if( (Ammo20mm(AmmoType) == None && Self.IsA('WeaponAssaultGun') && !bHasSilencer) || Self.IsA('WeaponFlameThrower') || Self.IsA('WeaponPepperGun'))
+			if( (Ammo20mm(AmmoType) == None && Self.IsA('WeaponAssaultGun') && !bHasSilencer) || Self.IsA('WeaponFlameThrower') || Self.IsA('WeaponPepperGun') || (Self.IsA('TNMWeapon') && !bInstantHit && Ammo20mm(AmmoType) == None))
 				PlayFiringSound();
 
 			if ( bInstantHit &&  ( Ammo20mm(AmmoType) == None ))
@@ -2232,7 +2244,8 @@ function Fire(float Value)
 			if ( Ammo20mm(AmmoType) == None )
 			{
 //				PlaySelectiveFiring();
-				if((Self.IsA('WeaponAssaultGun') && !bHasSilencer) || Self.IsA('WeaponFlameThrower') || Self.IsA('WeaponPepperGun'))
+				//== TNM overrides the projectilefire function, so for those weapons we need to play the sound for the weapon
+				if((Self.IsA('WeaponAssaultGun') && !bHasSilencer) || Self.IsA('WeaponFlameThrower') || Self.IsA('WeaponPepperGun') || (Self.IsA('TNMWeapon') && !bInstantHit && Ammo20mm(AmmoType) == None))
 					PlayFiringSound();
 			}
 			if ( Owner.bHidden )
@@ -3329,7 +3342,7 @@ simulated function TraceFire( float Accuracy )
 			Owner.AISendEvent('Distress', EAITYPE_Audio, volume, radius);
 	}
 
-	if((!Self.IsA('WeaponAssaultGun') || bHasSilencer || Ammo20mm(AmmoType) != None) && !bHandtoHand)
+	if((!(IsA('WeaponAssaultGun') || IsA('WeaponTNMAssaultGun')) || bHasSilencer || Ammo20mm(AmmoType) != None) && !bHandtoHand)
 		PlayFiringSound();
 
 	GetAxes(Pawn(owner).ViewRotation,X,Y,Z);

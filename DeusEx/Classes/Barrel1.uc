@@ -80,11 +80,12 @@ function BeginPlay()
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP"$ texstr, class'Texture'));
 }
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local String texstr;
 
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	switch (SkinColor)
 	{
@@ -111,6 +112,8 @@ function Facelift(bool bOn)
 	}
 	else
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP"$ texstr, class'Texture'));
+
+	return true;
 }
 
 function PostPostBeginPlay()

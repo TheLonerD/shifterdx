@@ -53,15 +53,17 @@ function PreBeginPlay()
 		Facelift(true);
 }
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	//== Only do this for DeusEx classes
 	if(instr(String(Class.Name), ".") > -1 && bOn)
 		if(instr(String(Class.Name), "DeusEx.") <= -1)
-			return;
+			return false;
 	else
-		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && !bOn)
-			return;
+		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
+			return false;
+
+	return true;
 }
 
 // ----------------------------------------------------------------------

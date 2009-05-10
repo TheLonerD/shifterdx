@@ -3,9 +3,10 @@
 //=============================================================================
 class LiquorBottle extends Consumable;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPLiquorBottle", class'mesh', True));
@@ -25,6 +26,8 @@ function Facelift(bool bOn)
 		ThirdPersonMesh = Mesh;
 		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquorBottletex2", class'Texture'));
 	}
+
+	return true;
 }
 
 state Activated

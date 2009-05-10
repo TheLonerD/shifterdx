@@ -51,11 +51,12 @@ simulated function PreBeginPlay()
 
 }
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local Name tName;
 
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	tName = GetStateName();
 
@@ -84,6 +85,7 @@ function Facelift(bool bOn)
 	else
 		Mesh = PlayerViewMesh;
 
+	return true;
 }
 
 function bool TestCycleable()

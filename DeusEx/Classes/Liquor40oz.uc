@@ -15,11 +15,12 @@ var() ESkinColor SkinColor;
 
 var() ESkinColor StackSkins[9];
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local int skinnum;
 
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	skinnum = SkinColor;
 
@@ -48,6 +49,8 @@ function Facelift(bool bOn)
 		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex2", class'Texture')); //The formula will probably be skinnum * 2 in the future
 		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex1", class'Texture', True)); //This is always the same image, for now
 	}
+
+	return true;
 }
 
 function BeginPlay()

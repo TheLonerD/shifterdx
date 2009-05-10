@@ -3,9 +3,10 @@
 //=============================================================================
 class CrowbarThrown extends DeusExProjectile;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPCrowbarPickup", class'mesh', True));
@@ -17,6 +18,8 @@ function Facelift(bool bOn)
 	}
 	else
 		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPWeaponCrowbarTex2", class'Texture'));
+
+	return true;
 }
 
 // set it's rotation correctly

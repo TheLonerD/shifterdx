@@ -11,11 +11,12 @@ simulated function BeginPlay()
 		Skin = Texture'CandybarTex2';
 }
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local Texture lSkin;
 
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	lSkin = Skin;
 
@@ -31,6 +32,7 @@ function Facelift(bool bOn)
 			Skin = None;
 	}
 
+	return true;
 }
 
 state Activated

@@ -197,15 +197,15 @@ function Destroyed()
 	Super.Destroyed();
 }
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	//== Only do this for DeusEx classes
 	if(instr(String(Class.Name), ".") > -1 && bOn)
 		if(instr(String(Class.Name), "DeusEx.") <= -1)
-			return;
+			return false;
 	else
-		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && !bOn)
-			return;
+		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
+			return false;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPlaseremitter", class'mesh', True));
@@ -221,6 +221,8 @@ function Facelift(bool bOn)
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPLaseremittertex0", class'Texture'));
 		MultiSkins[2] = FireTexture'Effects.Laser.LaserSpot1';
 	}
+
+	return true;
 }
 
 defaultproperties

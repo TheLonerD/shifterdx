@@ -15,15 +15,18 @@ var localized String CostUnit;
 var Class<Actor> VendProduct;
 var localized String VendProductName;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPcigarettemachine", class'mesh', True));
 	
 	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
+
+	return true;
 }
 
 function BeginPlay()

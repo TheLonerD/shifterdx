@@ -12,9 +12,10 @@ enum ESkinColor
 var() ESkinColor SkinColor;
 var bool bUsing;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPToilet2", class'mesh', True));
@@ -42,6 +43,8 @@ function Facelift(bool bOn)
 					break;
 		}
 	}
+
+	return true;
 }
 
 function BeginPlay()

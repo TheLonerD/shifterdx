@@ -38,15 +38,18 @@ simulated function PreBeginPlay()
 	Super.PreBeginPlay();
 }
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPphone", class'mesh', True));
 
 	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
+
+	return true;
 }
 
 //== Strips out illegal characters so we have an enterable code for the keypad

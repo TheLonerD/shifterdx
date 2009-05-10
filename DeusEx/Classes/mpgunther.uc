@@ -3,11 +3,12 @@
 //============================================================================
 class MPGUNTHER extends Human;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local int i;
 
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPcharacters.HDTPGunther", class'mesh', True));
@@ -29,6 +30,8 @@ function Facelift(bool bOn)
 			MultiSkins[i] = None;
 		}
 	}
+
+	return true;
 }
 
 // ----------------------------------------------------------------------

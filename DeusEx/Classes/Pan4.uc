@@ -3,15 +3,18 @@
 //=============================================================================
 class Pan4 extends DeusExDecoration;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPPan4", class'mesh', True));
 
 	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
+
+	return true;
 }
 
 defaultproperties

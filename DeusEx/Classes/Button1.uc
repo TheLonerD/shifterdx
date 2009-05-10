@@ -94,11 +94,12 @@ function SetSkin(EButtonType type, bool lit)
 		Skin = Texture(DynamicLoadObject("DeusExDeco.Skins." $ texstr, class'Texture', True));
 }
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local String texstr;
 
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	switch (ButtonType)
 	{
@@ -149,6 +150,8 @@ function Facelift(bool bOn)
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP" $ texstr, class'Texture', True));
 	else
 		Skin = Texture(DynamicLoadObject("DeusExDeco." $ texstr, class'Texture', True));
+
+	return true;
 }
 
 function BeginPlay()

@@ -11,15 +11,18 @@ var() bool				bOpen;
 var ParticleGenerator	waterGen[4];
 var Vector				sprayOffsets[4];
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPShowerFaucet", class'mesh', True));
 
 	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
+
+	return true;
 }
 
 function Destroyed()

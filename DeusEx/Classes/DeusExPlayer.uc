@@ -917,15 +917,17 @@ exec function GlobalFacelift(bool bOn)
 	}
 }
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	//== Only do this for DeusEx classes
 	if(instr(String(Class.Name), ".") > -1 && bOn)
 		if(instr(String(Class.Name), "DeusEx.") <= -1)
-			return;
+			return false;
 	else
-		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && !bOn)
-			return;
+		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
+			return false;
+
+	return true;
 }
 
 exec function KillAll(class<actor> aClass) //== Overridden for unrealistic fun time
@@ -4657,6 +4659,9 @@ state Interpolating
 	// check to see if we are done interpolating, if so, then travel to the next map
 	event InterpolateEnd(Actor Other)
 	{
+		local GameDirectory mapDir;
+		local int mapIndex;
+
 		if (InterpolationPoint(Other).bEndOfPath)
 			if (NextMap != "")
 			{
@@ -4664,9 +4669,28 @@ state Interpolating
 				//
 				// If this is the demo, show the demo splash screen, which
 				// will exit the game after the player presses a key/mouseclick
-//				if (NextMap == "02_NYC_BatteryPark")
-//					ShowDemoSplash();
-//				else
+				//== ...but ONLY for these two maps, and only if they aren't available
+
+				if(NextMap == "02_NYC_BatteryPark" || NextMap == "06_HONGKONG_HELIBASE")
+				{
+					//== Okay, because I care ENTIRELY TOO MUCH we need to have some code that makes
+					//==  sure the next level is there, and if not that it shows the demo splash.
+					mapDir = new(None) Class'GameDirectory';
+					mapDir.SetDirType(mapDir.EGameDirectoryTypes.GD_Maps);
+					mapDir.GetGameDirectory();
+	
+					for( mapIndex=0; mapIndex<mapDir.GetDirCount(); mapIndex++)
+					{
+						if(mapDir.GetDirFilename(mapIndex) == NextMap)
+						{
+							Level.Game.SendPlayer(Self, NextMap$"?Difficulty="$combatDifficulty);
+							return;
+						}
+					}
+	
+					ShowDemoSplash();
+				}
+				else
 					Level.Game.SendPlayer(Self, NextMap$"?Difficulty="$combatDifficulty);
 			}
 	}

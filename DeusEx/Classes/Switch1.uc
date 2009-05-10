@@ -5,15 +5,18 @@ class Switch1 extends DeusExDecoration;
 
 var bool bOn;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPSwitch1Tex1", class'Texture', True));
 
 	if(Skin == None || !bOn)
 		Skin = None;
+
+	return true;
 }
 
 function Frob(Actor Frobber, Inventory frobWith)

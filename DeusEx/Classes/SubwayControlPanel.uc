@@ -3,9 +3,10 @@
 //=============================================================================
 class SubwayControlPanel extends DeusExDecoration;
 
-function Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
-	Super.Facelift(bOn);
+	if(!Super.Facelift(bOn))
+		return false;
 
 	if(bOn)
 		Skin = Texture(DynamicLoadObject("HDTPanim.Animated.SubwayControlPanel01", class'Texture', True));
@@ -13,6 +14,7 @@ function Facelift(bool bOn)
 	if(Skin == None || !bOn)
 		Skin = None;
 
+	return true;
 }
 
 defaultproperties
