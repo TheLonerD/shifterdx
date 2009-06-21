@@ -96,16 +96,6 @@ order whatsoever:
 	comes pre-patched.  Just go get the v1112fm patch -- NOT v1112f -- off
 	of FilePlanet and install it, then reinstall Shifter.
 
-	 - I CHANGED MAPS AND THE GAME SAID I NEEDED TO BUY THE FULL VERSION:
-	This is because of a compatibility fix I added to Shifter so that it can
-	be used with the Demo version as well as the hard-to-find Limited
-	Preview Edition of the game.  Well, partially.  If you're seeing a "Demo"
-	screen then it means one of two things: 1) you're running a Demo/Limited
-	version of the game, or 2) one of the game's maps can't be found.  The
-	only difference between Shifter and "Vanilla" Deus Ex is that without
-	Shifter you would be seeing an ugly text error message instead of the
-	"buy the full game" screen.
-
 	 - I SAVED MY GAME IN SHIFTER AND NOW IT WON'T OPEN IN NORMAL DEUS EX:
 	This is unavoidable, unfortunately.  Shifter has a number of items in it
 	that normal Deus Ex does not.  Regardless of whether or not you pick up
@@ -141,13 +131,22 @@ order whatsoever:
 	(like HDTP) may require some extra configuration to get working.
 
 	 - DOES YOUR MOD WORK WITH THE GAMETAP VERSION OF DEUS EX: I am pleased
-	to say that yes, Shifter does work with the GameTap version of Deus Ex,
-	though it takes some additional configuration and the install procedure
-	is VERY different.  Complete installation instructions can be found in
-	the file "GameTap Info.txt".  Please note that while Shifter's gameplay
-	modifications will be passed along to the GameTap version, some of the
-	associated text changes (some item descriptions and one button label in
-	the keyboard config menu) will NOT come through.
+	to say that yes, Shifter does work with the FREE GameTap version of Deus
+	Ex, though it takes some additional configuration and the install
+	procedure is VERY different.  Complete installation instructions can be
+	found in the file "GameTap Info.txt".  Please note that while Shifter's
+	gameplay modifications will be passed along to the GameTap version, some
+	of the associated text changes (some item descriptions and one button
+	label in the keyboard config menu) will NOT come through.
+
+	 - DOES YOUR MOD WORK WITH THE DEMO: It can, but some extra work is
+	required.  The Demo versions (the 1-, 2- and 5-mission varieties) do
+	not have the most up-to-date versions of some files which Shifter needs
+	to work (i.e. the Demo isn't patched to v1112fm).  You can add these
+	files by downloading the v1112fm patch, opening it with WinZip/etc.
+	(NOT running it) and then extracting the contents into the Deus Ex
+	Demo's installation folder (e.g. C:\DeusExDemo\).  This will overwrite
+	the old, incompatible files; from there you can install Shifter.
 
 	 - WHERE IS THE SHIFTER HOMEPAGE: You can find the Shifter homepage at
 	http://yukichigai.googlepages.com/shifter.  I also have an account over
@@ -316,7 +315,9 @@ SPECIFICS:
 	 - NPC Inventory: NPCs will randomly carry extra items, chosen from a
 	set list.  These items will include some items not commonly found in the
 	game, (Throwing Knives, Pepper Spray) as well as some generic items and
-	certain "special" items.
+	certain "special" items.  (NOTE: To stop people from just neutralizing
+	everyone in each mission all willy-nilly to take their stuff you will
+	LOSE skill points for killing/KOing friendly NPCs)
 
 	 - Office Storage: Someone pointed out how it's odd that any items you
 	leave in JC's office at UNATCO will disappear between missions.  While
@@ -653,7 +654,7 @@ UPDATES:
 	 - Redid the way the super-secret access to Unrealistic is done so that
 	it works for people using a localization (int) file.  Before it was
 	examining the button names without considering the different ways that
-	"Realistic" is said in other languages.
+	"Realistic" is said in other languages.  (Oo, a hint!)
 
 	 - Re-enabled some functions I took out of various NPC states so that
 	TNM can work with Shifter.  More accurately, I renamed the functions
@@ -741,12 +742,47 @@ UPDATES:
 	If it isn't the game will show you the "This is a Demo" splash screen,
 	which will tell you how awesome the game is and then throw you back to
 	the start menu when you click something.  What this means is that
-	Shifter now works correctly and error-free with	both the 1-level Demo
-	and the 5-level "Limited Edition".  I'm sure a total of 5 people (max)
-	will care about this.
+	Shifter now works correctly and error-free with the 1-level Demo,
+	2-level expanded Demo, and the 5-level "Limited Edition" (after you
+	patch any of those versions to v1112fm, anyway). I'm sure a total of 5
+	people (max) will care about this.
 
 	 - Moved the changelog for prior versions to a separate file called
 	Changelog.txt.
+
+	 - Made sure you can start a new game with Shifter running in the Demo
+	(1- or 2-level) version.  Both versions do not contain the Introduction
+	cinematic map, so Shifter will bypass the "level" if it isn't present.
+
+	 - Dialed down the insanely high skillpoint awards which were possible
+	for destroying bots with melee weapons.  By "dialed down" I mean 
+	"removed completely".
+
+	 - Added some code that will check and see whether or not HDTP is even
+	installed before performing the series of time-consuming model/texture
+	swaps whenever you enter a level or load/save a game.  This should make
+	it so that people running the game on era-appropirate hardware (e.g.
+	stuff that is only doubly overpowered for the game) won't have to sit
+	through 20 second save times, at least when they aren't using HDTP.
+
+	 - Took out the "KO" exception from the "friendly fire" skillpoint
+	penalty.  Several people pointed out that making friendly kills a no-no
+	was enforcing a morality in the game, and they're right.  However, back
+	when I first added the penalty it was more to prevent people from 
+	killing everyone in a level, friend, foe, or otherwise, in order to
+	snag goodies handed out with NPC Random Inventory.  Removing the
+	exception brings it more in line with that intent.
+
+	 - Tweaked NPC Random Inventory a bit more to take into account the new
+	"category" classes used by TNM, as well as the TNM-specific classes for
+	MiBs, WiBs, and most Deus Ex weapons like the Assault Rifle, etc.
+
+	 - Added a second entry for Alternate Fire to the keyboard config menu.
+	The entry is at the very bottom and will ALWAYS show as Alternate Fire
+	regardless of whether or not you have removed/replaced DeusEx.int.
+	You can change the Alternate Fire keybinding(s) on either entry, but
+	the change will not be accurately reflected in the entry you DIDN'T use
+	until you exit the config screen and open it again.
 
 
 	v1.8.1 - v0.2:

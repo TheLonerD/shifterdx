@@ -686,7 +686,7 @@ function InitializeInventory()
 
 	testRandom = Rand(22);
 
-	if(testRandom >= 15 && (!IsA('Animal') && !IsA('Robot') || dxPlayer.combatDifficulty > 4.0))
+	if(testRandom >= 15 && (bIsHuman || dxPlayer.combatDifficulty > 4.0))
 	{
 		Consumables[0] = class'SoyFood';
 		Consumables[1] = class'Candybar';
@@ -3014,12 +3014,11 @@ function Carcass SpawnCarcass()
 			// Do everything in ExtinguishFire manually, save the clearing of the fires
 			bOnFire = False;
 			burnTimer = 0;
-			//SetTimer(0, False); //== Handled by the timer now
-			SetTimer(5.0, True);
+			SetTimer(0, False); //== Dead people don't need to be checked for random inventory
 		}
 
 		// give the carcass the pawn's inventory if we aren't an animal or robot
-		if ((!IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0) && !IsA('Robot'))
+		if ((bIsHuman || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0) && !IsA('Robot'))
 		{
 			bHadWeapon = False;
 			if (Inventory != None)
@@ -3163,13 +3162,15 @@ function bool GenerateRandomInventory()
 	local bool bHadWeapon, bHadPowerfulWeapon;
 	local DeusExPlayer dxPlayer;
 
-	local class<Inventory> Am20mm, AmDragon, AmFlare, Am10mmEx, GepGun, SawedOff, PepperGun, PS20, Prod, Shuriken, Pistol, Flamethrower, LAW;
+	local class<Inventory> Am20mm, AmDragon, AmFlare, Am10mmEx, AmRocketWP, GepGun, SawedOff, PepperGun, PS20, Prod, Shuriken, Pistol, Flamethrower, LAW;
 
 
+	//== For mod compatibility we're going to store the list of random inventory goodies as a list that can be overridden
 	Am20mm 		= class'Ammo20mm';
 	AmDragon 	= class'AmmoDragon';
 	AmFlare		= class'AmmoDartFlare';
 	Am10mmEX	= class'Ammo10mmEX';
+	AmRocketWP	= class'AmmoRocketWP';
 
 
 	GepGun		= class'WeaponGEPGun';
@@ -3189,18 +3190,18 @@ function bool GenerateRandomInventory()
 	bHadWeapon = False;
 	bHadPowerfulWeapon = False;
 
-	//== For TNM we need to redo the list completely
+	//== For TNM we need to redo the list almost completely
 	if(dxPlayer.Class.Name == 'trestkon')
 	{
-		GepGun		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMGepGun", class'Class', True));
-		SawedOff	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMSawedOffShotgun", class'Class', True));
-		PepperGun	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMPepperGun", class'Class', True));
-		PS20		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMHideAGun", class'Class', True));
-		Prod		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMProd", class'Class', True));
-		Shuriken	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMShuriken", class'Class', True));
-		Pistol		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMPistol", class'Class', True));
-		Flamethrower	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMFlamethrower", class'Class', True));
-		LAW		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMLAW", class'Class', True));
+		GepGun		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMGepGun", class'Class', False));
+		SawedOff	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMSawedOffShotgun", class'Class', False));
+		PepperGun	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMPepperGun", class'Class', False));
+		PS20		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMHideAGun", class'Class', False));
+		Prod		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMProd", class'Class', False));
+		Shuriken	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMShuriken", class'Class', False));
+		Pistol		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMPistol", class'Class', False));
+		Flamethrower	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMFlamethrower", class'Class', False));
+		LAW		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMLAW", class'Class', False));
 
 		AmDragon	= Pistol;
 		Am10mmEX	= PS20;
@@ -3226,54 +3227,54 @@ function bool GenerateRandomInventory()
 		item = item.Inventory;
 	}
 
-	if(bHadWeapon || Self.IsA('HumanMilitary') || dxPlayer.combatDifficulty > 4.0)
+	if(bHadWeapon || IsA('HumanMilitary') || IsA('GenericAggressive') || IsA('TNMAggressive') || dxPlayer.combatDifficulty > 4.0)
 	{
 		if(bHadPowerfulWeapon || Rand(7) == 4 || (dxPlayer.combatDifficulty > 4.0 && bHadWeapon))
 		{
 			switch(Rand(11))
 			{
 				case 0: if(!bHadPowerfulWeapon && bHadWeapon && dxPlayer.combatDifficulty > 4.0)
-						item = spawn(Class'WeaponGEPGun',self);
+						item = spawn(GepGun,self);
 					else if (!bHadWeapon)
-						item = spawn(Class'WeaponSawedOffShotgun',self);
+						item = spawn(SawedOff,self);
 					else
-						item = spawn(Class'AmmoDragon',self);
+						item = spawn(AmDragon,self);
 					break;
 				case 1:
-					item = spawn(Class'Ammo20mm',self);
+					item = spawn(Am20mm,self);
 					break;
 				case 2: if(bHadWeapon)
-						item = spawn(Class'AmmoRocketWP',self);
+						item = spawn(AmRocketWP,self);
 					else
-						item = spawn(Class'WeaponProd',self);
+						item = spawn(Prod,self);
 					break;
 				case 3:
-					item = spawn(Class'WeaponPepperGun',self);
+					item = spawn(PepperGun,self);
 					break;
 				case 4:
-					item = spawn(Class'WeaponHideAGun',self);
+					item = spawn(PS20,self);
 					break;
 				case 5: if(!bHadWeapon)
-						item = spawn(Class'WeaponPistol',self);
+						item = spawn(Pistol,self);
 					else
-						item = spawn(Class'AmmoDartFlare',self);
+						item = spawn(AmFlare,self);
 					break;
 				case 6: 
-					item = spawn(Class'WeaponShuriken',self);
+					item = spawn(Shuriken,self);
 					break;
 				case 7: if(!bHadPowerfulWeapon && bHadWeapon && dxPlayer.combatDifficulty > 4.0)
-						item = spawn(Class'WeaponFlamethrower',self);
+						item = spawn(Flamethrower,self);
 					else
-						item = spawn(Class'WeaponProd',self);
+						item = spawn(Prod,self);
 					break;
 				case 8:
-					item = spawn(Class'Ammo10mmEX',self);
+					item = spawn(Am10mmEX,self);
 					break;
 				case 9: if(!bHadPowerfulWeapon && bHadWeapon && dxPlayer.combatDifficulty > 4.0)
-						item = spawn(Class'WeaponLAW',self);
+						item = spawn(LAW,self);
 					break;
 				case 10: if(!bHadWeapon)
-						item = spawn(Class'WeaponPistol',self);
+						item = spawn(Pistol,self);
 					break;
 			}
 		}
@@ -3283,22 +3284,22 @@ function bool GenerateRandomInventory()
         		{
 				case 4:
         			case 0:
-        				item = spawn(Class'WeaponHideAGun',self);
+        				item = spawn(PS20,self);
          				break;
 				case 5:
         			case 1:
-        				item = spawn(Class'AmmoDartFlare',self);
+        				item = spawn(AmFlare,self);
         				break;
 				case 6:
         			case 2:
-        				item = spawn(Class'WeaponShuriken',self);
+        				item = spawn(Shuriken,self);
         				break;
 				case 7:
 				case 3:
-					item = spawn(Class'WeaponPepperGun',self);
+					item = spawn(PepperGun,self);
 					break;
 				case 8: if(!bHadWeapon && dxPlayer.combatDifficulty > 4.0)
-						item = spawn(Class'WeaponPistol',self);
+						item = spawn(Pistol,self);
 					break;
         		}
 		}
@@ -3306,7 +3307,7 @@ function bool GenerateRandomInventory()
       
       	//Now, if the above didn't do anything, or if the
       	// pawn is a MiB/WiB, add stuff from the uber-super-cool list
-      	if((item == None && (bHadWeapon == True || IsA('HumanMilitary'))) || IsA('MIB') || IsA('WIB'))
+      	if((item == None && (bHadWeapon == True || IsA('HumanMilitary') || IsA('GenericAggressive') || IsA('TNMAggressive'))) || IsA('MIB') || IsA('WIB') || IsA('TNMMIB') || IsA('TNMWIB') || IsA('WCIDAgent'))
       	{
       		//give the inventory to MiBs/WiBs so we can give 'em something else
       		if(item != None)
@@ -8288,8 +8289,8 @@ function Timer()
 
 	if(bOnFire)
 		UpdateFire();
-
-	if(bNPCRandomCheck && !bNPCRandomGiven)
+	//== Don't do TOO much.  If they're on fire they really don't need weapons THIS VERY SECOND.  We can wait until they stop burning
+	else if(bNPCRandomCheck && !bNPCRandomGiven)
 	{
 		CombatReplace[0] = class'WeaponCrowbar';
 		CombatReplace[1] = class'WeaponSword';
@@ -8590,7 +8591,7 @@ function bool SwitchToBestWeapon()
 			}
 		}
 
-		if(dxWeapon.IsInState('Reload') && Self.IsA('Animal')) //Hack, avoid switching weapons while reloading
+		if(dxWeapon.IsInState('Reload') && !bIsHuman && !IsA('Robot')) //Hack, avoid switching weapons while reloading
 			return true;
 	}
 
@@ -9543,7 +9544,7 @@ function SkillsForKills(pawn Killer, name damageType, vector HitLocation)
 				if(Robot(self).CrazedTimer > 0.0)
 					skillpt = 0;
 			}
-			else if(bStunned || IsA('Rat') || IsA('Bird') || IsA('Fly') || IsA('Fishes'))  //Unless, of course, you didn't (or they're a pest)
+			else if(IsA('Rat') || IsA('Bird') || IsA('Fly') || IsA('Fishes'))  //Unless they're a pest or of little consequence
 				skillpt = 0;
 		}
 		else //if(!bStunned)
@@ -9559,15 +9560,6 @@ function SkillsForKills(pawn Killer, name damageType, vector HitLocation)
 				skillpt = 0;
 
 			skillpt *= 3;
-
-			if(damageType != 'Exploded')
-			{
-				if(default.Health > 150 && damageType != 'Sabot') //Big and bigger bots
-					skillpt *= 2;
-
-				if(default.Health > 350) //Bigger bots
-					skillpt *= 2;
-			}
 		}
 		else if(Mass > 200) //Anything that big must have taken a lot
 			skillpt *= 2;
@@ -11709,7 +11701,7 @@ State Fleeing
 	function Bump(actor Other)
 	{
 		//== If we bumped a weapon pickup we might want to, say, pick it up
-		if(!bFearWeapon && !ShouldDropWeapon() && Other.isA('DeusExWeapon') && (!IsA('Robot') && !IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0) && Physics == PHYS_Walking && !ShouldFlee())
+		if(!bFearWeapon && !ShouldDropWeapon() && Other.isA('DeusExWeapon') && (bIsHuman || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0) && Physics == PHYS_Walking && !ShouldFlee())
 		{
 			if(!DeusExWeapon(Other).bUnique)
 			{
@@ -11853,7 +11845,7 @@ State Fleeing
 		else if (!IsFearful())
 			FinishFleeing();
 
-		if(destLoc != vect(0, 0, 0) && VSize(Location - destLoc) <= 16 && (!IsA('Robot') && !IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0))
+		if(destLoc != vect(0, 0, 0) && VSize(Location - destLoc) <= 16 && (bIsHuman || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0))
 		{
 			foreach RadiusActors(class'DeusExCarcass', nearcarc, FMax(CollisionRadius, CollisionHeight))
 			{
@@ -11991,7 +11983,7 @@ State Fleeing
 		if (Enemy != None)
 		{
 			//== If we're fleeing because we have no weapons, try to find another weapon
-			if(!ShouldDropWeapon() && !bFearWeapon && (!IsA('Robot') && !IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0) && !ShouldFlee())
+			if(!ShouldDropWeapon() && !bFearWeapon && (bIsHuman || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0) && !ShouldFlee())
 			{
 				foreach RadiusActors(Class'DeusExWeapon', lWeapon, maxDist)
 				{
@@ -12369,7 +12361,7 @@ State Attacking
 	function Bump(actor Other)
 	{
 		//== If we bumped a weapon pickup we might want to, say, pick it up
-		if(Other.IsA('DeusExWeapon') && (!IsA('Robot') && !IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0) && Physics == PHYS_Walking)
+		if(Other.IsA('DeusExWeapon') && (bIsHuman || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0) && Physics == PHYS_Walking)
 		{
 			//== No picking up Unique weapons
 			if(!DeusExWeapon(Other).bUnique && FindInventoryType(Other.Class) == None)
@@ -12511,7 +12503,7 @@ State Attacking
 
 		//== Weapon Search. Every so often, randomly see if you can find a better weapon
 		//== Or, y'know, if you're using a crap weapon
-		if(Weapon != None && (!IsA('Robot') && !IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0))
+		if(Weapon != None && (bIsHuman || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0))
 		{
 			if( ( Rand(18) > 13 || (DeusExWeapon(Weapon).bHandToHand && FMax(DeusExWeapon(Weapon).HitDamage, DeusExWeapon(Weapon).ProjectileDamage) < 20) ) && !DeusExWeapon(Weapon).bNativeAttack)
 			{
@@ -12747,7 +12739,7 @@ State Attacking
 			}
 		}
 
-		if(destLoc != vect(0, 0, 0) && VSize(Location - destLoc) <= 16 && (!IsA('Robot') && !IsA('Animal') || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0))
+		if(destLoc != vect(0, 0, 0) && VSize(Location - destLoc) <= 16 && (bIsHuman || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0))
 		{
 			foreach RadiusActors(class'DeusExCarcass', nearcarc, FMax(CollisionRadius, CollisionHeight))
 			{
@@ -13026,7 +13018,7 @@ Fire:
 	bReadyToReload = true;
 
 ContinueFire:
-	if((IsA('Animal') || IsA('Robot')) && Weapon != None && !DeusExWeapon(Weapon).bNativeAttack) //Weird glitch... animals using non-native weapons enter infinite loops
+	if((!bIsHuman) && Weapon != None && !DeusExWeapon(Weapon).bNativeAttack) //Weird glitch... animals using non-native weapons enter infinite loops
 		Sleep(0.05);
 
 	while (!ReadyForWeapon())
@@ -13036,7 +13028,7 @@ ContinueFire:
 		CheckAttack(true);
 		if (!IsWeaponReloading() || bCrouching)
 			TurnToward(enemy);
-		else if ((IsA('Animal') || IsA('Robot')) && Weapon != None && !DeusExWeapon(Weapon).bNativeAttack)
+		else if ((!bIsHuman) && Weapon != None && !DeusExWeapon(Weapon).bNativeAttack)
 			Sleep(0.05);
 		else
 			Sleep(0);
@@ -13069,7 +13061,7 @@ ContinueFire:
 	{
 		if (!IsWeaponReloading() || bCrouching)
 			TurnToward(enemy);
-		else if ((IsA('Animal') || IsA('Robot')) && Weapon != None && !DeusExWeapon(Weapon).bNativeAttack)
+		else if (!bIsHuman && Weapon != None && !DeusExWeapon(Weapon).bNativeAttack)
 			Sleep(0.05);
 		else
 			Sleep(0);

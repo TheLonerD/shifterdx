@@ -884,7 +884,8 @@ exec function GlobalFacelift(bool bOn)
 	local Actor generic;
 
 	//== HDTP might break multiplayer compatibility
-	if(Level.NetMode != NM_StandAlone && bOn)
+	//==  Also, we want to make sure there's something to (un)load before we go running through all this game-slowing madness
+	if(Level.NetMode != NM_StandAlone && bOn || mesh(DynamicLoadObject("HDTPItems.HDTPsodacan", class'mesh', True)) == None)
 		return;
 
 	Facelift(bOn); // Make the player's model look all fancy-like
@@ -912,6 +913,7 @@ exec function GlobalFacelift(bool bOn)
 		if(DeusExProjectile(generic) != None)
 			DeusExProjectile(generic).Facelift(bOn);
 
+		//== Annoyingly specific, we must be
 		if(BeamTrigger(generic) != None)
 			BeamTrigger(generic).Facelift(bOn);
 	}
@@ -1182,6 +1184,8 @@ function StartTrainingMission()
 function ShowIntro(optional bool bStartNewGame)
 {
 	local Inventory item, nextItem;
+	local GameDirectory mapDir;
+	local int mapIndex;
 
 	if (DeusExRootWindow(rootWindow) != None)
 		DeusExRootWindow(rootWindow).ClearWindowStack();
@@ -1197,8 +1201,22 @@ function ShowIntro(optional bool bStartNewGame)
 	// Make sure all augmentations are OFF before going into the intro
 	AugmentationSystem.DeactivateAll();
 
+	//== Make sure this works for the demo version
+	mapDir = new(None) Class'GameDirectory';
+	mapDir.SetDirType(mapDir.EGameDirectoryTypes.GD_Maps);
+	mapDir.GetGameDirectory();
+
+	for( mapIndex=0; mapIndex<mapDir.GetDirCount(); mapIndex++)
+	{
+		if(mapDir.GetDirFilename(mapIndex) == "00_Intro")
+		{
+			Level.Game.SendPlayer(Self, "00_Intro?Difficulty="$combatDifficulty);
+			return;
+		}
+	}
+
 	// Reset the player
-	Level.Game.SendPlayer(Self, "00_Intro?Difficulty="$combatDifficulty);
+	StartNewGame("");
 }
 
 // ----------------------------------------------------------------------
@@ -3066,8 +3084,6 @@ function HighlightCenterObject()
 
 						if(DeusExWeapon(inHand) != None)
 							root.hud.startDisplay.AddMessage("Press 'Drop Item' to give "$ ScriptedPawn(FrobTarget).FamiliarName $" the "$ inHand.ItemName);
-//						else
-//							root.hud.startDisplay.AddMessage("Press 'Drop Item' to unequip "$ ScriptedPawn(FrobTarget).FamiliarName);
 
 						if(root.hud.startDisplay.message != "")
 							root.hud.startDisplay.StartMessage();
@@ -4669,9 +4685,9 @@ state Interpolating
 				//
 				// If this is the demo, show the demo splash screen, which
 				// will exit the game after the player presses a key/mouseclick
-				//== ...but ONLY for these two maps, and only if they aren't available
+				//== ...but ONLY for these maps, and only if they aren't available
 
-				if(NextMap == "02_NYC_BatteryPark" || NextMap == "06_HONGKONG_HELIBASE")
+				if(NextMap == "02_NYC_BatteryPark" || NextMap == "03_NYC_UNATCOIsland" || NextMap == "06_HONGKONG_HELIBASE")
 				{
 					//== Okay, because I care ENTIRELY TOO MUCH we need to have some code that makes
 					//==  sure the next level is there, and if not that it shows the demo splash.
@@ -6442,15 +6458,15 @@ exec function bool DropItem(optional Inventory inv, optional bool bDrop)
 
 		// Don't allow active ChargedPickups to be dropped
 		if ((item.IsA('ChargedPickup')) && (ChargedPickup(item).IsActive()))
-        {
+        	{
 			return False;
-        }
+        	}
 
 		// don't let us throw away the nanokeyring
 		if (item.IsA('NanoKeyRing'))
-        {
+        	{
 			return False;
-        }
+        	}
 
 		// take it out of our hand
 		if (item == inHand)
@@ -6512,6 +6528,9 @@ exec function bool DropItem(optional Inventory inv, optional bool bDrop)
 				//== See if we can give this weapon to the NPC
 				if(ScriptedPawn(FrobTarget).bCanGiveWeapon && VSize(FrobTarget.Location - Location) <= 64 && ScriptedPawn(FrobTarget).GetPawnAllianceType(Self) != ALLIANCE_Hostile)
 				{
+					//== Since we're actually paying attention to what the NPC has, it'd be a bit weird if NPC Random Inventory suddenly went off.
+					ScriptedPawn(FrobTarget).bNPCRandomGiven = True;
+
 					//== Give them the weapon
 					DeleteInventory(item);
 
@@ -7753,6 +7772,9 @@ exec function Fire(optional float F)
 			ShowMainMenu();
 		return;
 	}
+
+	if(IsA('trestkon') && inHand == None)
+		ConsoleCommand("selectfists");
 
 	Super.Fire(F);
 }

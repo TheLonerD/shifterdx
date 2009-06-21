@@ -15,10 +15,10 @@ struct S_KeyDisplayItem
 	var localized String DisplayName;
 };
 
-var localized string	FunctionText[62];
-var string				MenuValues1[62];
-var string				MenuValues2[62];
-var string				AliasNames[62];
+var localized string	FunctionText[63];
+var string				MenuValues1[63];
+var string				MenuValues2[63];
+var string				AliasNames[63];
 var string				PendingCommands[100];
 var localized S_KeyDisplayItem    keyDisplayNames[71];
 var localized string			  NoneText;
@@ -623,6 +623,7 @@ defaultproperties
      FunctionText(59)="Activate Multiplayer Skill Menu"
      FunctionText(60)="Show Multiplayer Kill Details"
      FunctionText(61)="Put Away Item"
+     FunctionText(62)="Alternate Fire Mode"
      AliasNames(0)="ParseLeftClick|Fire"
      AliasNames(1)="ParseRightClick"
      AliasNames(2)="AltFire"
@@ -685,6 +686,7 @@ defaultproperties
      AliasNames(59)="BuySkills"
      AliasNames(60)="KillerProfile"
      AliasNames(61)="PutInHand"
+     AliasNames(62)="AltFire"
      keyDisplayNames(0)=(inputKey=IK_LeftMouse,displayName="Left Mouse Button")
      keyDisplayNames(1)=(inputKey=IK_RightMouse,displayName="Right Mouse Button")
      keyDisplayNames(2)=(inputKey=IK_MiddleMouse,displayName="Middle Mouse Button")
