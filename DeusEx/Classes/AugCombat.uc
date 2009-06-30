@@ -1,5 +1,6 @@
 //=============================================================================
 // AugCombat.
+//  Electrostatic Discharge.  Was Combat Strength
 //=============================================================================
 //Description="Sorting rotors accelerate calcium ion concentration in the sarcoplasmic reticulum, increasing an agent's muscle speed several-fold and multiplying the damage they inflict in melee combat.|n|nTECH ONE: The effectiveness of melee weapons is increased slightly.|n|nTECH TWO: The effectiveness of melee weapons is increased moderately.|n|nTECH THREE: The effectiveness of melee weapons is increased significantly.|n|nTECH FOUR: Melee weapons are almost instantly lethal."
 //MPInfo="When active, you do double damage with melee weapons.  Energy Drain: Low"
@@ -32,6 +33,17 @@ simulated function PreBeginPlay()
 	{
 		LevelValues[3] = mpAugValue;
 		EnergyRate = mpEnergyDrain;
+	}
+	else if(IsA('tnmpcAugCombat'))
+	{
+		AugmentationName = "Combat Strength";
+		Description = "Hit things.  Hit hard.  Make go smash.|n|nTECH ONE: Extra smashey.|n|nTECH TWO: More extra smashey.|n|nTECH THREE: More more smashey!|n|nTECH FOUR: EXTRA LOTS OF MEGA SMASHEY!";
+		MPInfo="When active, you do double damage with melee weapons.  Energy Drain: Low";
+		LevelValues[0] = 1.25;
+		LevelValues[1] = 1.50;
+		LevelValues[2] = 1.75;
+		LevelValues[3] = 2.00;
+		LevelValues[4] = 2.25;
 	}
 }
 

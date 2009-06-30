@@ -73,7 +73,7 @@ function CheckEnemyParams(Pawn checkPawn,
 {
 	local int threatLevel;
 
-	if((!checkPawn.IsA('Animal') || checkPawn.IsA('Cat')) && GetPawnAllianceType(checkPawn) != ALLIANCE_Hostile) //== Only go after the truly hostile
+	if((!checkPawn.IsA('Animal') || checkPawn.IsA('Cat')) && CheckPawnAllianceType(checkPawn) != ALLIANCE_Hostile) //== Only go after the truly hostile
 		return;
 
 	if(checkPawn == Self) //Really now...

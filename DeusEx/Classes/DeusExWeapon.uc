@@ -886,36 +886,55 @@ simulated function SwitchItem()
 
 	i = 0;
 
-	SwitchList[i++] = class'WeaponBaton';
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMBaton", class'Class', True));
-	SwitchList[i++] = class'WeaponBlackjack';
-	SwitchList[i++] = class'WeaponCombatKnife';
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMCombatKnife", class'Class', True));
-	SwitchList[i++] = class'WeaponCrowbar';
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMCrowbar", class'Class', True));
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponDaikatana", class'Class', True));
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponKatanaRonin", class'Class', True));
-	SwitchList[i++] = class'WeaponNanoSword';
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponFireBlade", class'Class', True));
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponFoon", class'Class', True));
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponHammer", class'Class', True));
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponKatana", class'Class', True));
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponUniqueNVS", class'Class', True));
-	SwitchList[i++] = class'WeaponPrototypeSword';
-	SwitchList[i++] = class'WeaponPrototypeSwordA';
-	SwitchList[i++] = class'WeaponPrototypeSwordB';
-	SwitchList[i++] = class'WeaponPrototypeSwordC';
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponScrewdriver", class'Class', True));
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponKatanaSlicer", class'Class', True));
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMSpork", class'Class', True));
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMSporkGolden", class'Class', True));
-	SwitchList[i++] = class'WeaponSword';
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMSword", class'Class', True));
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponThrowFoon", class'Class', True));
-	SwitchList[i++] = class'WeaponShuriken';
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponThrowSpork", class'Class', True));
-	SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMShuriken", class'Class', True));
-	SwitchList[i++] = class'WeaponToxinBlade';
+	if(GoverningSkill == Class'SkillWeaponLowTech')
+	{
+		SwitchList[i++] = class'WeaponBaton';
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMBaton", class'Class', True));
+		SwitchList[i++] = class'WeaponBlackjack';
+		SwitchList[i++] = class'WeaponCombatKnife';
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMCombatKnife", class'Class', True));
+		SwitchList[i++] = class'WeaponCrowbar';
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMCrowbar", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponDaikatana", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponKatanaRonin", class'Class', True));
+		SwitchList[i++] = class'WeaponNanoSword';
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponFireBlade", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponFoon", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponHammer", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponKatana", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponUniqueNVS", class'Class', True));
+		SwitchList[i++] = class'WeaponPrototypeSword';
+		SwitchList[i++] = class'WeaponPrototypeSwordA';
+		SwitchList[i++] = class'WeaponPrototypeSwordB';
+		SwitchList[i++] = class'WeaponPrototypeSwordC';
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponScrewdriver", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponKatanaSlicer", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponSpork", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponSporkGolden", class'Class', True));
+		SwitchList[i++] = class'WeaponSword';
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMSword", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponThrowFoon", class'Class', True));
+		SwitchList[i++] = class'WeaponShuriken';
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponThrowSpork", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMShuriken", class'Class', True));
+		SwitchList[i++] = class'WeaponToxinBlade';
+	}
+	else if(GoverningSkill == Class'SkillDemolition')
+	{
+		SwitchList[i++] = Class<DeusExWeapon>(DynamicLoadObject("Zodiac.WeaponC4", class'Class', True)); //I am such a badass
+		SwitchList[i++] = class'WeaponEMPGrenade';
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMEMPGrenade", class'Class', True));
+		SwitchList[i++] = class'WeaponGasGrenade';
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMGasGrenade", class'Class', True));
+		SwitchList[i++] = class'WeaponLAM';
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMLAM", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponMine", class'Class', True));
+		SwitchList[i++] = class'WeaponNanoVirusGrenade';
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTNMNanoVirusGrenade", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponBlackBox", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponTripBomb", class'Class', True));
+		SwitchList[i++] = Class<Weapon>(DynamicLoadObject("TNMItems.WeaponPlasmaNade", class'Class', True));
+	}
 
 	for(i = 0; i < ArrayCount(SwitchList); i++)
 	{
@@ -1840,7 +1859,7 @@ simulated function MuzzleFlashLight()
 function ServerHandleNotify( bool bInstantHit, class<projectile> ProjClass, float ProjSpeed, bool bWarn )
 {
 	if (bInstantHit)
-		TraceFire(0.0);
+		DoTraceFire(0.0);
 	else
 		ProjectileFire(ProjectileClass, ProjectileSpeed, bWarnTarget);
 }
@@ -1871,7 +1890,7 @@ simulated function HandToHandAttack()
 		ScriptedPawn(Owner).SetAttackAngle();
 
 	if (bInstantHit)
-		TraceFire(0.0);
+		DoTraceFire(0.0);
 	else
 		ProjectileFire(ProjectileClass, ProjectileSpeed, bWarnTarget);
 
@@ -1915,7 +1934,7 @@ simulated function OwnerHandToHandAttack()
 		ScriptedPawn(Owner).SetAttackAngle();
 
 	if (bInstantHit)
-		TraceFire(0.0);
+		DoTraceFire(0.0);
 	else
 		ProjectileFire(ProjectileClass, ProjectileSpeed, bWarnTarget);
 }
@@ -2104,11 +2123,13 @@ simulated function bool ClientFire( float value )
 			if ( Ammo20mm(AmmoType) == None )
 				PlaySelectiveFiring();
 
-			if( (Ammo20mm(AmmoType) == None && Self.IsA('WeaponAssaultGun') && !bHasSilencer) || Self.IsA('WeaponFlameThrower') || Self.IsA('WeaponPepperGun') || (Self.IsA('TNMWeapon') && !bInstantHit && Ammo20mm(AmmoType) == None))
+			//== New tactic: just play the silencer noise again in GenerateBullet
+			//if( (Ammo20mm(AmmoType) == None && (Self.IsA('WeaponAssaultGun') || Self.IsA('WeaponTNMAssaultRifle')) && !bHasSilencer) || Self.IsA('WeaponFlameThrower') || Self.IsA('WeaponPepperGun') || (Self.IsA('TNMWeapon') && !bInstantHit))
+
 				PlayFiringSound();
 
 			if ( bInstantHit &&  ( Ammo20mm(AmmoType) == None ))
-				TraceFire(currentAccuracy);
+				DoTraceFire(currentAccuracy);
 			else
 			{
 				if ( !bFlameOn && Self.IsA('WeaponFlamethrower'))
@@ -2232,8 +2253,9 @@ function Fire(float Value)
 					PlayerPawn(Owner).ShakeView(ShakeTime, currentAccuracy * ShakeMag + ShakeMag, currentAccuracy * ShakeVert);
 			}
 			bPointing=True;
+
 			if ( bInstantHit )
-				TraceFire(currentAccuracy);
+				DoTraceFire(currentAccuracy);
 			else
 				ProjectileFire(ProjectileClass, ProjectileSpeed, bWarnTarget);
 
@@ -2244,8 +2266,10 @@ function Fire(float Value)
 			if ( Ammo20mm(AmmoType) == None )
 			{
 //				PlaySelectiveFiring();
-				//== TNM overrides the projectilefire function, so for those weapons we need to play the sound for the weapon
-				if((Self.IsA('WeaponAssaultGun') && !bHasSilencer) || Self.IsA('WeaponFlameThrower') || Self.IsA('WeaponPepperGun') || (Self.IsA('TNMWeapon') && !bInstantHit && Ammo20mm(AmmoType) == None))
+				//== We'll just play the firing sound here, then play the silenced one again if need be in GenerateBullet
+				//if(( (Self.IsA('WeaponAssaultGun') || Self.IsA('WeaponTNMAssaultGun')) && !bHasSilencer) || Self.IsA('WeaponFlameThrower') || Self.IsA('WeaponPepperGun') || (Self.IsA('TNMWeapon') && !bInstantHit))
+
+
 					PlayFiringSound();
 			}
 			if ( Owner.bHidden )
@@ -2830,8 +2854,11 @@ simulated function SimGenerateBullet()
 			if ( AmmoType != None )
 				AmmoType.SimUseAmmo();
 
+			if(bHasSilencer)
+				PlayFiringSound();
+
 			if ( bInstantHit )
-				TraceFire(currentAccuracy);
+				DoTraceFire(currentAccuracy);
 			else
 				ProjectileFire(ProjectileClass, ProjectileSpeed, bWarnTarget);
 
@@ -2915,8 +2942,12 @@ function GenerateBullet()
 {
 	if (AmmoType.UseAmmo(1))
 	{
+		//== Silenced, automatic weapons don't play enough bullet sounds
+		if(bHasSilencer)
+			PlayFiringSound();
+
 		if ( bInstantHit )
-			TraceFire(currentAccuracy);
+			DoTraceFire(currentAccuracy);
 		else
 			ProjectileFire(ProjectileClass, ProjectileSpeed, bWarnTarget);
 
@@ -3081,8 +3112,9 @@ simulated function Projectile ProjectileFire(class<projectile> ProjClass, float 
 		numProj = 1;
 
 	//== Play the sound here.
-	if((!Self.IsA('WeaponAssaultGun') || bHasSilencer || Ammo20mm(AmmoType) != None) && !bHandtoHand && !Self.IsA('WeaponFlameThrower') && !Self.IsA('WeaponPepperGun'))
-		PlayFiringSound();
+	//== Not anymore
+//	if((!Self.IsA('WeaponAssaultGun') || bHasSilencer || Ammo20mm(AmmoType) != None) && !bHandtoHand && !Self.IsA('WeaponFlameThrower') && !Self.IsA('WeaponPepperGun'))
+//		PlayFiringSound();
 
 	GetAxes(Pawn(owner).ViewRotation,X,Y,Z);
 	Start = ComputeProjectileStart(X, Y, Z);
@@ -3319,7 +3351,14 @@ simulated function Projectile ProjectileAltFire(class<projectile> ProjClass, flo
 //
 // copied from Weapon.uc so we can add range information
 //
+
+//== Here for calls from other mods and the like.  Internally we only reference the new DoTraceFire function
 simulated function TraceFire( float Accuracy )
+{
+	DoTraceFire(Accuracy);
+}
+
+simulated function DoTraceFire( float Accuracy )
 {
 	local vector HitLocation, HitNormal, StartTrace, EndTrace, X, Y, Z;
 	local Rotator rot;
@@ -3342,8 +3381,9 @@ simulated function TraceFire( float Accuracy )
 			Owner.AISendEvent('Distress', EAITYPE_Audio, volume, radius);
 	}
 
-	if((!(IsA('WeaponAssaultGun') || IsA('WeaponTNMAssaultGun')) || bHasSilencer || Ammo20mm(AmmoType) != None) && !bHandtoHand)
-		PlayFiringSound();
+	//== We don't do this anymore here
+	//if( (( !(IsA('WeaponAssaultGun') || IsA('WeaponTNMAssaultGun')) ) || bHasSilencer || Ammo20mm(AmmoType) != None) && !bHandtoHand)
+	//	PlayFiringSound();
 
 	GetAxes(Pawn(owner).ViewRotation,X,Y,Z);
 	StartTrace = ComputeProjectileStart(X, Y, Z);
@@ -3555,7 +3595,7 @@ simulated function TraceFire( float Accuracy )
 	}
 
 	//== Make the laser sight jump a little so it moves from a different location
-	if(bLasing && !bZoomed)
+	if(!bZoomed)
 	{
 		LaserYaw = currentAccuracy * (Rand(3072) - 1536);
 		LaserPitch = currentAccuracy * (Rand(3072) - 1536);
@@ -5356,7 +5396,8 @@ simulated function bool TestMPBeltSpot(int BeltSpot)
 // ----------------------------------------------------------------------
 simulated function bool TestCycleable()
 {
-   return ((bHandToHand && (AmmoType == None || AmmoName == Class'DeusEx.AmmoNone'))); //|| GoverningSkill==Class'DeusEx.SkillDemolition');
+   //== Needs to work for shurkiens, etc.
+   return (bHandToHand); //|| GoverningSkill==Class'DeusEx.SkillDemolition');
 }
 
 defaultproperties

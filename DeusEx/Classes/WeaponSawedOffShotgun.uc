@@ -106,7 +106,7 @@ Begin:
 	//=== Do a number of TraceFires for each extra round in the chamber
 	do
 	{
-		Super.TraceFire(currentAccuracy);
+		Super.DoTraceFire(currentAccuracy);
 		ExtraAmmoLoaded--;
 		if(ExtraAmmoLoaded >= 0)
 		{
@@ -150,13 +150,13 @@ simulated function bool ClientAltFire(float Value)
 	return true;
 }
 
-simulated function TraceFire( float Accuracy )
+simulated function DoTraceFire( float Accuracy )
 {
 
 	if(ExtraAmmoLoaded > 0)
 		GotoState('ReFiring');
 	else
-		Super.TraceFire(Accuracy);
+		Super.DoTraceFire(Accuracy);
 }
 
 function bool LoadAmmo(int ammonum)

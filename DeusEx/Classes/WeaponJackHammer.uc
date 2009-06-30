@@ -25,11 +25,11 @@ function bool loadAmmo(int ammonum)
 }
 
 //== Unlike the normal shotguns we want the Jackhammer to have absolutely no delay between simul-firing, since it's already automatic
-simulated function TraceFire( float Accuracy )
+simulated function DoTraceFire( float Accuracy )
 {
 	do
 	{
-		Super.TraceFire(Accuracy);
+		Super.DoTraceFire(Accuracy);
 		ExtraAmmoLoaded--;
 	}
 	until(ExtraAmmoLoaded < 0);

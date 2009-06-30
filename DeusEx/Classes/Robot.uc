@@ -12,6 +12,21 @@ var Pawn CrazedInstigator;
 var(Sounds) sound explosionSound;
 var bool bSearchMsgPrinted;
 
+//== To have the new AI routines sort out scrambled stuff properly we have to override some stuff here.
+function EAllianceType CheckPawnAllianceType(Pawn QueryPawn)
+{
+	if(CrazedInstigator != None && QueryPawn != Self)
+	{
+		if(ScriptedPawn(QueryPawn) != None)
+			return ScriptedPawn(QueryPawn).CheckPawnAllianceType(CrazedInstigator);
+
+		if(QueryPawn == CrazedInstigator)
+			return ALLIANCE_Friendly;
+	}
+
+	return Super.CheckPawnAllianceType(QueryPawn);
+}
+
 function InitGenerator()
 {
 	local Vector loc;
@@ -176,9 +191,9 @@ function TakeDamageBase(int Damage, Pawn instigatedBy, Vector hitlocation, Vecto
 				{
 					skillpt = FMax(Default.EMPHitPoints, oldEMPHitPoints);
 
-					if(GetPawnAllianceType(DeusExPlayer(instigatedBy)) == ALLIANCE_Hostile)
+					if(CheckPawnAllianceType(DeusExPlayer(instigatedBy)) == ALLIANCE_Hostile)
 						skillpt *= 5;
-					else if(GetPawnAllianceType(DeusExPlayer(instigatedBy)) == ALLIANCE_Friendly && crazedTimer <= 0.0)
+					else if(CheckPawnAllianceType(DeusExPlayer(instigatedBy)) == ALLIANCE_Friendly && crazedTimer <= 0.0)
 						skillpt *= -3;
 					else
 						skillpt = 0;

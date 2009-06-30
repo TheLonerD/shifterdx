@@ -505,7 +505,7 @@ KNOWN GLITCHES:
 	happens with the OpenGL rendering settings, and is a limitation in the
 	Deus Ex engine.  There's nothing I can really do about it, other than
 	to warn you.  The enhanced Direct3D8 renderer (available from the same
-	site as the enhanced OpenGL renderere) does not suffer from this
+	site as the enhanced OpenGL renderer) does not suffer from this
 	limitation, however.
 
 	 - An odd side-effect of the "Office Storage" feature may rarely cause
@@ -517,7 +517,7 @@ KNOWN GLITCHES:
 	the game: the Hong Kong Canal area.  While you will receive the skill
 	and speed boost, for unknown reasons the game's speed will not drop.
 	As soon as you move to another map in the area, however, all normal
-	Zyme effects will return.
+	Zyme speed effects will return.
 
 	 - If you carry a datacube from one area to another such that you
 	encounter a load screen the datacube will be "wiped".  Fixing this will
@@ -783,6 +783,50 @@ UPDATES:
 	You can change the Alternate Fire keybinding(s) on either entry, but
 	the change will not be accurately reflected in the entry you DIDN'T use
 	until you exit the config screen and open it again.
+
+	 - Pressing "Fire" in TNM while you are unarmed will now bring up your
+	fists.  Incredibly useful and convenient.
+
+	 - Moved some code around so that Crystal Melk in TNM will actually
+	wear off.  As a side-benefit your "Zyme time" will not count down
+	during conversations.
+
+	 - Fixed the teleporting aliens in TNM, who were not able to do so.
+	Turns out it was a side-effect of some of my "optimizations".  Oops.
+
+	 - Also relating to aliens, adjusted some code so that ANYTHING that is
+	Gray-shaped or Gray-esque (Zodiac's Greys and Blues, TNM's Phasers and
+	Aliens, etc. etc.) is healed by Radiation, and set on fire (most of the
+	time) by Zodiac's E-Rifle.  Y'know, because so many people are likely
+	to bring the E-Rifle into a TNM game.
+
+	- Tweaked the "firing sounds" fix, which was causing some problems with
+	TNM.  The new version does the same thing, but more effectively, and in
+	a way that keeps TNM weapons playing firing sounds.  Even without
+	wanting to change it to make TNM play nice, I should have done it this
+	way in the first place.
+
+	 - Renamed the TraceFire function to DoTraceFire so that TNM won't
+	override it, thereby undoing aim fixes, splash effects, and so on and
+	so forth.  The TraceFire function still exists, but just calls the new,
+	renamed function, so other mods will work just fine.
+
+	 - Adjusted the "make sure we have a mission script" fix (and changed
+	the MissionScript class) so that if no Mission Script can be found for
+	a particular level then the bare-bones "MissionScript" class will be
+	spawned, rather than Mission11 (the old default).  There are new log
+	messages to go with this change.
+
+	 - Added in Grenade cycling for TNM, and in the process redid the way
+	that all weapon cycling is performed.  Not sure if it's more efficient,
+	but it's more easily inclusive of mod weapons, whatever they may be.  I
+	still have to add them in first though.
+
+	 - Redid a portion of the Robot AI routines so that when you scramble
+	them they don't simply switch alliances, they use YOUR alliances to the
+	letter.  Among other things, this means that the weird "Spider-Bot +
+	Repair Bot" dilemma in the first level of TNM isn't much of a dilemma
+	owing to the fact that both bots will simply become friendly.
 
 
 	v1.8.1 - v0.2:

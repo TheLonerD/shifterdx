@@ -446,6 +446,12 @@ native(2107) final function EAllianceType GetPawnAllianceType(Pawn QueryPawn);
 native(2108) final function bool HaveSeenCarcass(Name CarcassName);
 native(2109) final function AddCarcass(Name CarcassName);
 
+//== Because we can't just override the native function we have to jump through hoops here
+function EAllianceType CheckPawnAllianceType(Pawn QueryPawn)
+{
+	return GetPawnAllianceType(QueryPawn);
+}
+
 // ----------------------------------------------------------------------
 // PreBeginPlay()
 // ----------------------------------------------------------------------
@@ -698,10 +704,10 @@ function InitializeInventory()
 		//== Some substitutions for TNM
 		if(dxPlayer.Class.Name == 'trestkon')
 		{
-			Consumables[0] = Class<Inventory>(DynamicLoadObject("TNMItems.Beans", class'Class', False));
-			Consumables[1] = Class<Inventory>(DynamicLoadObject("TNMItems.KetchupBar", class'Class', False));
-			Consumables[4] = Class<Inventory>(DynamicLoadObject("TNMItems.TNMVialCrack", class'Class', False));
-			Consumables[5] = Class<Inventory>(DynamicLoadObject("TNMItems.PlasticCoffee", class'Class', False));
+			Consumables[0] = Class<Inventory>(DynamicLoadObject("TNMItems.Beans", class'Class', False)); //== Same as Soy Food, really
+			Consumables[1] = Class<Inventory>(DynamicLoadObject("TNMItems.KetchupBar", class'Class', False)); //== Worse than Candy, but thematically appropriate
+			Consumables[4] = Class<Inventory>(DynamicLoadObject("TNMItems.TNMVialCrack", class'Class', False)); //== Just a different name for Zyme.  Meh.
+			Consumables[5] = Class<Inventory>(DynamicLoadObject("TNMItems.PlasticCoffee", class'Class', False)); //== Arguably more useful than smokes.  Probably an even tradeoff in Shifter
 		}
 
 		if(testRandom <= 15) //Credits
@@ -3190,7 +3196,7 @@ function bool GenerateRandomInventory()
 	bHadWeapon = False;
 	bHadPowerfulWeapon = False;
 
-	//== For TNM we need to redo the list almost completely
+	//== For TNM we need to redo the list almost completely, albeit with TNM versions of the same damn thing
 	if(dxPlayer.Class.Name == 'trestkon')
 	{
 		GepGun		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMGepGun", class'Class', False));
@@ -3203,6 +3209,7 @@ function bool GenerateRandomInventory()
 		Flamethrower	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMFlamethrower", class'Class', False));
 		LAW		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMLAW", class'Class', False));
 
+		//== These special ammo types aren't usable by the TNM weapons, unfortunately
 		AmDragon	= Pistol;
 		Am10mmEX	= PS20;
 	}
@@ -5810,7 +5817,7 @@ function bool CanConverseWithPlayer(DeusExPlayer dxPlayer)
 {
 	local name alliance1, alliance2, carcname;  // temp vars
 
-	if (GetPawnAllianceType(dxPlayer) == ALLIANCE_Hostile)
+	if (CheckPawnAllianceType(dxPlayer) == ALLIANCE_Hostile)
 		return false;
 	else if ((GetStateName() == 'Fleeing') && (Enemy != dxPlayer) && (IsValidEnemy(Enemy, false)))  // hack
 		return false;
@@ -5905,7 +5912,7 @@ function float DistressScore(actor receiver, actor sender, float score)
 	scriptedSender = ScriptedPawn(sender);
 	if (pawnSender == None)
 		score = 0;
-	else if ((GetPawnAllianceType(pawnSender) != ALLIANCE_Friendly) && !bFearDistress)
+	else if ((CheckPawnAllianceType(pawnSender) != ALLIANCE_Friendly) && !bFearDistress)
 		score = 0;
 	else if ((scriptedSender != None) && !scriptedSender.bDistressed)
 		score = 0;
@@ -6297,7 +6304,7 @@ function HandleDistress(Name event, EAIEventState state, XAIParams params)
 			bDistressorValid = false;
 			distresseePlayer = DeusExPlayer(distressee);
 			distresseePawn   = ScriptedPawn(distressee);
-			if (GetPawnAllianceType(distressee) == ALLIANCE_Friendly)
+			if (CheckPawnAllianceType(distressee) == ALLIANCE_Friendly)
 			{
 				if (distresseePawn != None)
 				{
@@ -6317,12 +6324,12 @@ function HandleDistress(Name event, EAIEventState state, XAIParams params)
 				distressorPawn   = ScriptedPawn(distressor);
 				if (distressorPawn != None)
 				{
-					if (bHateDistress || (distressorPawn.GetPawnAllianceType(distressee) == ALLIANCE_Hostile))
+					if (bHateDistress || (distressorPawn.CheckPawnAllianceType(distressee) == ALLIANCE_Hostile))
 						bDistressorValid = true;
 				}
 				else if (distresseePawn != None)
 				{
-					if (bHateDistress || (distresseePawn.GetPawnAllianceType(distressor) == ALLIANCE_Hostile))
+					if (bHateDistress || (distresseePawn.CheckPawnAllianceType(distressor) == ALLIANCE_Hostile))
 						bDistressorValid = true;
 				}
 
@@ -6861,7 +6868,7 @@ function bool AISafeToShoot(out Actor hitActor, vector traceEnd, vector traceSta
 		{
 			if (tracePawn != self)
 			{
-				if (GetPawnAllianceType(tracePawn) == ALLIANCE_Friendly)
+				if (CheckPawnAllianceType(tracePawn) == ALLIANCE_Friendly)
 					bSafe = false;
 
 				//== If we're a robot...
@@ -6872,14 +6879,14 @@ function bool AISafeToShoot(out Actor hitActor, vector traceEnd, vector traceSta
 					{
 						if(ScriptedPawn(tracePawn) != None)
 						{
-							if(ScriptedPawn(tracePawn).GetPawnAllianceType(Robot(Self).CrazedInstigator) == ALLIANCE_Hostile)
+							if(ScriptedPawn(tracePawn).CheckPawnAllianceType(Robot(Self).CrazedInstigator) == ALLIANCE_Hostile)
 								bSafe = true;
 							else
 								bSafe = false;
 						}
 						else if(ScriptedPawn(Robot(Self).CrazedInstigator) != None)
 						{
-							if(ScriptedPawn(Robot(Self).CrazedInstigator).GetPawnAllianceType(tracePawn) == ALLIANCE_Hostile)
+							if(ScriptedPawn(Robot(Self).CrazedInstigator).CheckPawnAllianceType(tracePawn) == ALLIANCE_Hostile)
 								bSafe = true;
 							else
 								bSafe = false;
@@ -7386,7 +7393,7 @@ function CheckEnemyParams(Pawn checkPawn,
 			if(ScriptedPawn(Robot(Self).CrazedInstigator) != None)
 				bValid = ScriptedPawn(Robot(Self).CrazedInstigator).IsValidEnemy(checkPawn);
 			else 
-		}		bValid = (ScriptedPawn(checkPawn).GetPawnAllianceType(Robot(Self).CrazedInstigator) == ALLIANCE_Hostile);
+		}		bValid = (ScriptedPawn(checkPawn).CheckPawnAllianceType(Robot(Self).CrazedInstigator) == ALLIANCE_Hostile);
 	}
 	if (bValid && (Enemy != checkPawn))
 	{
@@ -9533,9 +9540,9 @@ function SkillsForKills(pawn Killer, name damageType, vector HitLocation)
 
 		skillpt = FMax(default.HealthHead, default.Health); //Skill points based on the health of the enemy
 
-		if(GetPawnAllianceType(player) == ALLIANCE_Hostile)
+		if(CheckPawnAllianceType(player) == ALLIANCE_Hostile)
 			skillpt *= 2;
-		else if(GetPawnAllianceType(player) == ALLIANCE_Friendly) //Way to kill a friendly dipass
+		else if(CheckPawnAllianceType(player) == ALLIANCE_Friendly) //Way to kill a friendly dipass
 		{
 			skillpt *= -1;
 
@@ -12468,10 +12475,9 @@ State Attacking
 					TweenToShoot(0);
 	}
 
-	//function EDestinationType PickDestination() // NO!  BAD!  States are nice and all, but it's still a bad idea to have different return types on the same function
-	function PickDestination()
+	function EDestinationType PickDestination() //== Having multiple return types is bad, but we kinda need it for TNM
 	{
-		GetNewDestination();
+		return GetNewDestination();
 	}
 
 	function EDestinationType GetNewDestination()
@@ -13213,7 +13219,7 @@ State Alerting
 
 		// Do we have any allies on this level?
 		foreach AllActors(Class'ScriptedPawn', pawnAlly)
-			if (GetPawnAllianceType(pawnAlly) == ALLIANCE_Friendly)
+			if (CheckPawnAllianceType(pawnAlly) == ALLIANCE_Friendly)
 				break;
 
 		// Yes, so look for an alarm box that isn't active...
@@ -13241,7 +13247,7 @@ State Alerting
 		return (bestAlarm);
 	}
 
-	function bool PickDestination() //== 
+	function bool PickDestination() //== Obsoleted, but kept for TNM
 	{
 		return PickNextDestination();
 	}
@@ -13473,7 +13479,7 @@ State Shadowing
 		return (VSize(Location-orderActor.Location));
 	}
 
-	function bool PickDestination() //== Obsolted, but kept for TNM
+	function bool PickDestination() //== Obsoleted, but kept for TNM
 	{
 		return PickNextDestination();
 	}
@@ -13730,7 +13736,7 @@ state Following
 		}
 	}
 
-	function bool PickDestination() //== Obsolted, but kept for TNM
+	function bool PickDestination() //== Obsoleted, but kept for TNM
 	{
 		return PickNextDestination();
 	}

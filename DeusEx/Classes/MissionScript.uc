@@ -2,8 +2,8 @@
 // MissionScript.
 //=============================================================================
 class MissionScript extends Info
-	transient
-	abstract;
+	transient;
+//	abstract; //== No longer abstract since we need to spawn it if no Mission Script is specified for a level
 
 //
 // State machine for each mission

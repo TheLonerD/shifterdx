@@ -731,9 +731,9 @@ function GetTargetReticleColor( Actor target, out Color xcolor )
 
 	if ( target.IsA('ScriptedPawn') )
 	{
-		if (ScriptedPawn(target).GetPawnAllianceType(Player) == ALLIANCE_Hostile)
+		if (ScriptedPawn(target).CheckPawnAllianceType(Player) == ALLIANCE_Hostile)
 			xcolor = colRed;
-		else if(ScriptedPawn(target).GetPawnAllianceType(Player) == ALLIANCE_Friendly) // || player.AugmentationSystem.GetClassLevel(class'AugIFF') < 1)
+		else if(ScriptedPawn(target).CheckPawnAllianceType(Player) == ALLIANCE_Friendly) // || player.AugmentationSystem.GetClassLevel(class'AugIFF') < 1)
 			xcolor = colGreen;
 		else
 		{
@@ -1547,9 +1547,9 @@ function int GetVisionTargetStatus(Actor Target)
    {
 /*      if(target.IsA('ScriptedPawn') && player.AugmentationSystem.GetClassLevel(class'AugIFF') >= 1)
       {
-	if(ScriptedPawn(target).GetPawnAllianceType(Player) == ALLIANCE_Hostile)
+	if(ScriptedPawn(target).CheckPawnAllianceType(Player) == ALLIANCE_Hostile)
 	   return VISIONENEMY;
-	if(ScriptedPawn(target).GetPawnAllianceType(Player) == ALLIANCE_Friendly)
+	if(ScriptedPawn(target).CheckPawnAllianceType(Player) == ALLIANCE_Friendly)
 	   return VISIONALLY;
       } */
       return VISIONNEUTRAL;

@@ -16,7 +16,7 @@ simulated function float CalculateAccuracy()
 	return FMax(0.0, Super.CalculateAccuracy() - 0.5);
 }
 
-simulated function TraceFire( float Accuracy )
+simulated function DoTraceFire( float Accuracy )
 {
 	local vector HitLocation, HitNormal, StartTrace, EndTrace, X, Y, Z, LastHit;
 	local Rotator rot;

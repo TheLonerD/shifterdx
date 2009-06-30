@@ -727,8 +727,12 @@ event TravelPostAccept()
 				foreach AllActors(class'MissionScript', scr)
 					bScriptRunning = True;
 
+				//== Clearly, something was coded badly here
 				if(!bScriptRunning)
+				{
+					log("Mission Script reference " $ info.Script $ " is incorrect or invalid, removing...");
 					info.Script = None;
+				}
 			}
 
 			if(info.Script == None)
@@ -744,9 +748,8 @@ event TravelPostAccept()
 
 				if(info.Script == None)
 				{
-					log("No existing Mission Script found, loading master default");
-					//=== Mission11 is one of the least complex mission scripts
-					info.Script = class<MissionScript>(DynamicLoadObject("DeusEx.Mission11",class'Class'));
+					log("No existing Mission Script found for DeusEx.Mission" $ misstr $", loading parent Mission Script class.");
+					info.Script = class<MissionScript>(DynamicLoadObject("DeusEx.MissionScript",class'Class'));
 				}
 			}
 
@@ -1517,25 +1520,29 @@ simulated function DrugEffects(float deltaTime)
 				DesiredFOV = Default.DesiredFOV;
 			}
 		}
-		//Zyme effect
-		// This function just manages the time and resets it when applicable.  The fact
-		// that the value is negative is what other functions look for.
-		if(drugEffectTimer < 0.0)
-		{
-			drugEffectTimer += deltaTime;
+	}
+}
 
-			if(drugEffectTimer >= 0.0)
+function ZymeEffects(float deltaTime)
+{
+	//Zyme effect
+	// This function just manages the time and resets it when applicable.  The fact
+	// that the value is negative is what other functions look for.
+	if(drugEffectTimer < 0.0)
+	{
+		drugEffectTimer += deltaTime;
+
+		if(drugEffectTimer >= 0.0)
+		{
+			if(Level.NetMode == NM_Standalone)
 			{
-				if(Level.NetMode == NM_Standalone)
-				{
-					flagBase.DeleteFlag('Travel_GameSpeed', FLAG_Float); //Just in case it hasn't been set yet
-					Level.Game.SetGameSpeed(Level.Game.GameSpeed * 2.000);
-				}
-				else
-					log("DeusExPlayer: Somehow the zyme effect was activated in a non-singleplayer map.  WTF?");
-				drugEffectTimer = 60.0;
-				ClientMessage("Zyme effect wears off");
+				flagBase.DeleteFlag('Travel_GameSpeed', FLAG_Float); //Just in case it hasn't been set yet
+				Level.Game.SetGameSpeed(Level.Game.GameSpeed * 2.000);
 			}
+			else
+				log("DeusExPlayer: Somehow the zyme effect was activated in a non-singleplayer map.  WTF?");
+			drugEffectTimer = 60.0;
+			ClientMessage("Zyme effect wears off");
 		}
 	}
 }
@@ -2125,7 +2132,7 @@ function UpdateWarrenEMPField(float deltaTime)
 					if ((curRobot.LastRendered() < 2.0) && (curRobot.CrazedTimer <= 0) &&
 					    (curRobot.EMPHitPoints > 0))
 					{
-						if (curRobot.GetPawnAllianceType(self) == ALLIANCE_Hostile)
+						if (curRobot.CheckPawnAllianceType(self) == ALLIANCE_Hostile)
 							option = Rand(2);
 						else
 							option = 0;
@@ -3071,7 +3078,7 @@ function HighlightCenterObject()
 
 		if(ScriptedPawn(FrobTarget) != None)
 		{
-			if(ScriptedPawn(FrobTarget).bCanGiveWeapon && ScriptedPawn(FrobTarget).GetPawnAllianceType(Self) != ALLIANCE_Hostile)
+			if(ScriptedPawn(FrobTarget).bCanGiveWeapon && ScriptedPawn(FrobTarget).CheckPawnAllianceType(Self) != ALLIANCE_Hostile)
 			{
 				if(VSize(FrobTarget.Location - Location) <= 64 && root != None && DeusExWeapon(inHand) != None)
 				{
@@ -4216,6 +4223,8 @@ state PlayerWalking
 		Bleed(deltaTime);
 		HighlightCenterObject();
 
+		ZymeEffects(deltaTime);
+
 
 		UpdateDynamicMusic(deltaTime);
 		UpdateWarrenEMPField(deltaTime);
@@ -4273,6 +4282,8 @@ state PlayerFlying
 		DrugEffects(deltaTime);
 		HighlightCenterObject();
 		UpdateDynamicMusic(deltaTime);
+		ZymeEffects(deltaTime);
+
       // DEUS_EX AMSD For multiplayer...
       MultiplayerTick(deltaTime);
 		FrobTime += deltaTime;
@@ -4370,6 +4381,8 @@ state PlayerSwimming
 		DrugEffects(deltaTime);
 		HighlightCenterObject();
 		UpdateDynamicMusic(deltaTime);
+		ZymeEffects(deltaTime);
+
       // DEUS_EX AMSD For multiplayer...
       MultiplayerTick(deltaTime);
 		FrobTime += deltaTime;
@@ -4975,6 +4988,8 @@ exec function ParseLeftClick()
 			}
 		}
 	}
+	else if(IsA('trestkon') && inHand == None && !bInHandTransition)
+		ConsoleCommand("selectfists");
 }
 
 // ----------------------------------------------------------------------
@@ -6526,7 +6541,7 @@ exec function bool DropItem(optional Inventory inv, optional bool bDrop)
 			if(ScriptedPawn(FrobTarget) != None && DeusExWeapon(item) != None)
 			{
 				//== See if we can give this weapon to the NPC
-				if(ScriptedPawn(FrobTarget).bCanGiveWeapon && VSize(FrobTarget.Location - Location) <= 64 && ScriptedPawn(FrobTarget).GetPawnAllianceType(Self) != ALLIANCE_Hostile)
+				if(ScriptedPawn(FrobTarget).bCanGiveWeapon && VSize(FrobTarget.Location - Location) <= 64 && ScriptedPawn(FrobTarget).CheckPawnAllianceType(Self) != ALLIANCE_Hostile)
 				{
 					//== Since we're actually paying attention to what the NPC has, it'd be a bit weird if NPC Random Inventory suddenly went off.
 					ScriptedPawn(FrobTarget).bNPCRandomGiven = True;
@@ -7773,8 +7788,8 @@ exec function Fire(optional float F)
 		return;
 	}
 
-	if(IsA('trestkon') && inHand == None)
-		ConsoleCommand("selectfists");
+	//if(IsA('trestkon') && inHand == None && !bInHandTransition)
+	//	ConsoleCommand("selectfists");
 
 	Super.Fire(F);
 }
@@ -8503,7 +8518,7 @@ function bool StartConversation(
 		// Check if the person we're trying to start the conversation 
 		// with is a Foe and this is a Third-Person conversation.  
 		// If so, ABORT!
-		if ((!bForcePlay) && ((!con.bFirstPerson) && (ScriptedPawn(invokeActor) != None) && (ScriptedPawn(invokeActor).GetPawnAllianceType(Self) == ALLIANCE_Hostile)))
+		if ((!bForcePlay) && ((!con.bFirstPerson) && (ScriptedPawn(invokeActor) != None) && (ScriptedPawn(invokeActor).CheckPawnAllianceType(Self) == ALLIANCE_Hostile)))
 			return False;
 
 		// If the player is involved in this conversation, make sure the 
