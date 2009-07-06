@@ -8278,6 +8278,34 @@ function SpurtBlood()
 
 function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector momentum, name damageType)
 {
+	//== Anything Gray-esque gets the Radiation heal effect
+	if(Default.Mesh == LodMesh'DeusExCharacters.Gray')
+	{
+		if(damageType == 'Radiation')
+		{
+			if(Health < Default.Health && Damage > 0)
+			{
+				Health += Damage;
+				if(Health > Default.Health)
+					Health = Default.Health;
+
+				return;
+			}
+		}
+
+		//== Exclude classes for which this is already done (Zodiac)
+		if(!(Default.BindName == "Grey" || Default.BindName == "Blue" || Default.BindName == "Sen"))
+		{
+			if(damageType == 'EnergyWeapon')
+			{
+				if(!bOnFire && fRand() >= 0.9)
+					CatchFire();
+				else
+					Damage *= 1.1;
+			}
+		}
+	}
+
 	TakeDamageBase(Damage, instigatedBy, hitlocation, momentum, damageType, true);
 }
 

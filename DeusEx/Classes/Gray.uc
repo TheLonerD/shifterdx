@@ -44,33 +44,6 @@ function ComputeFallDirection(float totalTime, int numFrames,
 	}
 }
 
-//== Redundant due to the function in Animal.uc, but we may as well leave it here
-function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector momentum, name damageType)
-{
-	//== If it's radiation damage, heal instead of hurt
-	if(damageType == 'Radiation')
-	{
-		if(Damage <= 0 || Health >= Default.Health)
-			return;
-
-		Health += Damage;
-		if(Health > Default.Health)
-			Health = Default.Health;
-
-		return;
-	}
-	//== I don't plan on putting Zodiac's E-Rifle in Shifter, but who knows
-	else if(damageType == 'EnergyWeapon')
-	{
-		if(!bOnFire && fRand() >= 0.9)
-			CatchFire();
-		else
-			Damage *= 1.1;
-	}
-
-	Super.TakeDamage(Damage, instigatedBy, hitlocation, momentum, damageType);
-}
-
 function bool FilterDamageType(Pawn instigatedBy, Vector hitLocation,
                                Vector offset, Name damageType)
 {
