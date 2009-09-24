@@ -1189,6 +1189,7 @@ function ShowIntro(optional bool bStartNewGame)
 	local Inventory item, nextItem;
 	local GameDirectory mapDir;
 	local int mapIndex;
+	local bool bFoundAnyMaps = False;
 
 	if (DeusExRootWindow(rootWindow) != None)
 		DeusExRootWindow(rootWindow).ClearWindowStack();
@@ -1216,10 +1217,14 @@ function ShowIntro(optional bool bStartNewGame)
 			Level.Game.SendPlayer(Self, "00_Intro?Difficulty="$combatDifficulty);
 			return;
 		}
+		else if(Caps(mapDir.GetDirFilename(mapIndex)) == "DX" || Caps(mapDir.GetDirFilename(mapIndex)) == "ENTRY" || Caps(mapDir.GetDirFilename(mapIndex)) == "DXONLY")
+			bFoundAnyMaps = True;
 	}
 
-	// Reset the player
-	StartNewGame("");
+	if(bFoundAnyMaps)
+		StartNewGame("");
+	else
+		Level.Game.SendPlayer(Self, "00_Intro?Difficulty="$combatDifficulty);
 }
 
 // ----------------------------------------------------------------------
@@ -4690,6 +4695,7 @@ state Interpolating
 	{
 		local GameDirectory mapDir;
 		local int mapIndex;
+		local bool bFoundAnyMaps = False;
 
 		if (InterpolationPoint(Other).bEndOfPath)
 			if (NextMap != "")
@@ -4710,17 +4716,24 @@ state Interpolating
 	
 					for( mapIndex=0; mapIndex<mapDir.GetDirCount(); mapIndex++)
 					{
-						if(mapDir.GetDirFilename(mapIndex) == NextMap)
+						if(Caps(mapDir.GetDirFilename(mapIndex)) == Caps(NextMap))
 						{
 							Level.Game.SendPlayer(Self, NextMap$"?Difficulty="$combatDifficulty);
 							return;
 						}
+						//== Make sure we can even detect any maps at all (e.g. the Steam version)
+						else if(Caps(mapDir.GetDirFilename(mapIndex)) == "DX" || Caps(mapDir.GetDirFilename(mapIndex)) == "ENTRY" || Caps(mapDir.GetDirFilename(mapIndex)) == "DXONLY")
+							bFoundAnyMaps = True;
 					}
-	
-					ShowDemoSplash();
+
+					if(bFoundAnyMaps)
+					{
+						ShowDemoSplash();
+						return;
+					}
 				}
-				else
-					Level.Game.SendPlayer(Self, NextMap$"?Difficulty="$combatDifficulty);
+
+				Level.Game.SendPlayer(Self, NextMap$"?Difficulty="$combatDifficulty);
 			}
 	}
 
