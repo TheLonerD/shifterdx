@@ -1189,7 +1189,7 @@ function ShowIntro(optional bool bStartNewGame)
 	local Inventory item, nextItem;
 	local GameDirectory mapDir;
 	local int mapIndex;
-	local bool bFoundAnyMaps = False;
+	local bool bFoundAnyMaps;
 
 	if (DeusExRootWindow(rootWindow) != None)
 		DeusExRootWindow(rootWindow).ClearWindowStack();
@@ -1210,20 +1210,20 @@ function ShowIntro(optional bool bStartNewGame)
 	mapDir.SetDirType(mapDir.EGameDirectoryTypes.GD_Maps);
 	mapDir.GetGameDirectory();
 
-	for( mapIndex=0; mapIndex<mapDir.GetDirCount(); mapIndex++)
-	{
-		if(mapDir.GetDirFilename(mapIndex) == "00_Intro")
-		{
-			Level.Game.SendPlayer(Self, "00_Intro?Difficulty="$combatDifficulty);
-			return;
-		}
-		else if(Caps(mapDir.GetDirFilename(mapIndex)) == "DX" || Caps(mapDir.GetDirFilename(mapIndex)) == "ENTRY" || Caps(mapDir.GetDirFilename(mapIndex)) == "DXONLY")
-			bFoundAnyMaps = True;
-	}
+//	for( mapIndex=0; mapIndex<mapDir.GetDirCount(); mapIndex++)
+//	{
+//		if(mapDir.GetDirFilename(mapIndex) == "00_Intro")
+//		{
+//			Level.Game.SendPlayer(Self, "00_Intro?Difficulty="$combatDifficulty);
+//			return;
+//		}
+//		else if(Caps(mapDir.GetDirFilename(mapIndex)) == "DX" || Caps(mapDir.GetDirFilename(mapIndex)) == "ENTRY" || Caps(mapDir.GetDirFilename(mapIndex)) == "DXONLY")
+//			bFoundAnyMaps = True;
+//	}
 
-	if(bFoundAnyMaps)
-		StartNewGame("");
-	else
+//	if(bFoundAnyMaps)
+//		StartNewGame("");
+//	else
 		Level.Game.SendPlayer(Self, "00_Intro?Difficulty="$combatDifficulty);
 }
 
@@ -4695,7 +4695,7 @@ state Interpolating
 	{
 		local GameDirectory mapDir;
 		local int mapIndex;
-		local bool bFoundAnyMaps = False;
+		local bool bFoundAnyMaps;
 
 		if (InterpolationPoint(Other).bEndOfPath)
 			if (NextMap != "")
@@ -4706,32 +4706,32 @@ state Interpolating
 				// will exit the game after the player presses a key/mouseclick
 				//== ...but ONLY for these maps, and only if they aren't available
 
-				if(NextMap == "02_NYC_BatteryPark" || NextMap == "03_NYC_UNATCOIsland" || NextMap == "06_HONGKONG_HELIBASE")
-				{
-					//== Okay, because I care ENTIRELY TOO MUCH we need to have some code that makes
-					//==  sure the next level is there, and if not that it shows the demo splash.
-					mapDir = new(None) Class'GameDirectory';
-					mapDir.SetDirType(mapDir.EGameDirectoryTypes.GD_Maps);
-					mapDir.GetGameDirectory();
-	
-					for( mapIndex=0; mapIndex<mapDir.GetDirCount(); mapIndex++)
-					{
-						if(Caps(mapDir.GetDirFilename(mapIndex)) == Caps(NextMap))
-						{
-							Level.Game.SendPlayer(Self, NextMap$"?Difficulty="$combatDifficulty);
-							return;
-						}
-						//== Make sure we can even detect any maps at all (e.g. the Steam version)
-						else if(Caps(mapDir.GetDirFilename(mapIndex)) == "DX" || Caps(mapDir.GetDirFilename(mapIndex)) == "ENTRY" || Caps(mapDir.GetDirFilename(mapIndex)) == "DXONLY")
-							bFoundAnyMaps = True;
-					}
-
-					if(bFoundAnyMaps)
-					{
-						ShowDemoSplash();
-						return;
-					}
-				}
+//				if(NextMap == "02_NYC_BatteryPark" || NextMap == "03_NYC_UNATCOIsland" || NextMap == "06_HONGKONG_HELIBASE")
+//				{
+//					//== Okay, because I care ENTIRELY TOO MUCH we need to have some code that makes
+//					//==  sure the next level is there, and if not that it shows the demo splash.
+//					mapDir = new(None) Class'GameDirectory';
+//					mapDir.SetDirType(mapDir.EGameDirectoryTypes.GD_Maps);
+//					mapDir.GetGameDirectory();
+//	
+//					for( mapIndex=0; mapIndex<mapDir.GetDirCount(); mapIndex++)
+//					{
+//						if(Caps(mapDir.GetDirFilename(mapIndex)) == Caps(NextMap))
+//						{
+//							Level.Game.SendPlayer(Self, NextMap$"?Difficulty="$combatDifficulty);
+//							return;
+//						}
+//						//== Make sure we can even detect any maps at all (e.g. the Steam version)
+//						else if(Caps(mapDir.GetDirFilename(mapIndex)) == "DX" || Caps(mapDir.GetDirFilename(mapIndex)) == "ENTRY" || Caps(mapDir.GetDirFilename(mapIndex)) == "DXONLY")
+//							bFoundAnyMaps = True;
+//					}
+//
+//					if(bFoundAnyMaps)
+//					{
+//						ShowDemoSplash();
+//						return;
+//					}
+//				}
 
 				Level.Game.SendPlayer(Self, NextMap$"?Difficulty="$combatDifficulty);
 			}
