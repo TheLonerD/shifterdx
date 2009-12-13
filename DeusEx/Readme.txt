@@ -34,8 +34,7 @@ DeusEx.int files with the ones in the Zip file.  I highly recommend you make
 backup copies of each file just in case you want to switch back for some reason.
 (e.g. multiplayer)  Doing this will ensure that Shifter runs *with* other mods,
 meaning that any other new singleplayer maps/levels/plots you play will use
-Shifter rules, with some few exceptions. (Hotel Carone will not use the new
-skill system, for example)
+Shifter rules, with some few exceptions. 
 
 	If you want to install Shifter so that you are still able to play
 unmodified Deus Ex without having to swap files, please read the file
@@ -53,7 +52,9 @@ run!
 
 	**HDTP RELEASE #1 USERS** You need to move or copy the HDTPanim.utx file
 into your C:\DeusEx\Textures folder for Shifter to work properly with HDTP.
-This file is installed to C:\DeusEx\HDTP\Textures by default.
+This file is installed to C:\DeusEx\HDTP\Textures by default.  You must also use
+the NORMAL Deus Ex/Shifter exe file.  Do NOT run HDTP.exe or Shifter will not be
+running when you do!
 
 
 A BRIEF FAQ-TYPE THING:
@@ -146,7 +147,10 @@ order whatsoever:
 	files by downloading the v1112fm patch, opening it with WinZip/etc.
 	(NOT running it) and then extracting the contents into the Deus Ex
 	Demo's installation folder (e.g. C:\DeusExDemo\).  This will overwrite
-	the old, incompatible files; from there you can install Shifter.
+	the old, incompatible files; from there you can install Shifter.  In
+	order to start a new game in the 1- or 2-mission versions of the game
+	you will need to right-click the "OK" button when starting a new game.
+	(This skips the intro, which these demo versions do not have)
 
 	 - WHERE IS THE SHIFTER HOMEPAGE: You can find the Shifter homepage at
 	http://yukichigai.googlepages.com/shifter.  I also have an account over
@@ -599,6 +603,24 @@ mod and how it has affected their everyday lives (in Deus Ex, anyway):
 
 
 UPDATES:
+
+	v1.8.4:
+
+	 - Shifter-TNM: Made sure that when Shifter replaces TNM's MedBots with
+	the Shifter ones it only removes the old TNM bots after its sure the
+	new ones are in place.  If a replacement MedBot isn't spawned then the
+	old TNM one will still be around, which means it augmentation
+	replacement may not always be available in TNM + Shifter.
+
+	 - HDTP no longer loads/unloads when you do a QuickSave, which will
+	make these saves actually quick, but not fully compatible if swapping
+	save files between computers.  Of course, if you're going to swap a
+	save file then you can just make a separate, non-quick save file.
+
+	 - Added a built-in way to skip the intro when starting a new game:
+	right-clicking the "OK" button.  This is probably only going to be
+	useful for people trying to run Shifter with the Demo version, and the
+	horribly impatient.
 
 	v1.8.3:
 

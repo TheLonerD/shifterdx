@@ -459,6 +459,12 @@ function PostBeginPlay()
 	// Safeguard so no cheats in multiplayer
 	if ( Level.NetMode != NM_Standalone )
 		bCheatsEnabled = False;
+
+	if(Caps(info.mapName) == "DX" && FlagBase.GetBool('ViewIntro'))
+	{
+		FlagBase.DeleteFlag('ViewIntro', FLAG_Bool);
+		StartNewGame(strStartMap);
+	}
 }
 
 function ServerSetAutoReload( bool bAuto )
@@ -578,6 +584,7 @@ function PostPostBeginPlay()
 
 	if ((Level.NetMode != NM_Standalone) && ( killProfile == None ))
 		killProfile = Spawn(class'KillerProfile', Self);
+
 }
 
 // ----------------------------------------------------------------------
@@ -626,6 +633,16 @@ event TravelPostAccept()
 		// hack for the DX.dx logo/splash level
 		if (info.MissionNumber == -2)
 		{
+			//== Deus Ex Demo compatibility, MK II
+			//==  The only way we'll have a PlayerTraveling flag on the intro map is if the level we
+			//==  tried to load isn't present, which 99% of the time means this is the demo version
+			if(flagBase.GetBool('PlayerTraveling'))
+			{
+				flagBase.DeleteFlag('PlayerTraveling', FLAG_Bool);
+				if(!flagBase.GetBool('ViewIntro'))
+					ShowDemoSplash();
+			}
+
 			foreach AllActors(class 'InterpolationPoint', I, 'IntroCam')
 			{
 				if (I.Position == 1)
@@ -644,6 +661,7 @@ event TravelPostAccept()
 					break;
 				}
 			}
+
 			return;
 		}
 
@@ -1059,11 +1077,7 @@ exec function QuickSave()
 	   return;
 	}
 
-	GlobalFacelift(False);
-
 	SaveGame(-1, QuickSaveGameTitle);
-
-	GlobalFacelift(True);
 }
 
 // ----------------------------------------------------------------------
@@ -1205,26 +1219,10 @@ function ShowIntro(optional bool bStartNewGame)
 	// Make sure all augmentations are OFF before going into the intro
 	AugmentationSystem.DeactivateAll();
 
-	//== Make sure this works for the demo version
-	mapDir = new(None) Class'GameDirectory';
-	mapDir.SetDirType(mapDir.EGameDirectoryTypes.GD_Maps);
-	mapDir.GetGameDirectory();
+	if(bStartNewGame)
+		FlagBase.SetBool('ViewIntro', True, True, 0);
 
-//	for( mapIndex=0; mapIndex<mapDir.GetDirCount(); mapIndex++)
-//	{
-//		if(mapDir.GetDirFilename(mapIndex) == "00_Intro")
-//		{
-//			Level.Game.SendPlayer(Self, "00_Intro?Difficulty="$combatDifficulty);
-//			return;
-//		}
-//		else if(Caps(mapDir.GetDirFilename(mapIndex)) == "DX" || Caps(mapDir.GetDirFilename(mapIndex)) == "ENTRY" || Caps(mapDir.GetDirFilename(mapIndex)) == "DXONLY")
-//			bFoundAnyMaps = True;
-//	}
-
-//	if(bFoundAnyMaps)
-//		StartNewGame("");
-//	else
-		Level.Game.SendPlayer(Self, "00_Intro?Difficulty="$combatDifficulty);
+	Level.Game.SendPlayer(Self, "00_Intro?Difficulty="$combatDifficulty);
 }
 
 // ----------------------------------------------------------------------
@@ -7702,6 +7700,7 @@ exec function ShowMainMenu()
 
 function PostIntro()
 {
+	FlagBase.DeleteFlag('ViewIntro', FLAG_Bool);
 	if (bStartNewGameAfterIntro)
 	{
 		bStartNewGameAfterIntro = False;

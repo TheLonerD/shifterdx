@@ -32,16 +32,20 @@ function PreBeginPlay()
 
 	if(String(Class.Name) == "TNM_Medbot")
 	{
-		medbot = spawn(Class'Medicalbot', Owner);
+		medbot = spawn(Class'DeusEx.MedicalBot', Owner);
 
-		//== Oy vey.  Make sure there aren't any tags we're messing up
-		medbot.FamiliarName = FamiliarName;
-		medbot.UnfamiliarName = UnfamiliarName;
-		medbot.BindName = BindName;
-		medbot.Tag = Tag;
-
-		Destroy();
-		return;
+		//== Only delete the old medbot if there's a new one
+		if(medbot != None)
+		{
+			//== Oy vey.  Make sure there aren't any tags we're messing up
+			medbot.FamiliarName = FamiliarName;
+			medbot.UnfamiliarName = UnfamiliarName;
+			medbot.BindName = BindName;
+			medbot.Tag = Tag;
+		
+			Destroy();
+			return;
+		}
 	}
 
 	Super.PreBeginPlay();

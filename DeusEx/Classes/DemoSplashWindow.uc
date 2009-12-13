@@ -22,8 +22,17 @@ event InitWindow()
 
 event bool VirtualKeyPressed(EInputKey key, bool bRepeat)
 {
-	player.Level.Game.SendPlayer(player, "dxonly");
-	return True;
+	local DeusExLevelInfo info;
+
+	foreach player.AllActors(Class'DeusExLevelInfo', info)
+	{
+		if(Caps(info.mapName) != "DX" && Caps(info.mapName) != "DXONLY")
+		{
+			player.Level.Game.SendPlayer(player, "dxonly");
+			return True;
+		}
+		DeusExRootWindow(player.rootWindow).PopWindow();
+	}
 }
 
 // ----------------------------------------------------------------------
@@ -35,8 +44,17 @@ event bool VirtualKeyPressed(EInputKey key, bool bRepeat)
 event bool MouseButtonReleased(float pointX, float pointY, EInputKey button,
                                int numClicks)
 {
-	player.Level.Game.SendPlayer(player, "dxonly");
-	return True;
+	local DeusExLevelInfo info;
+
+	foreach player.AllActors(Class'DeusExLevelInfo', info)
+	{
+		if(Caps(info.mapName) != "DX" && Caps(info.mapName) != "DXONLY")
+		{
+			player.Level.Game.SendPlayer(player, "dxonly");
+			return True;
+		}
+		DeusExRootWindow(player.rootWindow).PopWindow();
+	}
 }
 
 // ----------------------------------------------------------------------
