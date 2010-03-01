@@ -17,7 +17,7 @@ function inventory SpawnCopy( Pawn Other )
 
 	if(retinv != None)
 		Destroy();
-	else
+	else //== Well shit, this didn't go well.  Just use this
 		AugUpCan.Destroy();
 
 	return retinv;

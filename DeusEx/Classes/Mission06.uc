@@ -29,6 +29,7 @@ function FirstFrame()
 	local AllianceTrigger altrig;
 	local MJ12Troop mjtroop;
 	local Mover thecase;
+	local FlagTrigger ftrig;
 
 	Super.FirstFrame();
 
@@ -224,6 +225,22 @@ function FirstFrame()
 			}
 		}
 	}
+	else if (localURL == "06_HONGKONG_STORAGE")
+	{
+		if (!flags.GetBool('Keypad_Deactivator_Placed'))
+		{
+			ftrig = spawn(Class'FlagTrigger', None,, vect(54.944206, 671.900024, -728.685852));
+			if(ftrig != None)
+			{
+				ftrig.SetCollision(false, false, false);
+				ftrig.Tag = 'Self_Destruct';
+				ftrig.bTrigger = false;
+				ftrig.flagName = 'Deactivate_Keypad';
+				flags.SetBool('Keypad_Deactivator_Placed', True);
+			}
+		}
+	}
+
 	else if (localURL == "06_HONGKONG_WANCHAI_MARKET")
 	{
 		// prepare for the ceremony
@@ -413,7 +430,6 @@ function Timer()
 	local WeaponSawedOffShotgun Sawoff;
 	local ScientistMaleCarcass scicarc;
 	local Inventory inv;
-	local FlagTrigger ftrig;
 
 	Super.Timer();
 
@@ -723,19 +739,6 @@ function Timer()
 					M.bBreakable = True;
 
 			flags.SetBool('MS_ReadyAUC', True,, 8);
-		}
-
-		if (!flags.GetBool('Keypad_Deactivator_Placed'))
-		{
-			ftrig = spawn(Class'FlagTrigger', None,, vect(54.944206, 671.900024, -728.685852));
-			if(ftrig != None)
-			{
-				ftrig.SetCollision(false, false, false);
-				ftrig.Tag = 'Self_Destruct';
-				ftrig.bTrigger = false;
-				ftrig.flagName = 'Deactivate_Keypad';
-				flags.SetBool('Keypad_Deactivator_Placed', True);
-			}
 		}
 
 		if(flags.GetBool('Deactivate_Keypad'))

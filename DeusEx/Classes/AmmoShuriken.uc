@@ -23,6 +23,7 @@ defaultproperties
      ItemArticle="some"
      PickupViewMesh=LodMesh'DeusExItems.TestBox'
      Icon=Texture'DeusExUI.Icons.BeltIconShuriken'
+     largeIcon=Texture'DeusExUI.Icons.LargeIconShuriken'
      Mesh=LodMesh'DeusExItems.ShurikenPickup'
      CollisionRadius=22.500000
      CollisionHeight=16.000000

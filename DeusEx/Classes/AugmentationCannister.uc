@@ -95,7 +95,7 @@ simulated function Augmentation GetAugmentation(int augIndex)
 	
 					//== No default augmentations
 					while(anAug.Class.Name == 'AugIFF' || anAug.Class.Name == 'AugLight' || anAug.Class.Name == 'AugDatalink')
-						anAug = anAug.next;
+						anAug = None;
 				}
 			}
 			AddAugs[augIndex] = anAug.Class.Name;

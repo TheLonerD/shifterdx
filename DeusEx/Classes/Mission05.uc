@@ -125,6 +125,10 @@ function FirstFrame()
 					{
 						nextItem = item.Inventory;
 
+						//== Turn off any charged pickups we were using and remove the associated HUD
+						if (item.IsA('ChargedPickup'))
+							ChargedPickup(item).ChargedPickupEnd(Player);
+
 						Player.DeleteInventory(item);
 
 						item.DropFrom(SP.Location);

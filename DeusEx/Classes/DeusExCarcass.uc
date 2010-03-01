@@ -596,7 +596,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 					  W.IsA('WeaponCombatKnife') )
 			                  W.PickupAmmoCount = 1;
 			               else if (Level.NetMode == NM_Standalone)
-			                  W.PickupAmmoCount = Rand(W.Default.PickupAmmoCount) + 1; //Rand(4) + 1;
+			                  W.PickupAmmoCount = Rand(Max((W.Default.PickupAmmoCount/2),4)) + 1; //Rand(4) + 1;
 				}
 				
 				if (item != None)

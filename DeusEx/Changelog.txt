@@ -896,7 +896,7 @@
 	worth it to disable them and loot 'em if you can.  (I did put a cap on
 	how much ammo you can get from them though)
 
-	 - Robots and Animals are now givent NPC Random Inventory, at least in
+	 - Robots and Animals are now given NPC Random Inventory, at least in
 	Unrealistic.  Karkians with Gep Guns; that is all you need to know.
 
 	 - Reworked my fix of the "time while paused" exploits so that the fix

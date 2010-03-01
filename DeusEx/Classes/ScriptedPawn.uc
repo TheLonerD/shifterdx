@@ -8344,14 +8344,22 @@ function Timer()
 		bWhatever = false;
 		inv = Inventory;
 		check = 0;
-		while(inv != None && check <= 10)
+		while(inv != None && check <= 20 && inv.Owner == Self)
 		{
+			//== Okay, while we're at it, make sure our items are carried and not pickups (grr, TNM)
+			if(!inv.bCarriedItem)
+			{
+				log(Self $" somehow wasn't carrying their "$ inv $". Putting it back into their inventory.");
+				inv.GiveTo(Self);
+			}
+
 			check++;
 			itemp = None;
 			if(DeusExWeapon(inv) != None || DeusExPlayer(GetPlayerPawn()).combatDifficulty > 4.0)
 			{
 				bWhatever = true;
 			}
+			//== This will check for all types of combat knives, including those in TNM
 			if(InStr(String(inv.Class.Name), "CombatKnife") > -1 && bCheckedCombat)
 			{
 
@@ -14829,7 +14837,7 @@ state BackingOff
 		CheckOpenDoor(HitNormal, Wall);
 	}
 
-	function bool PickDestination() //== Obsolted, but kept for TNM
+	function bool PickDestination() //== Obsoleted, but kept for TNM
 	{
 		return PickNextDestination();
 	}

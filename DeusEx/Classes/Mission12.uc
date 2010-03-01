@@ -35,6 +35,17 @@ function FirstFrame()
 				if (pawn.IsA('Jock') || pawn.IsA('TracerTong'))
 					pawn.EnterWorld();
 		}
+
+		if (!flags.GetBool('No_Bot_Friendly_Fire'))
+		{
+			foreach AllActors(class'Robot', bot)
+			{
+				if(bot.Alliance == 'Bots_Salvagers')
+					bot.ChangeAlly('x51', 1, True, False);
+			}
+
+			flags.SetBool('No_Bot_Friendly_Fire', True);
+		}
 	}
 	else if (localURL == "12_VANDENBERG_GAS")
 	{
@@ -111,17 +122,6 @@ function Timer()
 
 			if (count == 0)
 				flags.SetBool('CapturedScientistRescued', True,, 14);
-		}
-
-		if (!flags.GetBool('No_Bot_Friendly_Fire'))
-		{
-			foreach AllActors(class'Robot', bot)
-			{
-				if(bot.Alliance == 'Bots_Salvagers')
-					bot.ChangeAlly('x51', 1, True, False);
-			}
-
-			flags.SetBool('No_Bot_Friendly_Fire', True);
 		}
 	}
 	else if (localURL == "12_VANDENBERG_GAS")

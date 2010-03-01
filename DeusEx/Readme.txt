@@ -34,11 +34,16 @@ DeusEx.int files with the ones in the Zip file.  I highly recommend you make
 backup copies of each file just in case you want to switch back for some reason.
 (e.g. multiplayer)  Doing this will ensure that Shifter runs *with* other mods,
 meaning that any other new singleplayer maps/levels/plots you play will use
-Shifter rules, with some few exceptions. 
+Shifter rules, with some few exceptions.
 
 	If you want to install Shifter so that you are still able to play
 unmodified Deus Ex without having to swap files, please read the file
 "Advanced.txt" for detailed instructions.
+
+	In case you don't know, by default Deus Ex is installed to the
+"C:\DeusEx" folder.  For people with the Steam version of the game, the default
+path is "C:\Program Files\Steam\steamapps\common\deusex".  The basic install
+works with both versions.
 
 	**PLEASE NOTE** You MUST have the v1112fm patch installed to run Shifter
 (The Game of the Year edition comes prepatched, usually)  PLEASE NOTE THE "M" AT
@@ -132,13 +137,13 @@ order whatsoever:
 	(like HDTP) may require some extra configuration to get working.
 
 	 - DOES YOUR MOD WORK WITH THE GAMETAP VERSION OF DEUS EX: I am pleased
-	to say that yes, Shifter does work with the FREE GameTap version of Deus
-	Ex, though it takes some additional configuration and the install
-	procedure is VERY different.  Complete installation instructions can be
-	found in the file "GameTap Info.txt".  Please note that while Shifter's
-	gameplay modifications will be passed along to the GameTap version, some
-	of the associated text changes (some item descriptions and one button
-	label in the keyboard config menu) will NOT come through.
+	to say that yes, Shifter does work with the GameTap version of Deus Ex
+	though it takes some additional configuration and the install procedure
+	is VERY different.  Complete installation instructions can be found in 
+	the file "GameTap Info.txt".  Please note that while Shifter's gameplay
+	modifications will be passed along to the GameTap version, some of the
+	associated text changes (some item descriptions and one button label in
+	the keyboard config menu) will NOT come through.
 
 	 - DOES YOUR MOD WORK WITH THE DEMO: It can, but some extra work is
 	required.  The Demo versions (the 1-, 2- and 5-mission varieties) do
@@ -621,6 +626,75 @@ UPDATES:
 	right-clicking the "OK" button.  This is probably only going to be
 	useful for people trying to run Shifter with the Demo version, and the
 	horribly impatient.
+
+	 - Moved around part of the fix for the UC destruction event in HK so
+	it's more efficient.
+
+	 - Also moved around where Ray gets set to being neutral.  While I was
+	there I also removed some old, out-of-date code that was doing nothing
+	but taking up resources.
+
+	 - Added a routine to part of NPC Random Inventory which should help
+	ensure that items given to NPCs, particularly ones in TNM, don't just
+	wind up at their feet.  Also adjusted NPC Random Inventory to not
+	factor in inventory belonging to another NPC that has somehow been
+	linked to the wrong inventory list.
+
+	 - Fixed a subtle Deus Ex glitch with couches.  Did you know they're
+	supposed to come in five different colors?  I didn't.  Thanks to Jonas
+	of TNM for pointing that out.
+
+	 - Re-worked the Pistol Downgrade fix so that it is more compatible
+	with other mods like TNM/etc. which use a custom New Game Menu class.
+
+	 - Changed the code for putting random augmentations in summoned Aug
+	Cans.  The code was set up so that if it picked one of the "default"
+	augmentations then it would simply pick the next aug in the list, which
+	skewed results towards those "next" augs.  Now it will just start the
+	random selection process over.
+
+	 - Restored the Crossbow's original firing sound, which was never heard
+	due to a code oversight.  Thanks to Lork on the OTP forums for pointing
+	this out.
+
+	 - Also adjusted the Targeting aug so it will use the display name of a
+	weapon it spots being carried by an NPC, if available.  Also thanks to
+	that wacky Lork guy.
+
+	 - Holy crap more Lork-reported fixes. This time he discovered that if
+	you are using a Charged Pickup (thermoptic camo, etc.) when you are
+	captured by UNATCO it will leave the HUD in place and cause some other
+	weirdness after the item is confiscated.
+
+	 - And someone ELSE pointed out that while the description on the
+	HazMat Suit says it protects against fire, electricity, and EMP damage,
+	it actually doesn't. Now it does.
+
+	 - Ballistic Armor will now protect against explosive gunfire.
+
+	 - A "because I can" fix, If you boost the EMP aug past Tech Four using
+	the Synthetic Heart aug you will actually GAIN health and energy from
+	sources of EMP.
+
+	 - Finished work on one of the more odd-ball DXMP models I decided to
+	add.  I'm not going to say who or what it is, except that if you've
+	played through one of the more bizarre Deus Ex mods you'll get the joke
+
+	 - Any consumable items (soda, etc) which show up in DXMP will act as
+	instant-effect items when you click them, e.g. if there's a bottle of
+	booze when you click it you'll immediately gain some health and get a
+	teeny tiny bit drunk.  This has something to do with the new DXMP model
+	I mentioned above.
+
+	 - Changed the ammo pickup count from bodies.  Again.  In normal DX it
+	was anywhere from 1 to 4, which I changed to 1 to <Weapon Clip Size>.
+	Now it's a bit more complicated: 1 to (half the clip size or four,
+	whatever is greater).
+
+	 - Moved another MissionScript fix to a lower-lag location, this time
+	the fix that stops the x51 scientists from making their own bots turn
+	on them.
+
 
 	v1.8.3:
 

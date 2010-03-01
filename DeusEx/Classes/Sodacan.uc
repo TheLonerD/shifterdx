@@ -5,7 +5,7 @@ class Sodacan extends Consumable;
 
 enum ESkinColor
 {
-	SC_Default,
+	SC_Random,
 	SC_Nuke,
 	SC_Zap,
 	SC_Burn,
@@ -130,7 +130,7 @@ function ESkinColor RandomCanTex()
 		//== Check for any soda in a 2ft range.  Clusters of Nuke should stay as Nuke
 		foreach RadiusActors(class'Sodacan', soda, 32)
 		{
-			if((soda.StackSkins[0] == SC_Default || soda.StackSkins[0] == SC_Nuke) && soda != Self)
+			if((soda.StackSkins[0] == SC_Random || soda.StackSkins[0] == SC_Nuke) && soda != Self)
 				return SC_Nuke;
 		}
 

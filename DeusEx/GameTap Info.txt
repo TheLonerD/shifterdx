@@ -54,4 +54,4 @@ most important of these is the Alt-Fire option, which will show up in the
 keyboard configuration screen as "Put In Hand".  The REAL "Put In Hand" is now
 at the bottom of the key list, along with another entry for Alt-Fire.  When in
 doubt, scroll to the bottom of the keyboard configuration list to see what key
-controls Alternate Fire.
+controls Alt-Fire and Put In Hand.

@@ -3,14 +3,6 @@
 //=============================================================================
 class Mission11 expands MissionScript;
 
-//=== Goddamn ScriptedPawn.uc
-struct AllianceInfoEx  {
-	var Name  AllianceName;
-	var float AllianceLevel;
-	var float AgitationLevel;
-	var bool  bPermanent;
-};
-
 // ----------------------------------------------------------------------
 // FirstFrame()
 // 
@@ -19,7 +11,21 @@ struct AllianceInfoEx  {
 
 function FirstFrame()
 {
+	local Mechanic mech;
+
 	Super.FirstFrame();
+
+	if (localURL == "11_PARIS_EVERETT")
+	{
+		if (!flags.GetBool('Ray_Neutral') && !flags.GetBool('Ray_Dead'))
+		{
+			foreach AllActors(class'Mechanic', mech)
+			{
+				mech.bLikesNeutral = False;
+				flags.SetBool('Ray_Neutral', True);
+			}
+		}
+	}
 }
 
 // ----------------------------------------------------------------------
@@ -94,15 +100,6 @@ function Timer()
 				alex.EnterWorld();
 
 			flags.SetBool('MS_AlexUnhidden', True,, 12);
-		}
-
-		if (!flags.GetBool('Ray_Neutral') && !flags.GetBool('Ray_Dead'))
-		{
-			foreach AllActors(class'Mechanic', mech)
-			{
-				mech.bLikesNeutral = False;
-				flags.SetBool('Ray_Neutral', True);
-			}
 		}
 
 		if(!flags.GetBool('Mechanic_Body_Moved') && !flags.GetBool('Ray_Dead'))

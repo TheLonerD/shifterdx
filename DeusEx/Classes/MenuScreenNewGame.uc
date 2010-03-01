@@ -366,10 +366,10 @@ function bool ButtonActivated( Window buttonPressed )
 // 
 //-----------------------------------------------------------------------
 
-function bool ButtonActivatedRight( Window buttonPressed )
-{
-	if(buttonPressed
-}
+//function bool ButtonActivatedRight( Window buttonPressed )
+//{
+//	if(buttonPressed == 
+//}
 
 // ----------------------------------------------------------------------
 // ListRowActivated()
@@ -568,9 +568,6 @@ function CopySkills()
 	while(aSkill != None)
 	{
 		localSkills[skillIndex] = player.Spawn(aSkill.Class);
-		//== Pistol being set to trained is now handled here, to prevent the "downgrade" trick
-		if(SkillWeaponPistol(aSkill) != None)
-			localSkills[skillIndex].CurrentLevel = 1;
 		skillIndex++;
 		aSkill = aSkill.next;
 	}

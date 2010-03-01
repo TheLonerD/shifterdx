@@ -1,0 +1,60 @@
+ - Whip up a unique flamethrower and have it replace the one found in "the back of Versalife" (on top of the tallest pipe in the HK garage)
+ - Add new shotgun ammo type (dragon or electroshock rounds)
+ + Add code to the JC Office Storage feature so Aug Cannisters don't get reset with random augs
+ - Re-tweak NPC Random Inventory a bit to add some more weapons or something, maybe
+ + Code in check to keep NPCs from picking up unique weapons (e.g. Rentons picking up JoJo's Lo Bruto)
+ + Make Ray neutral instead of friendly (and El Ray, and hell, a lot of folks)
+ - Mayhaps move the body of the mechanic Ray murdered so you don't damn near trip over it
+ - Fix the lack of streets2 music in NYC 08
+ - Fix the problem with corpse names resetting to "Unconscious" after picking up/dropping
+ + Fix the "lockpick then pause" exploit that lets you use one lockpick to pick a multi-pick lock
+ - Fix the other half of the "lockpick/multitool then pause" exploit, so pausing doesn't make it any quicker.  Use LastUpdateTime, (PlayerPawn.uc) perhaps?
+ + Fix all the infinite skillpoint loops you can.  E.g. the door in the NY shipyard, the two keypads for the generators in vandenburg, the points granted at the end of the convo with Dr. Savage, etc.
+ - Make the skull gun not suck
+ - Make flares hold-able?
+ + Put an upper limit on the amount of skillpoints you can have, to prevent crashing
+ - Make buttons shootable
+ - Maybe fix that carrying glitch, where containers lose their items between maps and explosive barrels become unexplosive
+ - Or that other one, where carrying an ammo box destroys the box, gives you the ammo and then gives you a copy of the box
+ + Somehow find a way to stop Nicollete/etc. from running through objects and breaking them
+ - Expand that fix to include armed NPCs as well, or at least make 'em fire their weapon
+ + Add reload/etc. sounds for the ILAW
+ + Notify player as to what the shotgun alt-fire does
+ + Find a way to slightly delay the shotgun simul-fire
+ + Check into that "invisible flagpole" think DeuxHero was talking about
+ + Make Dead Fish float, and possibly make them edible, and maybe make them fade out eventually
+ - Possibly make dead animals edible or cookable
+ - Code in Akimbo pistols
+ - Finally freakin' code in that "Weapon Mods will upgrade weapons when dragged over the belt slot" thing
+ - Cat-petting system.  Nothing particularly flashy, necessarily anyway.  Maybe in unrealistic it gives you points
+ - Speaking of which, do more work on Unrealistic
+ - Merge EMP and Energy shield augs, think of something to replace EMP shield.  Reactive shielding?
+ - And while we're at it, do something about Run Silent.  Wall-walk or water-walk, perhaps at the upper levels.  At least "steep climb walk"?  Perhaps use bHitSlopedWall, MaxStepHeight, Floor (which is a vector), HandleWalking()?
+ + Make sure Cig smoke actually does tear gas damage, like you said it does in the v1.4 changelog
+ - Fix charged items so that they aren't automatically turned off if you switch to another item
+ - Code in a check to make sure any items counted in the JC Office Storage feature aren't held by someone
+ - Make third-person view a non-cheat, keybindable option.  At least if you can find a way to not render people you aren't supposed to see
+ - Look into using the pre-built AI intelligence routines to upgrade NPC behavior.  Try upgrading some NPCs to have an intelligence enum of BRAINS_HUMAN
+ - And if you have any other spare time, look into implementing automated taunt macros for certain multiplayer models
+ + Investigate workaround for Railgun limitations
+ - Add in new method to exclude certain items from being auto-frobbed from corpses (e.g. a menu to say "auto-frob this item, but drop the combat knife")  Perhaps a "no frob when unique weapon present" option
+ + Check why the Paris bots don't kill MJ12 troops when they're scrambled
+ + Now that that's done, try to get the non-scrambled bots and AI to respond in kind
+ + Fire sounds for Railgun, and make it do absurd damage to NPCs
+ - Gib and/or through-shot effects for NPCs/walls?
+ - Flesh fragments hitting NPCs triggers fearbody/hatebody effects
+ - Add in new method for adding datacube text (variables assigned to the cube itself)
+ - Recurring "Blood Loss" damage for severe wounds.
+ - Make a separate unofficial Deus Ex patch, separate from Shifter, that fixes most of the big problems
+ - Add a black market shop behind the temple in HK.  Use custom weapons, triggers and an event in the mission script that checks what the player is looking at to accomplish store functionality
+ - Stop certain key conversations from being interrupted by that "carry an item that gets auto-thrown when you enter the convo" thing
+ - Look into the "scrolling select box" thing in MP.  You may have to do some crap with replication to fix it
+ - Look into "unable to warn Smuggler to leave" glitch
+ - Consider adding that guy's textures in as optional textures
+ - Take a second look at the "Paul disappears from the 'Ton" bug, just to make sure there isn't some other variable you're missing.  Relevance, perhaps?
+ - Adjust bomb detonation time so you really need to be trained to properly disarm bombs
+ - Look into making the UNATCO alliance change something visual, e.g. you here radio squaks or something and the UNATCO guys freeze for a minute.
+ - Add in an option to force the HDTP facelift on an already loaded level.  May require you to move the HDTP skin switch to a separate function
+ - Unique Gep Gun idea: shoots various rockets running off of EMP, Scramble and Gas Grenades.
+ - Unique Flamethrower: chemical sprayer, gives folks grey death? (Pepper spray + poison + damage)
+ - Weapon drop: maybe when guns get hot from flamethrower, etc. make NPCs drop weapon.

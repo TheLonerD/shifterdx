@@ -26,9 +26,77 @@ function PlayWeaponSwitch(Weapon newWeapon){}
 
 function PlayDying(name damageType, vector hitLoc)
 {
-	//== Later, add in glass shattering and soda drop here
-
 	PlayDyingSound();
+}
+
+function Carcass SpawnCarcass()
+{
+	local VendingMachine vend;
+	local Inventory item;
+	local DeusExFragment s;
+	local int i;
+
+	for (item=Inventory; item!=None; item=Inventory)
+	{
+		DeleteInventory(item);
+		if(!item.IsA('DeusExAmmo'))
+		{
+			item.DropFrom(Location);
+			item.Velocity = (Vector(Rotation) + (VRand() * 14)) * (10 + Rand(30));
+			item.RotationRate.Pitch = (32768 - Rand(65536)) * 4.0;
+			item.RotationRate.Yaw = (32768 - Rand(65536)) * 4.0;
+		}
+		i++;
+	}
+
+
+	if(Health < -80)
+	{
+		//== Free soda, yay! ^_^
+		while(i > 0)
+		{
+			item = Spawn(class'Sodacan');
+			if(item != None)
+			{
+				item.Velocity = (Vector(Rotation) + (VRand() * 14)) * (10 + Rand(30));
+				item.RotationRate.Pitch = (32768 - Rand(65536)) * 4.0;
+				item.RotationRate.Yaw = (32768 - Rand(65536)) * 4.0;
+			}
+			i--;
+		}
+
+		for (i=0; i<3; i++)
+		{
+			s = Spawn(class'MetalFragment', Self);
+			if (s != None)
+			{
+				s.Instigator = Self;
+				s.CalcVelocity(Velocity, 80);
+				s.DrawScale = 80*0.075*FRand();
+				s.Skin = GetMeshTexture();
+				if (FRand() < 0.75)
+					s.bSmoking = True;
+			}
+		}
+	}
+	else
+	{
+		for (i=0 ; i<7 ; i++) 
+		{
+			s = Spawn(class'GlassFragment', Self);
+			if (s != None)
+			{
+				s.Instigator = Self;
+				s.CalcVelocity(Velocity,0);
+				s.DrawScale = 1*0.5+0.7*1*FRand();
+			}
+		}
+		vend = Spawn(Class'VendingMachine');
+		vend.bPushable = False;
+		vend.bInvincible = False;
+		vend.Cost = 0;
+	}
+	return None;
 }
 
 // ----------------------------------------------------------------------
@@ -86,9 +154,9 @@ state PlayerWalking
 		if (bIsCrouching || bForceDuck)
 		{
 			if ( Level.NetMode != NM_Standalone )
-				SetBasedPawnSize(Default.CollisionRadius, 30.0);
+				SetBasedPawnSize(Default.CollisionRadius * 3.0 / 4.0, 30.0);
 			else
-				SetBasedPawnSize(Default.CollisionRadius, 16);
+				SetBasedPawnSize(Default.CollisionRadius * 3.0 / 4.0, 16);
 
 			// check to see if we could stand up if we wanted to
 			checkpoint = Location;

@@ -13,11 +13,26 @@ var float mpLevel3;
 
 simulated function PreBeginPlay()
 {
+	local DeusExLevelInfo info;
+
 	Super.PreBeginPlay();
 
-	//== Now handled in MenuScreenNewGame
-//	if ( Level.NetMode == NM_Standalone )
-//		CurrentLevel = 1;
+
+	//== Y|y: we only want to bump this up to Trained when starting a new game
+	if ( Level.NetMode == NM_Standalone )
+	{
+		//== Y|y: this will detect if we're doing it from one of the intro (non-cinematic) maps
+		foreach AllActors(class'DeusExLevelInfo', info)
+		{
+			if(info.MissionNumber < 0)
+				CurrentLevel = 1;
+		}
+
+		//== Y|y: This detects if the player is starting a new game during an existing one
+		if(DeusExPlayer(GetPlayerPawn()) != None)
+			if(DeusExPlayer(GetPlayerPawn()).bShowMenu)
+				CurrentLevel = 1;
+	}
 
 	if ( Level.NetMode != NM_Standalone )
 	{

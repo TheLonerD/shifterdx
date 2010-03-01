@@ -91,7 +91,7 @@ function bool HandlePickupQuery( inventory Item )
 			}
 
 			DeusExPickup(Item).NumCopies--;
-			DeusExPickup(anItem).TransferSkin(Item);
+			DeusExPickup(anItem).TransferSkin(Item); //== Handle multi-skin pickups
 			DeusExPickup(Item).NumCopies++;
 			bResult = True;
 		}

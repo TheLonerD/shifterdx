@@ -41,6 +41,8 @@ defaultproperties
      LevelValues(0)=0.750000
      LevelValues(1)=0.500000
      LevelValues(2)=0.250000
+     LevelValues(3)=0.000000
+     LevelValues(4)=-0.125000
      AugmentationLocation=LOC_Subdermal
      MPConflictSlot=3
 }

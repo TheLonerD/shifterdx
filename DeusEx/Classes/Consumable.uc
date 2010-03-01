@@ -61,6 +61,41 @@ function SwitchItem()
 	}
 }
 
+function Frob(Actor Frobber, Inventory FrobWith)
+{
+	local DeusExPlayer player;
+	local int mult;
+
+	if(Level.NetMode != NM_Standalone && DeusExPlayer(Frobber) != None)
+	{
+		player = DeusExPlayer(Frobber);
+		if (player != None)
+		{
+			mult = healthEffect;
+
+			if(player.SkillSystem != None)
+				mult += player.SkillSystem.GetSkillLevel(class'SkillMedicine');
+
+			if(mult > 0)
+				player.HealPlayer(mult, False);
+			else if(mult < 0)
+				player.TakeDamage(-mult, player, player.Location, vect(0,0,0), 'PoisonGas');
+
+			if(drugEffect != 0.0)
+			{
+				if(player.drugEffectTimer < 0.0)
+					player.drugEffectTimer = FMin(-0.01, player.drugEffectTimer + drugEffect);
+				else
+					player.drugEffectTimer = FMax(0.00, player.drugEffectTimer + drugEffect);
+			}
+		}
+
+		Destroy();
+	}
+	else
+		Super.Frob(Frobber, FrobWith);
+}
+
 state Activated
 {
 	function Activate()

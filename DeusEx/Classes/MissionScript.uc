@@ -222,6 +222,7 @@ function Timer()
 
 // ----------------------------------------------------------------------
 // GetPatrolPoint()
+// Y|y: Fixed to actually do something
 // ----------------------------------------------------------------------
 
 function PatrolPoint GetPatrolPoint(Name patrolTag, optional bool bRandom)
@@ -249,6 +250,7 @@ function PatrolPoint GetPatrolPoint(Name patrolTag, optional bool bRandom)
 
 // ----------------------------------------------------------------------
 // GetSpawnPoint()
+// Y|y: Fixed to actually do something
 // ----------------------------------------------------------------------
 
 function SpawnPoint GetSpawnPoint(Name spawnTag, optional bool bRandom)

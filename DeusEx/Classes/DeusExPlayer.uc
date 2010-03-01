@@ -772,7 +772,15 @@ event TravelPostAccept()
 			}
 
 			if(!bScriptRunning)
-				info.SpawnScript();
+			{
+				if(info.Script != None)
+					info.SpawnScript();
+				else
+				{
+					log("EPIC FAIL!  Something is REALLY f%$#ed here because we can't load the base MissionScript class.  Manually removing the PlayerTraveling flag so controls work.");
+					FlagBase.DeleteFlag('PlayerTraveling', FLAG_Bool);
+				}
+			}
 		}
 	}
 
@@ -1633,7 +1641,7 @@ function UpdateDynamicMusic(float deltaTime)
 
 				LevelSong = Music(DynamicLoadObject(SongString, class'Music'));
 
-				//== We'll just assume this is the appropriate song type.  Later updates will catch us if we're wronh
+				//== We'll just assume this is the appropriate song type.  Later updates will catch us if we're wrong
 				newMusicMode = MUS_Ambient;
 
 				//== Instant transition
@@ -5059,7 +5067,13 @@ exec function ParseRightClick()
 			// TODO: This logic may have to get more involved if/when 
 			// we start allowing other types of objects to get stacked.
 
-			if (HandleItemPickup(FrobTarget, True) == False)
+			//== Special code for DXMP, so consumables are instantly used
+			if(Level.NetMode != NM_Standalone && Consumable(FrobTarget) != None)
+			{
+				FrobTarget.Frob(Self, inHand);
+				return;
+			}
+			else if (HandleItemPickup(FrobTarget, True) == False)
 				return;
 
 			// if the frob succeeded, put it in the player's inventory
@@ -10465,17 +10479,14 @@ function bool DXReduceDamage(int Damage, name damageType, vector hitLocation, ou
 		// go through the actor list looking for owned HazMatSuits
 		// since they aren't in the inventory anymore after they are used
 
-
-      //foreach AllActors(class'HazMatSuit', suit)
-//			if ((suit.Owner == Self) && suit.bActive)
-      if (UsingChargedPickup(class'HazMatSuit'))
-			{
-				skillLevel = SkillSystem.GetSkillLevelValue(class'SkillEnviro');
-				newDamage *= 0.75 * skillLevel;
-			}
+		if (UsingChargedPickup(class'HazMatSuit'))
+		{
+			skillLevel = SkillSystem.GetSkillLevelValue(class'SkillEnviro');
+			newDamage *= 0.75 * skillLevel;
+		}
 	}
 
-	if ((damageType == 'Shot') || (damageType == 'Sabot') || (damageType == 'Exploded') || (damageType == 'AutoShot') || (damageType == 'Shell'))
+	if ((damageType == 'Shot') || (damageType == 'Sabot') || (damageType == 'Exploded') || (damageType == 'AutoShot') || (damageType == 'Shell') || (damageType == 'ExplodeShot'))
 	{
 		// go through the actor list looking for owned BallisticArmor
 		// since they aren't in the inventory anymore after they are used
@@ -10508,6 +10519,13 @@ function bool DXReduceDamage(int Damage, name damageType, vector hitLocation, ou
 
 		if (augLevel >= 0.0)
 			newDamage *= augLevel;
+
+		//== New stuff.  HazMat suit also resists EMP
+		if (UsingChargedPickup(class'HazMatSuit'))
+		{
+			skillLevel = SkillSystem.GetSkillLevelValue(class'SkillEnviro');
+			newDamage *= 0.75 * skillLevel;
+		}
 	}
 
 	if ((damageType == 'Burned') || (damageType == 'Flamed') ||
@@ -10518,6 +10536,13 @@ function bool DXReduceDamage(int Damage, name damageType, vector hitLocation, ou
 
 		if (augLevel >= 0.0)
 			newDamage *= augLevel;
+
+		//== New stuff.  Make the HazMat Suit actually resist Fire/Shock damage like it says it does
+		if (UsingChargedPickup(class'HazMatSuit'))
+		{
+			skillLevel = SkillSystem.GetSkillLevelValue(class'SkillEnviro');
+			newDamage *= 0.75 * skillLevel;
+		}
 	}
 
 	if (newDamage < Damage)
@@ -10886,13 +10911,13 @@ function SkillPointsAdd(int numPoints)
 				DeusExRootWindow(rootWindow).hud.msgLog.PlayLogSound(Sound'TurretSwitch');
 			}
 		}
-	}
 
-	//== Prevent any potential crashes due to skillpoint awards
-	if(SkillPointsAvail > 115900)
-		SkillPointsAvail = 115900;
-	if(SkillPointsTotal > 115900)
-		SkillPointsTotal = 115900;
+		//== Prevent any potential crashes due to skillpoint awards
+		if(SkillPointsAvail > 115900)
+			SkillPointsAvail = 115900;
+		if(SkillPointsTotal > 115900)
+			SkillPointsTotal = 115900;
+	}
 }
 
 // ----------------------------------------------------------------------
