@@ -14,6 +14,7 @@ function FirstFrame()
 	local BlackHelicopter chopper;
 	local ScriptedPawn pawn;
 	local SandraRenton Sandra;
+	local Robot bot;
 
 	if(localURL == "12_VANDENBERG_TUNNELS")
 	{
