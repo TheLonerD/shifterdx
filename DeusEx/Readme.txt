@@ -1,6 +1,6 @@
 //=================================//
         Shifter for Deus Ex
-	   Version 1.8.2
+	   Version 1.8.4
 //=================================//
 
 INTRODUCTION:
@@ -694,6 +694,30 @@ UPDATES:
 	 - Moved another MissionScript fix to a lower-lag location, this time
 	the fix that stops the x51 scientists from making their own bots turn
 	on them.
+
+	 - Decoration items which are not supposed to be highlight-able (i.e.
+	you don't see borders around them when you get close, like destroyed
+	cars and such) would show the "default this is a bug" description
+	when the Targeting augmentation was active.  Fixed.  Thanks to Allan
+	on the OTP forums.
+
+	 - You may now notice ricochet sounds for bullets that miss you.  This
+	was due to a strange bug in TraceHitSpawner.uc, which cannot parse any
+	variables of the Name type.  Thanks to Lork for pointing this out.
+
+	 - More Lork stuff: the "standing aim bonus" kept increasing the longer
+	you stood still, to the point where you could wind up with a rather
+	large "movement grace period" if you stood still for long enough.
+	Fixed.
+
+	 - Grenades other than just yours will now cause a screen flash if you
+	are close enough.  This applies in singleplayer AND multiplayer.  Lork
+	pointed this out too.
+
+	 - Optimized a bit of code which determined what types of projectiles
+	the Aggressive Defense aug could detonate.  While I was there I also
+	made sure it won't detect and detonate placed grenades, which was just
+	a bit silly.
 
 
 	v1.8.3:

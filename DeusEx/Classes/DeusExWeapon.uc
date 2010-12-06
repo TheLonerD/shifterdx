@@ -1602,8 +1602,12 @@ simulated function Tick(float deltaTime)
 	}
 
 	// if were standing still, increase the timer
+	//== Y|y: but only to a point, unless we want to build up a "credit" of standing still.  Thanks to Lork
 	if (VSize(Owner.Velocity) < 10)
-		standingTimer += deltaTime;
+	{
+		if(standingTimer < 15.0)
+			standingTimer += deltaTime;
+	}
 	else	// otherwise, decrease it slowly based on velocity
 		standingTimer = FMax(0, standingTimer - 0.03*deltaTime*VSize(Owner.Velocity));
 

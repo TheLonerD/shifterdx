@@ -1100,7 +1100,9 @@ function Trigger(Actor Other, Pawn Instigator)
 
 function String GetDecoName()
 {
-	return ItemName;
+	if(bHighlight)
+		return ItemName;
+	return "";
 }
 
 // ----------------------------------------------------------------------

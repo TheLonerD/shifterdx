@@ -31,9 +31,10 @@ simulated function PlayHitSound(actor destActor, Actor hitActor)
 	local float rnd;
 	local sound snd;
 
+	//== Y|y: redundant, since script only spawns tracers for bullet types.  Kudos to Lork for finding this
 	// don't ricochet unless it's hit by a bullet
-	if ((damageType != 'Shot') && (damageType != 'Sabot') && (damageType != 'Shell'))
-		return;
+	//if ((damageType != 'Shot') && (damageType != 'Sabot') && (damageType != 'Shell'))
+	//	return;
 
 	rnd = FRand();
 
