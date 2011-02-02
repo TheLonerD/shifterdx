@@ -204,6 +204,7 @@ defaultproperties
      recoilStrength=0.600000
      bUnique=True
      bCanHaveModReloadCount=False
+     bCanHaveModShotTime=False
      ReloadCount=1
      PickupAmmoCount=4
      bInstantHit=True

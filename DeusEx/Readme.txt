@@ -719,6 +719,9 @@ UPDATES:
 	made sure it won't detect and detonate placed grenades, which was just
 	a bit silly.
 
+	 - The Railgun will no longer accept the Rate of Fire weapon mod, which
+	did nothing since it was essentially a one-shot weapon.
+
 
 	v1.8.3:
 
