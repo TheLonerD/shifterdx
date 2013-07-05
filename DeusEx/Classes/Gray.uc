@@ -10,6 +10,20 @@ var float damageInterval;
 var float damageAmount;
 var float damageTime;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPGray", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 // check every damageInterval seconds and damage any player near the gray
 function Tick(float deltaTime)
 {

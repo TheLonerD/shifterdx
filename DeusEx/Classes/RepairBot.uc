@@ -22,6 +22,20 @@ replication
 
 }
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPRepairBot", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 // ----------------------------------------------------------------------
 // PostBeginPlay()
 // ----------------------------------------------------------------------

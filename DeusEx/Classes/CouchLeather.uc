@@ -14,17 +14,34 @@ enum ESkinColor
 
 var() ESkinColor SkinColor;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPCouchLeather", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 function BeginPlay()
 {
 	Super.BeginPlay();
 
-	switch (SkinColor)
+	if(Mesh == Default.Mesh)
 	{
-		case SC_Black:		Skin = Texture'CouchLeatherTex1'; break;
-		case SC_Blue:		Skin = Texture'CouchLeatherTex2'; break;
-		case SC_Brown:		Skin = Texture'CouchLeatherTex3'; break;
-		case SC_LitGray:	Skin = Texture'CouchLeatherTex4'; break;
-		case SC_Tan:		Skin = Texture'CouchLeatherTex5'; break;
+		switch (SkinColor)
+		{
+			case SC_Black:		Skin = Texture'CouchLeatherTex1'; break;
+			case SC_Blue:		Skin = Texture'CouchLeatherTex2'; break;
+			case SC_Brown:		Skin = Texture'CouchLeatherTex3'; break;
+			case SC_LitGray:	Skin = Texture'CouchLeatherTex4'; break;
+			case SC_Tan:		Skin = Texture'CouchLeatherTex5'; break;
+		}
 	}
 }
 

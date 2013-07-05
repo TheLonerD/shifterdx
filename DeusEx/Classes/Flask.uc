@@ -9,10 +9,10 @@ function bool Facelift(bool bOn)
 		return false;
 
 	if(bOn)
-		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPFlaskTex1", class'Texture', True));
+		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPFlask", class'Mesh', True));
 
-	if(Skin == None || !bOn)
-		Skin = None;
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
 
 	return true;
 }

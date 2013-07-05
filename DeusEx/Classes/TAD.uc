@@ -8,6 +8,30 @@ var() sound beepSound;
 var HighLight light;
 var bool bOn;
 
+var Texture TADtex[2];
+
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+	{
+		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPTAD", class'Mesh', True));
+		TADtex[0] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPTADTex1", class'Texture', True));
+		TADtex[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPTADTex2", class'Texture', True));
+	}
+
+	if(Mesh == None || TADTex[0] == None || TADTex[1] == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		TADtex[0] = Default.TADtex[0];
+		TADtex[1] = Default.TADtex[1];
+	}
+
+	return true;
+}
+
 function Timer()
 {
 	local DeusExPlayer player;
@@ -35,20 +59,20 @@ function Timer()
 					PlaySound(beepSound, SLOT_Misc,,, 512);
 					if (light != None)
 						light.LightType = LT_Steady;
-					Skin = Texture'TADTex2';
+					Skin = TADTex[1];
 				}
 				else
 				{
 					if (light != None)
 						light.LightType = LT_None;
-					Skin = Texture'TADTex1';
+					Skin = TADTex[0];
 				}
 			}
 			else
 			{
 				if (light != None)
 					light.LightType = LT_None;
-				Skin = Texture'TADTex1';
+				Skin = TADTex[0];
 			}
 		}
 		else
@@ -56,7 +80,7 @@ function Timer()
 			// turn off the light
 			if (light != None)
 				light.Destroy();
-			Skin = Texture'TADTex1';
+			Skin = TADTex[0];
 			SetTimer(0.1, False);
 		}
 	}
@@ -71,6 +95,8 @@ function PostBeginPlay()
 
 defaultproperties
 {
+     TADtex(0)=Texture'TADTex1'
+     TADtex(1)=Texture'TADTex2'
      beepInterval=2.000000
      beepSound=Sound'DeusExSounds.Generic.Beep5'
      ItemName="Telephone Answering Machine"

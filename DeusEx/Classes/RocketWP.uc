@@ -7,6 +7,20 @@ var float mpExplodeDamage;
 
 #exec OBJ LOAD FILE=Effects
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPRocketHE", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 simulated function DrawExplosionEffects(vector HitLocation, vector HitNormal)
 {
 	local ExplosionLight light;

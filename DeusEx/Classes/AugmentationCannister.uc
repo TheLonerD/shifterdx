@@ -8,6 +8,29 @@ var() travel Name AddAugs[2];
 var localized string AugsAvailable;
 var localized string MustBeUsedOn;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAugCan", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		PickupViewMesh = Default.Mesh;
+	}
+	else
+	{
+		PickupViewMesh = Mesh;
+		PlayerviewMesh = Mesh;
+		ThirdPersonMesh = Mesh;
+	}
+
+	return true;
+} 
+
 // ----------------------------------------------------------------------
 // Network Replication
 // ---------------------------------------------------------------------

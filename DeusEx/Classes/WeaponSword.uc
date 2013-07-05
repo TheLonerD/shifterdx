@@ -3,6 +3,50 @@
 //=============================================================================
 class WeaponSword extends DeusExWeapon;
 
+function bool Facelift(bool bOn)
+{
+	local Name tName;
+
+	if(!Super.Facelift(bOn))
+		return false;
+
+	tName = GetStateName();
+
+	if(bOn)
+	{
+		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPSword", class'mesh', True));
+		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPSwordPickup", class'mesh', True));
+		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPSword3rd", class'mesh', True));
+	}
+
+	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+	{
+		PlayerViewMesh = Default.PlayerViewMesh;
+		PickupViewMesh = Default.PickupViewMesh;
+		ThirdPersonMesh = Default.ThirdPersonMesh;
+	}
+	else
+		Mesh = PickupViewMesh;
+
+	if(tName == 'Pickup')
+		Mesh = PickupViewMesh;
+	else
+		Mesh = PlayerViewMesh;
+
+	return true;
+}
+
+simulated function renderoverlays(Canvas canvas)
+{
+	if(PickupViewMesh != Default.PickupViewMesh)
+		multiskins[0] = Getweaponhandtex();
+
+	super.renderoverlays(canvas);
+
+	if(PickupViewMesh != Default.PickupViewMesh)
+		multiskins[0] = none; 
+}
+
 simulated function PreBeginPlay()
 {
 	Super.PreBeginPlay();

@@ -11,7 +11,7 @@ function bool Facelift(bool bOn)
 	if(bOn)
 	{
 		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPCrateBreakableMed", class'mesh', True));
-		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCrateBreakableTex1", class'Texture', True));
+		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCrateBreakableMedTex1", class'Texture', True));
 	}
 
 	if(Mesh == None || Skin == None || !bOn)

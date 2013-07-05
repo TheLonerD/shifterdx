@@ -3,6 +3,26 @@
 //=============================================================================
 class Ammo3006 extends DeusExAmmo;
 
+var() Mesh shellmesh;
+
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAmmo3006", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+	else
+		shellmesh = Mesh(DynamicLoadObject("HDTPItems.HDTPSniperCasing", class'Mesh', True));
+
+	PickupViewMesh = Mesh;
+
+	return true;
+} 
+
 function bool UseAmmo(int AmountNeeded)
 {
 	local vector offset, tempvec, X, Y, Z;
@@ -25,15 +45,18 @@ function bool UseAmmo(int AmountNeeded)
       else
       {
          if ((W != None) && ((W.NoiseLevel < 0.1) || W.bHasSilencer))
-            shell = spawn(class'ShellCasingSilent',,, Owner.Location + offset);
+            shell = spawn(class'ShellCasingSilent',,, Owner.Location + offset,Pawn(Owner).viewrotation);
          else
-            shell = spawn(class'ShellCasing',,, Owner.Location + offset);
+            shell = spawn(class'ShellCasing',,, Owner.Location + offset,Pawn(Owner).viewrotation);
       }
 
 		if (shell != None)
 		{
 			shell.Velocity = (FRand()*20+90) * Y + (10-FRand()*20) * X;
 			shell.Velocity.Z = 0;
+
+			if(shellmesh != None)
+				shell.Mesh = shellmesh;
 		}
 		return True;
 	}

@@ -6,6 +6,20 @@
 
 class AmmoDart extends DeusExAmmo;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmoDartTex1", class'Texture', True));
+
+	if(skin == None || !bOn)
+		skin = Default.skin;
+
+	return true;
+}
+
 simulated function PreBeginPlay()
 {
 	Super.PreBeginPlay();

@@ -8,6 +8,20 @@ var float mpBlastRadius;
 var ParticleGenerator fireGen;
 var ParticleGenerator smokeGen;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPRocket", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 function PostBeginPlay()
 {
 	Super.PostBeginPlay();

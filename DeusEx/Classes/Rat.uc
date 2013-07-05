@@ -13,6 +13,20 @@ var float     CurrentAgitation;
 
 var float time;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPRat", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 function bool ShouldBeStartled(Pawn startler)
 {
 	local float speed;

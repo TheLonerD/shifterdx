@@ -12,15 +12,63 @@ enum ESkinColor
 
 var() ESkinColor SkinColor;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+	{
+		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPTree02", class'Mesh', True));
+		Altmesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPTree02b", class'Mesh', True));
+	}
+
+	if(Mesh == None || Altmesh == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		HDTPtex[0] = None;
+		HDTPtex[1] = None;
+		switch (SkinColor)
+		{
+			case SC_Tree1:	Skin = Texture'Tree2Tex1'; break;
+			case SC_Tree2:	Skin = Texture'Tree2Tex2'; break;
+			case SC_Tree3:	Skin = Texture'Tree2Tex3'; break;
+		}
+	}
+	else
+	{
+		switch (SkinColor)
+		{
+			case SC_Tree1:	
+			case SC_Tree2:	Skin = HDTPTex[0]; break;
+			case SC_Tree3:	Skin = HDTPTex[1]; break;
+		}
+	}	
+
+	return true;
+}
+
 function BeginPlay()
 {
 	Super.BeginPlay();
 
-	switch (SkinColor)
+	if(Mesh == Default.Mesh)
 	{
-		case SC_Tree1:	Skin = Texture'Tree2Tex1'; break;
-		case SC_Tree2:	Skin = Texture'Tree2Tex2'; break;
-		case SC_Tree3:	Skin = Texture'Tree2Tex3'; break;
+		switch (SkinColor)
+		{
+			case SC_Tree1:	Skin = Texture'Tree2Tex1'; break;
+			case SC_Tree2:	Skin = Texture'Tree2Tex2'; break;
+			case SC_Tree3:	Skin = Texture'Tree2Tex3'; break;
+		}
+	}
+	else
+	{
+		switch (SkinColor)
+		{
+			case SC_Tree1:	
+			case SC_Tree2:	Skin = HDTPTex[0]; break;
+			case SC_Tree3:	Skin = HDTPTex[1]; break;
+		}
 	}
 }
 

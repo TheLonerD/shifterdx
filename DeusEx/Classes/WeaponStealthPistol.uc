@@ -6,6 +6,81 @@
 
 class WeaponStealthPistol extends DeusExWeapon;
 
+function bool Facelift(bool bOn)
+{
+	local Name tName;
+
+	if(!Super.Facelift(bOn))
+		return false;
+
+	tName = GetStateName();
+
+	if(bOn)
+	{
+		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPStealthPistol", class'mesh', True));
+		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPStealthPistolPickup", class'mesh', True));
+		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPStealthPistol3rd", class'mesh', True));
+	}
+
+	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+	{
+		PlayerViewMesh = Default.PlayerViewMesh;
+		PickupViewMesh = Default.PickupViewMesh;
+		ThirdPersonMesh = Default.ThirdPersonMesh;
+	}
+	else
+		Mesh = PickupViewMesh;
+
+	if(tName == 'Pickup')
+		Mesh = PickupViewMesh;
+	else
+		Mesh = PlayerViewMesh;
+
+	return true;
+}
+
+simulated function renderoverlays(Canvas canvas)
+{
+	if(PickupViewMesh != Default.PickupViewMesh)
+	{
+		Multiskins[0] = getweaponhandtex();
+		Multiskins[1] = none;
+	
+		if(bHasScope)
+			multiskins[4] = none;
+		else
+			multiskins[4] = texture'pinkmasktex';
+		if(bHasLaser)
+			multiskins[2] = none;
+		else
+			multiskins[2] = texture'pinkmasktex';
+		if(bLasing)
+			multiskins[3] = none;
+		else
+			multiskins[3] = texture'pinkmasktex';
+	
+		super(weapon).renderoverlays(canvas);
+	
+		multiskins[0] = none;
+	
+		if(bHasScope)
+			multiskins[1] = none;
+		else
+			multiskins[1] = texture'pinkmasktex';
+		if(bHasLaser)
+			multiskins[2] = none;
+		else
+			multiskins[2] = texture'pinkmasktex';
+		if(bLasing)
+			multiskins[3] = none;
+		else
+			multiskins[3] = texture'pinkmasktex';
+		multiskins[4]=none;
+	}
+	else
+		Super.RenderOverlays(canvas);
+}
+
 simulated function PreBeginPlay()
 {
 	Super.PreBeginPlay();

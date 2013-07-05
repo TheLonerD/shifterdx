@@ -3,6 +3,20 @@
 //=============================================================================
 class AmmoDartPoison extends AmmoDart;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmoDartTex3", class'Texture', True));
+
+	if(skin == None || !bOn)
+		skin = Default.skin;
+
+	return true;
+}
+
 defaultproperties
 {
      bIsNonStandard=False

@@ -3,6 +3,50 @@
 //=============================================================================
 class WeaponEMPGrenade extends WeaponGrenade;
 
+function bool Facelift(bool bOn)
+{
+	local Name tName;
+
+	if(!Super.Facelift(bOn))
+		return false;
+
+	tName = GetStateName();
+
+	if(bOn)
+	{
+		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPEMPGrenade", class'mesh', True));
+		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPEMPGrenadePickup", class'mesh', True));
+		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPEMPGrenade3rd", class'mesh', True));
+	}
+
+	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+	{
+		PlayerViewMesh = Default.PlayerViewMesh;
+		PickupViewMesh = Default.PickupViewMesh;
+		ThirdPersonMesh = Default.ThirdPersonMesh;
+	}
+	else
+		Mesh = PickupViewMesh;
+
+	if(tName == 'Pickup')
+		Mesh = PickupViewMesh;
+	else
+		Mesh = PlayerViewMesh;
+
+	return true;
+}
+
+simulated function renderoverlays(Canvas canvas)
+{
+	if(PickupViewMesh != Default.PickupViewMesh)
+		multiskins[0] = Getweaponhandtex();
+
+	super.renderoverlays(canvas);
+
+	if(PickupViewMesh != Default.PickupViewMesh)
+		multiskins[0] = none; 
+}
+
 //== Minty's Mod needs this to work, because specified super(WeaponEMPGrenade).  DON'T DO THAT.
 function Fire(float Value)
 {

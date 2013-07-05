@@ -3,6 +3,20 @@
 //=============================================================================
 class SpiderBot2 extends Robot;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPSpiderBot2", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 defaultproperties
 {
      EMPHitPoints=25

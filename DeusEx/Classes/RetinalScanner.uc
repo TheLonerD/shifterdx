@@ -5,6 +5,20 @@ class RetinalScanner extends HackableDevices;
 
 var() localized String msgUsed;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPRetinalScanner", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 function HackAction(Actor Hacker, bool bHacked)
 {
 	local Actor A;

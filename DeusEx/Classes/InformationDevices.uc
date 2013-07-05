@@ -307,6 +307,144 @@ function ProcessTag(DeusExTextParser parser)
 }
 
 // ----------------------------------------------------------------------
+// HDTP Compatibility stuff
+// Basically lifted straight from HDTP's code, tweaked to fit in Facelift
+// ----------------------------------------------------------------------
+
+function bool Facelift(bool bOn)
+{
+	local texture newtex, swaptex;
+	local string str, tempstr;
+
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(!bOn)
+	{
+		Skin = Default.Skin;
+		MultiSkins[0] = Default.MultiSkins[0];
+		MultiSkins[1] = Default.MultiSkins[1];
+		MultiSkins[2] = Default.MultiSkins[2];
+		MultiSkins[3] = Default.MultiSkins[3];
+	}
+	//gah superclass badness
+	else if(Newspaper(self) != none)
+	{
+		//use daveyboy's custom text-specific skins (if found)! Woo!
+		if(texttag != '')
+		{
+			str = "HDTPPapers.Papers.HDTP";
+			str = str$string(texttag);
+			newtex = texture(dynamicloadobject(str,class'texture'));
+			if(newtex != none)
+				skin = newtex;
+		}
+		//now use a random one from the list if we don't find a match
+		if(newtex == none)
+		{
+			str = "HDTPPapers.Papers.HDTPExtra_Newspaper0";
+			str = str$string(rand(4)+1);
+			swaptex = texture(dynamicloadobject(str,class'texture'));
+			if(swaptex != none)
+				skin = swaptex;
+		}
+	}
+	else if(NewspaperOpen(self) != none) //different textures for some of these
+	{
+		if(texttag != '')
+		{
+			str = "HDTPPapers.Papers.HDTP";
+			str = str$string(texttag);
+			str = str$"long";
+			swaptex = texture(dynamicloadobject(str,class'texture'));
+			if(swaptex != none)
+				skin = swaptex;
+		}
+	}
+	else if(BookClosed(self) != none)
+	{
+		if(texttag != '')
+		{
+			str = "HDTPBookClosed.Books.HDTP";
+			str = str$GetString(string(texttag),true); //awful awful code
+			newtex = texture(dynamicloadobject(str,class'texture'));
+			if(newtex != none)
+				skin = newtex;
+
+		}
+	}
+	else if(BookOpen(self) != none)
+	{
+		if(texttag != '')
+		{
+			str = "HDTPBookOpen.Books.HDTP";
+			str = str$string(texttag);
+			newtex = texture(dynamicloadobject(str,class'texture'));
+			if(newtex != none)
+			{
+				Multiskins[2] = newtex;
+				Multiskins[3] = newtex;
+			}
+
+			//and now backs
+			str = "HDTPBookOpen.Books.HDTP";
+			tempstr = GetString(string(texttag),false); //awful awful code
+			str = str$tempstr$"back";
+		        newtex = texture(dynamicloadobject(str,class'texture'));
+		        if(newtex != none)
+		        {
+				Multiskins[0] = newtex;
+				Multiskins[1] = newtex;
+			}
+		}
+	}
+}
+
+function string GetString(string text, bool bClosed)
+{
+	if(bClosed)
+	{
+		if(Instr(text,"01_Book0") != -1)  //we might be a unatco book
+		{
+			if(Instr(text,"Book01") != -1)
+				return "01_BookUNATCO";
+			if(Instr(text,"Book02") != -1)
+				return "01_BookUNATCO";
+			if(Instr(text,"Book03") != -1)
+				return "01_BookUNATCO";
+			if(Instr(text,"Book04") != -1)
+				return "01_BookUNATCO";
+			if(Instr(text,"Book06") != -1)
+				return "01_BookUNATCO";
+			if(Instr(text,"Book07") != -1)
+				return "01_BookUNATCO";
+			if(Instr(text,"Book08") != -1)
+				return "01_BookUNATCO";
+			if(Instr(text,"Book09") != -1)
+				return "01_BookUNATCO";
+			return text;
+		}
+		return text;
+	}
+	else
+	{
+		//ok, we have UNATCO, we have jacobs shadow, and we have TMWWT too
+		if((Instr(text,"00_Book01") != -1) || (Instr(text,"01_Book05") != -1) || (Instr(text,"01_Book06") != -1))//we might be a unatco book
+			return "UNATCO";
+		else if((Instr(text,"11_Book04") != -1) || (Instr(text,"11_Book05") != -1) || (Instr(text,"11_Book06") != -1) || (Instr(text,"11_Book07") != -1))
+			return "06_Book04";
+		else if((Instr(text,"06_Book02") != -1) || (Instr(text,"06_Book06") != -1))
+			return "01_Book10"; //project dibbuk
+		else if((Instr(text,"09_Book02") != -1) || (Instr(text,"12_Book01") != -1) || (Instr(text,"15_Book01") != -1))
+			return "_BookShad"; //jacobs shadow
+		else if(Instr(text,"06_Book07") != -1)
+			return "06_Book01"; //mj12 back
+		return text;
+	}
+	return text;
+}
+
+// ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
 
 defaultproperties

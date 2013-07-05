@@ -3,6 +3,37 @@
 //=============================================================================
 class AnnaNavarre extends HumanMilitary;
 
+function bool Facelift(bool bOn)
+{
+	local int i;
+
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPcharacters.HDTPAnna", class'mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
+		Texture = Default.Texture;
+		Mesh = Default.Mesh;
+		for(i = 0; i < 8; i++)
+		{
+			MultiSkins[i] = Default.MultiSkins[i];
+		}
+	}
+	else
+	{
+		Texture = None;
+		for(i = 0; i < 8; i++)
+		{
+			MultiSkins[i] = None;
+		}
+	}
+
+	return true;
+}
+
 // ----------------------------------------------------------------------
 // SpawnCarcass()
 //

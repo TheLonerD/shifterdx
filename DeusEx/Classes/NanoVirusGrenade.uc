@@ -3,6 +3,20 @@
 //=============================================================================
 class NanoVirusGrenade extends ThrownProjectile;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPNanoVirusGrenadePickup", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 simulated function DrawExplosionEffects(vector HitLocation, vector HitNormal)
 {
 	local ExplosionLight light;

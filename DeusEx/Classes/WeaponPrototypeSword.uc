@@ -6,6 +6,12 @@ class WeaponPrototypeSword expands WeaponSword;
 var() bool bLightOn;
 var() float ChangeTimer;
 
+//== No facelift because HDTP lacks the shine overlay layer
+function bool Facelift(bool bOn)
+{
+	return false;
+}
+
 simulated function Tick(float DeltaTime)
 {
 	local float rnd;

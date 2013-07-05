@@ -11,14 +11,55 @@ enum ESkinColor
 
 var() ESkinColor SkinColor;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPMilBot", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		MultiSkins[1] = Default.MultiSkins[1];
+		switch (SkinColor)
+		{
+			case SC_UNATCO:		Skin = Texture'MilitaryBotTex1'; break;
+			case SC_Chinese:	Skin = Texture'MilitaryBotTex2'; break;
+		}
+	}
+	else
+	{
+		switch (SkinColor)
+		{
+			case SC_UNATCO:		Skin = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex1", class'Texture', True)); Multiskins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex2", class'Texture', True)); break;
+			case SC_Chinese:	Skin = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex1HK", class'Texture', True)); Multiskins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex2HK", class'Texture', True)); break;
+		}
+	}
+
+	return true;
+}
+
 function BeginPlay()
 {
 	Super.BeginPlay();
 
-	switch (SkinColor)
+	if(Mesh == Default.Mesh)
 	{
-		case SC_UNATCO:		Skin = Texture'MilitaryBotTex1'; break;
-		case SC_Chinese:	Skin = Texture'MilitaryBotTex2'; break;
+		switch (SkinColor)
+		{
+			case SC_UNATCO:		Skin = Texture'MilitaryBotTex1'; break;
+			case SC_Chinese:	Skin = Texture'MilitaryBotTex2'; break;
+		}
+	}
+	else
+	{
+		switch (SkinColor)
+		{
+			case SC_UNATCO:		Skin = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex1", class'Texture', True)); Multiskins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex2", class'Texture', True)); break;
+			case SC_Chinese:	Skin = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex1HK", class'Texture', True)); Multiskins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex2HK", class'Texture', True)); break;
+		}
 	}
 }
 

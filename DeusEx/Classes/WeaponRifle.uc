@@ -5,6 +5,111 @@ class WeaponRifle extends DeusExWeapon;
 
 var float	mpNoScopeMult;
 
+function bool Facelift(bool bOn)
+{
+	local Name tName;
+
+	if(!Super.Facelift(bOn))
+		return false;
+
+	tName = GetStateName();
+
+	if(bOn)
+	{
+		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPWeaponRifle", class'mesh', True));
+		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPSniperPickup", class'mesh', True));
+		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPSniper3rd", class'mesh', True));
+	}
+
+	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+	{
+		PlayerViewMesh = Default.PlayerViewMesh;
+		PickupViewMesh = Default.PickupViewMesh;
+		ThirdPersonMesh = Default.ThirdPersonMesh;
+		Icon = Default.Icon;
+		LargeIcon = Default.LargeIcon;
+		Texture = Default.Texture;
+	}
+	else
+	{
+		Mesh = PickupViewMesh;
+		Icon = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPBeltIconRifle", class'Texture'));
+		LargeIcon = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLargeIconRifle", class'Texture'));
+		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPWeaponRifleShine", class'Texture'));
+	}
+
+	if(tName == 'Pickup')
+		Mesh = PickupViewMesh;
+	else
+		Mesh = PlayerViewMesh;
+
+	return true;
+}
+
+simulated function renderoverlays(Canvas canvas)
+{
+	if(PickupViewMesh != Default.PickupViewMesh)
+	{
+	   if(bHasSilencer)
+		  multiskins[4] = none;
+	   else
+		  multiskins[4] = texture'pinkmasktex';
+	   if(bHasLaser)
+		  multiskins[3] = none;
+	   else
+		  multiskins[3] = texture'pinkmasktex';
+	
+		multiskins[6] = Getweaponhandtex();
+	
+	   super.renderoverlays(canvas);
+	
+	   if(bHasSilencer)
+		  multiskins[3] = none;
+	   else
+		  multiskins[3] = texture'pinkmasktex';
+	   if(bHasLaser)
+		  multiskins[4] = none;
+	   else
+		  multiskins[4] = texture'pinkmasktex';
+	
+		multiskins[6] = none;
+	}
+	else
+		Super.RenderOverlays(canvas);
+
+}
+
+// Muzzle Flash Stuff
+simulated function SwapMuzzleFlashTexture()
+{
+	if(PickupViewMesh == Default.PickupViewMesh)
+	{
+		Super.SwapMuzzleFlashTexture();
+		return;
+	}
+
+	if (!bHasMuzzleFlash)
+		return;
+
+	MultiSkins[7] = GetMuzzleTex();
+
+	MuzzleFlashLight();
+	SetTimer(0.1, False);
+}
+
+simulated function texture GetMuzzleTex()
+{
+	return HDTPMuzzleTexLarge[rand(8)];
+}
+
+simulated function EraseMuzzleFlashTexture()
+{
+	if(PickupViewMesh != Default.PickupViewMesh)
+		MultiSkins[7] = None;
+	else
+		Super.EraseMuzzleFlashTexture();
+}
+
 simulated function PreBeginPlay()
 {
 	Super.PreBeginPlay();

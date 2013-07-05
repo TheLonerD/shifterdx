@@ -32,7 +32,7 @@ function bool Facelift(bool bOn)
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPLiquor40oz", class'mesh', True));
 
-	if(Mesh == None || !bOn || skinnum != 1)
+	if(Mesh == None || !bOn)
 	{
 		Texture = None;
 		Mesh = Default.Mesh;
@@ -40,14 +40,19 @@ function bool Facelift(bool bOn)
 		PickupViewMesh = Default.PickupViewMesh;
 		ThirdPersonMesh = Default.ThirdPersonMesh;
 		Skin = Texture(DynamicLoadObject("DeusExItems.Liquor40ozTex"$ skinnum, class'Texture'));
+		MultiSkins[1] = Default.MultiSkins[1];
 	}
 	else
 	{
+		if(skinnum >= 2) //== The other skins are stored in 3-5, so we must incriment past two
+			skinnum++;
+
 		PlayerViewMesh = Mesh;
 		PickupViewMesh = Mesh;
 		ThirdPersonMesh = Mesh;
-		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex2", class'Texture')); //The formula will probably be skinnum * 2 in the future
-		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex1", class'Texture', True)); //This is always the same image, for now
+		Skin = None;
+		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex2", class'Texture'));
+		MultiSkins[1] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex"$ skinnum, class'Texture', True));
 	}
 
 	return true;

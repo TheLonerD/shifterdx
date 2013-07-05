@@ -3,6 +3,25 @@
 //=============================================================================
 class AmmoPlasma extends DeusExAmmo;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAmmoPlasma", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		PickupViewMesh = Default.Mesh;
+	}
+	else
+		PickupViewMesh = Mesh;
+
+	return true;
+} 
+
 defaultproperties
 {
      bShowInfo=True

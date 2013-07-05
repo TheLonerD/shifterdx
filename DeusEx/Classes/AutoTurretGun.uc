@@ -13,6 +13,20 @@ replication
 		team, titleString;
 }
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPAutoGun", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+} 
+
 function Destroyed()
 {
 	local AutoTurret turret;

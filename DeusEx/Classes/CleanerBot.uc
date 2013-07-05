@@ -17,6 +17,20 @@ var ECleanDirection minorDir;
 var ECleanDirection majorDir;
 
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPCleanerBot", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 function Tick(float deltaSeconds)
 {
 	local pawn        fearPawn;

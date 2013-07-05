@@ -9,6 +9,8 @@ var bool bHandToHand;  // shot that hit was hand to hand
 var bool bInstantHit;
 var Name damageType;
 
+var Texture glasshittex;
+
 simulated function PostBeginPlay()
 {
    Super.PostBeginPlay();
@@ -16,6 +18,9 @@ simulated function PostBeginPlay()
    if (Owner == None)
       SetOwner(Level);
    SpawnEffects(Owner,HitDamage);
+
+   if(Level.NetMode == NM_Standalone)
+	glasshittex = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex29", class'Texture', True));
 }
 
 simulated function Timer()
@@ -157,7 +162,9 @@ simulated function SpawnEffects(Actor Other, float Damage)
 					else if (mov.FragmentClass == class'GlassFragment')
 					{
 						// glass hole
-						if (FRand() < 0.5)
+						if(glasshittex != None)
+							hole.Texture = glasshittex;
+						else if (FRand() < 0.5)
 							hole.Texture = Texture'FlatFXTex29';
 						else
 							hole.Texture = Texture'FlatFXTex30';

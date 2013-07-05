@@ -3,6 +3,22 @@
 //=============================================================================
 class AmmoRocketWP extends AmmoRocket;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		skin = Texture(DynamicLoadObject("HDTPItems.HDTPGEPAmmoTex2", class'Texture', True));
+
+	if(skin == None || !bOn)
+		skin = Default.skin;
+
+	Multiskins[1] = Skin;
+
+	return true;
+}
+
 defaultproperties
 {
      ItemName="WP Rockets"

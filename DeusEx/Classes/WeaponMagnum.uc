@@ -22,11 +22,19 @@ function bool Facelift(bool bOn)
 
 		temptex = Texture(DynamicLoadObject("ShifterEX.Weapons.MagnumTex1",class'Texture', True));
 		if(temptex != None)
+		{
+			PlayerViewMesh = Default.PlayerViewMesh;
 			MultiSkins[3] = temptex;
+
+		}
 
 		temptex = Texture(DynamicLoadObject("ShifterEX.Weapons.Magnum3rdTex1",class'Texture', True));
 		if(temptex != None)
+		{
+			ThirdPersonMesh = Default.ThirdPersonMesh;
+			PickupViewMesh = Default.PickupViewMesh;
 			Skin = temptex;
+		}
 	}
 	else
 	{

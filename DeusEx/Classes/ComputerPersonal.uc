@@ -3,6 +3,20 @@
 //=============================================================================
 class ComputerPersonal extends Computers;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPComputerPersonal", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 defaultproperties
 {
      terminalType=Class'DeusEx.NetworkTerminalPersonal'

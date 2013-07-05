@@ -51,6 +51,8 @@ replication
 
 function PreBeginPlay()
 {
+	Super.PreBeginPlay();
+
 	if(Level.NetMode == NM_Standalone)
 		Facelift(true);
 }

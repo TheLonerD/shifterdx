@@ -3,6 +3,20 @@
 //=============================================================================
 class FleshFragment expands DeusExFragment;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFleshFragTex1", class'Texture', True));
+
+	if(Skin == None || !bOn)
+		Skin = Default.Skin;
+
+	return true;
+}
+
 auto state Flying
 {
 	function BeginState()

@@ -8,6 +8,20 @@ var float	mpProxRadius;
 var float	mpEMPDamage;
 var float	mpFuselength;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPEMPGrenadePickup", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 simulated function DrawExplosionEffects(vector HitLocation, vector HitNormal)
 {
 	local ExplosionLight light;

@@ -3,6 +3,32 @@
 //=============================================================================
 class RiotCop extends HumanMilitary;
 
+function bool Facelift(bool bOn)
+{
+	local int i;
+
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPRiotCop", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+
+		for(i = 0; i < 8; ++i)
+			MultiSkins[i] = Default.MultiSkins[i];
+	}
+	else
+	{
+		for(i = 0; i < 8; ++i)
+			MultiSkins[i] = None;
+	}
+
+	return true;
+}
+
 function GotoDisabledState(name damageType, EHitLocation hitPos)
 {
 	if (!bCollideActors && !bBlockActors && !bBlockPlayers)

@@ -19,6 +19,35 @@ var vector actorLocation;		// last known location of actor that triggered alarm
 
 var Float lastTickTime;
 
+var() Texture HDTPTex[2];
+
+function bool Facelift(bool bOn)
+{
+	if(bOn)
+	{
+		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPLaserEmitter", class'Mesh', True));
+		HDTPTex[0] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPLaserEmitterTex0", class'Texture', True));
+		HDTPTex[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPLaserEmitterTex1", class'Texture', True));
+	}
+
+	if(Mesh == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		Skin = Default.Skin;
+		HDTPTex[0] = None;
+		HDTPTex[1] = None;
+	}
+	else
+	{
+		if(bIsOn)
+			Skin = HDTPTex[1];
+		else
+			Skin = HDTPTex[0];
+	}
+
+	return true;
+}
+
 singular function Touch(Actor Other)
 {
 	// does nothing when touched
@@ -145,6 +174,10 @@ function Trigger(Actor Other, Pawn Instigator)
 			bIsOn = True;
 			LastHitActor = None;
 			MultiSkins[1] = Texture'LaserSpot1';
+			if(HDTPTex[1] != None)
+				Skin = HDTPTex[1];
+			else
+				Skin = Default.Skin;
 		}
 	}
 
@@ -165,6 +198,10 @@ function UnTrigger(Actor Other, Pawn Instigator)
 			bIsOn = False;
 			LastHitActor = None;
 			MultiSkins[1] = Texture'BlackMaskTex';
+			if(HDTPTex[0] != None)
+				Skin = HDTPTex[0];
+			else
+				Skin = Default.Skin;
 			EndAlarm();
 		}
 	}

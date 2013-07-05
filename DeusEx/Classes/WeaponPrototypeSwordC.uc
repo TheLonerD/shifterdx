@@ -3,6 +3,12 @@
 //=============================================================================
 class WeaponPrototypeSwordC expands WeaponSword;
 
+//== No facelift because HDTP lacks the shine overlay layer
+function bool Facelift(bool bOn)
+{
+	return false;
+}
+
 state DownWeapon
 {
 	function BeginState()

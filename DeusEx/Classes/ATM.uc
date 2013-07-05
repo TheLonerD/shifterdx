@@ -23,14 +23,18 @@ var localized String msgLockedOut;
 var bool bSuckedDryByHack;
 var float lastTickTime;
 
-simulated function PreBeginPlay()
+function bool Facelift(bool bOn)
 {
-	Super.PreBeginPlay();
+	if(!Super.Facelift(bOn))
+		return false;
 
-	Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPATM", class'mesh', True));
+	if(bOn)
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPATM", class'mesh', True));
 
-	if(Mesh == None)
+	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;
+
+	return true;
 }
 
 function Tick(float deltaTime)

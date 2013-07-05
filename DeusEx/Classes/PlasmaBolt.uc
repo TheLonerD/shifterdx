@@ -44,8 +44,11 @@ simulated function PreBeginPlay()
 {
 	Super.PreBeginPlay();
 
-	Damage = mpDamage;
-	blastRadius = mpBlastRadius;
+	if(Level.NetMode != NM_Standalone)
+	{
+		Damage = mpDamage;
+		blastRadius = mpBlastRadius;
+	}
 }
 
 simulated function PostNetBeginPlay()

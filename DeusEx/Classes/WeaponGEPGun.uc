@@ -5,6 +5,95 @@ class WeaponGEPGun extends DeusExWeapon;
 
 var localized String shortName;
 
+function bool Facelift(bool bOn)
+{
+	local Name tName;
+
+	if(!Super.Facelift(bOn))
+		return false;
+
+	tName = GetStateName();
+
+	if(bOn)
+	{
+		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPGEPGun", class'mesh', True));
+		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPGEPGunPickup", class'mesh', True));
+		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPGEPGun3rd", class'mesh', True));
+	}
+
+	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+	{
+		PlayerViewMesh = Default.PlayerViewMesh;
+		PickupViewMesh = Default.PickupViewMesh;
+		ThirdPersonMesh = Default.ThirdPersonMesh;
+	}
+	else
+		Mesh = PickupViewMesh;
+
+	if(tName == 'Pickup')
+		Mesh = PickupViewMesh;
+	else
+		Mesh = PlayerViewMesh;
+
+	return true;
+}
+
+simulated function renderoverlays(Canvas canvas)
+{
+	if(PickupViewMesh != Default.PickupViewMesh)
+	{
+		if(bHasScope)
+			multiskins[1] = none;
+		else
+			multiskins[1] = texture'pinkmasktex';
+		if(bHasLaser)
+			multiskins[2] = none;
+		else
+			multiskins[2] = texture'pinkmasktex';
+		if(bLasing)
+			multiskins[3] = none;
+		else
+			multiskins[3] = texture'pinkmasktex';
+		if(ammotype.isA('AmmoRocketWP'))
+		{
+			multiskins[4] = texture'pinkmasktex';
+			multiskins[5] = none;
+			multiskins[6] = none;
+		}
+		else if(ammotype.isA('AmmoRocket'))
+		{
+			multiskins[4] = none;
+			multiskins[5] = texture'pinkmasktex';
+			multiskins[6] = texture'pinkmasktex';
+		}
+	//	else //bleh??
+	//	{
+	//		multiskins[4] = texture'pinkmasktex';
+	//		multiskins[5] = texture'pinkmasktex';
+	//		multiskins[6] = texture'pinkmasktex';
+	//	}
+	
+	
+	   super.renderoverlays(canvas);
+	
+	   if(bHasScope)
+		  multiskins[3] = none;
+	   else
+		  multiskins[3] = texture'pinkmasktex';
+	   if(bHasLaser)
+		  multiskins[1] = none;
+	   else
+		  multiskins[1] = texture'pinkmasktex';
+	   if(bLasing)
+		  multiskins[2] = none;
+	   else
+		  multiskins[2] = texture'pinkmasktex';	
+	}
+	else
+		Super.RenderOverlays(canvas);
+
+}
+
 simulated function PreBeginPlay()
 {
 	Super.PreBeginPlay();

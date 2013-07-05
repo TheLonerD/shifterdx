@@ -8,6 +8,26 @@ var float	mpProxRadius;
 var float	mpLAMDamage;
 var float	mpFuselength;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+	{
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPLAMPickup", class'Mesh', True));
+		MultiSkins[1] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLAMtex0", class'Texture', True));
+	}
+
+	if(Mesh == None || MultiSkins[1] == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		MultiSkins[1] = Default.MultiSkins[1];
+	}
+
+	return true;
+}
+
 simulated function Tick(float deltaTime)
 {
 	local float blinkRate;

@@ -3,6 +3,25 @@
 //=============================================================================
 class ShellCasing extends DeusExFragment;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPShellCasing", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		Fragments[0] = Default.Fragments[0];
+	}
+	else
+		Fragments[0] = Mesh;
+
+	return true;
+}
+
 defaultproperties
 {
      Fragments(0)=LodMesh'DeusExItems.ShellCasing'

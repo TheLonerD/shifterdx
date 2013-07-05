@@ -3,6 +3,26 @@
 //=============================================================================
 class Earth expands OutdoorThings;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+	{
+		Multiskins[0] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPEarthTex1", class'Texture', True));
+		Multiskins[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPEarthTex2", class'Texture', True));
+	}	
+
+	if(Multiskins[0] == None || Multiskins[1] == None || !bOn)
+	{
+		Multiskins[0] = None;
+		Multiskins[1] = None;
+	}
+
+	return true;
+} 
+
 defaultproperties
 {
      bStatic=False

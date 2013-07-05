@@ -9,7 +9,7 @@ function bool Facelift(bool bOn)
 		return false;
 
 	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPbarrelambrosia", class'mesh', True));
+		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPBarrelAmbrosia", class'mesh', True));
 
 	if(Mesh == None || !bOn)
 		Mesh = Default.Mesh;

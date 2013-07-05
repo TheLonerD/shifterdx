@@ -6,6 +6,29 @@
 
 class AmmoSabot extends DeusExAmmo;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+	{
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAmmoShell", class'Mesh', True));
+		Skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmoShellTex2", class'Texture', True));
+	}
+
+	if(Mesh == None || Skin == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		Skin = Default.Skin;
+	}
+
+	PickupViewMesh = Mesh;
+	MultiSkins[1] = Skin;
+
+	return true;
+} 
+
 function bool UseAmmo(int AmountNeeded)
 {
 	local vector offset, tempvec, X, Y, Z;

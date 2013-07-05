@@ -11,6 +11,20 @@ enum ESkinColor
 
 var() ESkinColor SkinColor;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPSecurityBot3", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 function BeginPlay()
 {
 	Super.BeginPlay();

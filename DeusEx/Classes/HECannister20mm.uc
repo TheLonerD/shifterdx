@@ -5,6 +5,20 @@ class HECannister20mm extends DeusExProjectile;
 
 var ParticleGenerator smokeGen;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPHECannister", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 function PostBeginPlay()
 {
 	Super.PostBeginPlay();

@@ -3,6 +3,20 @@
 //=============================================================================
 class Karkian extends Animal;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPKarkian", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 // fake a charge attack using bump
 function Bump(actor Other)
 {

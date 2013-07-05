@@ -3,6 +3,26 @@
 //=============================================================================
 class BookOpen extends InformationDevices;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+	{
+		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPBookOpen", class'Mesh', True));
+		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPBookOpentex", class'Texture', True));
+	}
+
+	if(Mesh == None || Skin == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		Skin = Default.Skin;
+	}
+
+	return true;
+} 
+
 defaultproperties
 {
      bCanBeBase=True

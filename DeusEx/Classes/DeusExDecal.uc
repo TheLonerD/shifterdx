@@ -6,10 +6,31 @@ class DeusExDecal extends Decal
 
 var bool bAttached, bStartedLife, bImportant;
 
+function PreBeginPlay()
+{
+	Super.PreBeginPlay();
+
+	if(Level.NetMode == NM_StandAlone)
+		Facelift(true);
+}
+
 simulated function PostBeginPlay()
 {
 	Super.PostBeginPlay();
 	SetTimer(1.0, false);
+}
+
+function bool Facelift(bool bOn)
+{
+	//== Only do this for DeusEx classes
+	if(instr(String(Class.Name), ".") > -1 && bOn)
+		if(instr(String(Class.Name), "DeusEx.") <= -1)
+			return false;
+	else
+		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
+			return false;
+
+	return true;
 }
 
 simulated function Timer()

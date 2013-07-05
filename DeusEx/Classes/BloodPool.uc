@@ -7,6 +7,20 @@ var float spreadTime;
 var float maxDrawScale;
 var float time;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex1", class'Texture', True));
+
+	if(Texture == None || !bOn)
+		Texture = Default.Texture;
+
+	return true;
+} 
+
 function BeginPlay()
 {
 	// Gore check

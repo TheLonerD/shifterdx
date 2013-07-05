@@ -3,6 +3,32 @@
 //=============================================================================
 class UNATCOTroop extends HumanMilitary;
 
+function bool Facelift(bool bOn)
+{
+	local int i;
+
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPUNATCOTroop", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+
+		for(i = 0; i < 8; ++i)
+			MultiSkins[i] = Default.MultiSkins[i];
+	}
+	else
+	{
+		for(i = 0; i < 8; ++i)
+			MultiSkins[i] = None;
+	}
+
+	return true;
+}
+
 defaultproperties
 {
      CarcassType=Class'DeusEx.UNATCOTroopCarcass'

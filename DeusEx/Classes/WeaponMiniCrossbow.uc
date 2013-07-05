@@ -3,6 +3,116 @@
 //=============================================================================
 class WeaponMiniCrossbow extends DeusExWeapon;
 
+var Texture HDTPCrossTex[3];
+
+function bool Facelift(bool bOn)
+{
+	local Name tName;
+	local int i;
+
+	if(!Super.Facelift(bOn))
+		return false;
+
+	tName = GetStateName();
+
+	if(bOn)
+	{
+		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPMiniCrossbow", class'mesh', True));
+		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPMiniCrossbowPickup", class'mesh', True));
+		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPMiniCrossbow3rd", class'mesh', True));
+	}
+
+	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+	{
+		PlayerViewMesh = Default.PlayerViewMesh;
+		PickupViewMesh = Default.PickupViewMesh;
+		ThirdPersonMesh = Default.ThirdPersonMesh;
+	}
+	else
+	{
+		Mesh = PickupViewMesh;
+		for(i = 1; i < 4; ++i)
+			HDTPCrossTex[i-1] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMiniCrossbowTex"$ i, class'Texture'));
+
+		HDTPHandTex[0] = Texture'MiniCrossbowTex1';
+		HDTPHandTex[1] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexBlack", class'Texture'));
+		HDTPHandTex[2] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexLatino", class'Texture'));
+		HDTPHandTex[3] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexGinger", class'Texture'));
+		HDTPHandTex[4] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexAlbino", class'Texture'));
+	}
+
+	if(tName == 'Pickup')
+		Mesh = PickupViewMesh;
+	else
+		Mesh = PlayerViewMesh;
+
+	return true;
+}
+
+simulated function renderoverlays(Canvas canvas)
+{
+	if(PickupViewMesh != Default.PickupViewMesh)
+	{
+		Multiskins[0] = getweaponhandtex();
+		Multiskins[1] = none;
+	
+		if ((AmmoType != None) && (AmmoType.AmmoAmount > 0) && (ClipCount < ReloadCount))
+		{
+			if(AmmoType.isA('AmmoDartPoison'))
+				Multiskins[2] = HDTPCrossTex[1];
+			else if(Ammotype.isA('AmmoDartFlare'))
+				Multiskins[2] = HDTPCrossTex[2];
+			else
+				Multiskins[2] = HDTPCrossTex[0];
+		}
+		else
+			Multiskins[2] = texture'pinkmasktex';
+		if(bHasScope)
+			multiskins[3] = none;
+		else
+			multiskins[3] = texture'pinkmasktex';
+		if(bHasLaser)
+			multiskins[4] = none;
+		else
+			multiskins[4] = texture'pinkmasktex';
+		if(bLasing)
+			multiskins[5] = none;
+		else
+			multiskins[5] = texture'pinkmasktex';
+	
+		super(weapon).renderoverlays(canvas);
+		
+		multiskins[0] = none;
+	
+		if ((AmmoType != None) && (AmmoType.AmmoAmount > 0) && (ClipCount < ReloadCount))
+		{
+			if(AmmoType.isA('AmmoDartPoison'))
+				Multiskins[1] = HDTPCrossTex[1];
+			else if(Ammotype.isA('AmmoDartFlare'))
+				Multiskins[1] = HDTPCrossTex[2];
+			else
+				Multiskins[1] = HDTPCrossTex[0];
+		}
+		else
+			Multiskins[1] = texture'pinkmasktex';
+	   if(bHasScope)
+	      multiskins[2] = none;
+	   else
+	      multiskins[2] = texture'pinkmasktex';
+	   if(bHasLaser)
+	      multiskins[3] = none;
+	   else
+	      multiskins[3] = texture'pinkmasktex';
+	   if(bLasing)
+	      multiskins[4] = none;
+	   else
+	      multiskins[4] = texture'pinkmasktex';
+	}
+	else
+		Super.RenderOverlays(canvas);
+
+}
+
 simulated function PreBeginPlay()
 {
 	Super.PreBeginPlay();

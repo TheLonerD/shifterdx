@@ -7,6 +7,20 @@ var float	mpDamage;
 var int		mpAccurateRange;
 var int		mpMaxRange;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPCombatKnifePickup", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 // set it's rotation correctly
 simulated function Tick(float deltaTime)
 {

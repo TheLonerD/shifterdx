@@ -3,6 +3,40 @@
 //=============================================================================
 class AnnaNavarreCarcass extends DeusExCarcass;
 
+function bool Facelift(bool bOn)
+{
+	local int i;
+
+	if(!Super.Facelift(bOn))
+		return false;
+
+	Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPAnnaCarcass", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		Mesh2 = Default.Mesh2;
+		Mesh3 = Default.Mesh3;
+
+		Texture = Default.Texture;
+
+		for(i = 0; i < 8; i++)
+			MultiSkins[i] = Default.MultiSkins[i];
+	}
+	else
+	{
+		Texture = None;
+
+		for(i = 0; i < 8; i++)
+			MultiSkins[i] = None;
+
+		Mesh2 = Mesh(DynamicLoadObject("HDTPCharacters.HDTPAnnaCarcassB", class'Mesh', True));
+		Mesh3 = Mesh(DynamicLoadObject("HDTPCharacters.HDTPAnnaCarcassC", class'Mesh', True));
+	}
+
+	return true;
+}
+
 defaultproperties
 {
      Mesh2=LodMesh'DeusExCharacters.GFM_TShirtPants_CarcassB'

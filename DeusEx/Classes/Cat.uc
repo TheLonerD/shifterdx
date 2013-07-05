@@ -6,6 +6,20 @@ class Cat extends Animal;
 var float time;
 var name LastStateName;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPCat", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+}
+
 function bool ShouldBeStartled(Pawn startler)
 {
 	local float speed;

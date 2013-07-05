@@ -914,7 +914,7 @@ exec function GlobalFacelift(bool bOn)
 
 	//== HDTP might break multiplayer compatibility
 	//==  Also, we want to make sure there's something to (un)load before we go running through all this game-slowing madness
-	if(Level.NetMode != NM_StandAlone && bOn || mesh(DynamicLoadObject("HDTPItems.HDTPsodacan", class'mesh', True)) == None)
+	if((Level.NetMode != NM_StandAlone && bOn) || mesh(DynamicLoadObject("HDTPItems.HDTPsodacan", class'mesh', True)) == None)
 		return;
 
 	Facelift(bOn); // Make the player's model look all fancy-like
@@ -942,9 +942,18 @@ exec function GlobalFacelift(bool bOn)
 		if(DeusExProjectile(generic) != None)
 			DeusExProjectile(generic).Facelift(bOn);
 
+		if(DeusExDecal(generic) != None)
+			DeusExDecal(generic).Facelift(bOn);
+
+		if(DeusExFragment(generic) != None)
+			DeusExFragment(generic).Facelift(bOn);
+
 		//== Annoyingly specific, we must be
 		if(BeamTrigger(generic) != None)
 			BeamTrigger(generic).Facelift(bOn);
+
+		if(LaserTrigger(generic) != None)
+			LaserTrigger(generic).Facelift(bOn);
 	}
 }
 

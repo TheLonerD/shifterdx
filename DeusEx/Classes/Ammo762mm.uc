@@ -3,6 +3,23 @@
 //=============================================================================
 class Ammo762mm extends DeusExAmmo;
 
+var() Mesh shellmesh;
+
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmo762mmTex1", class'Texture', True));
+
+	if(Skin == None || !bOn)
+		Skin = Default.Skin;
+	else
+		shellmesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAssaultCasing", class'Mesh', True));
+
+	return true;
+} 
 
 //
 // SimUseAmmo - Spawns shell casings client side
@@ -23,9 +40,9 @@ simulated function bool SimUseAmmo()
 		W = DeusExWeapon(Pawn(Owner).Weapon);
 
       if ((W != None) && ((W.NoiseLevel < 0.1) || W.bHasSilencer))
-         shell = spawn(class'ShellCasingSilent',,, Owner.Location + offset);
+         shell = spawn(class'ShellCasingSilent',,, Owner.Location + offset,Pawn(Owner).viewrotation);
       else
-         shell = spawn(class'ShellCasing',,, Owner.Location + offset);
+         shell = spawn(class'ShellCasing',,, Owner.Location + offset,Pawn(Owner).viewrotation);
 
 		shell.RemoteRole = ROLE_None;
 
@@ -33,6 +50,9 @@ simulated function bool SimUseAmmo()
 		{
 			shell.Velocity = (FRand()*20+90) * Y + (10-FRand()*20) * X;
 			shell.Velocity.Z = 0;
+
+			if(shellmesh != None)
+				shell.mesh = shellmesh;
 		}
 		return True;
 	}
@@ -59,9 +79,9 @@ function bool UseAmmo(int AmountNeeded)
 			if ( Level.NetMode == NM_ListenServer )
 			{
 				if ((W != None) && ((W.NoiseLevel < 0.1) || W.bHasSilencer))
-					shell = spawn(class'ShellCasingSilent',,, Owner.Location + offset);
+					shell = spawn(class'ShellCasingSilent',,, Owner.Location + offset,Pawn(Owner).viewrotation);
 				else
-					shell = spawn(class'ShellCasing',,, Owner.Location + offset);
+					shell = spawn(class'ShellCasing',,, Owner.Location + offset,Pawn(Owner).viewrotation);
 
 				shell.RemoteRole = ROLE_None;
 			}
@@ -71,15 +91,18 @@ function bool UseAmmo(int AmountNeeded)
       else
       {
          if ((W != None) && ((W.NoiseLevel < 0.1) || W.bHasSilencer))
-            shell = spawn(class'ShellCasingSilent',,, Owner.Location + offset);
+            shell = spawn(class'ShellCasingSilent',,, Owner.Location + offset,Pawn(Owner).viewrotation);
          else
-            shell = spawn(class'ShellCasing',,, Owner.Location + offset);
+            shell = spawn(class'ShellCasing',,, Owner.Location + offset,Pawn(Owner).viewrotation);
       }
 
 		if (shell != None)
 		{
 			shell.Velocity = (FRand()*20+90) * Y + (10-FRand()*20) * X;
 			shell.Velocity.Z = 0;
+
+			if(shellmesh != None)
+				shell.mesh = shellmesh;
 		}
 		return True;
 	}

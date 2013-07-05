@@ -40,6 +40,9 @@ var bool bSwitching;
 var float SwitchTime, beepTime;
 var Pawn savedTarget;
 
+var() Texture CaseTex[8];
+var() Texture HoleTex;
+
 // networking replication
 replication
 {
@@ -47,6 +50,39 @@ replication
    reliable if (Role == ROLE_Authority)
       safeTarget, bDisabled, bActive, team, titleString;
 }
+
+function bool Facelift(bool bOn)
+{
+	local int i;
+
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAugUpCan", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		HoleTex = None;
+		for (i = 0; i < 8; i++)
+			CaseTex[i] = None;
+	}
+	else
+	{
+		CaseTex[0] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge1", class'Texture', True));
+		CaseTex[1] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge2", class'Texture', True));
+		CaseTex[2] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge3", class'Texture', True));
+		CaseTex[3] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge4", class'Texture', True));
+		CaseTex[4] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge5", class'Texture', True));
+		CaseTex[5] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge6", class'Texture', True));
+		CaseTex[6] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge7", class'Texture', True));
+		CaseTex[7] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge8", class'Texture', True));
+		HoleTex = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex29", class'Texture', True));
+	}
+
+	return true;
+} 
 
 // if we are triggered, turn us on
 function Trigger(Actor Other, Pawn Instigator)
@@ -507,7 +543,10 @@ function Fire()
 
 		// muzzle flash
 		gun.LightType = LT_Steady;
-		gun.MultiSkins[2] = Texture'FlatFXTex34';
+		if(Mesh == Default.Mesh)
+			gun.MultiSkins[2] = Texture'FlatFXTex34';
+		else
+			gun.MultiSkins[3] = GetMuzzleTex();
 		SetTimer(0.1, False);
 
 		// randomly draw a tracer
@@ -608,7 +647,9 @@ simulated function SpawnEffects(Vector HitLocation, Vector HitNormal, Actor Othe
 	// should we crack glass?
 	if (GetWallMaterial(HitLocation, HitNormal) == 'Glass')
 	{
-		if (FRand() < 0.5)
+		if(Mesh != Default.Mesh)
+			hole.Texture = HoleTex;
+		else if (FRand() < 0.5)
 			hole.Texture = Texture'FlatFXTex29';
 		else
 			hole.Texture = Texture'FlatFXTex30';
@@ -730,18 +771,12 @@ function PreBeginPlay()
 	}
 }
 
-function bool Facelift(bool bOn)
+simulated function texture GetMuzzleTex()
 {
-	if(!Super.Facelift(bOn))
-		return false;
+	local int i;
+	i = rand(8);
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPAutoturretbase", class'mesh', True));
-
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
-
-	return true;
+	return CaseTex[i];
 }
 
 function PostBeginPlay()
@@ -782,4 +817,5 @@ defaultproperties
      Mass=50.000000
      Buoyancy=10.000000
      bVisionImportant=True
+     CaseTex(0)=
 }

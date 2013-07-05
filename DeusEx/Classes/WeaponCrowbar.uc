@@ -78,6 +78,7 @@ function bool Facelift(bool bOn)
 	{
 		Mesh = PickupViewMesh;
 		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPWeaponCrowbarTex2", class'Texture'));
+		largeIcon = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLargeIconCrowbar", class'Texture'));
 	}
 
 	if(tName == 'Pickup')
@@ -86,6 +87,17 @@ function bool Facelift(bool bOn)
 		Mesh = PlayerViewMesh;
 
 	return true;
+}
+
+simulated function renderoverlays(Canvas canvas)
+{
+	if(PickupViewMesh != Default.PickupViewMesh)
+		multiskins[1] = Getweaponhandtex();
+
+	super.renderoverlays(canvas);
+
+	if(PickupViewMesh != Default.PickupViewMesh)
+		multiskins[1] = none; 
 }
 
 function bool TestCycleable()

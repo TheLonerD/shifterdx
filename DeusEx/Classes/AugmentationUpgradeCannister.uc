@@ -7,6 +7,29 @@ class AugmentationUpgradeCannister extends DeusExPickup;
 
 var localized string MustBeUsedOn;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAugUpCan", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		PickupViewMesh = Default.Mesh;
+	}
+	else
+	{
+		PickupViewMesh = Mesh;
+		PlayerviewMesh = Mesh;
+		ThirdPersonMesh = Mesh;
+	}
+
+	return true;
+} 
+
 // ----------------------------------------------------------------------
 // UpdateInfo()
 // ----------------------------------------------------------------------

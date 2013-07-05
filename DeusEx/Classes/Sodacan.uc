@@ -46,7 +46,7 @@ function bool Facelift(bool bOn)
 	if(bOn)
 		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPsodacan", class'mesh', True));
 
-	if(Mesh == None || !bOn || skinnum > 1)
+	if(Mesh == None || !bOn)
 	{
 		Mesh = Default.Mesh;
 		PlayerViewMesh = Default.PlayerViewMesh;

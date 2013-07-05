@@ -222,6 +222,8 @@ function SelectObject(Inventory item, bool bNewToggle)
 				if(bNewToggle)
 					bFound = True;
 			}
+			else
+				objBelt.objects[objectIndex].SetToggle(False);
 		}
 		else
 		{

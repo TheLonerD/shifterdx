@@ -4,6 +4,22 @@
 class AmmoShell extends DeusExAmmo;
 
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAmmoShell", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	PickupViewMesh = Mesh;
+
+	return true;
+} 
+
 //
 // SimUseAmmo - Spawns shell casings client side
 //

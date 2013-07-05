@@ -244,6 +244,11 @@ var bool		bClientReadyToFire, bClientReady, bInProcess, bFlameOn, bLooping;
 var int		SimClipCount, flameShotCount, SimAmmoAmount;
 var float	TimeLockSet;
 
+//== HDTP stuff
+var Texture HDTPHandTex[5];
+var Texture HDTPMuzzleTexSmall[3];
+var Texture HDTPMuzzleTexLarge[8];
+
 //
 // network replication
 //
@@ -382,6 +387,8 @@ function PreBeginPlay()
 
 function bool Facelift(bool bOn)
 {
+	local int i;
+
 	//== Only do this for DeusEx classes
 	if(instr(String(Class.Name), ".") > -1 && bOn)
 		if(instr(String(Class.Name), "DeusEx.") <= -1)
@@ -390,7 +397,55 @@ function bool Facelift(bool bOn)
 		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
 			return false;
 
+	//== Load up the hand textures for HDTP, if present
+	if(bOn)
+	{
+		HDTPHandTex[1] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexblack", class'Texture', True));
+		HDTPMuzzleTexLarge[0] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMuzzleFlashLarge1", class'Texture', True));
+		HDTPMuzzleTexSmall[0] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMuzzleFlashSmall1", class'Texture', True));
+	}
+
+	if(!bOn || HDTPHandTex[1] == None || HDTPMuzzleTexSmall[0] == None || HDTPMuzzleTexLarge[0] == None)
+	{
+		for(i = 0; i < 5; ++i)
+			HDTPHandTex[i] = None;
+
+		for(i = 0; i < 8; ++i)
+			HDTPMuzzleTexLarge[i] = None;
+
+		for(i = 0; i < 3; ++i)
+			HDTPMuzzleTexSmall[i] = None;
+	}
+	else
+	{
+		HDTPHandTex[0] = texture'weaponhandstex';
+		HDTPHandTex[2] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexlatino", class'Texture'));
+		HDTPHandTex[3] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexginger", class'Texture'));
+		HDTPHandTex[4] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexalbino", class'Texture'));
+
+		for(i = 2; i < 4; ++i)
+			HDTPMuzzleTexSmall[i-1] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMuzzleFlashSmall"$ i, class'Texture'));
+
+		for(i = 2; i < 9; ++i)
+			HDTPMuzzleTexLarge[i-1] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMuzzleFlashLarge"$ i, class'Texture'));
+	}
+
+
 	return true;
+}
+
+function texture GetWeaponHandTex()
+{
+	local deusexplayer p;
+	local texture tex;
+
+	tex = texture'weaponhandstex';
+
+	p = deusexplayer(owner);
+	if(p != none && PickupViewMesh != Default.PickupViewMesh)
+		return HDTPHandTex[p.PlayerSkin];
+
+	return tex;
 }
 
 //
@@ -1821,18 +1876,45 @@ simulated function SwapMuzzleFlashTexture()
 {
    if (!bHasMuzzleFlash)
       return;
-	if (FRand() < 0.5)
-		MultiSkins[2] = Texture'FlatFXTex34';
-	else
-		MultiSkins[2] = Texture'FlatFXTex37';
+
+	MultiSkins[2] = GetMuzzleTex();
 
 	MuzzleFlashLight();
 	SetTimer(0.1, False);
 }
 
+simulated function texture GetMuzzleTex()
+{
+	local int i;
+	local texture tex;
+
+	if(PickupViewMesh == Default.PickupViewMesh)
+	{
+		if (FRand() < 0.5)
+			tex = Texture'FlatFXTex34';
+		else
+			tex = Texture'FlatFXTex37';
+	}
+	else if(bAutomatic)
+	{
+		i = rand(8);
+
+		tex = HDTPMuzzleTexLarge[i];
+	}
+	else
+	{
+		i = rand(3);
+
+		tex = HDTPMuzzleTexSmall[i];
+	}
+
+	return tex;
+}
+
 simulated function EraseMuzzleFlashTexture()
 {
-	MultiSkins[2] = None;
+	if(bHasMuzzleFlash)
+		MultiSkins[2] = None;
 }
 
 simulated function Timer()
