@@ -693,7 +693,8 @@ function Explode(vector HitLocation)
 	s = spawn(class'ScorchMark', Base,, Location-vect(0,0,1)*CollisionHeight, Rotation+rot(16384,0,0));
 	if (s != None)
 	{
-		s.DrawScale = FClamp(explosionDamage/30, 0.1, 3.0);
+		
+		s.DrawScale = FClamp(explosionDamage/30, 0.1, 3.0) * (s.DrawScale/s.Default.DrawScale);
 		s.ReattachDecal();
 	}
 

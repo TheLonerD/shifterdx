@@ -32,6 +32,9 @@ function BeginPlay()
 	if (FRand() < 0.5)
 		Texture = alttex;
 
+	if(alttex != Default.alttex)
+		drawscale = 0.03125;
+
 	Super.BeginPlay();
 }
 

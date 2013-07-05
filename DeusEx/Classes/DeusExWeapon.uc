@@ -385,6 +385,16 @@ function PreBeginPlay()
 		Facelift(true);
 }
 
+
+function DropFrom(vector StartLocation)
+{
+	if ( !SetLocation(StartLocation) )
+		return;
+	checkweaponskins();
+
+	super.dropfrom(startlocation);
+}
+
 function bool Facelift(bool bOn)
 {
 	local int i;
@@ -464,6 +474,7 @@ function PostBeginPlay()
          bNeedToSetMPPickupAmmo = False;
       }
    }
+   CheckWeaponSkins();
 }
 
 singular function BaseChange()
@@ -590,6 +601,8 @@ function BringUp()
 	// reset the standing still accuracy bonus
 	standingTimer = 0;
 
+	CheckWeaponSkins();
+
 	Super.BringUp();
 }
 
@@ -612,6 +625,11 @@ function bool PutDown()
 		LaserOff();
 
 	return Super.PutDown();
+}
+
+function CheckWeaponSkins()
+{
+	//== This is an HDTP specific function, overridden by specific classes only
 }
 
 function ReloadAmmo()

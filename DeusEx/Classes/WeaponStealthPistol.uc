@@ -9,6 +9,7 @@ class WeaponStealthPistol extends DeusExWeapon;
 function bool Facelift(bool bOn)
 {
 	local Name tName;
+	local int i;
 
 	if(!Super.Facelift(bOn))
 		return false;
@@ -27,9 +28,14 @@ function bool Facelift(bool bOn)
 		PlayerViewMesh = Default.PlayerViewMesh;
 		PickupViewMesh = Default.PickupViewMesh;
 		ThirdPersonMesh = Default.ThirdPersonMesh;
+		for(i = 0; i < 8; ++i)
+			MultiSkins[i] = Default.MultiSkins[i];
 	}
 	else
+	{
 		Mesh = PickupViewMesh;
+		CheckWeaponSkins();
+	}
 
 	if(tName == 'Pickup')
 		Mesh = PickupViewMesh;
@@ -79,6 +85,25 @@ simulated function renderoverlays(Canvas canvas)
 	}
 	else
 		Super.RenderOverlays(canvas);
+}
+
+function CheckWeaponSkins()
+{
+	if(PickupViewMesh != Default.PickupViewMesh)
+	{
+		multiskins[0]=none;
+		if(bHasScope)
+			multiskins[1] = none;
+		else
+			multiskins[1] = texture'pinkmasktex';
+		if(bHasLaser)
+			multiskins[2] = none;
+		else
+			multiskins[2] = texture'pinkmasktex';
+	
+		multiskins[3] = texture'pinkmasktex';
+		multiskins[4]=none;
+	}
 }
 
 simulated function PreBeginPlay()

@@ -3,7 +3,8 @@
 //=============================================================================
 class BloodSplat extends DeusExDecal;
 
-var() Texture BloodTex[4];
+var Texture BloodTex[4];
+var float sizeinc;
 
 function bool Facelift(bool bOn)
 {
@@ -18,18 +19,20 @@ function bool Facelift(bool bOn)
 		BloodTex[1] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex5", class'Texture', True));
 		BloodTex[2] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex6", class'Texture', True));
 		BloodTex[3] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex2", class'Texture', True));
+		sizeinc = 0.05;
+		DrawScale=0.025;
 	}
-	else
+
+	if(BloodTex[0] == None || BloodTex[1] == None || BloodTex[2] == None || BloodTex[3] == None || !bOn)
 	{
 		for(i = 0; i < 4; i++)
 			BloodTex[i] = Default.BloodTex[i];
+
+		sizeinc = Default.sizeinc;
+		DrawScale = Default.DrawScale;
 	}
 
-	for(i = 0; i < 4; i++)
-	{
-		if(BloodTex[i] == None)
-			BloodTex[i] = Default.BloodTex[i];
-	}
+
 
 	return true;
 } 
@@ -50,7 +53,7 @@ function BeginPlay()
 
 	Texture = BloodTex[rnd];
 
-	DrawScale += FRand() * 0.2;
+	DrawScale += FRand() * sizeinc;
 
 	Super.BeginPlay();
 }
@@ -58,5 +61,10 @@ function BeginPlay()
 defaultproperties
 {
      Texture=Texture'DeusExItems.Skins.FlatFXTex2'
+     sizeinc=0.2
      DrawScale=0.200000
+     BloodTex(0)=Texture'FlatFXTex2'
+     BloodTex(1)=Texture'FlatFXTex5'
+     BloodTex(2)=Texture'FlatFXTex6'
+     BloodTex(3)=Texture'FlatFXTex3'
 }

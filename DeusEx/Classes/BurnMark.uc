@@ -9,10 +9,16 @@ function bool Facelift(bool bOn)
 		return false;
 
 	if(bOn)
+	{
 		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex40", class'Texture', True));
+		DrawScale = 0.03125;
+	}
 
 	if(Texture == None || !bOn)
+	{
 		Texture = Default.Texture;
+		DrawScale = Default.DrawScale;
+	}
 
 	return true;
 } 

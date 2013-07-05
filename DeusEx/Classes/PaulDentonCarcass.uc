@@ -3,6 +3,59 @@
 //=============================================================================
 class PaulDentonCarcass extends DeusExCarcass;
 
+var Texture PaulTex[5];
+var Texture PaulHandTex[5];
+
+function bool Facelift(bool bOn)
+{
+	local int i;
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+	{
+		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPGM_TrenchCarcass", class'Mesh', True));
+		Mesh2 = Mesh(DynamicLoadObject("HDTPCharacters.HDTPGM_TrenchCarcassB", class'Mesh', True));
+		Mesh3 = Mesh(DynamicLoadObject("HDTPCharacters.HDTPGM_TrenchCarcassC", class'Mesh', True));
+	}
+
+	if(Mesh == None || Mesh2 == None || Mesh3 == None || !bOn)
+	{
+		Mesh = Default.Mesh;
+		Mesh2 = Default.Mesh2;
+		Mesh3 = Default.Mesh3;
+
+		for(i = 0; i < 8; ++i)
+			MultiSkins[i] = Default.MultiSkins[i];
+
+		for(i = 0; i < 5; ++i)
+		{
+			PaulTex[i] = Default.PaulTex[i];
+			PaulHandTex[i] = Default.PaulHandTex[i];
+		}
+	}
+	else
+	{
+		MultiSkins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPPaulDentonTex1", class'Texture'));
+		MultiSkins[2] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCDentonTex2", class'Texture'));
+		MultiSkins[4] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCDentonTex4", class'Texture'));
+		MultiSkins[5] = Texture'PinkMaskTex';
+		MultiSkins[6] = Texture'PinkMaskTex';
+		MultiSkins[7] = Texture'PinkMaskTex';
+
+		PaulTex[0] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPPaulDentonTex0", class'Texture'));
+		PaulHandTex[0] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCHandsTex0", class'Texture'));
+
+		for(i = 1; i < 5; ++i)
+		{
+			PaulTex[i] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPPaulDentonTex"$ (i+1), class'Texture'));
+			PaulHandTex[i] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCHandsTex"$ i, class'Texture'));
+		}
+	}
+
+	return true;
+} 
+
 // ----------------------------------------------------------------------
 // PostPostBeginPlay()
 // ----------------------------------------------------------------------
@@ -27,24 +80,8 @@ function SetSkin(DeusExPlayer player)
 {
 	if (player != None)
 	{
-		switch(player.PlayerSkin)
-		{
-			case 0:	MultiSkins[0] = Texture'PaulDentonTex0';
-					MultiSkins[3] = Texture'PaulDentonTex0';
-					break;
-			case 1:	MultiSkins[0] = Texture'PaulDentonTex4';
-					MultiSkins[3] = Texture'PaulDentonTex4';
-					break;
-			case 2:	MultiSkins[0] = Texture'PaulDentonTex5';
-					MultiSkins[3] = Texture'PaulDentonTex5';
-					break;
-			case 3:	MultiSkins[0] = Texture'PaulDentonTex6';
-					MultiSkins[3] = Texture'PaulDentonTex6';
-					break;
-			case 4:	MultiSkins[0] = Texture'PaulDentonTex7';
-					MultiSkins[3] = Texture'PaulDentonTex7';
-					break;
-		}
+		MultiSkins[0] = PaulTex[player.PlayerSkin];
+		MultiSkins[3] = PaulHandTex[player.PlayerSkin];
 	}
 }
 
@@ -65,4 +102,14 @@ defaultproperties
      MultiSkins(6)=Texture'DeusExItems.Skins.GrayMaskTex'
      MultiSkins(7)=Texture'DeusExItems.Skins.BlackMaskTex'
      CollisionRadius=40.000000
+     PaulTex(0)=Texture'PaulDentonTex0'
+     PaulTex(1)=Texture'PaulDentonTex4'
+     PaulTex(2)=Texture'PaulDentonTex5'
+     PaulTex(3)=Texture'PaulDentonTex6'
+     PaulTex(4)=Texture'PaulDentonTex7'
+     PaulHandTex(0)=Texture'PaulDentonTex0'
+     PaulHandTex(1)=Texture'PaulDentonTex4'
+     PaulHandTex(2)=Texture'PaulDentonTex5'
+     PaulHandTex(3)=Texture'PaulDentonTex6'
+     PaulHandTex(4)=Texture'PaulDentonTex7'
 }

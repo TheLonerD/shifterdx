@@ -8,6 +8,7 @@ var float	mpNoScopeMult;
 function bool Facelift(bool bOn)
 {
 	local Name tName;
+	local int i;
 
 	if(!Super.Facelift(bOn))
 		return false;
@@ -29,6 +30,8 @@ function bool Facelift(bool bOn)
 		Icon = Default.Icon;
 		LargeIcon = Default.LargeIcon;
 		Texture = Default.Texture;
+		for(i = 0; i < 8; ++i)
+			MultiSkins[i] = Default.MultiSkins[i];
 	}
 	else
 	{
@@ -36,6 +39,7 @@ function bool Facelift(bool bOn)
 		Icon = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPBeltIconRifle", class'Texture'));
 		LargeIcon = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLargeIconRifle", class'Texture'));
 		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPWeaponRifleShine", class'Texture'));
+		CheckWeaponSkins();
 	}
 
 	if(tName == 'Pickup')
@@ -77,6 +81,21 @@ simulated function renderoverlays(Canvas canvas)
 	else
 		Super.RenderOverlays(canvas);
 
+}
+
+function CheckWeaponSkins()
+{
+	if(PickupViewMesh != Default.PickupViewMesh)
+	{
+		if(bHasSilencer)
+			multiskins[3] = none;
+		else
+			multiskins[3] = texture'pinkmasktex';
+		if(bHasLaser)
+			multiskins[4] = none;
+		else
+			multiskins[4] = texture'pinkmasktex';
+	}
 }
 
 // Muzzle Flash Stuff

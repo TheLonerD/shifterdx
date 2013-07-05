@@ -10,6 +10,7 @@ var texture muztex; //sigh
 function bool Facelift(bool bOn)
 {
 	local Name tName;
+	local int i;
 
 	if(!Super.Facelift(bOn))
 		return false;
@@ -29,9 +30,14 @@ function bool Facelift(bool bOn)
 		PlayerViewMesh = Default.PlayerViewMesh;
 		PickupViewMesh = Default.PickupViewMesh;
 		ThirdPersonMesh = Default.ThirdPersonMesh;
+		for(i = 0; i < 8; ++i)
+			MultiSkins[i] = Default.MultiSkins[i];
 	}
 	else
+	{
 		Mesh = PickupViewMesh;
+		CheckWeaponSkins();
+	}
 
 	if(tName == 'Pickup')
 		Mesh = PickupViewMesh;
@@ -102,6 +108,33 @@ simulated function renderoverlays(Canvas canvas)
 	}
 	else
 		Super.RenderOverlays(canvas);
+}
+
+function CheckWeaponSkins()
+{
+	if(PickupViewMesh != Default.PickupViewMesh)
+	{
+		if(bHasScope)
+			multiskins[6] = none;
+		else
+			multiskins[6] = texture'pinkmasktex';
+		if(bHasSilencer)
+			multiskins[2] = none;
+		else
+			multiskins[2] = texture'pinkmasktex';
+		if(bHasLaser)
+			multiskins[5] = none;
+		else
+			multiskins[5] = texture'pinkmasktex';
+		if(bLasing)
+			multiskins[3] = none;
+		else
+			multiskins[3] = texture'pinkmasktex';
+		multiskins[0]=none;
+		multiskins[1]=none;
+		multiskins[4]=none;
+		multiskins[7]=none;
+	}
 }
 
 //== This is automatically called by the Mesh's notifications.

@@ -27,6 +27,8 @@ function bool Facelift(bool bOn)
 		PlayerViewMesh = Default.PlayerViewMesh;
 		PickupViewMesh = Default.PickupViewMesh;
 		ThirdPersonMesh = Default.ThirdPersonMesh;
+		for(i = 0; i < 8; ++i)
+			MultiSkins[i] = Default.MultiSkins[i];
 	}
 	else
 	{
@@ -39,6 +41,8 @@ function bool Facelift(bool bOn)
 		HDTPHandTex[2] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexLatino", class'Texture'));
 		HDTPHandTex[3] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexGinger", class'Texture'));
 		HDTPHandTex[4] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexAlbino", class'Texture'));
+
+		CheckWeaponSkins();
 	}
 
 	if(tName == 'Pickup')
@@ -111,6 +115,25 @@ simulated function renderoverlays(Canvas canvas)
 	else
 		Super.RenderOverlays(canvas);
 
+}
+
+function CheckWeaponSkins()
+{
+	if(PickupViewMesh != Default.PickupViewMesh)
+	{
+	   if(bHasScope)
+	      multiskins[2] = none;
+	   else
+	      multiskins[2] = texture'pinkmasktex';
+	   if(bHasLaser)
+	      multiskins[3] = none;
+	   else
+	      multiskins[3] = texture'pinkmasktex';
+	   if(bLasing)
+	      multiskins[4] = none;
+	   else
+	      multiskins[4] = texture'pinkmasktex';
+	}
 }
 
 simulated function PreBeginPlay()

@@ -8,6 +8,7 @@ var Texture HDTPLaserTex;
 function bool Facelift(bool bOn)
 {
 	local Name tName;
+	local int i;
 
 	if(!Super.Facelift(bOn))
 		return false;
@@ -29,6 +30,8 @@ function bool Facelift(bool bOn)
 		Icon = Default.Icon;
 		LargeIcon = Default.LargeIcon;
 		HDTPLaserTex = None;
+		for(i = 0; i < 8; ++i)
+			MultiSkins[i] = Default.MultiSkins[i];
 	}
 	else
 	{
@@ -36,6 +39,7 @@ function bool Facelift(bool bOn)
 		Icon = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPBeltIconPistol", class'Texture'));
 		LargeIcon = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLargeIconPistol", class'Texture'));
 		HDTPLaserTex = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPGlockTex4", class'Texture'));
+		CheckWeaponSkins();
 	}
 
 	if(tName == 'Pickup')
@@ -72,6 +76,25 @@ simulated function renderoverlays(Canvas canvas)
 	else
 		Super.RenderOverlays(canvas);
 
+}
+
+function CheckWeaponSkins()
+{
+	if(PickupViewMesh != Default.PickupViewMesh)
+	{
+	   if(bHasSilencer)
+		  multiskins[6] = none;
+	   else
+		  multiskins[6] = texture'pinkmasktex';
+	   if(bHasLaser)
+		  multiskins[5] = none;
+	   else
+		  multiskins[5] = texture'pinkmasktex';
+	   if(bHasScope)
+		  multiskins[4] = none;
+	   else
+		  multiskins[4] = texture'pinkmasktex';
+	}
 }
 
 simulated function SwapMuzzleFlashTexture()

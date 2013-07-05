@@ -16,7 +16,12 @@ function bool Facelift(bool bOn)
 		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex1", class'Texture', True));
 
 	if(Texture == None || !bOn)
+	{
+		maxDrawScale = Default.maxDrawScale;
 		Texture = Default.Texture;
+	}
+	else
+		maxDrawScale = 0.09375;
 
 	return true;
 } 
