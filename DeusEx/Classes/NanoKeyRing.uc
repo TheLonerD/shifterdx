@@ -22,6 +22,21 @@ replication
       GiveClientKey, RemoveClientKey, ClientRemoveAllKeys;
 }
 
+//== Support for HDTP's new hand textures
+simulated function renderoverlays(Canvas canvas)
+{
+	if(HDTPHandTex[1] != HDTPHandTex[0])
+	{
+		multiskins[0] = Getweaponhandtex();
+	
+		super.renderoverlays(canvas);
+	
+		multiskins[0] = none; 
+	}
+	else
+		Super.RenderOverlays(canvas);
+}
+
 // ----------------------------------------------------------------------
 // HasKey()
 //

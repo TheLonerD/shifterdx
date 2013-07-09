@@ -7,6 +7,48 @@ class SkilledTool extends DeusExPickup
 var() sound			useSound;
 var bool			bBeingUsed;
 
+var Texture HDTPHandTex[5];
+
+//== Make HDTP's fancy-dancy new hand textures available
+function bool Facelift(bool bOn)
+{
+	local int i;
+
+	if(!Super.Facelift(bOn))
+		return false;
+
+	//== Load up the hand textures for HDTP, if present
+	if(bOn)
+		HDTPHandTex[1] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexblack", class'Texture', True));
+
+	if(!bOn || HDTPHandTex[1] == None)
+	{
+		for(i = 0; i < 5; ++i)
+			HDTPHandTex[i] = texture'weaponhandstex';
+	}
+	else
+	{
+		HDTPHandTex[2] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexlatino", class'Texture'));
+		HDTPHandTex[3] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexginger", class'Texture'));
+		HDTPHandTex[4] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexalbino", class'Texture'));
+	}
+
+
+	return true;
+}
+
+
+function texture GetWeaponHandTex()
+{
+	local deusexplayer p;
+
+	p = deusexplayer(owner);
+	if(p != none)
+		return HDTPHandTex[p.PlayerSkin];
+
+	return HDTPHandTex[0];
+}
+
 // ----------------------------------------------------------------------
 // PlayUseAnim()
 // ----------------------------------------------------------------------
@@ -172,4 +214,5 @@ simulated function PreBeginPlay()
 defaultproperties
 {
      CountLabel="Uses:"
+     HDTPHandTex(0)=texture'weaponhandtex'
 }

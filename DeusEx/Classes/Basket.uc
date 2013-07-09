@@ -19,6 +19,8 @@ function bool Facelift(bool bOn)
 
 defaultproperties
 {
+     bLootable=True
+     bRandomize=True
      FragType=Class'DeusEx.PaperFragment'
      ItemName="Wicker Basket"
      Mesh=LodMesh'DeusExDeco.Basket'

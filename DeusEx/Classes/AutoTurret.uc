@@ -59,7 +59,7 @@ function bool Facelift(bool bOn)
 		return false;
 
 	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAugUpCan", class'Mesh', True));
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAutoTurretBase", class'Mesh', True));
 
 	if(Mesh == None || !bOn)
 	{
@@ -70,14 +70,14 @@ function bool Facelift(bool bOn)
 	}
 	else
 	{
-		CaseTex[0] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge1", class'Texture', True));
-		CaseTex[1] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge2", class'Texture', True));
-		CaseTex[2] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge3", class'Texture', True));
-		CaseTex[3] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge4", class'Texture', True));
-		CaseTex[4] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge5", class'Texture', True));
-		CaseTex[5] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge6", class'Texture', True));
-		CaseTex[6] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge7", class'Texture', True));
-		CaseTex[7] = Texture(DynamicLoadObject("HDTPMuzzleflashlarge8", class'Texture', True));
+		CaseTex[0] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMuzzleflashlarge1", class'Texture', True));
+		CaseTex[1] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMuzzleflashlarge2", class'Texture', True));
+		CaseTex[2] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMuzzleflashlarge3", class'Texture', True));
+		CaseTex[3] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMuzzleflashlarge4", class'Texture', True));
+		CaseTex[4] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMuzzleflashlarge5", class'Texture', True));
+		CaseTex[5] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMuzzleflashlarge6", class'Texture', True));
+		CaseTex[6] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMuzzleflashlarge7", class'Texture', True));
+		CaseTex[7] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMuzzleflashlarge8", class'Texture', True));
 		HoleTex = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex29", class'Texture', True));
 	}
 

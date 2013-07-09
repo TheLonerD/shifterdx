@@ -6272,6 +6272,16 @@ function GrabDecoration()
 	if (IsLeaning())
 		return;
 
+	//== New stuff.  Special function that lets us open and loot containers instead of smashy-smash
+	if(Containers(FrobTarget) != None)
+	{
+		if(Containers(FrobTarget).bLootable && !Containers(FrobTarget).bLooted)
+		{
+			Containers(FrobTarget).Loot(Self);
+			return;
+		}
+	}
+
 	// can't grab decorations while holding something else
 	if (inHand != None)
 	{

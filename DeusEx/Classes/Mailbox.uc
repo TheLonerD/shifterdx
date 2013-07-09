@@ -19,6 +19,7 @@ function bool Facelift(bool bOn)
 
 defaultproperties
 {
+     bLootable=True
      ItemName="Mailbox"
      bPushable=False
      Physics=PHYS_None

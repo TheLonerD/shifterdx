@@ -20,8 +20,6 @@ function bool Facelift(bool bOn)
 		maxDrawScale = Default.maxDrawScale;
 		Texture = Default.Texture;
 	}
-	else
-		maxDrawScale = 0.09375;
 
 	return true;
 } 

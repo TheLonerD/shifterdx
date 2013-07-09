@@ -1148,7 +1148,12 @@ auto state Dead
                pool = spawn(class'BloodPool',,, HitLocation+HitNormal, Rotator(HitNormal));
             }
 				if (pool != None)
+				{
 					pool.maxDrawScale = CollisionRadius / 40.0;
+
+					if(pool.Texture != pool.Default.Texture) //== HDTP scale-down
+						pool.maxDrawScale /= 16;
+				}
 			}
 
 			// alert NPCs that I'm food

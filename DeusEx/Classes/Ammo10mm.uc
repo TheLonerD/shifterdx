@@ -18,7 +18,7 @@ function bool Facelift(bool bOn)
 		return false;
 
 	if(bOn)
-		skin = Texture(DynamicLoadObject("HDPTItems.HDTPAmmo10mmTex1", class'Texture', True));
+		skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmo10mmTex1", class'Texture', True));
 
 	if(skin == None || !bOn)
 		skin = Default.skin;

@@ -730,6 +730,7 @@ function InitializeInventory()
 		{
 			case 2:
 				inv = spawn(Consumables[Rand(3)], Self);
+				break;
 			case 3:
 			case 4:
 			case 5:

@@ -45,6 +45,8 @@ var localized string HeaderPointsNeededLabel;
 var localized string NameBlankTitle;
 var localized string NameBlankPrompt;
 
+var() float TimerCheck; //== For ensuring the intro gets called
+
 // ----------------------------------------------------------------------
 // InitWindow()
 //
@@ -648,10 +650,28 @@ function ProcessAction(String actionKey)
 			SaveSettings();
 
 			if(actionKey != "STARTNOW")
+			{
 				localPlayer.ShowIntro(True);
-			else
+
+				//== Start a backup timer.  If we haven't started travel within a second then
+				//==  that means the Intro isn't loading, most likely because this is running
+				//==  on the demo version and the Intro doesn't exist.
+				TimerCheck = 1.0;
+			}
+			else //== Right-click, skip the intro
 				localPlayer.StartNewGame(localPlayer.strStartMap);
 		}
+	}
+}
+
+function Tick(float delta)
+{
+	if(TimerCheck > 0)
+	{
+		TimerCheck -= delta;
+
+		if(TimerCheck <= 0)
+			player.StartNewGame(player.strStartMap);
 	}
 }
 

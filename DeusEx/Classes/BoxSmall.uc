@@ -19,6 +19,7 @@ function bool Facelift(bool bOn)
 
 defaultproperties
 {
+     bRandomize=True
      HitPoints=5
      FragType=Class'DeusEx.PaperFragment'
      ItemName="Cardboard Box"

@@ -8,6 +8,21 @@ class Multitool extends SkilledTool;
 // Returns true if the suggested belt location is ok for the object in mp.
 // ----------------------------------------------------------------------
 
+//== Support for HDTP's new hand textures
+simulated function renderoverlays(Canvas canvas)
+{
+	if(HDTPHandTex[1] != HDTPHandTex[0])
+	{
+		multiskins[1] = Getweaponhandtex();
+	
+		super.renderoverlays(canvas);
+	
+		multiskins[1] = none; 
+	}
+	else
+		Super.RenderOverlays(canvas);
+}
+
 simulated function bool TestMPBeltSpot(int BeltSpot)
 {
    //Was BeltSpot 9 until I realized you don't need a keyring in MP

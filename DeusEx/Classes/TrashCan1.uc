@@ -19,6 +19,8 @@ function bool Facelift(bool bOn)
 
 defaultproperties
 {
+     bLootable=True
+     bRandomize=True
      bGenerateTrash=True
      ItemName="Trashcan"
      Mesh=LodMesh'DeusExDeco.TrashCan1'
