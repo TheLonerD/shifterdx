@@ -1,6 +1,6 @@
 //=================================//
         Shifter for Deus Ex
-	   Version 1.8.4
+	   Version 1.9
 //=================================//
 
 INTRODUCTION:
@@ -608,6 +608,45 @@ mod and how it has affected their everyday lives (in Deus Ex, anyway):
 
 
 UPDATES:
+
+	v1.9:
+
+	 - I'm back, baby!  Almost two years since the last update.  Whoops.
+
+	 - HDTP: Added support for the MASSIVE number of new meshes/textures
+	added by the HDTP beta relase.  Only things I couldn't do were the new
+	textures for Flamethrower effects, and part of the changes for Flares.
+	These had to be omitted because the resources can't be dynamically
+	loaded like meshes, meaning for me to add them I'd have to make Shifter
+	such that it required HDTP to run.
+
+	 - Fixed a bug that was causing Ketchup Bars and the like to appear at
+	people's feet in TNM.  Turns out it was also occurring in the normal
+	game as well, it was just going unnoticed.  The problem, if you care,
+	was that I forgot a "break" statement in NPC Random Inventory and there
+	were instances where it would spawn TWO items, the first one being
+	completely forgot while the second was placed in the NPC's inventory.
+
+	 - Added a new feature similar to NPC Random Inventory: Container
+	Random Inventory.  Certain containers have a small chance of being
+	given items if they would otherwise be empty.  You are't going to find
+	anything amazing from this, but you might come across some minor health
+	items, consumables, or maybe even some ammo.
+
+	 - Also related to Containers, I have made certain Containers able to
+	be opened.  When interacting with them you will first check their
+	contents and take them into inventory, if applicable.  Anything you
+	don't will be dropped at your feet.  From that point you will be able
+	to pick up the items as normal.  This currently only applies to trash
+	cans, mailboxes, and wicker baskets.
+
+	 - Implemented a new bit of compatibility code for the various demo
+	versions of the game.  The only thing this code does is check to make
+	sure that the Intro cinematic has started up after the the "OK" button
+	is pressed in the New Game screen.  If after a second it hasn't, the
+	game will automatically progress to the first mission.  This should
+	allow Shifter to work correctly with the demo version of the game, but
+	without any of the unpleasant side-effects from my last attempts.
 
 	v1.8.4:
 
