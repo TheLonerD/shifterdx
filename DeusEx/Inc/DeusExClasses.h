@@ -651,6 +651,9 @@ public:
     class AFlyGenerator* flyGen;
     FStringNoInit ItemArticle;
     FStringNoInit ItemName;
+    class UClass* tcontents;
+    class UClass* tcontents2;
+    class UClass* tcontents3;
     DECLARE_FUNCTION(execConBindEvents);
     DECLARE_CLASS(ADeusExDecoration,ADecoration,0)
     NO_DEFAULT_CONSTRUCTOR(ADeusExDecoration)

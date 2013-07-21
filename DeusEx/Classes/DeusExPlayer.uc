@@ -919,6 +919,9 @@ exec function GlobalFacelift(bool bOn)
 
 	Facelift(bOn); // Make the player's model look all fancy-like
 
+	if(DeusExRootWindow(rootWindow).scopeView != None)
+		DeusExRootWindow(rootWindow).scopeView.Facelift(bOn);
+
 	foreach AllActors(class'Actor', generic)
 	{
 		if(DeusExDecoration(generic) != None)
@@ -1395,7 +1398,7 @@ function ResetPlayerToDefaults()
 	local inventory anItem;
 	local inventory nextItem;
 
-   // reset the image linked list
+   	// reset the image linked list
 	FirstImage = None;
 
 	if (DeusExRootWindow(rootWindow) != None)
@@ -1406,19 +1409,24 @@ function ResetPlayerToDefaults()
 	if (KeyRing != None)
 	{
 		KeyRing.RemoveAllKeys();
-      if ((Role == ROLE_Authority) && (Level.NetMode != NM_Standalone))
-      {
-         KeyRing.ClientRemoveAllKeys();
-      }
+		if ((Role == ROLE_Authority) && (Level.NetMode != NM_Standalone))
+			KeyRing.ClientRemoveAllKeys();
 		KeyRing = None;
 	}
 
-	while(Inventory != None)
+
+	//== Y|y: Silly DX devs, this is how you step through player inventory
+	anItem = Inventory;
+
+	while(anItem != None)
 	{
-		anItem = Inventory;
+		nextItem = anItem.Inventory;
 		DeleteInventory(anItem);
 		anItem.Destroy();
+		anItem = nextItem;
 	}
+
+	Inventory = None;
 
 	// Clear object belt
 	if (DeusExRootWindow(rootWindow) != None)
@@ -1452,11 +1460,11 @@ function ResetPlayerToDefaults()
 	// Reinitialize all subsystems we've just nuked
 	InitializeSubSystems();
 
-   // Give starting inventory.
-   if (Level.Netmode != NM_Standalone)
+   	// Give starting inventory.
+   	if (Level.Netmode != NM_Standalone)
 	{
 		NintendoImmunityEffect( True );
-      GiveInitialInventory();
+		GiveInitialInventory();
 	}
 }
 
@@ -2237,7 +2245,7 @@ function UpdateTranslucency(float DeltaTime)
 {
    local float DarkVis;
    local float CamoVis;
-	local AdaptiveArmor armor;
+   local AdaptiveArmor armor;
    local bool bMakeTranslucent;
    local DeusExMPGame Game;
    
@@ -2259,7 +2267,7 @@ function UpdateTranslucency(float DeltaTime)
    CamoVis = 1.0;
 
    //Check cloaking.
-	if (AugmentationSystem.GetAugLevelValue(class'AugCloak') != -1.0)
+   if (AugmentationSystem.GetAugLevelValue(class'AugCloak') != -1.0)
    {
       bMakeTranslucent = TRUE;
       CamoVis = Game.CloakEffect;
@@ -8002,20 +8010,14 @@ function bool AddInventory(inventory item)
 		root = DeusExRootWindow(rootWindow);
 
 		if ( item.bInObjectBelt )
-		{
 			if (root != None)
-			{
 				root.hud.belt.AddObjectToBelt(item, item.beltPos, True);
-			}
-		}
 
 		if (retval)
-		{
 			if (root != None)
-         {
 				root.AddInventory(item);
-         }
-		}
+
+		//root.hud.receivedItems.AddItem(item, 1);
 	}
 
 	return (retval);
@@ -10962,7 +10964,13 @@ function float CalculatePlayerVisibility(ScriptedPawn P)
 	vis = 1.0;
 	if ((P != None) && (AugmentationSystem != None))
 	{
-		if (P.IsA('Robot'))
+		// go through the actor list looking for owned AdaptiveArmor
+		// since they aren't in the inventory anymore after they are used
+
+        	if (UsingChargedPickup(class'AdaptiveArmor'))
+			vis = 0.0;
+
+		else if (P.IsA('Robot'))
 		{
 			// if the aug is on, give the player full invisibility
 			if (AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') != -1.0)
@@ -10974,15 +10982,28 @@ function float CalculatePlayerVisibility(ScriptedPawn P)
 			if (AugmentationSystem.GetAugLevelValue(class'AugCloak') != -1.0)
 				vis = 0.0;
 		}
-
-		// go through the actor list looking for owned AdaptiveArmor
-		// since they aren't in the inventory anymore after they are used
-
-      if (UsingChargedPickup(class'AdaptiveArmor'))
-			{
-				vis = 0.0;
-			}
 	}
+
+	//== If you're on fire, sorry buddy, they can see you
+	if(bOnFire && vis <= 0.5)
+		vis += 0.5;
+
+	return vis;
+}
+
+//== Calculates the player's visibility using a type indicated by variable; 0 = person, 1 = robot
+function float CalculatePlayerVisibilityType(int type)
+{
+	local float vis;
+
+	vis = 1.0;
+
+	if(type == 1 && AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') != -1.0)
+		vis = 0.0;
+	else if(type == 0 && AugmentationSystem.GetAugLevelValue(class'AugCloak') != -1.0)
+		vis = 0.0;
+	else if (UsingChargedPickup(class'AdaptiveArmor'))
+		vis = 0.0;
 
 	//== If you're on fire, sorry buddy, they can see you
 	if(bOnFire && vis <= 0.5)

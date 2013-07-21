@@ -33,7 +33,17 @@ function PostBeginPlay()
 	Super.PostBeginPlay();
 
 	if (bOn)
+	{
 		LightType = LT_Steady;
+		bUnlit = True;
+		ScaleGlow = 2.0;
+	}
+	else
+	{
+		LightType = LT_None;
+		bUnlit = False;
+		ResetScaleGlow();
+	}
 }
 
 defaultproperties

@@ -3,6 +3,17 @@
 //=============================================================================
 class WeaponGreaselSpit extends WeaponNPCRanged;
 
+//== Overridden so cheaters can cheat.  Reported by NotAVeryGoodName on the SVN
+function BringUp()
+{
+	Super.BringUp();
+
+	if ( Owner.IsA('DeusExPlayer') )
+	{
+		bHandtoHand=false;
+	}
+}
+
 defaultproperties
 {
      ShotTime=1.500000

@@ -12,7 +12,7 @@ defaultproperties
      MaxAmmo=6
      ItemName="Combat Knife"
      ItemArticle="a"
-     PickupViewMesh=LodMesh'DeusExItems.CombatKnifePickup'
+     PickupViewMesh=LodMesh'DeusExItems.TestBox'
      Icon=Texture'DeusExUI.Icons.BeltIconCombatKnife'
      Mesh=LodMesh'DeusExItems.CombatKnifePickup'
      CollisionRadius=22.500000

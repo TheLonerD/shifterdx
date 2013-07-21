@@ -137,13 +137,15 @@ function AddItem(Inventory invItem, Int count)
 	if(invItem == None || invItem.IsA('AmmoNone'))
 		return;
 
-	if(Ammo(invItem) != None)
-		if(Ammo(invItem).AmmoAmount > count)
-			count = Ammo(invItem).AmmoAmount;
+	//== I have no idea what I was thinking here.  This will just make the ammo display show how much ammo YOU have
+	//if(Ammo(invItem) != None)
+	//	if(Ammo(invItem).AmmoAmount > count)
+	//		count = Ammo(invItem).AmmoAmount;
 
 	//== Check for duplicate items
 	if(winTile != None)
 		itemWindow = winTile.GetTopChild();
+
 	while( itemWindow != None )
 	{
 		nextWindow = itemWindow.GetLowerSibling();

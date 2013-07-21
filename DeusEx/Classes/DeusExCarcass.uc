@@ -531,49 +531,49 @@ function Frob(Actor Frobber, Inventory frobWith)
 
 					if(DeusExAmmo(item) != None && !item.IsA('AmmoCombatKnife') && !item.IsA('AmmoNone'))
 					{
-						if(item.IsA('AmmoSabot') || item.IsA('Ammo10mmEX') || item.IsA('AmmoDragon'))
-						{
-							itemCount = 1 + Rand(12);
-							if(Ammo(item).AmmoAmount >= 5 && Ammo(item).AmmoAmount <= 12)
-								itemCount = Ammo(item).AmmoAmount;
-						}
-						else if(Ammo(item).AmmoAmount <= 4 && Ammo(item).AmmoAmount >= 1)
-							itemCount = Ammo(item).AmmoAmount;
-						else
-							itemCount = 1 + Rand(4);
-
-						Ammo(item).AmmoAmount = itemCount;
-
 						// EXCEPT for non-standard ammo -- Y|yukichigai
-						if(player.FindInventoryType(item.Class) != None)
+						if(DeusExAmmo(item).bIsNonStandard)
 						{
-							if(DeusExAmmo(item).bIsNonStandard)
+							if(item.IsA('AmmoSabot') || item.IsA('Ammo10mmEX') || item.IsA('AmmoDragon'))
+							{
+								itemCount = 1 + Rand(12);
+								if(Ammo(item).AmmoAmount >= 5 && Ammo(item).AmmoAmount <= 12)
+									itemCount = Ammo(item).AmmoAmount;
+							}
+							else if(Ammo(item).AmmoAmount <= 4 && Ammo(item).AmmoAmount >= 1)
+								itemCount = Ammo(item).AmmoAmount;
+							else
+								itemCount = 1 + Rand(4);
+	
+							Ammo(item).AmmoAmount = itemCount;
+	
+							if(player.FindInventoryType(item.Class) != None)
 							{
 		      						Ammo(player.FindInventoryType(item.Class)).AddAmmo(itemCount);
 				                           	AddReceivedItem(player, item, itemCount);
-	                         
+	
 								// Update the ammo display on the object belt
 								player.UpdateAmmoBeltText(Ammo(item));
-
-								P.ClientMessage(item.PickupMessage @ item.itemArticle @ item.itemName, 'Pickup');
+	
+								P.ClientMessage(item.PickupMessage @ item.itemArticle @ item.itemName @ "("$itemCount$")", 'Pickup');
 								bPickedItemUp = True;
 							}
-						}
-						//This is the code which would allow randomly-given ammo to be picked up by a player
-						// regardless of if they have picked it up before.  This would (I feel) lead to
-						// Shifter advancing the progress of the game prematurely, something which I am
-						// endeavoring to avoid in the process of my coding -- Y|yukichigai
-						else if(player.combatDifficulty > 4.0) //== But in unrealistic, who cares?
-						{
-							tempitem = spawn(item.Class, player);
-							Ammo(tempitem).AmmoAmount = itemCount;
-							tempitem.InitialState='Idle2';
-							tempitem.GiveTo(player);
-							tempitem.setBase(player);
-							player.UpdateAmmoBeltText(Ammo(tempitem));
-							P.ClientMessage(tempitem.PickupMessage @ tempitem.itemArticle @ tempitem.itemName, 'Pickup');
-							AddReceivedItem(player, tempitem, itemCount);
-							bPickedItemUp = True;
+							//This is the code which would allow randomly-given ammo to be picked up by a player
+							// regardless of if they have picked it up before.  This would (I feel) lead to
+							// Shifter advancing the progress of the game prematurely, something which I am
+							// endeavoring to avoid in the process of my coding -- Y|yukichigai
+							else if(player.combatDifficulty > 4.0) //== But in unrealistic, who cares?
+							{
+								tempitem = spawn(item.Class, player);
+								Ammo(tempitem).AmmoAmount = itemCount;
+								tempitem.InitialState='Idle2';
+								tempitem.GiveTo(player);
+								tempitem.setBase(player);
+								player.UpdateAmmoBeltText(Ammo(tempitem));
+								P.ClientMessage(tempitem.PickupMessage @ tempitem.itemArticle @ tempitem.itemName, 'Pickup');
+								AddReceivedItem(player, tempitem, itemCount);
+								bPickedItemUp = True;
+							}
 						}
 					}
 
@@ -592,8 +592,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 			               W = DeusExWeapon(item);
                
 			               // Grenades and LAMs always pickup 1
-			               if (W.IsA('WeaponGrenade') ||
-					  W.IsA('WeaponCombatKnife') )
+			               if (W.IsA('WeaponGrenade') || W.IsA('WeaponCombatKnife') )
 			                  W.PickupAmmoCount = 1;
 			               else if (Level.NetMode == NM_Standalone)
 			                  W.PickupAmmoCount = Rand(Max((W.Default.PickupAmmoCount/2),4)) + 1; //Rand(4) + 1;
@@ -687,23 +686,26 @@ function Frob(Actor Frobber, Inventory frobWith)
 										{
 											if(AmmoType.AmmoAmount < AmmoType.MaxAmmo)
 											{
+												itemCount = Weapon(item).PickupAmmoCount;
+
+												if(item.IsA('WeaponCombatKnife'))
+													itemCount = 1;
+
 				                           					AmmoType.AddAmmo(Weapon(item).PickupAmmoCount);
 			
-												if(item.IsA('WeaponShuriken'))
-													AddReceivedItem(player, item, Weapon(item).PickupAmmoCount);
-												else if(item.IsA('WeaponCombatKnife'))
-													AddReceivedItem(player, item, 1);
+												if(item.IsA('WeaponShuriken') || item.IsA('WeaponCombatKnife'))
+													AddReceivedItem(player, item, itemCount);
 												else
-									                           	AddReceivedItem(player, AmmoType, Weapon(item).PickupAmmoCount);
+									                           	AddReceivedItem(player, AmmoType, itemCount);
 			                           
 												// Update the ammo display on the object belt
 												player.UpdateAmmoBeltText(AmmoType);
 			
 												// if this is an illegal ammo type, use the weapon name to print the message
 												if (AmmoType.PickupViewMesh == Mesh'TestBox')
-													P.ClientMessage(item.PickupMessage @ item.itemArticle @ item.itemName, 'Pickup');
+													P.ClientMessage(item.PickupMessage @ item.itemArticle @ item.itemName @ "("$itemCount$")", 'Pickup');
 												else
-													P.ClientMessage(AmmoType.PickupMessage @ AmmoType.itemArticle @ AmmoType.itemName, 'Pickup');
+													P.ClientMessage(AmmoType.PickupMessage @ AmmoType.itemArticle @ AmmoType.itemName @ "("$itemCount$")", 'Pickup');
 			
 												// Mark it as 0 to prevent it from being added twice
 												Weapon(item).AmmoType.AmmoAmount = 0;
@@ -726,6 +728,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 									DeleteInventory(item);
 									item.Destroy();
 								}
+								item = None;
 							}
 
 							// Only destroy the weapon if the player already has it.
@@ -818,8 +821,8 @@ function Frob(Actor Frobber, Inventory frobWith)
 
 									if(Weapon(item) != None)
 									{
-										if(Weapon(item).PickupAmmoCount <= 0 && Weapon(item).Default.PickupAmmoCount > 0)
-											Weapon(item).PickupAmmoCount = 1;
+										//if(Weapon(item).PickupAmmoCount <= 0 && Weapon(item).Default.PickupAmmoCount > 0)
+										//	Weapon(item).PickupAmmoCount = 1;
 
 										if(Weapon(item).AmmoType != None && Weapon(item).AmmoName != Class'AmmoNone')
 										{
@@ -933,7 +936,7 @@ function AddReceivedItem(DeusExPlayer player, Inventory item, int count)
 		bSearchMsgPrinted = True;
 	}
 
-   DeusExRootWindow(player.rootWindow).hud.receivedItems.AddItem(item, count);
+	DeusExRootWindow(player.rootWindow).hud.receivedItems.AddItem(item, count);
 
 	// Make sure the object belt is updated
 	if (item.IsA('Ammo'))

@@ -20,9 +20,9 @@ enum ESkinColor
 	SC_Yellow
 };
 
-var() ESkinColor SkinColor;
-var() bool bPreDamage;
-var bool bLeaking;
+var() travel ESkinColor SkinColor;
+var() travel bool bPreDamage;
+var travel bool bLeaking;
 var float radTimer;
 
 function BeginPlay()

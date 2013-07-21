@@ -20,6 +20,18 @@ function bool Facelift(bool bOn)
 	return true;
 }
 
+// ----------------------------------------------------------------------
+// WillTakeStompDamage()
+// ----------------------------------------------------------------------
+
+function bool WillTakeStompDamage(Actor stomper)
+{
+	if(stomper == GetPlayerPawn())
+		return False; //== Really, JC isn't THAT clumsy
+
+	return Super.WillTakeStompDamage(stomper);
+}
+
 function bool ShouldBeStartled(Pawn startler)
 {
 	local float speed;

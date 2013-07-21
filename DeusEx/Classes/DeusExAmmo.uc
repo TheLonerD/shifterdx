@@ -61,6 +61,35 @@ function PostBeginPlay()
 }
 
 // ----------------------------------------------------------------------
+// HandlePickupQuery() //== Override to display ammo count on pickup
+// ----------------------------------------------------------------------
+function bool HandlePickupQuery( inventory Item )
+{
+	if ( (class == item.class) || 
+		(ClassIsChildOf(item.class, class'Ammo') && (class == Ammo(item).parentammo)) ) 
+	{
+		if (AmmoAmount==MaxAmmo) return true;
+		if (Level.Game.LocalLog != None)
+			Level.Game.LocalLog.LogPickup(Item, Pawn(Owner));
+		if (Level.Game.WorldLog != None)
+			Level.Game.WorldLog.LogPickup(Item, Pawn(Owner));
+		if (Item.PickupMessageClass == None)
+			// DEUS_EX CNN - use the itemArticle and itemName
+			Pawn(Owner).ClientMessage( Item.PickupMessage @ Item.itemArticle @ Item.ItemName @ "("$Ammo(Item).AmmoAmount$")", 'Pickup' );
+		else
+			Pawn(Owner).ReceiveLocalizedMessage( Item.PickupMessageClass, 0, None, None, item.Class );
+		item.PlaySound( item.PickupSound );
+		AddAmmo(Ammo(item).AmmoAmount);
+		item.SetRespawn();
+		return true;				
+	}
+	if ( Inventory == None )
+		return false;
+
+	return Inventory.HandlePickupQuery(Item);
+}
+
+// ----------------------------------------------------------------------
 // UpdateInfo()
 // ----------------------------------------------------------------------
 

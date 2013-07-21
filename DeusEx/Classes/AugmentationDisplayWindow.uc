@@ -870,8 +870,8 @@ function DrawTargetAugmentation(GC gc)
 	// check 500 feet in front of the player
 	target = TraceLOS(8000,AimLocation);
 
-   targetplayerhealthstring = "";
-   targetplayerlocationstring = "";
+	targetplayerhealthstring = "";
+	targetplayerlocationstring = "";
 
 	if ( target != None )
 	{
@@ -901,6 +901,9 @@ function DrawTargetAugmentation(GC gc)
 
 				// scale based on screen resolution - default is 640x480
 				//mult = FClamp(weapon.currentAccuracy * 80.0 * (width/640.0), corner, 80.0);
+
+				//== A value of 60 will more accurately reflect the extent of weapon spread
+				//==  so that the edges of the reticle define the outer extent of the spread
 				mult = FClamp(weapon.currentAccuracy * 60.0 * (width/640.0), corner, 60.0);
 
 				// make sure it's not too close to the center unless you have a perfect accuracy

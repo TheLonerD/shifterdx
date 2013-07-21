@@ -358,7 +358,8 @@ function Tick(float deltaTime)
 							if (pawn.IsA('DeusExPlayer'))
 							{
 								// If the player's RadarTrans aug is off, the turret can see him
-								if (DeusExPlayer(pawn).AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') == -1.0)
+								//== Also Thermoptic camo
+								if (DeusExPlayer(pawn).CalculatePlayerVisibilityType(1) > 0.0) //AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') == -1.0)
 								{
 									curTarget = pawn;
 									break;

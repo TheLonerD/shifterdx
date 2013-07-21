@@ -4,6 +4,17 @@
 class WeaponNPCMelee extends DeusExWeapon
 	abstract;
 
+//== Added so cheaters can cheat.  Reported by NotAVeryGoodName on the SVN.
+function BringUp()
+{
+	Super.BringUp();
+
+	if ( Owner.IsA('DeusExPlayer') )
+	{
+		bOwnerWillNotify=false;
+	}
+}
+
 defaultproperties
 {
      LowAmmoWaterMark=0

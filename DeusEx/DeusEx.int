@@ -3382,10 +3382,10 @@ ItemName="Soda"
 ItemArticle="some"
 Description="The can is blank except for the phrase 'PRODUCT PLACEMENT HERE.' It is unclear whether this is a name or an invitation."
 beltDescription="SODA"
-InvDescription(0)="The can is blank except for the phrase 'PRODUCT PLACEMENT HERE.' It is unclear whether this is a name or an invitation."
-InvDescription(1)="A can of Zap! soda.  The label reads: '50% more effective than Nuke!'"
-InvDescription(2)="The only easily visible item is the letter 'B' printed on the front.  The small information label reads 'Beats out Zap! by a factor of 1.3333333333333333333333333333333333....'|n|nThe numbers keep repeating and appear to take up the remaining space on the label."
-InvDescription(3)="Aside from the bold-face title the can appears to be blank.  Closer inspection shows the original printing has been removed and a new name printed on top.  The words 'got Electrolytes' and 'Thirst Mutilator' are still barely visible."
+InvDescription[0]="The can is blank except for the phrase 'PRODUCT PLACEMENT HERE.' It is unclear whether this is a name or an invitation."
+InvDescription[1]="A can of Zap! soda.  The label reads: '50% more effective than Nuke!'"
+InvDescription[2]="The only easily visible item is the letter 'B' printed on the front.  The small information label reads 'Beats out Zap! by a factor of 1.3333333333333333333333333333333333....'|n|nThe numbers keep repeating and appear to take up the remaining space on the label."
+InvDescription[3]="Aside from the bold-face title the can appears to be blank.  Closer inspection shows the original printing has been removed and a new name printed on top.  The words 'got Electrolytes' and 'Thirst Mutilator' are still barely visible."
 
 [Mission03]
 VoIPText="Display VoIP status and details"
@@ -3399,7 +3399,7 @@ emailString[0]="Agent Denton,|n|n     Welcome to UNATCO!  Allow me to introduce 
 emailSubject[0]="Please help us keep your office clean"
 emailString[0]="Agent Denton,|n|n     Welcome to UNATCO!  Allow me to introduce myself: I'm Dan, the head of Janitorial Services here at HQ.|n|n     Let me cut to the chase: the Janitorial Services Department is not as well-equipped as I would like it.  Rather than the industrial cleaning robots you find in the private sector, we're only able to get the basic model.  ('Budget considerations', Manderley says)  This model has no real pushing power and is impossible to reprogram.  If anybody leaves something heavier than a desk chair on the floor the little things burn out trying to push it out of the way to clean, which is exactly what happened in your office.  Three of our cleaning bots had to have their drive motors replaced after trying to push that... thing up against the shelf in your office.|n|n     Since you're new here I can't blame you for not knowing, but in the future please try not to leave anything heavy on the floor of your office.|n|n|nThanks,|n|nDaniel Matsuma|nHead of Janitorial Services|n453-0782"
 emailSubject[1]="About your office..."
-emailString[1]="Agent Denton,|n|n     I have to apologize for the 'unusual' state of your office.  It appears that one of our cleaning bots malfunctioned and for some reason decided to push all the trash it could find into your office.  I would have stopped the little thing before it made a real mess, but I was too busy trying to repair the four other cleaning bots which burned out after trying to push more of the heavy items you left on the floor.|n|n     I will have your office cleaned when time permits, but these repairs will take some time and they do come first.  Perhaps in the future you will heed my warnings about what you can and cannot leave on the floor.|n|n|nDaniel Matsuma|nHead of Janitorial Services|N453-0782"
+emailString[1]="Agent Denton,|n|n     I have to apologize for the 'unusual' state of your office.  It appears that one of our cleaning bots malfunctioned and for some reason decided to push all the trash it could find into your office.  I would have stopped the little thing before it made a real mess, but I was too busy trying to repair the four other cleaning bots which burned out after trying to push more of the heavy items you left on the floor.|n|n     I will have your office cleaned when time permits, but these repairs will take some time and they do come first.  Perhaps in the future you will heed my warnings about what you can and cannot leave on the floor.|n|n|nDaniel Matsuma|nHead of Janitorial Services|n453-0782"
 
 [Mission05]
 emailSubject[0]="Augmentation shipment mixup"
@@ -3419,7 +3419,12 @@ Description="Bioluminescent cells within the retina provide coherent illuminatio
 
 [AugIFF]
 AugmentationName="IFF"
-Description="Automatic friend or foe identification uses advanced heuristic algorithms to associate visible objects with known threat categories.|n|nTargeting reticle highlights RED over enemies, GREEN over allies and BLUE over neutrals.|n|nNO UPGRADES"
+Description="Automatic friend or foe identification uses advanced heuristic algorithms to associate visible objects with known threat categories.|n|nTargeting reticle highlights RED over enemies, GREEN over allies, and BLUE over neutrals.|n|nNO UPGRADES"
 
 [Mission02]
 emailString[0]="|n|nP.S. You've managed to keep the casualties to a minimum so far, but I know it hasn't been easy.  I've left you a baton I modified that should make the use of minimal force less challenging."
+
+[Containers]
+ContainerEmpty="You don't find anything"
+ContainerDiscard="You discard"
+ContainerFound="You found:"

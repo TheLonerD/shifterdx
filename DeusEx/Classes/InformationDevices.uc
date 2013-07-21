@@ -4,9 +4,9 @@
 class InformationDevices extends DeusExDecoration
 	abstract;
 
-var() name					textTag;
-var() string				TextPackage;
-var() class<DataVaultImage>	imageClass;
+var() travel name					textTag;
+var() travel string				TextPackage;
+var() travel class<DataVaultImage>	imageClass;
 
 var transient HUDInformationDisplay infoWindow;		// Window to display the information in
 var transient TextWindow winText;				// Last text window we added
@@ -18,8 +18,8 @@ var localized String msgNoText;
 var Bool bFirstParagraph;
 var localized String ImageLabel;
 var localized String AddedToDatavaultLabel;
-var String SpecialText;					// Special, script-given text
-var bool bUnmovable;						// Truly needs to be unmovable
+var travel String SpecialText;					// Special, script-given text
+var travel bool bUnmovable;						// Truly needs to be unmovable
 
 // ----------------------------------------------------------------------
 // Destroyed()

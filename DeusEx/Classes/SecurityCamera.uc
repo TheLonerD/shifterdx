@@ -207,7 +207,7 @@ function CheckPlayerVisibility(DeusExPlayer player)
          // AcquireMultiplayerTarget
          if (Level.Netmode == NM_Standalone)
          {
-            if (player.AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') != -1.0)
+            if (player.CalculatePlayerVisibilityType(1) <= 0.0) //AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') != -1.0)
                return;
          }
 
@@ -433,7 +433,7 @@ function Actor AcquireMultiplayerTarget()
          }
          else
          {
-            if (DeusExPlayer(prevtarget).AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') == -1.0)
+            if (DeusExPlayer(prevtarget).CalculatePlayerVisibilityType(1) > 0.0) //.AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') == -1.0)
             {
                curtarget = prevtarget;
                return curtarget;
@@ -463,7 +463,7 @@ function Actor AcquireMultiplayerTarget()
 						if (! ( (TeamDMGame(aplayer.DXGame) != None) &&	(safeTarget != None) &&	(TeamDMGame(aplayer.DXGame).ArePlayersAllied( DeusExPlayer(safeTarget),aplayer)) ) )
 						{
 							// If the player's RadarTrans aug is off, the turret can see him
-							if (aplayer.AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') == -1.0)
+							if (aplayer.CalculatePlayerVisibilityType(1) > 0.0) //.AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') == -1.0)
 							{
 								curTarget = apawn;
 								break;

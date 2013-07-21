@@ -3,7 +3,7 @@
 //=============================================================================
 class MJ12TroopCarcass extends DeusExCarcass;
 
-function bool Facelift(bool bOn)
+/*function bool Facelift(bool bOn)
 {
 	local int i;
 	if(!Super.Facelift(bOn))
@@ -32,7 +32,7 @@ function bool Facelift(bool bOn)
 	}
 
 	return true;
-} 
+}*/
 
 defaultproperties
 {

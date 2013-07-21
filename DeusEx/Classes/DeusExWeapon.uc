@@ -272,6 +272,33 @@ replication
       RefreshScopeDisplay, ReadyClientToFire, SetClientAmmoParams, ClientDownWeapon, ClientActive, ClientReload;
 }
 
+//== Overridden so we get pretty ammo displays in the received ammo window
+function GiveAmmo( Pawn Other )
+{
+	if ( AmmoName == None || PickUpAmmoCount <= 0)
+		return;
+	AmmoType = Ammo(Other.FindInventoryType(AmmoName));
+	if ( AmmoType != None )
+	{
+		//== This code is actually never run due to base complications with existing Unreal code
+		//==  HandlePickupQuery is invoked instead for this situation.  We'll leave this code here anyway.
+		if(PickupAmmoCount > 0 && DeusExPlayer(Other) != None && AmmoType.PickupViewMesh != LodMesh'DeusExItems.TestBox')
+			DeusExPlayer(Other).ClientMessage(AmmoType.PickupMessage @ AmmoType.itemArticle @ AmmoType.itemName $" ("$PickupAmmoCount$")", 'Pickup');
+
+		AmmoType.AddAmmo(PickUpAmmoCount);
+	}
+	else
+	{
+		AmmoType = Spawn(AmmoName);	// Create ammo type required		
+		Other.AddInventory(AmmoType);		// and add to player's inventory
+		AmmoType.BecomeItem();
+		AmmoType.AmmoAmount = PickUpAmmoCount; 
+		AmmoType.GotoState('Idle2');
+		if(PickupAmmoCount > 0 && DeusExPlayer(Other) != None && AmmoType.PickupViewMesh != LodMesh'DeusExItems.TestBox')
+			DeusExPlayer(Other).ClientMessage(AmmoType.PickupMessage @ AmmoType.itemArticle @ AmmoType.itemName $" ("$PickupAmmoCount$")", 'Pickup');
+	}
+}
+
 // ---------------------------------------------------------------------
 // PropagateLockState()
 // ---------------------------------------------------------------------
@@ -500,7 +527,7 @@ function bool HandlePickupQuery(Inventory Item)
 	if ((W != None) && (W.Class == Class))
 	{
 		//== We should be able to use multiple copies of single-use weapons
-		if(W.PickupAmmoCount == 0 && W.ReloadCount == 0 && W.AmmoName != None && !W.TestCycleable())
+		if(W.Default.PickupAmmoCount == 0 && W.Default.ReloadCount == 0 && W.AmmoName != None && !W.TestCycleable())
 		{
 			return false; //== Returning false makes it so it'll search for another slot to store a second copy of the weapon
 		}
@@ -571,11 +598,32 @@ function bool HandlePickupQuery(Inventory Item)
 							ReadyToFire();
 					}
 				}
+
+				//== List the ammo that we're receiving in the log, if any
+				if(Weapon(Item).PickupAmmoCount > 0 && defAmmo.PickupViewMesh != LodMesh'DeusExItems.TestBox')
+				{
+					player.ClientMessage(defAmmo.PickupMessage @ defAmmo.itemArticle @ defAmmo.itemName $" ("$Weapon(Item).PickupAmmoCount$")", 'Pickup');
+					//Weapon(Item).AmmoType.AmmoAmount = 0;
+					//bResult = True;
+				}
+
+				//== We'll enable this and the above once we figure out how the hell to keep pre-looted weapons from being unusable
+				/*else
+				{
+					Weapon(Item).AmmoName = Weapon(Item).Default.AmmoName;
+					Weapon(Item).AmmoType = Weapon(Item).Default.AmmoType;
+					Weapon(Item).ReloadCount = Weapon(Item).Default.ReloadCount;
+					bResult = Super.HandlePickupQuery(Item);
+				}*/
 			}
 		}
 	}
 
 	bResult = Super.HandlePickupQuery(Item);
+
+	//== This is also related to pre-looting
+	//if(Inventory != None && !bResult)
+	//	bResult = Inventory.HandlePickupQuery(Item);
 
 	// Notify the object belt of the new ammo
 	if (player != None)
@@ -4894,7 +4942,7 @@ Begin:
 		Finish();
 }
 
-state Pickup
+auto state Pickup
 {
 	function BeginState()
 	{

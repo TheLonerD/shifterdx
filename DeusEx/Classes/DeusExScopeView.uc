@@ -11,6 +11,40 @@ var Bool  bBinocs;
 var Bool  bViewVisible;
 var int   desiredFOV;
 
+var Texture HDTPScope[4];
+var Texture HDTPCross[4];
+
+function bool Facelift(bool bOn)
+{
+	local int i;
+
+	if(Player.Level.NetMode != NM_Standalone)
+		return false;
+
+	if(bOn)
+	{
+		HDTPScope[0] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPHUDScopeView01", class'Texture', True));
+		HDTPCross[0] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPHUDScopeCrosshair01", class'Texture', True));
+	}
+
+	if(!bOn || HDTPScope[0] == None || HDTPCross[0] == None)
+	{
+		for(i = 0; i < 4; ++i)
+		{
+			HDTPScope[i] = None;
+			HDTPCross[i] = None;
+		}
+	}
+	else
+	{
+		for(i = 1; i < 4; ++i)
+		{
+			HDTPScope[i] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPHUDScopeView0"$ (i+1), class'Texture'));
+			HDTPCross[i] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPHUDScopeCrosshair0"$ (i+1), class'Texture'));
+		}
+	}
+}
+
 // ----------------------------------------------------------------------
 // InitWindow()
 //
@@ -27,6 +61,7 @@ event InitWindow()
 	bTickEnabled = true;
 
 	StyleChanged();
+	Facelift(True);
 }
 
 // ----------------------------------------------------------------------
@@ -134,13 +169,18 @@ event DrawWindow(GC gc)
 			return;
 	}
 
+	scopeHeight = 256;
+
 	// Figure out where to put everything
 	if (bBinocs)
 		scopeWidth  = 512;
-	else
+	else if(HDTPScope[0] == None || Player.Level.NetMode != NM_Standalone)
 		scopeWidth  = 256;
-
-	scopeHeight = 256;
+	else
+	{
+		scopeWidth = 512;
+		scopeHeight = 512;
+	}
 
 	fromX = (width-scopeWidth)/2;
 	fromY = (height-scopeHeight)/2;
@@ -233,11 +273,27 @@ event DrawWindow(GC gc)
 			if(test)
 			{
 				gc.SetStyle(DSTY_Modulated);
-				gc.DrawTexture(fromX, fromY, scopeWidth, scopeHeight, 0, 0, Texture'HUDScopeView');
+				if(HDTPScope[0] != None)
+				{
+					gc.DrawTexture(fromX, fromY, scopeWidth, scopeHeight, 0, 0, HDTPScope[0]);
+					gc.DrawTexture(fromX+scopeWidth/2, fromY, scopeWidth, scopeHeight, 0, 0, HDTPScope[1]);
+					gc.DrawTexture(fromX, fromY+scopeHeight/2, scopeWidth, scopeHeight, 0, 0, HDTPScope[2]);
+					gc.DrawTexture(fromX+scopeWidth/2, fromY+scopeHeight/2, scopeWidth, scopeHeight, 0, 0, HDTPScope[3]);
+				}
+				else
+					gc.DrawTexture(fromX, fromY, scopeWidth, scopeHeight, 0, 0, Texture'HUDScopeView');
 			}
 			gc.SetTileColor(colLines);
 			gc.SetStyle(DSTY_Masked);
-			gc.DrawTexture(fromX, fromY, scopeWidth, scopeHeight, 0, 0, Texture'HUDScopeCrosshair');
+			if(HDTPCross[0] != None)
+			{
+				gc.DrawTexture(fromX, fromY, scopeWidth, scopeHeight, 0, 0, HDTPCross[0]);
+				gc.DrawTexture(fromX+scopeWidth/2, fromY, scopeWidth, scopeHeight, 0, 0, HDTPCross[1]);
+				gc.DrawTexture(fromX, fromY+scopeHeight/2, scopeWidth, scopeHeight, 0, 0, HDTPCross[2]);
+				gc.DrawTexture(fromX+scopeWidth/2, fromY+scopeHeight/2, scopeWidth, scopeHeight, 0, 0, HDTPCross[3]);
+			}
+			else
+				gc.DrawTexture(fromX, fromY, scopeWidth, scopeHeight, 0, 0, Texture'HUDScopeCrosshair');
 		}
 		else
 		{

@@ -46,6 +46,11 @@ var FlyGenerator flyGen;			// fly generator
 var localized string itemArticle;	
 var localized string itemName;		// human readable name
 
+//== Variable for storing container contents between travel
+var() travel class<inventory> tcontents;
+var() travel class<inventory> tcontents2;
+var() travel class<inventory> tcontents3;
+
 native(2101) final function ConBindEvents();
 
 //
@@ -156,11 +161,29 @@ function BeginPlay()
 }
 
 // ----------------------------------------------------------------------
+// TravelPreAccept()
+// ----------------------------------------------------------------------
+
+function TravelPreAccept()
+{
+	tcontents = Contents;
+	tcontents2 = Content2;
+	tcontents3 = Content3;
+
+	Super.TravelPreAccept();
+}
+
+// ----------------------------------------------------------------------
 // TravelPostAccept()
 // ----------------------------------------------------------------------
 
 function TravelPostAccept()
 {
+	Contents = tcontents;
+	Content2 = tcontents2;
+	Content3 = tcontents3;
+
+	//== I don't know why we don't call Super here, but base DX overrides this so hey why not
 }
 
 // ----------------------------------------------------------------------

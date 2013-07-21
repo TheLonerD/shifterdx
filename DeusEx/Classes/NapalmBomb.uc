@@ -5,6 +5,20 @@ class NapalmBomb extends ThrownProjectile;
 
 var() bool bBurning;
 
+function bool Facelift(bool bOn)
+{
+	if(!Super.Facelift(bOn))
+		return false;
+
+	if(bOn)
+		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAmmoNapalm", class'Mesh', True));
+
+	if(Mesh == None || !bOn)
+		Mesh = Default.Mesh;
+
+	return true;
+} 
+
 //== No beeping, just 'sploding and burning
 function PlayBeepSound(float Range, float Pitch, float volume)
 {

@@ -26,7 +26,7 @@ simulated function PreBeginPlay()
 
 	// If this is a netgame, then override defaults
 	if ( Level.NetMode != NM_StandAlone )
-      AmmoAmount = 6;
+      		AmmoAmount = 6;
 }
 
 defaultproperties

@@ -28,6 +28,10 @@ function Activate() //Doesn't need to be overridden, but it makes things easier 
 	//== Spawn the projectile
 	proj = DeusExProjectile(Spawn(ProjClass,Player,,Start,AdjustedAim));
 
+	//== Whoops, we need to manually specify who created this projectile.
+	//==  Bug reported by NotAVeryGoodName on the SVN
+	proj.Instigator = Player;
+
 	//== Get the amount of available BioE Energy the player has and turn it into a percent
 	perc = (Player.Energy / Player.EnergyMax) / LevelValues[CurrentLevel];
 	if(perc > 1.000000) perc = 1.000000; //Only drain 100% of the required for the current level

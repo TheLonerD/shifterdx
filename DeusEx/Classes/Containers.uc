@@ -8,10 +8,10 @@ var() int numThings;
 var() bool bGenerateTrash;
 
 //== Loot variables
-var bool bLootable; //== Can be looted on frob
-var() bool bLooted; //== If the item has already been looted so we can pick it up/etc.
-var() bool bRandomize; //== If True, give some random inventory (if there's none already)
-var() bool bSearchMsgPrinted;
+var travel bool bLootable; //== Can be looted on frob
+var() travel bool bLooted; //== If the item has already been looted so we can pick it up/etc.
+var() travel bool bRandomize; //== If True, give some random inventory (if there's none already)
+//var() bool bSearchMsgPrinted;
 
 var localized string ContainerEmpty;
 var localized string ContainerDiscard;
@@ -69,6 +69,8 @@ function PreBeginPlay()
 		}
 	}
 
+	
+
 }
 
 
@@ -102,7 +104,16 @@ function Loot(Actor Frobber)
 
 			tempItem = spawn(tempClass, player);
 
-			if (tempItem.IsA('DeusExWeapon'))   // I *really* hate special cases
+			if(tempItem.IsA('Credits'))
+			{
+				itemCount = 1 + Rand(30);
+				player.Credits += itemCount;
+				player.ClientMessage(Sprintf(Credits(tempItem).msgCreditsAdded, itemCount));
+				AddReceivedItem(player, tempItem, itemCount);
+				tempItem.Destroy();
+				bPickedItemUp = True;
+			}
+			else if (tempItem.IsA('DeusExWeapon'))   // I *really* hate special cases
 			{
 				// Okay, check to see if the player already has this weapon.  If so,
 				// then just give the ammo and not the weapon.  Otherwise give
@@ -146,10 +157,10 @@ function Loot(Actor Frobber)
 										player.UpdateAmmoBeltText(AmmoType);
 	
 										// if this is an illegal ammo type, use the weapon name to print the message
-										if (AmmoType.PickupViewMesh == Mesh'TestBox')
+										/*if (AmmoType.PickupViewMesh == Mesh'TestBox')
 											player.ClientMessage(tempItem.PickupMessage @ tempItem.itemArticle @ tempItem.itemName, 'Pickup');
 										else
-											player.ClientMessage(AmmoType.PickupMessage @ AmmoType.itemArticle @ AmmoType.itemName, 'Pickup');
+											player.ClientMessage(AmmoType.PickupMessage @ AmmoType.itemArticle @ AmmoType.itemName, 'Pickup');*/
 	
 										// Mark it as 0 to prevent it from being added twice
 										Weapon(tempItem).AmmoType.AmmoAmount = 0;
@@ -177,7 +188,7 @@ function Loot(Actor Frobber)
 				tempItem.GiveTo(player);
 				tempItem.setBase(player);
 				player.UpdateAmmoBeltText(Ammo(tempItem));
-				player.ClientMessage(tempitem.PickupMessage @ tempitem.itemArticle @ tempitem.itemName, 'Pickup');
+				//player.ClientMessage(tempitem.PickupMessage @ tempitem.itemArticle @ tempitem.itemName, 'Pickup');
 				AddReceivedItem(player, tempItem, Ammo(tempItem).AmmoAmount);
 				bPickedItemUp = True;
 			}
@@ -202,7 +213,7 @@ function Loot(Actor Frobber)
 							DeusExPickup(tempItem).numCopies -= itemCount;
 							invItem.numCopies = invItem.MaxCopies;
 							invItem.TransferSkin(tempItem);
-							player.ClientMessage(invItem.PickupMessage @ invItem.itemArticle @ invItem.itemName, 'Pickup');
+							//player.ClientMessage(invItem.PickupMessage @ invItem.itemArticle @ invItem.itemName, 'Pickup');
 							AddReceivedItem(player, invItem, itemCount);
 						}
 						else
@@ -216,7 +227,7 @@ function Loot(Actor Frobber)
 						invItem.TransferSkin(tempItem);
 						tempItem.Destroy();
 
-						player.ClientMessage(invItem.PickupMessage @ invItem.itemArticle @ invItem.itemName, 'Pickup');
+						//player.ClientMessage(invItem.PickupMessage @ invItem.itemArticle @ invItem.itemName, 'Pickup');
 						AddReceivedItem(player, invItem, itemCount);
 					}
 				}
@@ -248,7 +259,7 @@ function Loot(Actor Frobber)
 								}
 							}
 							
-							player.ClientMessage(tempItem.PickupMessage @ tempItem.itemArticle @ tempItem.itemName, 'Pickup');
+							//player.ClientMessage(tempItem.PickupMessage @ tempItem.itemArticle @ tempItem.itemName, 'Pickup');
 							PlaySound(tempItem.PickupSound);
 
 						}
@@ -270,11 +281,11 @@ function AddReceivedItem(DeusExPlayer player, Inventory item, int count)
 	local DeusExWeapon w;
 	local Inventory altAmmo;
 
-	if (!bSearchMsgPrinted)
+	/*if (!bSearchMsgPrinted)
 	{
 		player.ClientMessage(ContainerFound);
 		bSearchMsgPrinted = True;
-	}
+	}*/
 
  	DeusExRootWindow(player.rootWindow).hud.receivedItems.AddItem(item, count);
 
@@ -355,6 +366,9 @@ function Destroyed()
 			dropped = Spawn(tempClass,,, loc, rot);
 			if (dropped != None)
 			{
+				if(dropped.IsA('Credits'))
+					Credits(dropped).numCredits = 1 + Rand(30);
+
 				dropped.RemoteRole = ROLE_DumbProxy;
 				dropped.SetPhysics(PHYS_Falling);
 				dropped.bCollideWorld = true;
