@@ -3422,10 +3422,10 @@ ItemName="Soda"
 ItemArticle="un"
 Description="Cette canette a pour seul signe distinctif les mots'METTRE PRODUIT ICI.' Difficile de savoir s'il s'agit d'un nom ou d'une invitation."
 beltDescription="SODA"
-InvDescription(0)="Cette canette a pour seul signe distinctif les mots'METTRE PRODUIT ICI.' Difficile de savoir s'il s'agit d'un nom ou d'une invitation."
-InvDescription(1)="Une canette de soda Zap!. On peut lire sur l'étiquette: '50% plus efficace que le Nuke!'"
-InvDescription(2)="La seule inscription visible est la lettre 'B' imprimée sur le devant.  L'étiquette indique sobrement : 'Plus fort que le Zap! à hauteur de 1.3333333333333333333333333333333333....'|n|nLes nombres se succèdent et occupent l'espace restant sur l'étiquette."
-InvDescription(3)="Cette canette ne porte pas d'inscription, si ce n'est son titre écrit en gras.  Un examen plus poussé révèle que l' étiquette d'origine a ete arrachée et un nouveau nom imprimé par-dessus. On peut encore distinguer les mots ' des électrolytes pour tous' et 'Dézingueur de soif'."
+InvDescription[0]="Cette canette a pour seul signe distinctif les mots'METTRE PRODUIT ICI.' Difficile de savoir s'il s'agit d'un nom ou d'une invitation."
+InvDescription[1]="Une canette de soda Zap!. On peut lire sur l'étiquette: '50% plus efficace que le Nuke!'"
+InvDescription[2]="La seule inscription visible est la lettre 'B' imprimée sur le devant.  L'étiquette indique sobrement : 'Plus fort que le Zap! à hauteur de 1.3333333333333333333333333333333333....'|n|nLes nombres se succèdent et occupent l'espace restant sur l'étiquette."
+InvDescription[3]="Cette canette ne porte pas d'inscription, si ce n'est son titre écrit en gras.  Un examen plus poussé révèle que l' étiquette d'origine a ete arrachée et un nouveau nom imprimé par-dessus. On peut encore distinguer les mots ' des électrolytes pour tous' et 'Dézingueur de soif'."
 
 
 
@@ -3458,3 +3458,7 @@ beltDescription="DRAGON"
 [AugLight]
 AugmentationName="Light"
 Description="Des cellules bio-luminescentes placées à l'intérieur de la rétine permettent à l'agent d'éclairer son champ de vision. Les amplifications augmentent l'intensité de la lumière émise ainsi que la distance de vision maximale.|n|nTROIS AMPLIFICATIONS"
+
+[Containers]
+ContainerEmpty="Vous ne trouvez rien"
+ContainerFound="Résultat de la fouille:"
