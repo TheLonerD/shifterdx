@@ -694,6 +694,11 @@ UPDATES:
 	the player, as in even if you cheat to get them they won't work.  I've
 	added code so you can.  You dirty cheater.
 
+	 - Included a French localization file created by moddb user Babeuf97.
+	This should provide a translation of Shifter's new and modified text
+	for any French fans out there.  The file is DeusEx.fra.  If your game
+	doesn't load it automatically you can simply rename it DeusEx.int.
+
 	v1.8.4:
 
 	 - Shifter-TNM: Made sure that when Shifter replaces TNM's MedBots with

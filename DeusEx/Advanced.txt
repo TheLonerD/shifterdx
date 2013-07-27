@@ -1,0 +1,67 @@
+//=================================//
+        Shifter for Deus Ex
+  Advanced Installation Instrutions
+//=================================//
+
+This process has only been tested on a Windows system.  I make no guarantee that
+this will work for any OS 9 users who attempt a similar process.
+
+
+STEP 1: Create copies of the files DeusEx.exe and DeusEx.ini, located in your
+C:\DeusEx\System folder.  Rename these copies Shifter.exe and Shifter.ini.
+
+STEP 2: Create a new directory in your DeusEx\ folder called Shifter.  Inside
+that folder create another folder called System.  Extract DeusEx.int and
+DeusEx.u to this new directory.  Also, create a copy of the new DeusEx.int file,
+rename it Shifter.int and put it in the DeusEx\System folder.
+
+STEP 3: Open up DeusEx\System\Shifter.ini in notepad.  Scroll down to the
+following section:
+
+[Core.System]
+PurgeCacheDays=30
+SavePath=..\Save
+CachePath=..\Cache
+CacheExt=.uxx
+<etc>
+
+Above the first "Paths=" entry insert:
+
+Paths=..\Shifter\System\*.u
+
+So you should wind up with:
+
+[Core.System]
+PurgeCacheDays=30
+SavePath=..\Save
+CachePath=..\Cache
+CacheExt=.uxx
+Paths=..\Shifter\System\*.u
+Paths=..\System\*.u
+Paths=..\Maps\*.dx
+Paths=..\Textures\*.utx
+Paths=..\Sounds\*.uax
+Paths=..\Music\*.umx
+<etc>
+
+STEP 3a (Optional): For any other mods you wish to play with Shifter rules --
+e.g. Zodiac, RedSun2020, etc. -- open up their corresponding *.ini files and
+repeat the process described in STEP 3 for each file.  NOTE: Do not do this
+with Hotel Carone; instead place the new "Paths=" entry after the last entry
+with "HotelCarone" in the name.
+
+STEP 4: Copy the file Shifter.exe and then select "Paste Shortcut".  You should
+wind up with a Shortcut to Shifter.exe in the DeusEx\System directory.  Rename
+this file "Shifter Config".
+
+STEP 5: Right-click "Shifter Config" and select Properties.  In the text box
+marked "Target" add the following to the end of the line (including the space
+and the quotes):
+
+ "-changevideo"
+
+Hit Apply, then OK.  You can now use this shortcut to change your 3d rendering
+device, should you need to.  NOTE: There is no way to change the 3d rendering
+device used for Shifter other than using the Shortcut just created.  All
+attempts to do so through the in-game configuration screen will simply change
+the rendering device for normal Deus Ex.
