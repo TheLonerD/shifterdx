@@ -131,15 +131,6 @@ msgInfoWeaponStats="Weapon Stats:"
 PickupMessage="You found"
 ItemName="DEFAULT WEAPON NAME - REPORT THIS AS A BUG"
 
-[DeusExCarcass]
-msgSearching="You found:"
-msgEmpty="You don't find anything"
-msgNotDead="Unconscious"
-msgAnimalCarcass="Animal Carcass"
-msgCannotPickup="You cannot pickup the %s"
-ItemName="Dead Body"
-msgRecharged="Recharged %d points"
-
 [DeusExMover]
 msgKeyLocked="Your NanoKey Ring locked it"
 msgKeyUnlocked="Your NanoKey Ring unlocked it"
@@ -3428,3 +3419,13 @@ emailString[0]="|n|nP.S. You've managed to keep the casualties to a minimum so f
 ContainerEmpty="You don't find anything"
 ContainerDiscard="You discard"
 ContainerFound="You found:"
+
+[DeusExCarcass]
+msgSearching="You found:"
+msgEmpty="You don't find anything"
+msgNotDead="Unconscious"
+msgAnimalCarcass="Animal Carcass"
+msgCannotPickup="You cannot pickup the %s"
+ItemName="Dead Body"
+msgRecharged="Recharged %d points"
+msgCombatDiscard="You discarded a Combat Knife (You have a better melee weapon)"

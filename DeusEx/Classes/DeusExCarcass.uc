@@ -46,6 +46,8 @@ var float BurnPeriod;
 
 var class<Inventory> FrobItems[4]; // Items to spawn on frob.  Used to give items to corpses after they are spawned
 
+var localized string msgCombatDiscard;
+
 function PreBeginPlay()
 {
 	Super.PreBeginPlay();
@@ -655,7 +657,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 									spawn(Class'DeusEx.WeaponCombatKnife', self);
 									item = None;
 									W = None;
-									P.ClientMessage("You discarded a Combat Knife (You have a better melee weapon)");
+									P.ClientMessage(msgCombatDiscard);
 									bPickedItemUp = True;
 								}
 							}
@@ -1206,4 +1208,5 @@ defaultproperties
      Buoyancy=170.000000
      BindName="DeadBody"
      bVisionImportant=True
+     msgCombatDiscard="You discarded a Combat Knife (You have a better melee weapon)"
 }

@@ -570,6 +570,10 @@ THINGS TO EXPECT IN THE FUTURE:
 
 OTHER NOTES OF DEADLY DOOM:
 
+	The included French localization file was created by deusex-m and
+further modified by modDB user Babeuf97.  Many thanks to both of them for the
+effort to give French Shifter fans a better gameplay experience.
+
 	The name "Shifter" is a tribute to a popular mod for Starsiege: Tribes.
 Shifter was created by emo1313.  Check out his current version of Shifter for
 Tribes 2 at www.shiftermod.com.  Or check out mine, Shifter Classic, which can
@@ -643,14 +647,6 @@ UPDATES:
 	to pick up the items as normal.  This currently only applies to trash
 	cans, mailboxes, and wicker baskets.
 
-	 - Implemented a new bit of compatibility code for the various demo
-	versions of the game.  The only thing this code does is check to make
-	sure that the Intro cinematic has started up after the "Start" button
-	is pressed in the New Game screen.  If after a second it hasn't, the
-	game will automatically progress to the first mission.  This should
-	allow Shifter to work correctly with the demo version of the game, but
-	without any of the unpleasant side-effects from my last attempts.
-
 	 - Added a tiny bit of code so you can't accidentally step on Cats and
 	Cleaner Bots, subsequently killing/destroying them.  I mean, JC isn't
 	THAT freakin' clumsy.
@@ -694,10 +690,15 @@ UPDATES:
 	the player, as in even if you cheat to get them they won't work.  I've
 	added code so you can.  You dirty cheater.
 
-	 - Included a French localization file created by moddb user Babeuf97.
-	This should provide a translation of Shifter's new and modified text
-	for any French fans out there.  The file is DeusEx.fra.  If your game
-	doesn't load it automatically you can simply rename it DeusEx.int.
+	 - Included a French localization file created by modDB user Babeuf97,
+	as well as deusex-m.  This should provide a translation of Shifter's
+	new and modified text for any French fans out there.  The file is
+	DeusEx.fra.  If your game doesn't load it automatically you can simply
+	rename it DeusEx.int.
+
+	 - Removed some code in the New Game screen left over from abandoned
+	features from a few versions back.  The code may have been causing some
+	crashes that users were experiencing when trying to load the game.
 
 	v1.8.4:
 

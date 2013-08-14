@@ -448,18 +448,19 @@ function PostBeginPlay()
 	Assert(levelInfoCount <= 1);
 	
 	// give us a shadow
-   if (Level.Netmode == NM_Standalone)   
-      CreateShadow();
+   	if (Level.Netmode == NM_Standalone)   
+      		CreateShadow();
 
 	InitializeSubSystems();
-   DXGame = Level.Game;
-   ShieldStatus = SS_Off;
+	DXGame = Level.Game;
+	ShieldStatus = SS_Off;
 	ServerTimeLastRefresh = 0;
 
 	// Safeguard so no cheats in multiplayer
 	if ( Level.NetMode != NM_Standalone )
 		bCheatsEnabled = False;
 
+	//== We're meant to be seeing the Intro.  For whatever reason that didn't happen, so bump us into the first map
 	if(Caps(info.mapName) == "DX" && FlagBase.GetBool('ViewIntro'))
 	{
 		FlagBase.DeleteFlag('ViewIntro', FLAG_Bool);
@@ -634,11 +635,14 @@ event TravelPostAccept()
 		if (info.MissionNumber == -2)
 		{
 			//== Deus Ex Demo compatibility, MK II
-			//==  The only way we'll have a PlayerTraveling flag on the intro map is if the level we
+			//==  The only way we'll have a PlayerTraveling flag on the logo map is if the level we
 			//==  tried to load isn't present, which 99% of the time means this is the demo version
 			if(flagBase.GetBool('PlayerTraveling'))
 			{
 				flagBase.DeleteFlag('PlayerTraveling', FLAG_Bool);
+
+				//== If the ViewIntro flag is set then some other code will be bumping us into
+				//==  the first map in a second, so don't show the demo splash
 				if(!flagBase.GetBool('ViewIntro'))
 					ShowDemoSplash();
 			}
