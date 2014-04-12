@@ -51,7 +51,7 @@ var localized string msgCombatDiscard;
 function PreBeginPlay()
 {
 	Super.PreBeginPlay();
-	if(Level.NetMode == NM_Standalone)
+	if(Level.NetMode == NM_Standalone && DeusExPlayer(GetPlayerPawn()).flagBase.GetBool('HDTP_NotDetected') != True)
 		Facelift(true);
 }
 

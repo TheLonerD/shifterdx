@@ -152,7 +152,10 @@ function Actor TraceLOS(float checkDist, out vector HitLocation)
 		if (target.IsA('Pawn') || target.IsA('DeusExDecoration') || target.IsA('ThrownProjectile') ||
 			(target.IsA('DeusExMover') && DeusExMover(target).bBreakable))
 		{
-			if (target != Player.CarriedDecoration)
+			//== Y|y: don't find hidden objects
+			if (target.bHidden)
+				target = None;
+			else if (target != Player.CarriedDecoration)
 			{
 				if ( (Player.Level.NetMode != NM_Standalone) && target.IsA('DeusExPlayer') )
 				{

@@ -10,7 +10,7 @@ function PreBeginPlay()
 {
 	Super.PreBeginPlay();
 
-	if(Level.NetMode == NM_StandAlone)
+	if(Level.NetMode == NM_StandAlone && DeusExPlayer(GetPlayerPawn()).flagBase.GetBool('HDTP_NotDetected') != True)
 		Facelift(true);
 }
 

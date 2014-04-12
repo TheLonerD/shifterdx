@@ -1,6 +1,6 @@
 //=================================//
         Shifter for Deus Ex
-	   Version 1.9
+	   Version 1.9.1
 //=================================//
 
 INTRODUCTION:
@@ -236,7 +236,9 @@ SPECIFICS:
 	addresses both of these issues.  While it may appear, based on the
 	crosshair, that all weapons are now more accurate, weapon accuracy is in
 	fact (mostly) the same.  (Slightly better for some weapons, slightly
-	worse for others, depending on the range of the weapon)
+	worse for others, depending on the range of the weapon)  The flat edges
+	of the reticle now correspond to the maximum possible spread that a
+	weapon can produce projectiles.
 
 
 	Augmentation Modifications:
@@ -343,11 +345,13 @@ SPECIFICS:
 	detected.  "Minor" detections, where the NPC saw you but "wasn't sure,"
 	reduce the potential bonus by a fraction.  Being fully detected removes
 	the stealth bonus for that NPC.  Yes, killing them counts as being
-	detected for the purposes of the system.
+	detected for the purposes of the system.  Skill points for stealth are
+	awarded at certain "Mission completion" points, usually when you have
+	been flown to another location by Jock.
 
 	 - Vases, Plants, etc.: Throwing an item at an NPC will do "knock out"
 	damage to them, provided the speed the object is thrown at is high
-	enough and that you have the Muscle nhancement augmentation on. (Though
+	enough and that you have the Muscle Enhancement augmentation on. (Though
 	if the speed is REALLY high the Muscle aug is not checked for) This will
 	also damage the item thrown; in general one or two throws will shatter
 	the item if it is breakable.
@@ -387,6 +391,9 @@ SPECIFICS:
 	the highest Intelligence preset available in the game.  This means that
 	Karkians can open doors and Spider Bots know how to call an elevator.
 	Both can also pick up new weapons in the middle of combat.
+
+	To access Unrealistic, right-click the "Realistic" entry on the
+	difficulty selection screen.
 
 
 	Multiplayer Modifications:
@@ -528,11 +535,6 @@ KNOWN GLITCHES:
 	As soon as you move to another map in the area, however, all normal
 	Zyme speed effects will return.
 
-	 - If you carry a datacube from one area to another such that you
-	encounter a load screen the datacube will be "wiped".  Fixing this will
-	require some fancy code that I haven't quite implemented yet, but it
-	will be done eventually.
-
 	Multiplayer:
 
 	 - Clients connecting to a server running ShifterMP may witness some
@@ -612,6 +614,26 @@ mod and how it has affected their everyday lives (in Deus Ex, anyway):
 
 
 UPDATES:
+
+	v1.9.1:
+
+	 - Added a fix from DX Revision: prevented the Targeting aug from
+	showing hidden objects, e.g. hidden TNT crates for scripted events, so
+	on.  Thanks to Bjorn for noticing I hadn't fixed that.
+
+	 - Modified the HDTP "GlobalFacelift" routine so that when run it will
+	detect whether or not HDTP's resources are not present, then set a flag
+	indicating the result.  The individual Facelift functions will now
+	check for this flag before doing anything else, which will prevent the
+	game from spending unnecessary time and processing power trying to load
+	meshes and/or textures which aren't there.
+
+	 - Removed the code that unloaded and reloaded HDTP when saving.  Due
+	to some of the new HDTP content it is impossible to fully unload all
+	HDTP meshes/textures from memory, even if they aren't currently being
+	used, so the save games wouldn't be able to be run on a non-HDTP
+	install anyway.  If I find a way to change that I'll re-enable it.
+
 
 	v1.9:
 
@@ -699,6 +721,7 @@ UPDATES:
 	 - Removed some code in the New Game screen left over from abandoned
 	features from a few versions back.  The code may have been causing some
 	crashes that users were experiencing when trying to load the game.
+
 
 	v1.8.4:
 

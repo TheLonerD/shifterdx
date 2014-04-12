@@ -919,7 +919,13 @@ exec function GlobalFacelift(bool bOn)
 	//== HDTP might break multiplayer compatibility
 	//==  Also, we want to make sure there's something to (un)load before we go running through all this game-slowing madness
 	if((Level.NetMode != NM_StandAlone && bOn) || mesh(DynamicLoadObject("HDTPItems.HDTPsodacan", class'mesh', True)) == None)
+	{
+		//== Set a flag to prevent each object from jumping through the HDTP rigamarole when there's no HDTP stuff
+		flagBase.SetBool('HDTP_NotDetected', True, True, 0);
 		return;
+	}
+
+	flagBase.SetBool('HDTP_NotDetected', False);
 
 	Facelift(bOn); // Make the player's model look all fancy-like
 

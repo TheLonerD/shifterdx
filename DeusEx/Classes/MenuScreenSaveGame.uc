@@ -486,9 +486,17 @@ function PerformSave()
 	localRoot     = root;
 
 	localRoot.ClearWindowStack();
-	localPlayer.GlobalFacelift(False);
+
+	//== Removed for now.  HDTP variables are kept in memory it seems, so
+	//==  even if we unload the models the savegame will still require them
+	//if(localPlayer.flagBase.GetBool('HDTP_NotDetected') != True)
+	//	localPlayer.GlobalFacelift(False);
+
 	localPlayer.SaveGame(gameIndex, saveName);
-	localPlayer.GlobalFacelift(True);
+
+	//if(localPlayer.flagBase.GetBool('HDTP_NotDetected') != True)
+	//	localPlayer.GlobalFacelift(True);
+
 	localRoot.Show();
 }
 
