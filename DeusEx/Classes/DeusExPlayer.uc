@@ -461,10 +461,13 @@ function PostBeginPlay()
 		bCheatsEnabled = False;
 
 	//== We're meant to be seeing the Intro.  For whatever reason that didn't happen, so bump us into the first map
-	if(Caps(info.mapName) == "DX" && FlagBase.GetBool('ViewIntro'))
+	if(FlagBase != None)
 	{
-		FlagBase.DeleteFlag('ViewIntro', FLAG_Bool);
-		StartNewGame(strStartMap);
+		if(Caps(info.mapName) == "DX" && FlagBase.GetBool('ViewIntro'))
+		{
+			FlagBase.DeleteFlag('ViewIntro', FLAG_Bool);
+			StartNewGame(strStartMap);
+		}
 	}
 }
 

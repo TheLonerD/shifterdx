@@ -118,7 +118,8 @@ function FirstFrame()
 				foreach AllActors(class'SpawnPoint', SP, 'player_inv')
 				{
 					// Find the next item we can process.
-					while((item != None) && (item.IsA('NanoKeyRing') || (!item.bDisplayableInv)))
+					//== On hard and above, we remove ammo too
+					while((item != None) && (item.IsA('NanoKeyRing') || (!item.bDisplayableInv && (!item.IsA('DeusExAmmo') || item.PickupViewMesh == LodMesh'DeusExItems.TestBox' || Player.combatDifficulty < 2.0))))
 						item = item.Inventory;
 
 					if (item != None)

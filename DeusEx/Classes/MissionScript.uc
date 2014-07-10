@@ -193,10 +193,6 @@ function PreTravel()
 			points += pawn.PendingSkillPoints;
 	}
 
-	flags.SetInt('PendingSkillPoints', points,, 0);
-
-	flags.SetFloat('Travel_GameSpeed', Level.Game.GameSpeed);
-
 	// zero the flags so FirstFrame() gets executed at load
 	flags = None;
 }

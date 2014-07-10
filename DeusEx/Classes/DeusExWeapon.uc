@@ -275,19 +275,21 @@ replication
 //== Overridden so we get pretty ammo displays in the received ammo window
 function GiveAmmo( Pawn Other )
 {
-	if ( AmmoName == None || PickUpAmmoCount <= 0)
+	if ( AmmoName == None)
 		return;
 	AmmoType = Ammo(Other.FindInventoryType(AmmoName));
 	if ( AmmoType != None )
 	{
 		//== This code is actually never run due to base complications with existing Unreal code
 		//==  HandlePickupQuery is invoked instead for this situation.  We'll leave this code here anyway.
-		if(PickupAmmoCount > 0 && DeusExPlayer(Other) != None && AmmoType.PickupViewMesh != LodMesh'DeusExItems.TestBox')
-			DeusExPlayer(Other).ClientMessage(AmmoType.PickupMessage @ AmmoType.itemArticle @ AmmoType.itemName $" ("$PickupAmmoCount$")", 'Pickup');
-
-		AmmoType.AddAmmo(PickUpAmmoCount);
+		if(PickupAmmoCount > 0)
+		{
+			AmmoType.AddAmmo(PickUpAmmoCount);
+			if(DeusExPlayer(Other) != None && AmmoType.PickupViewMesh != LodMesh'DeusExItems.TestBox')
+				DeusExPlayer(Other).ClientMessage(AmmoType.PickupMessage @ AmmoType.itemArticle @ AmmoType.itemName $" ("$PickupAmmoCount$")", 'Pickup');
+		}
 	}
-	else
+	else if(PickupAmmoCount > 0)
 	{
 		AmmoType = Spawn(AmmoName);	// Create ammo type required		
 		Other.AddInventory(AmmoType);		// and add to player's inventory
@@ -408,7 +410,7 @@ function PreBeginPlay()
 	{
 		Default.mpPickupAmmoCount = Default.PickupAmmoCount;
 	}
-	if(Level.NetMode == NM_Standalone && DeusExPlayer(GetPlayerPawn()).flagBase.GetBool('HDTP_NotDetected') != True)
+	if(Level.NetMode == NM_Standalone)// && DeusExPlayer(GetPlayerPawn()).flagBase.GetBool('HDTP_NotDetected') != True)
 		Facelift(true);
 }
 
@@ -523,6 +525,8 @@ function bool HandlePickupQuery(Inventory Item)
 	
 	// make sure that if you pick up a modded weapon that you
 	// already have, you get the mods
+	//== Actually we want to disable that now that you can carry
+	//==  dupes of weapons, except in multiplayer
 	W = DeusExWeapon(Item);
 	if ((W != None) && (W.Class == Class))
 	{
@@ -533,43 +537,46 @@ function bool HandlePickupQuery(Inventory Item)
 		}
 
 
-		if (W.ModBaseAccuracy > ModBaseAccuracy)
-			ModBaseAccuracy = W.ModBaseAccuracy;
-		if (W.ModReloadCount > ModReloadCount)
-			ModReloadCount = W.ModReloadCount;
-		if (W.ModAccurateRange > ModAccurateRange)
-			ModAccurateRange = W.ModAccurateRange;
-
-		// these are negative
-		if (W.ModReloadTime < ModReloadTime)
-			ModReloadTime = W.ModReloadTime;
-		if (W.ModRecoilStrength < ModRecoilStrength)
-			ModRecoilStrength = W.ModRecoilStrength;
-
-		if (W.bHasLaser)
-			bHasLaser = True;
-		if (W.bHasSilencer)
-			bHasSilencer = True;
-		if (W.bHasScope)
-			bHasScope = True;
-
-		// copy the actual stats as well
-		if (W.ReloadCount > ReloadCount)
-			ReloadCount = W.ReloadCount;
-		if (W.AccurateRange > AccurateRange)
-			AccurateRange = W.AccurateRange;
-
-		// these are negative
-		if (W.BaseAccuracy < BaseAccuracy)
-			BaseAccuracy = W.BaseAccuracy;
-		if (W.ReloadTime < ReloadTime)
-			ReloadTime = W.ReloadTime;
-		if (W.RecoilStrength < RecoilStrength)
-			RecoilStrength = W.RecoilStrength;
-
-		// This is for the ROF mod
-		if(W.ModShotTime < ModShotTime)
-			ModShotTime = W.ModShotTime;
+		if(Level.NetMode != NM_Standalone)
+		{
+			if (W.ModBaseAccuracy > ModBaseAccuracy)
+				ModBaseAccuracy = W.ModBaseAccuracy;
+			if (W.ModReloadCount > ModReloadCount)
+				ModReloadCount = W.ModReloadCount;
+			if (W.ModAccurateRange > ModAccurateRange)
+				ModAccurateRange = W.ModAccurateRange;
+	
+			// these are negative
+			if (W.ModReloadTime < ModReloadTime)
+				ModReloadTime = W.ModReloadTime;
+			if (W.ModRecoilStrength < ModRecoilStrength)
+				ModRecoilStrength = W.ModRecoilStrength;
+	
+			if (W.bHasLaser)
+				bHasLaser = True;
+			if (W.bHasSilencer)
+				bHasSilencer = True;
+			if (W.bHasScope)
+				bHasScope = True;
+	
+			// copy the actual stats as well
+			if (W.ReloadCount > ReloadCount)
+				ReloadCount = W.ReloadCount;
+			if (W.AccurateRange > AccurateRange)
+				AccurateRange = W.AccurateRange;
+	
+			// these are negative
+			if (W.BaseAccuracy < BaseAccuracy)
+				BaseAccuracy = W.BaseAccuracy;
+			if (W.ReloadTime < ReloadTime)
+				ReloadTime = W.ReloadTime;
+			if (W.RecoilStrength < RecoilStrength)
+				RecoilStrength = W.RecoilStrength;
+	
+			// This is for the ROF mod
+			if(W.ModShotTime < ModShotTime)
+				ModShotTime = W.ModShotTime;
+		}
 	}
 	player = DeusExPlayer(Owner);
 
@@ -599,31 +606,22 @@ function bool HandlePickupQuery(Inventory Item)
 					}
 				}
 
-				//== List the ammo that we're receiving in the log, if any
+				//== First loot the ammo rather than the weapon itself (pre-looting)
 				if(Weapon(Item).PickupAmmoCount > 0 && defAmmo.PickupViewMesh != LodMesh'DeusExItems.TestBox')
 				{
 					player.ClientMessage(defAmmo.PickupMessage @ defAmmo.itemArticle @ defAmmo.itemName $" ("$Weapon(Item).PickupAmmoCount$")", 'Pickup');
-					//Weapon(Item).AmmoType.AmmoAmount = 0;
-					//bResult = True;
+					Weapon(Item).PickupAmmoCount = 0;
+					bResult = True;
 				}
-
-				//== We'll enable this and the above once we figure out how the hell to keep pre-looted weapons from being unusable
-				/*else
-				{
-					Weapon(Item).AmmoName = Weapon(Item).Default.AmmoName;
-					Weapon(Item).AmmoType = Weapon(Item).Default.AmmoType;
-					Weapon(Item).ReloadCount = Weapon(Item).Default.ReloadCount;
-					bResult = Super.HandlePickupQuery(Item);
-				}*/
 			}
 		}
 	}
 
-	bResult = Super.HandlePickupQuery(Item);
+	//bResult = Super.HandlePickupQuery(Item);
 
 	//== This is also related to pre-looting
-	//if(Inventory != None && !bResult)
-	//	bResult = Inventory.HandlePickupQuery(Item);
+	if(Inventory != None && !bResult)
+		bResult = Inventory.HandlePickupQuery(Item);
 
 	// Notify the object belt of the new ammo
 	if (player != None)

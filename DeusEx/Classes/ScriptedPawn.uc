@@ -702,7 +702,7 @@ function InitializeInventory()
 		Consumables[5] = class'Cigarettes';
 
 		//== Some substitutions for TNM
-		if(dxPlayer.Class.Name == 'trestkon')
+		if(dxPlayer.IsA('trestkon'))
 		{
 			Consumables[0] = Class<Inventory>(DynamicLoadObject("TNMItems.Beans", class'Class', False)); //== Same as Soy Food, really
 			Consumables[1] = Class<Inventory>(DynamicLoadObject("TNMItems.KetchupBar", class'Class', False)); //== Worse than Candy, but thematically appropriate
@@ -3198,7 +3198,7 @@ function bool GenerateRandomInventory()
 	bHadPowerfulWeapon = False;
 
 	//== For TNM we need to redo the list almost completely, albeit with TNM versions of the same damn thing
-	if(dxPlayer.Class.Name == 'trestkon')
+	if(dxPlayer.IsA('trestkon'))
 	{
 		GepGun		= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMGepGun", class'Class', False));
 		SawedOff	= Class<Inventory>(DynamicLoadObject("TNMItems.WeaponTNMSawedOffShotgun", class'Class', False));

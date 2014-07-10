@@ -189,6 +189,52 @@ simulated function bool ClientFire( float value )
 	return true;
 }
 
+function bool HandlePickupQuery(Inventory Item)
+{
+	local DeusExPlayer player;
+	local bool bResult;
+	local Ammo defAmmo;
+
+	player = DeusExPlayer(Owner);
+
+	if (Item.Class == Class)
+	{
+		if (!( (Weapon(item).bWeaponStay && (Level.NetMode == NM_Standalone)) && (!Weapon(item).bHeldItem || Weapon(item).bTossedOut)))
+		{
+			// Only add ammo of the default type
+			// There was an easy way to get 32 20mm shells, buy picking up another assault rifle with 20mm ammo selected
+			if ( AmmoType != None && AmmoName != None && AmmoName != class'AmmoNone' )
+			{
+				defAmmo = Ammo(player.FindInventoryType(AmmoName));
+				defAmmo.AddAmmo( Weapon(Item).PickupAmmoCount );
+
+				if ( Level.NetMode != NM_Standalone )
+				{
+					if (( player != None ) && ( player.InHand != None ))
+					{
+						if ( DeusExWeapon(item).class == DeusExWeapon(player.InHand).class )
+							ReadyToFire();
+					}
+				}
+
+				player.ClientMessage(Item.PickupMessage @ Item.itemArticle @ Item.itemName, 'Pickup');
+
+				Item.Destroy();
+
+				return true;
+			}
+		}
+	}
+
+	bResult = Super.HandlePickupQuery(Item);
+
+	// Notify the object belt of the new ammo
+	if (player != None)
+		player.UpdateBeltText(Self);
+
+	return bResult;
+}
+
 function bool TestCycleable()
 {
 	return true;

@@ -17,13 +17,13 @@ var localized string ContainerEmpty;
 var localized string ContainerDiscard;
 var localized string ContainerFound;
 
-//== PreBeginPlay for randomizing inventory
-function PreBeginPlay()
+//== PostPostBeginPlay for randomizing inventory
+function PostPpstBeginPlay()
 {
 	local Class<Inventory> Consumables[6];
 	local int i, testRandom;
 
-	Super.PreBeginPlay();
+	Super.PostPostBeginPlay();
 
 	if(bRandomize)
 	{
@@ -35,18 +35,18 @@ function PreBeginPlay()
 		{
 			Consumables[0] = class'SoyFood';
 			Consumables[1] = class'Candybar';
-			Consumables[2] = class'Sodacan';
-			Consumables[3] = class'Liquor40oz';
-			Consumables[4] = class'VialCrack';
-			Consumables[5] = class'Cigarettes';
+			Consumables[2] = class'VialCrack';
+			Consumables[3] = class'Cigarettes';
+			Consumables[4] = class'Sodacan';
+			Consumables[5] = class'Liquor40oz';
 	
 			//== Some substitutions for TNM
-			if(DeusExPlayer(GetPlayerPawn()).Class.Name == 'trestkon')
+			if(GetPlayerPawn().IsA('trestkon'))
 			{
 				Consumables[0] = Class<Inventory>(DynamicLoadObject("TNMItems.Beans", class'Class', False)); //== Same as Soy Food, really
 				Consumables[1] = Class<Inventory>(DynamicLoadObject("TNMItems.KetchupBar", class'Class', False)); //== Worse than Candy, but thematically appropriate
-				Consumables[4] = Class<Inventory>(DynamicLoadObject("TNMItems.TNMVialCrack", class'Class', False)); //== Just a different name for Zyme.  Meh.
-				Consumables[5] = Class<Inventory>(DynamicLoadObject("TNMItems.PlasticCoffee", class'Class', False)); //== Arguably more useful than smokes.  Probably an even tradeoff in Shifter
+				Consumables[2] = Class<Inventory>(DynamicLoadObject("TNMItems.TNMVialCrack", class'Class', False)); //== Just a different name for Zyme.  Meh.
+				Consumables[3] = Class<Inventory>(DynamicLoadObject("TNMItems.PlasticCoffee", class'Class', False)); //== Arguably more useful than smokes.  Probably an even tradeoff in Shifter
 			}
 	
 			if(testRandom <= 15) //Credits

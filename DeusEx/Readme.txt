@@ -621,18 +621,49 @@ UPDATES:
 	showing hidden objects, e.g. hidden TNT crates for scripted events, so
 	on.  Thanks to Bjorn for noticing I hadn't fixed that.
 
-	 - Modified the HDTP "GlobalFacelift" routine so that when run it will
-	detect whether or not HDTP's resources are not present, then set a flag
-	indicating the result.  The individual Facelift functions will now
-	check for this flag before doing anything else, which will prevent the
-	game from spending unnecessary time and processing power trying to load
-	meshes and/or textures which aren't there.
-
 	 - Removed the code that unloaded and reloaded HDTP when saving.  Due
 	to some of the new HDTP content it is impossible to fully unload all
 	HDTP meshes/textures from memory, even if they aren't currently being
 	used, so the save games wouldn't be able to be run on a non-HDTP
 	install anyway.  If I find a way to change that I'll re-enable it.
+
+	 - Modified Container Random Inventory so that Cigarettes and Zyme are
+	no longer the most common finds.  I've also modified it to better
+	account for people running TNM, so you should find Crystal Melk rather
+	than Zyme in TNM.
+
+	 - Fixed an issue with guns dropped from bodies being unusable due to
+	having permanently empty ammo.  Turns out one of my overrides for ammo
+	display on pickup was the cause, as a condition check was preventing
+	the code from linking the weapon's ammo to the player's ammo supply.
+
+	 - Finally got weapon and ammo frobbing working as I'd wanted.  Now
+	when you find a weapon you already have, trying to pick it up will
+	instead get all the ammo out of it, but will not pick up the weapon
+	itself.  If the ammo has been taken out already, then you will pick up
+	the weapon.  Importantly, this means you can carry multiple copies of
+	weapons if you feel so inclined, e.g. if you wanted to keep a spare
+	pistol on you to give to Gunther.  This doesn't work for special
+	weapons like the Combat Knife, Shurikens, and Grenades, which by their
+	nature can really only appear once in your inventory.
+
+	 - Speaking of that, I added some code to the conversation system so
+	that it will try to find an unmodified weapon to give to someone if
+	you select the "give so and so your pistol/etc." option, rather than
+	just grabbing the first weapon it finds in your inventory.  In other
+	words, don't feel like you have to drop your super special modded
+	pistol before talking to Gunther if you happen to be carrying another
+	one too.
+
+	 - Cleared up a few erroneous error messages that would crop up for
+	people not using HDTP, mostly relating to being unable to load specific
+	textures.  I'd just forgotten to tag those functions with the "you
+	don't need to tell me when this fails" flag.
+
+	 - Added a new twist to the MJ12 capture sequence: your ammo is now
+	confiscated if you are playing on Hard or above.  Like everything else
+	it is taken to the Armory, where you can recover it later.  However, it
+	does make the initial escape that much more challenging.
 
 
 	v1.9:

@@ -562,6 +562,7 @@ function EEventAction SetupEventTransferObject( ConEventTransferObject event, ou
 	local int itemsTransferred;
 	local class<Inventory> checkthing;
 	local string seekname;
+	local Inventory tempinv;
 
 /*
 log("SetupEventTransferObject()------------------------------------------");
@@ -611,6 +612,14 @@ log("  event.toActor    = " $ event.toActor );
 //			return nextAction; //assume fail, essentially
 			//== Rather than giving up, let's just assume the old giveObject was the right choice
 			checkthing = event.giveObject;
+
+			if(checkthing == None)
+			{
+				log("SetupEventTransferObject(): No viable fallbacks were found.  Conversation event aborted.");
+				return nextAction; //== NOW we can assume fail
+			}
+			else
+				log("SetupEventTransferObject(): Was forced to fall back on the hardcoded giveObject variable.  Consider recoding your conversation.");
 		}
 		else
 			log("SetupEventTransferObject(): Trying to load up " $ event.objectname $ " works though.  Consider recoding your conversation.");
@@ -639,6 +648,55 @@ log("  event.toActor    = " $ event.toActor );
 	{
 		invItemFrom = Spawn(checkthing);
 		bSpawnedItem = True;
+	}
+
+	//== Y|y: Special case, since Shifter allows for multiple weapons
+	//== If this is a weapon being given from the player, check if its modded.
+	//==  If it is, see if we have another to give out first.
+	else if(DeusExWeapon(invItemFrom) != None && DeusExPlayer(event.fromActor) != None)
+	{
+		if(DeusExWeapon(invItemFrom).ModReloadTime != 0 ||
+			DeusExWeapon(invItemFrom).ModReloadCount != 0.0 ||
+			DeusExWeapon(invItemFrom).ModAccurateRange != 0.0 ||
+			DeusExWeapon(invItemFrom).ModBaseAccuracy != 0.0 ||
+			DeusExWeapon(invItemFrom).ModRecoilStrength != 0.0 ||
+			DeusExWeapon(invItemFrom).ModShotTime != 0.0 ||
+			(DeusExWeapon(invItemFrom).bHasLaser != DeusExWeapon(invItemFrom).Default.bHasLaser) ||
+			(DeusExWeapon(invItemFrom).bHasScope != DeusExWeapon(invItemFrom).Default.bHasScope) ||
+			(DeusExWeapon(invItemFrom).bHasSilencer != DeusExWeapon(invItemFrom).Default.bHasSilencer) )
+		{
+
+			//log("SetupEventTransferObject(): Chosen weapon has modifications.  Attempting to locate an un-modded weapon.");
+
+			tempinv = invItemFrom;
+
+			do
+			{
+				//== Go through the rest of the player's inventory for another copy of the weapon
+				tempinv = tempinv.Inventory;
+
+				if(tempinv.Class == invItemFrom.Class)
+				{
+					//== If we find an un-modded copy of the weapon, use that instead of the modded one
+					if(DeusExWeapon(tempinv).ModReloadTime == 0 &&
+						DeusExWeapon(tempinv).ModReloadCount == 0.0 &&
+						DeusExWeapon(tempinv).ModAccurateRange == 0.0 &&
+						DeusExWeapon(tempinv).ModBaseAccuracy == 0.0 &&
+						DeusExWeapon(tempinv).ModRecoilStrength == 0.0 &&
+						DeusExWeapon(tempinv).ModShotTime == 0.0 &&
+						(DeusExWeapon(tempinv).bHasLaser == DeusExWeapon(tempinv).Default.bHasLaser) &&
+						(DeusExWeapon(tempinv).bHasScope == DeusExWeapon(tempinv).Default.bHasScope) &&
+						(DeusExWeapon(tempinv).bHasSilencer == DeusExWeapon(tempinv).Default.bHasSilencer) )
+					{
+						//log("SetupEventTransferObject(): Unmodded weapon located.");
+						invItemFrom = tempinv;
+						tempinv = None;
+					}
+				}
+			}
+			until(tempinv == None);
+
+		}
 	}
 
 	// If we're giving this item to the player and he does NOT yet have it,

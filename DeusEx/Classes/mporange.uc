@@ -166,10 +166,14 @@ state PlayerWalking
 			traceSize.Y = CollisionRadius;
 			traceSize.Z = 1;
 			HitActor = Trace(HitLocation, HitNormal, checkpoint, Location, True, traceSize);
-			if (HitActor == None)
+			if (HitActor == None || HitActor == Self)
+			{
 				bCantStandUp = False;
+			}
 			else
+			{
 				bCantStandUp = True;
+			}
 		}
 		else
 		{
@@ -408,6 +412,7 @@ defaultproperties
      Land=Sound'DeusExSounds.Pickup.PickupDeactivate'
      Die=Sound'DeusExSounds.Generic.GlassBreakLarge'
      Mesh=LodMesh'DeusExDeco.VendingMachine'
+     AnimSequence=
      CollisionRadius=34.000000
      CollisionHeight=50.000000
 }

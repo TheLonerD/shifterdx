@@ -51,7 +51,7 @@ var localized string msgCombatDiscard;
 function PreBeginPlay()
 {
 	Super.PreBeginPlay();
-	if(Level.NetMode == NM_Standalone && DeusExPlayer(GetPlayerPawn()).flagBase.GetBool('HDTP_NotDetected') != True)
+	if(Level.NetMode == NM_Standalone)// && DeusExPlayer(GetPlayerPawn()).flagBase.GetBool('HDTP_NotDetected') != True)
 		Facelift(true);
 }
 
@@ -677,7 +677,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 							{
 								if ((Weapon(item).AmmoType != None || W.AmmoType != None))
 								{
-									if((Weapon(item).AmmoType.AmmoAmount > 0 || W.AmmoType.AmmoAmount > 0))
+									if((Weapon(item).PickupAmmoCount > 0 || W.PickupAmmoCount > 0))
 									{
 										AmmoType = Ammo(player.FindInventoryType(Weapon(item).AmmoName));
 		
@@ -710,7 +710,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 													P.ClientMessage(AmmoType.PickupMessage @ AmmoType.itemArticle @ AmmoType.itemName @ "("$itemCount$")", 'Pickup');
 			
 												// Mark it as 0 to prevent it from being added twice
-												Weapon(item).AmmoType.AmmoAmount = 0;
+												Weapon(item).PickupAmmoCount = 0;
 											}
 										}
 									}
@@ -740,7 +740,7 @@ function Frob(Actor Frobber, Inventory frobWith)
 								if(!W.IsA('WeaponCombatKnife')) //Special case, since the Combat Knife is both ammo and weapon
 								{
 									tempitem = spawn(item.Class,self); //but leave behind a copy if we want it later 
-									Weapon(tempitem).PickupAmmoCount = Weapon(item).AmmoType.AmmoAmount;
+									Weapon(tempitem).PickupAmmoCount = Weapon(item).PickupAmmoCount;
 								}
 								DeleteInventory(item);
 								item.Destroy();

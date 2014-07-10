@@ -79,7 +79,7 @@ function ShowVersionInfo()
 	version.SetTextColorRGB(255, 255, 255);
 	version.SetTextAlignments(HALIGN_Right, VALIGN_Bottom);
 //	version.SetText(player.GetDeusExVersion());
-	version.SetText("Shifter v1.9 (08/13/13)");
+	version.SetText("Shifter v1.9.1 (07/10/14)");
 }
 
 // ----------------------------------------------------------------------

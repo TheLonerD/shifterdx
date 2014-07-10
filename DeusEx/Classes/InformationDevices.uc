@@ -335,7 +335,7 @@ function bool Facelift(bool bOn)
 		{
 			str = "HDTPPapers.Papers.HDTP";
 			str = str$string(texttag);
-			newtex = texture(dynamicloadobject(str,class'texture'));
+			newtex = texture(dynamicloadobject(str,class'texture',True));
 			if(newtex != none)
 				skin = newtex;
 		}
@@ -344,7 +344,7 @@ function bool Facelift(bool bOn)
 		{
 			str = "HDTPPapers.Papers.HDTPExtra_Newspaper0";
 			str = str$string(rand(4)+1);
-			swaptex = texture(dynamicloadobject(str,class'texture'));
+			swaptex = texture(dynamicloadobject(str,class'texture',True));
 			if(swaptex != none)
 				skin = swaptex;
 		}
@@ -356,7 +356,7 @@ function bool Facelift(bool bOn)
 			str = "HDTPPapers.Papers.HDTP";
 			str = str$string(texttag);
 			str = str$"long";
-			swaptex = texture(dynamicloadobject(str,class'texture'));
+			swaptex = texture(dynamicloadobject(str,class'texture',True));
 			if(swaptex != none)
 				skin = swaptex;
 		}
@@ -367,7 +367,7 @@ function bool Facelift(bool bOn)
 		{
 			str = "HDTPBookClosed.Books.HDTP";
 			str = str$GetString(string(texttag),true); //awful awful code
-			newtex = texture(dynamicloadobject(str,class'texture'));
+			newtex = texture(dynamicloadobject(str,class'texture',True));
 			if(newtex != none)
 				skin = newtex;
 
@@ -379,7 +379,7 @@ function bool Facelift(bool bOn)
 		{
 			str = "HDTPBookOpen.Books.HDTP";
 			str = str$string(texttag);
-			newtex = texture(dynamicloadobject(str,class'texture'));
+			newtex = texture(dynamicloadobject(str,class'texture',True));
 			if(newtex != none)
 			{
 				Multiskins[2] = newtex;
@@ -390,7 +390,7 @@ function bool Facelift(bool bOn)
 			str = "HDTPBookOpen.Books.HDTP";
 			tempstr = GetString(string(texttag),false); //awful awful code
 			str = str$tempstr$"back";
-		        newtex = texture(dynamicloadobject(str,class'texture'));
+		        newtex = texture(dynamicloadobject(str,class'texture',True));
 		        if(newtex != none)
 		        {
 				Multiskins[0] = newtex;
