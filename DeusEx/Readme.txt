@@ -671,6 +671,10 @@ UPDATES:
 	placed the first time you left UNATCO HQ, rather than the first time
 	you entered, thus you could only get it if you left and re-entered.
 
+	 - Fixed a problem with Unrealistic's custom character override option.
+	Playing as a UNATCO trooper, NSF Terrorist or MJ12 Commando would make
+	your character completely invisible during cutscenes.
+
 
 	v1.9:
 
