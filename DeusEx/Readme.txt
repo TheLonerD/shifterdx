@@ -658,12 +658,18 @@ UPDATES:
 	 - Cleared up a few erroneous error messages that would crop up for
 	people not using HDTP, mostly relating to being unable to load specific
 	textures.  I'd just forgotten to tag those functions with the "you
-	don't need to tell me when this fails" flag.
+	don't need to log this when this fails" flag.
 
 	 - Added a new twist to the MJ12 capture sequence: your ammo is now
 	confiscated if you are playing on Hard or above.  Like everything else
 	it is taken to the Armory, where you can recover it later.  However, it
 	does make the initial escape that much more challenging.
+
+	 - Fixed an issue with the placement of Dragon's Breath ammo in UNATCO
+	HQ during your first visit.  I'd accidentally put it in PreTravel
+	instead of FirstFrame.  To put it plainly, the ammo was only being
+	placed the first time you left UNATCO HQ, rather than the first time
+	you entered, thus you could only get it if you left and re-entered.
 
 
 	v1.9:
