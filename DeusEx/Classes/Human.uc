@@ -10,10 +10,20 @@ var float humanAnimRate;
 
 var(Sounds) sound HitSound3; //So we can completely override any hit noises without overriding functions
 
+var config bool bNoFacelift; //== Disable HDTP facelift
+
 replication 
 {
 	reliable if (( Role == ROLE_Authority ) && bNetOwner )
 		humanAnimRate;
+}
+
+function bool Facelift(bool bOn)
+{
+	if(bNoFacelift && bOn)
+		return false;
+
+	return Super.Facelift(bOn);
 }
 
 function Bool IsFiring()

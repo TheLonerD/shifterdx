@@ -249,6 +249,8 @@ var Texture HDTPHandTex[5];
 var Texture HDTPMuzzleTexSmall[3];
 var Texture HDTPMuzzleTexLarge[8];
 
+var config bool bNoFacelift; //== Disable HDTP facelift
+
 //
 // network replication
 //
@@ -428,13 +430,16 @@ function bool Facelift(bool bOn)
 {
 	local int i;
 
+	if(bNoFacelift && bOn)
+		return false;
+
 	//== Only do this for DeusEx classes
 	if(instr(String(Class.Name), ".") > -1 && bOn)
 		if(instr(String(Class.Name), "DeusEx.") <= -1)
 			return false;
-	else
-		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
-			return false;
+	//else
+	//	if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
+	//		return false;
 
 	//== Load up the hand textures for HDTP, if present
 	if(bOn)

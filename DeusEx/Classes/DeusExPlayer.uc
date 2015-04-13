@@ -9,7 +9,10 @@
 //manner in which an existing modifier works. (See Zyme for an example) At the
 //very least, adding a new variable will screw up the savegame info, and can lead
 //to errors like starting/restarting music whenever you save or load, and bad
-//information showing up in the saveinfo fields
+//information showing up in the saveinfo fields.
+
+//You might also try modifying Human.uc, which is the direct parent class of
+//JCDentonMale.uc.  Adding variables to that will not cause issues  
 
 class DeusExPlayer extends PlayerPawnExt
 	native;
@@ -979,9 +982,9 @@ function bool Facelift(bool bOn)
 	if(instr(String(Class.Name), ".") > -1 && bOn)
 		if(instr(String(Class.Name), "DeusEx.") <= -1)
 			return false;
-	else
-		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
-			return false;
+	//else
+	//	if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
+	//		return false;
 
 	return true;
 }

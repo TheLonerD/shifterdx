@@ -437,6 +437,8 @@ var(Sounds) sound SpeechCriticalDamage;
 var(Sounds) sound SpeechScanning;
 var(Sounds) sound SpeechAreaSecure;
 
+var config bool bNoFacelift; //== Disable HDTP facelift
+
 native(2102) final function ConBindEvents();
 
 native(2105) final function bool IsValidEnemy(Pawn TestEnemy, optional bool bCheckAlliance);
@@ -491,13 +493,16 @@ function PreBeginPlay()
 
 function bool Facelift(bool bOn)
 {
+	if(bNoFacelift && bOn)
+		return false;
+
 	//== Only do this for DeusEx classes
 	if(instr(String(Class.Name), ".") > -1 && bOn)
 		if(instr(String(Class.Name), "DeusEx.") <= -1)
 			return false;
-	else
-		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
-			return false;
+	//else
+	//	if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
+	//		return false;
 
 	return true;
 }

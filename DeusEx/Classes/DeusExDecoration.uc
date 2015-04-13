@@ -51,6 +51,8 @@ var() travel class<inventory> tcontents;
 var() travel class<inventory> tcontents2;
 var() travel class<inventory> tcontents3;
 
+var config bool bNoFacelift; //== disable HDTP facelift
+
 native(2101) final function ConBindEvents();
 
 //
@@ -91,20 +93,20 @@ function PreBeginPlay()
 		flyGen = Spawn(Class'FlyGenerator', , , Location, Rotation);
 	else
 		flyGen = None;
-
-	if(Level.NetMode == NM_StandAlone)// && DeusExPlayer(GetPlayerPawn()).flagBase.GetBool('HDTP_NotDetected') != True)
-		Facelift(true);
 }
 
 function bool Facelift(bool bOn)
 {
+	if(bNoFacelift && bOn)
+		return false;
+
 	//== Only do this for DeusEx classes
 	if(instr(String(Class.Name), ".") > -1 && bOn)
 		if(instr(String(Class.Name), "DeusEx.") <= -1)
 			return false;
-	else
-		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
-			return false;
+	//else
+	//	if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
+	//		return false;
 
 	return true;
 }
@@ -119,6 +121,9 @@ function PostPostBeginPlay()
 
 	// Bind any conversation events to this DeusExPlayer
 	ConBindEvents();
+
+	if(Level.NetMode == NM_StandAlone)// && DeusExPlayer(GetPlayerPawn()).flagBase.GetBool('HDTP_NotDetected') != True)
+		Facelift(true);
 }
 
 // ----------------------------------------------------------------------
@@ -158,20 +163,24 @@ function BeginPlay()
 		pushSound = sound'PushWood';
 	else if (fragType == class'Rockchip')
 		pushSound = sound'PushPlastic';
+
+	tcontents = Contents;
+	tcontents2 = Content2;
+	tcontents3 = Content3;
 }
 
 // ----------------------------------------------------------------------
 // TravelPreAccept()
 // ----------------------------------------------------------------------
 
-function TravelPreAccept()
-{
-	tcontents = Contents;
-	tcontents2 = Content2;
-	tcontents3 = Content3;
-
-	Super.TravelPreAccept();
-}
+//function TravelPreAccept()
+//{
+//	tcontents = Contents;
+//	tcontents2 = Content2;
+//	tcontents3 = Content3;
+//
+//	Super.TravelPreAccept();
+//}
 
 // ----------------------------------------------------------------------
 // TravelPostAccept()

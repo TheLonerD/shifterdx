@@ -4,7 +4,7 @@
 class MJ12Troop extends HumanMilitary;
 
 //== Disable facelift for now, since the MJ12 Trooper mesh has a serious bug in its sit animation
-/*function bool Facelift(bool bOn)
+function bool Facelift(bool bOn)
 {
 	local int i;
 
@@ -28,7 +28,7 @@ class MJ12Troop extends HumanMilitary;
 	}
 
 	return true;
-}*/
+}
 
 defaultproperties
 {
@@ -54,4 +54,5 @@ defaultproperties
      BindName="MJ12Troop"
      FamiliarName="MJ12 Troop"
      UnfamiliarName="MJ12 Troop"
+     bNoFacelift=True
 }

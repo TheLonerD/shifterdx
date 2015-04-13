@@ -21,8 +21,13 @@ var Float lastTickTime;
 
 var() Texture HDTPTex[2];
 
+var config bool bNoFacelift;
+
 function bool Facelift(bool bOn)
 {
+	if(bNoFacelift && bOn)
+		return false;
+
 	if(bOn)
 	{
 		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPLaserEmitter", class'Mesh', True));

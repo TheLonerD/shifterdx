@@ -17,6 +17,8 @@ var int MPMaxAmmo; //Max Ammo in multiplayer.
 var bool bIsNonStandard; //For the purposes of picking it up from corpses
 var String DynamicLoadIcon; //The icon we should optionally load to use in the GUI, if present
 
+var config bool bNoFacelift; //== Disable HDTP facelift
+
 // ----------------------------------------------------------------------
 // PreBeginPlay()
 // ----------------------------------------------------------------------
@@ -35,13 +37,16 @@ simulated function PreBeginPlay()
 // ----------------------------------------------------------------------
 function bool Facelift(bool bOn)
 {
+	if(bNoFacelift && bOn)
+		return false;
+
 	//== Only do this for DeusEx classes
 	if(instr(String(Class.Name), ".") > -1 && bOn)
 		if(instr(String(Class.Name), "DeusEx.") <= -1)
 			return false;
-	else
-		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
-			return false;
+	//else
+	//	if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
+	//		return false;
 
 	return true;
 }

@@ -7,6 +7,7 @@ var bool bSmoking;
 var Vector lastHitLoc;
 var float smokeTime;
 var ParticleGenerator smokeGen;
+var config bool bNoFacelift; //== disable facelift
 
 function PreBeginPlay()
 {
@@ -18,13 +19,16 @@ function PreBeginPlay()
 
 function bool Facelift(bool bOn)
 {
+	if(bNoFacelift && bOn)
+		return false;
+
 	//== Only do this for DeusEx classes
 	if(instr(String(Class.Name), ".") > -1 && bOn)
 		if(instr(String(Class.Name), "DeusEx.") <= -1)
 			return false;
-	else
-		if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
-			return false;
+	//else
+	//	if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
+	//		return false;
 
 	return true;
 }

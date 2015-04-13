@@ -18,7 +18,7 @@ var localized string ContainerDiscard;
 var localized string ContainerFound;
 
 //== PostPostBeginPlay for randomizing inventory
-function PostPpstBeginPlay()
+function PostPostBeginPlay()
 {
 	local Class<Inventory> Consumables[6];
 	local int i, testRandom;

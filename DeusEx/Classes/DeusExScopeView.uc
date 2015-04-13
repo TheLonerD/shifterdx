@@ -14,11 +14,13 @@ var int   desiredFOV;
 var Texture HDTPScope[4];
 var Texture HDTPCross[4];
 
+var config bool bNoFacelift;
+
 function bool Facelift(bool bOn)
 {
 	local int i;
 
-	if(Player.Level.NetMode != NM_Standalone)
+	if(Player.Level.NetMode != NM_Standalone || (bNoFacelift && bOn))
 		return false;
 
 	if(bOn)

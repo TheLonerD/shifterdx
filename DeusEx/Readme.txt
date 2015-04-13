@@ -506,6 +506,81 @@ SPECIFICS:
 	game.  Yet, anyway.
 
 
+HDTP SUPPORT:
+
+	One of the many things I've done with Shifter is make it directly
+compatible with HDTP.  Shifter will attempt to find HDTP's new textures if they
+are present.  If it finds them, it will then load them and apply them to all
+objects, NPCs, and anything else that it can.  This means all you need to do to
+get HDTP + Shifter working is to install the HDTP .u and .utx files into your
+main DeusEx\System folder.
+
+	There is, however, a downside to this.  If the HDTP files aren't there
+the game may pause for a second in trying to find them.  On most modern systems
+this is completely unnoticeable, but some users have reported experiencing lag
+with certain actions, particularly anything which gibs NPCs (e.g. shooting a
+Terrorist with a Gep Gun).  Because of this, I have added a way to disable the
+"HDTP" Facelift for specific objects, as well as entire groups of objects.  You
+can do this simply by editing the file "DeusEx.ini" and adding a section like
+the following to the bottom:
+
+[DeusEx.FleshFragment]
+bNoFacelift=True
+
+	The above code stops the FleshFragment object (made when you gib an
+NPC) from even trying to load up HDTP resources at all.  This should fix lag
+issues that happen when you blow up NPCs.
+
+	But what if you don't have HDTP installed at all, and don't plan to?
+You can disable the HDTP Facelift entirely with the following lines:
+
+[DeusEx.DeusExAmmo]
+bNoFacelift=True
+
+[DeusEx.DeusExCarcass]
+bNoFacelift=True
+
+[DeusEx.DeusExDecal]
+bNoFacelift=True
+
+[DeusEx.DeusExDecoration]
+bNoFacelift=True
+
+[DeusEx.DeusExFragment]
+bNoFacelift=True
+
+[DeusEx.DeusExPickup]
+bNoFacelift=True
+
+[DeusEx.DeusExProjectile]
+bNoFacelift=True
+
+[DeusEx.DeusExScopeView]
+bNoFacelift=True
+
+[DeusEx.DeusExWeapon]
+bNoFacelift=True
+
+[DeusEx.Human]
+bNoFacelift=True
+
+[DeusEx.LaserTrigger]
+bNoFacelift=True
+
+[DeusEx.ScriptedPawn]
+bNoFacelift=True
+
+	The above lines will disable HDTP support for ALL objects within the
+game.
+
+	Note that this will ALSO disable support for the optional Shifter
+Texture Pack add-on.
+
+	For those of you who are code-savvy, the above classes are the highest-
+level classes which support the bNoFacelift variable.  You can add the variable
+to any child classes of the above-listed classes.
+
+
 KNOWN GLITCHES:
 
 	   Even though this mod is no loger in beta stages there are still some
@@ -673,7 +748,14 @@ UPDATES:
 
 	 - Fixed a problem with Unrealistic's custom character override option.
 	Playing as a UNATCO trooper, NSF Terrorist or MJ12 Commando would make
-	your character completely invisible during cutscenes.
+	your character completely invisible during cutscenes due to no default
+	mesh being specified.  The MP game normally fixes this, but SP doesn't.
+
+	 - Added an ini variable to most classes which will allow you to stop
+	Shifter from trying to perform the HDTP and Texture add-on Facelift.
+	The variable in question is called bNoFacelift, and can be applied to
+	major parent classes (like DeusExDecoration) or to individual classes
+	(like MJ12Troop).  Full documentation is now in the main readme.
 
 
 	v1.9:

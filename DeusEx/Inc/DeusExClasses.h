@@ -654,8 +654,9 @@ public:
     class UClass* tcontents;
     class UClass* tcontents2;
     class UClass* tcontents3;
+    BITFIELD bNoFacelift:1 GCC_PACK(4);
     DECLARE_FUNCTION(execConBindEvents);
-    DECLARE_CLASS(ADeusExDecoration,ADecoration,0)
+    DECLARE_CLASS(ADeusExDecoration,ADecoration,0|CLASS_Config)
     NO_DEFAULT_CONSTRUCTOR(ADeusExDecoration)
 };
 
