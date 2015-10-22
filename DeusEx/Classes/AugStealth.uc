@@ -9,31 +9,31 @@ var float mpEnergyDrain;
 state Active
 {
 Begin:
-	Player.RunSilentValue = Player.AugmentationSystem.GetAugLevelValue(class'AugStealth');
-	if ( Player.RunSilentValue == -1.0 )
-		Player.RunSilentValue = 1.0;
+    Player.RunSilentValue = Player.AugmentationSystem.GetAugLevelValue(class'AugStealth');
+    if ( Player.RunSilentValue == -1.0 )
+        Player.RunSilentValue = 1.0;
 }
 
 function Deactivate()
 {
-	Player.RunSilentValue = 1.0;
-	Super.Deactivate();
+    Player.RunSilentValue = 1.0;
+    Super.Deactivate();
 
-	//== Just to be safe, for when we drop out of wall-walk
-	if(Player.Physics == PHYS_Spider)
-		Player.SetPhysics(PHYS_Falling);
+    //== Just to be safe, for when we drop out of wall-walk
+    if(Player.Physics == PHYS_Spider)
+        Player.SetPhysics(PHYS_Falling);
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		LevelValues[3] = mpAugValue;
-		EnergyRate = mpEnergyDrain;
-	}
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        LevelValues[3] = mpAugValue;
+        EnergyRate = mpEnergyDrain;
+    }
 }
 
 defaultproperties

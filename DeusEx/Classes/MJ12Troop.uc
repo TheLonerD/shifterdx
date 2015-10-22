@@ -6,28 +6,28 @@ class MJ12Troop extends HumanMilitary;
 //== Disable facelift for now, since the MJ12 Trooper mesh has a serious bug in its sit animation
 function bool Facelift(bool bOn)
 {
-	local int i;
+    local int i;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPMJ12Troop", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPMJ12Troop", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+    {
+        Mesh = Default.Mesh;
 
-		for(i = 0; i < 8; ++i)
-			MultiSkins[i] = Default.MultiSkins[i];
-	}
-	else
-	{
-		for(i = 0; i < 8; ++i)
-			MultiSkins[i] = None;
-	}
+        for(i = 0; i < 8; ++i)
+            MultiSkins[i] = Default.MultiSkins[i];
+    }
+    else
+    {
+        for(i = 0; i < 8; ++i)
+            MultiSkins[i] = None;
+    }
 
-	return true;
+    return true;
 }
 
 defaultproperties

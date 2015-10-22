@@ -8,16 +8,16 @@ class Ammo20mm extends DeusExAmmo;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmo20mmTex1", class'Texture', True));
+    if(bOn)
+        Skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmo20mmTex1", class'Texture', True));
 
-	if(Skin == None || !bOn)
-		Skin = Default.Skin;
+    if(Skin == None || !bOn)
+        Skin = Default.Skin;
 
-	return true;
+    return true;
 }
 
 defaultproperties

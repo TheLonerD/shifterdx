@@ -8,52 +8,52 @@ var Texture JCHandTex[5];
 
 function bool Facelift(bool bOn)
 {
-	local int i;
+    local int i;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-	{
-		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPGM_TrenchCarcass", class'Mesh', True));
-		Mesh2 = Mesh(DynamicLoadObject("HDTPCharacters.HDTPGM_TrenchCarcassB", class'Mesh', True));
-		Mesh3 = Mesh(DynamicLoadObject("HDTPCharacters.HDTPGM_TrenchCarcassC", class'Mesh', True));
-	}
+    if(bOn)
+    {
+        Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPGM_TrenchCarcass", class'Mesh', True));
+        Mesh2 = Mesh(DynamicLoadObject("HDTPCharacters.HDTPGM_TrenchCarcassB", class'Mesh', True));
+        Mesh3 = Mesh(DynamicLoadObject("HDTPCharacters.HDTPGM_TrenchCarcassC", class'Mesh', True));
+    }
 
-	if(Mesh == None || Mesh2 == None || Mesh3 == None || !bOn)
-	{
-		Mesh = Default.Mesh;
-		Mesh2 = Default.Mesh2;
-		Mesh3 = Default.Mesh3;
+    if(Mesh == None || Mesh2 == None || Mesh3 == None || !bOn)
+    {
+        Mesh = Default.Mesh;
+        Mesh2 = Default.Mesh2;
+        Mesh3 = Default.Mesh3;
 
-		for(i = 0; i < 8; ++i)
-			MultiSkins[i] = Default.MultiSkins[i];
+        for(i = 0; i < 8; ++i)
+            MultiSkins[i] = Default.MultiSkins[i];
 
-		for(i = 0; i < 5; ++i)
-		{
-			JCTex[i] = Default.JCTex[i];
-			JCHandTex[i] = None;
-		}
-	}
-	else
-	{
-		MultiSkins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCDentonTex1", class'Texture'));
-		MultiSkins[2] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCDentonTex2", class'Texture'));
-		MultiSkins[4] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCDentonTex4", class'Texture'));
-		MultiSkins[5] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCDentonTex5", class'Texture'));
-		MultiSkins[6] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCDentonTex6", class'Texture'));
-		MultiSkins[7] = Texture'BlackMaskTex';
+        for(i = 0; i < 5; ++i)
+        {
+            JCTex[i] = Default.JCTex[i];
+            JCHandTex[i] = None;
+        }
+    }
+    else
+    {
+        MultiSkins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCDentonTex1", class'Texture'));
+        MultiSkins[2] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCDentonTex2", class'Texture'));
+        MultiSkins[4] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCDentonTex4", class'Texture'));
+        MultiSkins[5] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCDentonTex5", class'Texture'));
+        MultiSkins[6] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCDentonTex6", class'Texture'));
+        MultiSkins[7] = Texture'BlackMaskTex';
 
-		for(i = 0; i < 5; ++i)
-		{
-			JCTex[i] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCFaceTex"$ i, class'Texture'));
-			JCHandTex[i] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCHandsTex"$ i, class'Texture'));
-		}
-	}
+        for(i = 0; i < 5; ++i)
+        {
+            JCTex[i] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCFaceTex"$ i, class'Texture'));
+            JCHandTex[i] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPJCHandsTex"$ i, class'Texture'));
+        }
+    }
 
-	SetSkin(DeusExPlayer(GetPlayerPawn()));
+    SetSkin(DeusExPlayer(GetPlayerPawn()));
 
-	return true;
+    return true;
 }
 
 // ----------------------------------------------------------------------
@@ -62,14 +62,14 @@ function bool Facelift(bool bOn)
 
 function PostPostBeginPlay()
 {
-	local DeusExPlayer player;
+    local DeusExPlayer player;
 
-	Super.PostPostBeginPlay();
+    Super.PostPostBeginPlay();
 
-	foreach AllActors(class'DeusExPlayer', player)
-		break;
+    foreach AllActors(class'DeusExPlayer', player)
+        break;
 
-	SetSkin(player);
+    SetSkin(player);
 }
 
 // ----------------------------------------------------------------------
@@ -78,13 +78,13 @@ function PostPostBeginPlay()
 
 function SetSkin(DeusExPlayer player)
 {
-	if (player != None)
-	{
-		MultiSkins[0] = JCTex[player.PlayerSkin];
-	
-		if(Mesh != Default.Mesh)
-			MultiSkins[3] = JCHandTex[player.PlayerSkin];
-	}
+    if (player != None)
+    {
+        MultiSkins[0] = JCTex[player.PlayerSkin];
+    
+        if(Mesh != Default.Mesh)
+            MultiSkins[3] = JCHandTex[player.PlayerSkin];
+    }
 }
 
 // ----------------------------------------------------------------------

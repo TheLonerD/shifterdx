@@ -10,62 +10,62 @@ class InterpolateTrigger expands Trigger;
 
 function Trigger(Actor Other, Pawn Instigator)
 {
-	if (SendActorOnPath())
-	{
-		Super.Trigger(Other, Instigator);
-		if (bTriggerOnceOnly)
-			Destroy();
-	}
+    if (SendActorOnPath())
+    {
+        Super.Trigger(Other, Instigator);
+        if (bTriggerOnceOnly)
+            Destroy();
+    }
 }
 
 singular function Touch(Actor Other)
 {
-	if (!IsRelevant(Other))
-		return;
+    if (!IsRelevant(Other))
+        return;
 
-	if (SendActorOnPath())
-		if (bTriggerOnceOnly)
-			Destroy();
+    if (SendActorOnPath())
+        if (bTriggerOnceOnly)
+            Destroy();
 }
 
 function bool SendActorOnPath()
 {
-	local InterpolationPoint I;
-	local Actor A;
+    local InterpolationPoint I;
+    local Actor A;
 
-	// find the target actors to start on the path
-	foreach AllActors (class'Actor', A, Event)
-	{
-		if (A != None)
-		{
-			if (!A.IsA('InterpolationPoint'))
-			{
-				foreach AllActors (class'InterpolationPoint', I, A.Event)
-				{
-					if(I != None)
-					{
-						if (I.Position == 1)		// start at 1 instead of 0 - put 0 at the object's initial position
-						{
-							A.SetCollision(False, False, False);
-							A.bCollideWorld = False;
-							A.Target = I;
-							A.SetPhysics(PHYS_Interpolating);
-							A.PhysRate = 1.0;
-							A.PhysAlpha = 0.0;
-							A.bInterpolating = True;
-							A.bStasis = False;
+    // find the target actors to start on the path
+    foreach AllActors (class'Actor', A, Event)
+    {
+        if (A != None)
+        {
+            if (!A.IsA('InterpolationPoint'))
+            {
+                foreach AllActors (class'InterpolationPoint', I, A.Event)
+                {
+                    if(I != None)
+                    {
+                        if (I.Position == 1)        // start at 1 instead of 0 - put 0 at the object's initial position
+                        {
+                            A.SetCollision(False, False, False);
+                            A.bCollideWorld = False;
+                            A.Target = I;
+                            A.SetPhysics(PHYS_Interpolating);
+                            A.PhysRate = 1.0;
+                            A.PhysAlpha = 0.0;
+                            A.bInterpolating = True;
+                            A.bStasis = False;
 
-							if(A.IsA('Vehicles') || A.IsA('DeusExPlayer')) //Only classes with an interpolation state
-								A.GotoState('Interpolating');
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
+                            if(A.IsA('Vehicles') || A.IsA('DeusExPlayer')) //Only classes with an interpolation state
+                                A.GotoState('Interpolating');
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-	return True;
+    return True;
 }
 
 defaultproperties

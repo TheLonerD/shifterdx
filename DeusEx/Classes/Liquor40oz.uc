@@ -5,10 +5,10 @@ class Liquor40oz extends Consumable;
 
 enum ESkinColor
 {
-	SC_Super45,
-	SC_Bottle2,
-	SC_Bottle3,
-	SC_Bottle4
+    SC_Super45,
+    SC_Bottle2,
+    SC_Bottle3,
+    SC_Bottle4
 };
 
 var() ESkinColor SkinColor;
@@ -17,103 +17,103 @@ var() ESkinColor StackSkins[9];
 
 function bool Facelift(bool bOn)
 {
-	local int skinnum;
+    local int skinnum;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	skinnum = SkinColor;
+    skinnum = SkinColor;
 
-	if(numCopies > 1 && numCopies <= 10)
-		skinnum = StackSkins[numCopies - 2];
+    if(numCopies > 1 && numCopies <= 10)
+        skinnum = StackSkins[numCopies - 2];
 
-	skinnum++;
+    skinnum++;
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPLiquor40oz", class'mesh', True));
+    if(bOn)
+        Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPLiquor40oz", class'mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Texture = None;
-		Mesh = Default.Mesh;
-		PlayerViewMesh = Default.PlayerViewMesh;
-		PickupViewMesh = Default.PickupViewMesh;
-		ThirdPersonMesh = Default.ThirdPersonMesh;
-		Skin = Texture(DynamicLoadObject("DeusExItems.Liquor40ozTex"$ skinnum, class'Texture'));
-		MultiSkins[1] = Default.MultiSkins[1];
-	}
-	else
-	{
-		if(skinnum >= 2) //== The other skins are stored in 3-5, so we must incriment past two
-			skinnum++;
+    if(Mesh == None || !bOn)
+    {
+        Texture = None;
+        Mesh = Default.Mesh;
+        PlayerViewMesh = Default.PlayerViewMesh;
+        PickupViewMesh = Default.PickupViewMesh;
+        ThirdPersonMesh = Default.ThirdPersonMesh;
+        Skin = Texture(DynamicLoadObject("DeusExItems.Liquor40ozTex"$ skinnum, class'Texture'));
+        MultiSkins[1] = Default.MultiSkins[1];
+    }
+    else
+    {
+        if(skinnum >= 2) //== The other skins are stored in 3-5, so we must incriment past two
+            skinnum++;
 
-		PlayerViewMesh = Mesh;
-		PickupViewMesh = Mesh;
-		ThirdPersonMesh = Mesh;
-		Skin = None;
-		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex2", class'Texture'));
-		MultiSkins[1] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex"$ skinnum, class'Texture', True));
-	}
+        PlayerViewMesh = Mesh;
+        PickupViewMesh = Mesh;
+        ThirdPersonMesh = Mesh;
+        Skin = None;
+        Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex2", class'Texture'));
+        MultiSkins[1] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex"$ skinnum, class'Texture', True));
+    }
 
-	return true;
+    return true;
 }
 
 function BeginPlay()
 {
-	local int skinnum;
+    local int skinnum;
 
-	Super.BeginPlay();
+    Super.BeginPlay();
 
-	skinnum = SkinColor + 1;
+    skinnum = SkinColor + 1;
 
-	if(Mesh != Default.Mesh && skinnum == 1)
-		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex" $ skinnum, class'Texture', True));
-	else
-	{
-		Texture = None;
-		Mesh = Default.Mesh;
-		PlayerViewMesh = Default.PlayerViewMesh;
-		PickupViewMesh = Default.PickupViewMesh;
-		ThirdPersonMesh = Default.ThirdPersonMesh;
-		Skin = Texture(DynamicLoadObject("DeusExItems.Liquor40ozTex"$ skinnum, class'Texture'));
-	}
+    if(Mesh != Default.Mesh && skinnum == 1)
+        Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquor40oztex" $ skinnum, class'Texture', True));
+    else
+    {
+        Texture = None;
+        Mesh = Default.Mesh;
+        PlayerViewMesh = Default.PlayerViewMesh;
+        PickupViewMesh = Default.PickupViewMesh;
+        ThirdPersonMesh = Default.ThirdPersonMesh;
+        Skin = Texture(DynamicLoadObject("DeusExItems.Liquor40ozTex"$ skinnum, class'Texture'));
+    }
 }
 
 function TransferSkin(Inventory inv)
 {
-	if(numCopies > 1 && numCopies <= 10)
-	{
-		if(DeusExPickup(inv).numCopies >= 1 && DeusExPickup(inv).numCopies < 10)
-			StackSkins[numCopies - 2] = Liquor40oz(inv).StackSkins[DeusExPickup(inv).numCopies - 1];
-		else
-			StackSkins[numCopies - 2] = Liquor40oz(inv).SkinColor;
-	}
-	else
-	{
-		if(DeusExPickup(inv).numCopies >= 1 && DeusExPickup(inv).numCopies < 10)
-			SkinColor = Liquor40oz(inv).StackSkins[DeusExPickup(inv).numCopies - 1];
-		else
-			SkinColor = Liquor40oz(inv).SkinColor;
-	}
+    if(numCopies > 1 && numCopies <= 10)
+    {
+        if(DeusExPickup(inv).numCopies >= 1 && DeusExPickup(inv).numCopies < 10)
+            StackSkins[numCopies - 2] = Liquor40oz(inv).StackSkins[DeusExPickup(inv).numCopies - 1];
+        else
+            StackSkins[numCopies - 2] = Liquor40oz(inv).SkinColor;
+    }
+    else
+    {
+        if(DeusExPickup(inv).numCopies >= 1 && DeusExPickup(inv).numCopies < 10)
+            SkinColor = Liquor40oz(inv).StackSkins[DeusExPickup(inv).numCopies - 1];
+        else
+            SkinColor = Liquor40oz(inv).SkinColor;
+    }
 
-	if(Level.NetMode == NM_Standalone)
-	{
-		Facelift(True);
-		DeusExPickup(inv).Facelift(True);
-	}
+    if(Level.NetMode == NM_Standalone)
+    {
+        Facelift(True);
+        DeusExPickup(inv).Facelift(True);
+    }
 }
 
 state Activated
 {
-	function Activate()
-	{
-		Super.Activate();
-	}
+    function Activate()
+    {
+        Super.Activate();
+    }
 
-	function BeginState()
-	{
-		Super.BeginState();
-	}
+    function BeginState()
+    {
+        Super.BeginState();
+    }
 Begin:
 }
 

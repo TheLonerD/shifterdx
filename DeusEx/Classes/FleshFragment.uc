@@ -5,47 +5,47 @@ class FleshFragment expands DeusExFragment;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFleshFragTex1", class'Texture', True));
+    if(bOn)
+        Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFleshFragTex1", class'Texture', True));
 
-	if(Skin == None || !bOn)
-		Skin = Default.Skin;
+    if(Skin == None || !bOn)
+        Skin = Default.Skin;
 
-	return true;
+    return true;
 }
 
 auto state Flying
 {
-	function BeginState()
-	{
-		Super.BeginState();
+    function BeginState()
+    {
+        Super.BeginState();
 
-		Velocity = VRand() * 300;
-		DrawScale = FRand() + 1.5;
-	}
+        Velocity = VRand() * 300;
+        DrawScale = FRand() + 1.5;
+    }
 
-	//== If we bump an NPC who doesn't like dead bodies, put the fear of God in 'em
-	function Bump(actor Other)
-	{
-		if(Other.IsA('ScriptedPawn'))
-		{
-			if(ScriptedPawn(Other).bFearCarcass)
-				ScriptedPawn(Other).IncreaseFear(Self,2.0);
-		}
-		Super.Bump(Other);
-	}
+    //== If we bump an NPC who doesn't like dead bodies, put the fear of God in 'em
+    function Bump(actor Other)
+    {
+        if(Other.IsA('ScriptedPawn'))
+        {
+            if(ScriptedPawn(Other).bFearCarcass)
+                ScriptedPawn(Other).IncreaseFear(Self,2.0);
+        }
+        Super.Bump(Other);
+    }
 }
 
 function Tick(float deltaTime)
 {
-	Super.Tick(deltaTime);
-	
-	if (!IsInState('Dying'))
-		if (FRand() < 0.5)
-			Spawn(class'BloodDrop',,, Location);
+    Super.Tick(deltaTime);
+    
+    if (!IsInState('Dying'))
+        if (FRand() < 0.5)
+            Spawn(class'BloodDrop',,, Location);
 }
 
 defaultproperties

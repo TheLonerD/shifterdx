@@ -11,46 +11,46 @@ var float mpEnergyDrain;
 state Active
 {
 Begin:
-	mult = Player.SkillSystem.GetSkillLevelValue(class'SkillSwimming');
-	pct = Player.swimTimer / Player.swimDuration;
-	Player.UnderWaterTime = LevelValues[CurrentLevel];
-	Player.swimDuration = Player.UnderWaterTime * mult;
-	Player.swimTimer = Player.swimDuration * pct;
+    mult = Player.SkillSystem.GetSkillLevelValue(class'SkillSwimming');
+    pct = Player.swimTimer / Player.swimDuration;
+    Player.UnderWaterTime = LevelValues[CurrentLevel];
+    Player.swimDuration = Player.UnderWaterTime * mult;
+    Player.swimTimer = Player.swimDuration * pct;
 
-	if (( Level.NetMode != NM_Standalone ) && Player.IsA('Human') )
-	{
-		mult = Player.SkillSystem.GetSkillLevelValue(class'SkillSwimming');
-		Player.WaterSpeed = Human(Player).Default.mpWaterSpeed * 2.0 * mult;
-	}
+    if (( Level.NetMode != NM_Standalone ) && Player.IsA('Human') )
+    {
+        mult = Player.SkillSystem.GetSkillLevelValue(class'SkillSwimming');
+        Player.WaterSpeed = Human(Player).Default.mpWaterSpeed * 2.0 * mult;
+    }
 }
 
 function Deactivate()
 {
-	Super.Deactivate();
-	
-	mult = Player.SkillSystem.GetSkillLevelValue(class'SkillSwimming');
-	pct = Player.swimTimer / Player.swimDuration;
-	Player.UnderWaterTime = Player.Default.UnderWaterTime;
-	Player.swimDuration = Player.UnderWaterTime * mult;
-	Player.swimTimer = Player.swimDuration * pct;
+    Super.Deactivate();
+    
+    mult = Player.SkillSystem.GetSkillLevelValue(class'SkillSwimming');
+    pct = Player.swimTimer / Player.swimDuration;
+    Player.UnderWaterTime = Player.Default.UnderWaterTime;
+    Player.swimDuration = Player.UnderWaterTime * mult;
+    Player.swimTimer = Player.swimDuration * pct;
 
-	if (( Level.NetMode != NM_Standalone ) && Player.IsA('Human') )
-	{
-		mult = Player.SkillSystem.GetSkillLevelValue(class'SkillSwimming');
-		Player.WaterSpeed = Human(Player).Default.mpWaterSpeed * mult;
-	}
+    if (( Level.NetMode != NM_Standalone ) && Player.IsA('Human') )
+    {
+        mult = Player.SkillSystem.GetSkillLevelValue(class'SkillSwimming');
+        Player.WaterSpeed = Human(Player).Default.mpWaterSpeed * mult;
+    }
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		LevelValues[3] = mpAugValue;
-		EnergyRate = mpEnergyDrain;
-	}
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        LevelValues[3] = mpAugValue;
+        EnergyRate = mpEnergyDrain;
+    }
 }
 
 defaultproperties

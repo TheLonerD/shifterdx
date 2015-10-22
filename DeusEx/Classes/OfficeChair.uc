@@ -5,61 +5,61 @@ class OfficeChair extends Seat;
 
 enum ESkinColor
 {
-	SC_GrayLeather,
-	SC_BrownLeather,
-	SC_BrownCloth,
-	SC_GrayCloth
+    SC_GrayLeather,
+    SC_BrownLeather,
+    SC_BrownCloth,
+    SC_GrayCloth
 };
 
 var() ESkinColor SkinColor;
 
 function bool Facelift(bool bOn)
 {
-	local String texstr;
+    local String texstr;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	switch (SkinColor)
-	{
-		case SC_GrayLeather:		texstr = "OfficeChairTex1"; break;
-		case SC_BrownLeather:		texstr = "OfficeChairTex2"; break;
-		case SC_BrownCloth:		texstr = "OfficeChairTex3"; break;
-		case SC_GrayCloth:		texstr = "OfficeChairTex4"; break;
-	}
+    switch (SkinColor)
+    {
+        case SC_GrayLeather:        texstr = "OfficeChairTex1"; break;
+        case SC_BrownLeather:        texstr = "OfficeChairTex2"; break;
+        case SC_BrownCloth:        texstr = "OfficeChairTex3"; break;
+        case SC_GrayCloth:        texstr = "OfficeChairTex4"; break;
+    }
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPOfficeChair", class'mesh', True));
+    if(bOn)
+        Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPOfficeChair", class'mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Mesh = Default.Mesh;
-		Skin = Texture(DynamicLoadObject("DeusExDeco."$ texstr, class'Texture'));
-	}
-	else
-		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP" $ texstr, class'Texture'));
+    if(Mesh == None || !bOn)
+    {
+        Mesh = Default.Mesh;
+        Skin = Texture(DynamicLoadObject("DeusExDeco."$ texstr, class'Texture'));
+    }
+    else
+        Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP" $ texstr, class'Texture'));
 
-	return true;
+    return true;
 }
 
 function BeginPlay()
 {
-	local String texstr;
+    local String texstr;
 
-	Super.BeginPlay();
+    Super.BeginPlay();
 
-	switch (SkinColor)
-	{
-		case SC_GrayLeather:		texstr = "OfficeChairTex1"; break;
-		case SC_BrownLeather:		texstr = "OfficeChairTex2"; break;
-		case SC_BrownCloth:		texstr = "OfficeChairTex3"; break;
-		case SC_GrayCloth:		texstr = "OfficeChairTex4"; break;
-	}
+    switch (SkinColor)
+    {
+        case SC_GrayLeather:        texstr = "OfficeChairTex1"; break;
+        case SC_BrownLeather:        texstr = "OfficeChairTex2"; break;
+        case SC_BrownCloth:        texstr = "OfficeChairTex3"; break;
+        case SC_GrayCloth:        texstr = "OfficeChairTex4"; break;
+    }
 
-	if(Mesh != Default.Mesh)
-		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP" $ texstr, class'Texture'));
-	else
-		Skin = Texture(DynamicLoadObject("DeusExDeco."$ texstr, class'Texture'));
+    if(Mesh != Default.Mesh)
+        Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTP" $ texstr, class'Texture'));
+    else
+        Skin = Texture(DynamicLoadObject("DeusExDeco."$ texstr, class'Texture'));
 }
 
 defaultproperties

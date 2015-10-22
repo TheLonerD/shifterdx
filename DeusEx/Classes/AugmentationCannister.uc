@@ -10,25 +10,25 @@ var localized string MustBeUsedOn;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAugCan", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAugCan", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Mesh = Default.Mesh;
-		PickupViewMesh = Default.Mesh;
-	}
-	else
-	{
-		PickupViewMesh = Mesh;
-		PlayerviewMesh = Mesh;
-		ThirdPersonMesh = Mesh;
-	}
+    if(Mesh == None || !bOn)
+    {
+        Mesh = Default.Mesh;
+        PickupViewMesh = Default.Mesh;
+    }
+    else
+    {
+        PickupViewMesh = Mesh;
+        PlayerviewMesh = Mesh;
+        ThirdPersonMesh = Mesh;
+    }
 
-	return true;
+    return true;
 } 
 
 // ----------------------------------------------------------------------
@@ -48,37 +48,37 @@ replication
 
 simulated function bool UpdateInfo(Object winObject)
 {
-	local PersonaInfoWindow winInfo;
-	local String outText;
-	local Int canIndex;
-	local Augmentation aug;
+    local PersonaInfoWindow winInfo;
+    local String outText;
+    local Int canIndex;
+    local Augmentation aug;
 
-	winInfo = PersonaInfoWindow(winObject);
-	if (winInfo == None)
-		return False;
+    winInfo = PersonaInfoWindow(winObject);
+    if (winInfo == None)
+        return False;
 
-	winInfo.Clear();
-	winInfo.SetTitle(itemName);
-	winInfo.SetText(Description);
+    winInfo.Clear();
+    winInfo.SetTitle(itemName);
+    winInfo.SetText(Description);
 
-	winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ AugsAvailable);
-	winInfo.AppendText(winInfo.CR() $ winInfo.CR());
+    winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ AugsAvailable);
+    winInfo.AppendText(winInfo.CR() $ winInfo.CR());
 
-	for(canIndex=0; canIndex<ArrayCount(AddAugs); canIndex++) //
-	{
-		//== GetAugmentation() will now assign an augmentation if one hasn't been already
-		//if (AddAugs[canIndex] != '')
-		//{
-			aug = GetAugmentation(canIndex);
+    for(canIndex=0; canIndex<ArrayCount(AddAugs); canIndex++) //
+    {
+        //== GetAugmentation() will now assign an augmentation if one hasn't been already
+        //if (AddAugs[canIndex] != '')
+        //{
+            aug = GetAugmentation(canIndex);
 
-			if (aug != None)
-				winInfo.AppendText(aug.default.AugmentationName $ winInfo.CR());
-		//}
-	}	
-	
-	winInfo.AppendText(winInfo.CR() $ MustBeUsedOn);
+            if (aug != None)
+                winInfo.AppendText(aug.default.AugmentationName $ winInfo.CR());
+        //}
+    }    
+    
+    winInfo.AppendText(winInfo.CR() $ MustBeUsedOn);
 
-	return True;
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -87,55 +87,55 @@ simulated function bool UpdateInfo(Object winObject)
 
 simulated function Augmentation GetAugmentation(int augIndex)
 {
-	local Augmentation anAug;
-	local DeusExPlayer player;
-	local int i;
+    local Augmentation anAug;
+    local DeusExPlayer player;
+    local int i;
 
-	// First make sure we have a valid value
-	if ((augIndex < 0) || (augIndex > (ArrayCount(AddAugs) - 1))) //
-		return None;
+    // First make sure we have a valid value
+    if ((augIndex < 0) || (augIndex > (ArrayCount(AddAugs) - 1))) //
+        return None;
 
-	player = DeusExPlayer(Owner);
+    player = DeusExPlayer(Owner);
 
-	// Loop through all the augmentation objects and look 
-	// for the augName that matches the one stored in 
-	// this object
+    // Loop through all the augmentation objects and look 
+    // for the augName that matches the one stored in 
+    // this object
 
-	if (player != None)
-	{
-		//== Instead of returning none, just generate a random augmentation
-		if (AddAugs[augIndex] == '')
-		{
-			//== Don't stop if we somehow do the random thing and get None
-			while(anAug == None)
-			{
-				for(i = Int(Frand() * (ArrayCount(player.AugmentationSystem.AugClasses) - 3)); i >= 0; i--)
-				{
-					if(anAug == None)
-						anAug = player.AugmentationSystem.FirstAug;
-					else
-						anAug = anAug.next;
-	
-					//== No default augmentations
-					while(anAug.Class.Name == 'AugIFF' || anAug.Class.Name == 'AugLight' || anAug.Class.Name == 'AugDatalink')
-						anAug = None;
-				}
-			}
-			AddAugs[augIndex] = anAug.Class.Name;
-			return anAug;
-		}
+    if (player != None)
+    {
+        //== Instead of returning none, just generate a random augmentation
+        if (AddAugs[augIndex] == '')
+        {
+            //== Don't stop if we somehow do the random thing and get None
+            while(anAug == None)
+            {
+                for(i = Int(Frand() * (ArrayCount(player.AugmentationSystem.AugClasses) - 3)); i >= 0; i--)
+                {
+                    if(anAug == None)
+                        anAug = player.AugmentationSystem.FirstAug;
+                    else
+                        anAug = anAug.next;
+    
+                    //== No default augmentations
+                    while(anAug.Class.Name == 'AugIFF' || anAug.Class.Name == 'AugLight' || anAug.Class.Name == 'AugDatalink')
+                        anAug = None;
+                }
+            }
+            AddAugs[augIndex] = anAug.Class.Name;
+            return anAug;
+        }
 
-		anAug = player.AugmentationSystem.FirstAug;
-		while(anAug != None)
-		{
-			if (addAugs[augIndex] == anAug.Class.Name)
-				break;
+        anAug = player.AugmentationSystem.FirstAug;
+        while(anAug != None)
+        {
+            if (addAugs[augIndex] == anAug.Class.Name)
+                break;
 
-			anAug = anAug.next;
-		}
-	}
+            anAug = anAug.next;
+        }
+    }
 
-	return anAug;
+    return anAug;
 }
 
 // ----------------------------------------------------------------------
@@ -146,11 +146,11 @@ simulated function Augmentation GetAugmentation(int augIndex)
 // ----------------------------------------------------------------------
 function inventory SpawnCopy( pawn Other )
 {
-	local inventory Copy;
+    local inventory Copy;
    local Int augIndex;
    local AugmentationCannister CopyCan;
 
-	Copy = Super.SpawnCopy(Other);
+    Copy = Super.SpawnCopy(Other);
    CopyCan = AugmentationCannister(Copy);
    for (augIndex = 0; augIndex < ArrayCount(Addaugs); augIndex++)
    {

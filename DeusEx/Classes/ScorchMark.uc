@@ -7,35 +7,35 @@ var Texture alttex;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-	{
-		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex38", class'Texture', True));
-		alttex = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex39", class'Texture', True));
-		drawscale = 0.03125;
-	}
+    if(bOn)
+    {
+        Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex38", class'Texture', True));
+        alttex = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex39", class'Texture', True));
+        drawscale = 0.03125;
+    }
 
-	if(Texture == None || !bOn)
-	{
-		Texture = Default.Texture;
-		alttex = Default.alttex;
-		drawscale = Default.drawscale;
-	}
+    if(Texture == None || !bOn)
+    {
+        Texture = Default.Texture;
+        alttex = Default.alttex;
+        drawscale = Default.drawscale;
+    }
 
-	return true;
+    return true;
 }
 
 function BeginPlay()
 {
-	if (FRand() < 0.5)
-		Texture = alttex;
+    if (FRand() < 0.5)
+        Texture = alttex;
 
-	if(alttex != Default.alttex)
-		drawscale = 0.03125;
+    if(alttex != Default.alttex)
+        drawscale = 0.03125;
 
-	Super.BeginPlay();
+    Super.BeginPlay();
 }
 
 defaultproperties

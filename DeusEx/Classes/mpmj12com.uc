@@ -5,33 +5,33 @@ class MPMJ12Com extends Human;
 
 function Bool HasTwoHandedWeapon()
 {
-	return False;
+    return False;
 }
 
 function TweenToRunning(float tweentime)
 {
-//	ClientMessage("TweenToRunning()");
-	if (bIsWalking)
-	{
-		TweenToWalking(0.1);
-		return;
-	}
+//    ClientMessage("TweenToRunning()");
+    if (bIsWalking)
+    {
+        TweenToWalking(0.1);
+        return;
+    }
 
-	if (IsFiring())
-	{
-		PlayAnim('RunShoot',humanAnimRate, tweentime);
-	}
-	else
-		PlayAnim('Run',humanAnimRate, tweentime);
+    if (IsFiring())
+    {
+        PlayAnim('RunShoot',humanAnimRate, tweentime);
+    }
+    else
+        PlayAnim('Run',humanAnimRate, tweentime);
 }
 
 function PlayRunning()
 {
-//	ClientMessage("PlayRunning()");
-	if (IsFiring())
-		LoopAnim('RunShoot', humanAnimRate);
-	else
-		LoopAnim('Run', humanAnimRate);
+//    ClientMessage("PlayRunning()");
+    if (IsFiring())
+        LoopAnim('RunShoot', humanAnimRate);
+    else
+        LoopAnim('Run', humanAnimRate);
 }
 
 // ----------------------------------------------------------------------
@@ -40,9 +40,9 @@ function PlayRunning()
 
 event TravelPostAccept()
 {
-	local DeusExLevelInfo info;
+    local DeusExLevelInfo info;
 
-	Super.TravelPostAccept();
+    Super.TravelPostAccept();
 }
 
 // ----------------------------------------------------------------------

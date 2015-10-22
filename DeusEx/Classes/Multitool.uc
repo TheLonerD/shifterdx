@@ -11,16 +11,16 @@ class Multitool extends SkilledTool;
 //== Support for HDTP's new hand textures
 simulated function renderoverlays(Canvas canvas)
 {
-	if(HDTPHandTex[1] != HDTPHandTex[0])
-	{
-		multiskins[1] = Getweaponhandtex();
-	
-		super.renderoverlays(canvas);
-	
-		multiskins[1] = none; 
-	}
-	else
-		Super.RenderOverlays(canvas);
+    if(HDTPHandTex[1] != HDTPHandTex[0])
+    {
+        multiskins[1] = Getweaponhandtex();
+    
+        super.renderoverlays(canvas);
+    
+        multiskins[1] = none; 
+    }
+    else
+        Super.RenderOverlays(canvas);
 }
 
 simulated function bool TestMPBeltSpot(int BeltSpot)
@@ -32,11 +32,11 @@ simulated function bool TestMPBeltSpot(int BeltSpot)
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-		MaxCopies = 5;
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+        MaxCopies = 5;
    
 }
 

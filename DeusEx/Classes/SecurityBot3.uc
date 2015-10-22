@@ -5,35 +5,35 @@ class SecurityBot3 extends Robot;
 
 enum ESkinColor
 {
-	SC_UNATCO,
-	SC_Chinese
+    SC_UNATCO,
+    SC_Chinese
 };
 
 var() ESkinColor SkinColor;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPSecurityBot3", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPSecurityBot3", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 function BeginPlay()
 {
-	Super.BeginPlay();
+    Super.BeginPlay();
 
-	switch (SkinColor)
-	{
-		case SC_UNATCO:		Skin = Texture'SecurityBot3Tex1'; break;
-		case SC_Chinese:	Skin = Texture'SecurityBot3Tex2'; break;
-	}
+    switch (SkinColor)
+    {
+        case SC_UNATCO:        Skin = Texture'SecurityBot3Tex1'; break;
+        case SC_Chinese:    Skin = Texture'SecurityBot3Tex2'; break;
+    }
 }
 
 defaultproperties

@@ -8,54 +8,54 @@ var float sizeinc;
 
 function bool Facelift(bool bOn)
 {
-	local int i;
+    local int i;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-	{
-		BloodTex[0] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex3", class'Texture', True));
-		BloodTex[1] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex5", class'Texture', True));
-		BloodTex[2] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex6", class'Texture', True));
-		BloodTex[3] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex2", class'Texture', True));
-		sizeinc = 0.05;
-		DrawScale=0.025;
-	}
+    if(bOn)
+    {
+        BloodTex[0] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex3", class'Texture', True));
+        BloodTex[1] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex5", class'Texture', True));
+        BloodTex[2] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex6", class'Texture', True));
+        BloodTex[3] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPFlatFXTex2", class'Texture', True));
+        sizeinc = 0.05;
+        DrawScale=0.025;
+    }
 
-	if(BloodTex[0] == None || BloodTex[1] == None || BloodTex[2] == None || BloodTex[3] == None || !bOn)
-	{
-		for(i = 0; i < 4; i++)
-			BloodTex[i] = Default.BloodTex[i];
+    if(BloodTex[0] == None || BloodTex[1] == None || BloodTex[2] == None || BloodTex[3] == None || !bOn)
+    {
+        for(i = 0; i < 4; i++)
+            BloodTex[i] = Default.BloodTex[i];
 
-		sizeinc = Default.sizeinc;
-		DrawScale = Default.DrawScale;
-	}
+        sizeinc = Default.sizeinc;
+        DrawScale = Default.DrawScale;
+    }
 
 
 
-	return true;
+    return true;
 } 
 
 function BeginPlay()
 {
-	local Rotator rot;
-	local int rnd;
+    local Rotator rot;
+    local int rnd;
 
-	// Gore check
-	if (Level.Game.bLowGore || Level.Game.bVeryLowGore)
-	{
-		Destroy();
-		return;
-	}
+    // Gore check
+    if (Level.Game.bLowGore || Level.Game.bVeryLowGore)
+    {
+        Destroy();
+        return;
+    }
 
-	rnd = rand(4);
+    rnd = rand(4);
 
-	Texture = BloodTex[rnd];
+    Texture = BloodTex[rnd];
 
-	DrawScale += FRand() * sizeinc;
+    DrawScale += FRand() * sizeinc;
 
-	Super.BeginPlay();
+    Super.BeginPlay();
 }
 
 defaultproperties

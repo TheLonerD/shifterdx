@@ -8,16 +8,16 @@ var localized String msgCreditsAdded;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPCreditstex1", class'Texture', True));
+    if(bOn)
+        Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPCreditstex1", class'Texture', True));
 
-	if(Skin == None || !bOn)
-		Skin = None;
+    if(Skin == None || !bOn)
+        Skin = None;
 
-	return true;
+    return true;
 }
 
 // ----------------------------------------------------------------------
@@ -27,22 +27,22 @@ function bool Facelift(bool bOn)
 // ----------------------------------------------------------------------
 auto state Pickup
 {
-	function Frob(Actor Frobber, Inventory frobWith)
-	{
-		local DeusExPlayer player;
+    function Frob(Actor Frobber, Inventory frobWith)
+    {
+        local DeusExPlayer player;
 
-		Super.Frob(Frobber, frobWith);
+        Super.Frob(Frobber, frobWith);
 
-		player = DeusExPlayer(Frobber);
+        player = DeusExPlayer(Frobber);
 
-		if (player != None)
-		{
-			player.Credits += numCredits;
-			player.ClientMessage(Sprintf(msgCreditsAdded, numCredits));
-			player.FrobTarget = None;
-			Destroy();
-		}
-	}
+        if (player != None)
+        {
+            player.Credits += numCredits;
+            player.ClientMessage(Sprintf(msgCreditsAdded, numCredits));
+            player.FrobTarget = None;
+            Destroy();
+        }
+    }
 }
 
 defaultproperties

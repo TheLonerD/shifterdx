@@ -34,10 +34,10 @@ event InitWindow()
 
 function ProcessAction(String actionKey)
 {
-	if (actionKey == "BEGINHOST")
+    if (actionKey == "BEGINHOST")
    {
       BeginHost();
-	}
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -110,16 +110,16 @@ function SetChoiceInfo()
 {
    local Window btnChoice;
 
-	btnChoice = winClient.GetTopChild();
-	while(btnChoice != None)
-	{
-		if (btnChoice.IsA('MenuChoice_VictoryType'))
+    btnChoice = winClient.GetTopChild();
+    while(btnChoice != None)
+    {
+        if (btnChoice.IsA('MenuChoice_VictoryType'))
       {
          VictoryTypeChoice = MenuChoice_VictoryType(btnChoice);
          VictoryTypeChoice.hostParent = Self;
       }
 
-		if (btnChoice.IsA('MenuChoice_VictoryValue'))
+        if (btnChoice.IsA('MenuChoice_VictoryValue'))
       {
          VictoryValueChoice = MenuChoice_VictoryValue(btnChoice);
          VictoryValueChoice.hostParent = Self;
@@ -133,7 +133,7 @@ function SetChoiceInfo()
       }
 
       btnChoice = btnChoice.GetLowerSibling();
-	}
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -184,11 +184,11 @@ function LockButtonSetting(MenuUIChoice SetButton)
    ChoiceConfigSetting = SetButton.ConfigSetting;
    PropertyName = "";
 
-	if ( (GameTypeName != "") && (ChoiceConfigSetting != "") )
-	{
-		if ( Caps(Left(ChoiceConfigSetting,Len("DeusExMPGame "))) == Caps("DeusExMPGame ") )
+    if ( (GameTypeName != "") && (ChoiceConfigSetting != "") )
+    {
+        if ( Caps(Left(ChoiceConfigSetting,Len("DeusExMPGame "))) == Caps("DeusExMPGame ") )
          PropertyName = Right(ChoiceConfigSetting,Len(ChoiceConfigSetting) - Len("DeusExMPGame "));
-	}
+    }
 
    if (PropertyName == "")
       return;

@@ -12,15 +12,15 @@ var localized String AmmoReceived;
 // ----------------------------------------------------------------------
 function Frob(Actor Frobber, Inventory frobWith)
 {
-	local Actor A;
-	local Pawn P;
-	local DeusExPlayer Player;
+    local Actor A;
+    local Pawn P;
+    local DeusExPlayer Player;
    local Inventory CurInventory;
 
    //Don't call superclass frob.
 
    P = Pawn(Frobber);
-	Player = DeusExPlayer(Frobber);
+    Player = DeusExPlayer(Frobber);
 
    if (Player != None)
    {
@@ -32,7 +32,7 @@ function Frob(Actor Frobber, Inventory frobWith)
          CurInventory = CurInventory.Inventory;
       }
       Player.ClientMessage(AmmoReceived);
-		PlaySound(sound'WeaponPickup', SLOT_None, 0.5+FRand()*0.25, , 256, 0.95+FRand()*0.1);
+        PlaySound(sound'WeaponPickup', SLOT_None, 0.5+FRand()*0.25, , 256, 0.95+FRand()*0.1);
    }
 }
 

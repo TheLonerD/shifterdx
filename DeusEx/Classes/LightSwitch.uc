@@ -7,35 +7,35 @@ var bool bOn;
 
 function bool Facelift(bool bLiftOn)
 {
-	if(!Super.Facelift(bLiftOn))
-		return false;
+    if(!Super.Facelift(bLiftOn))
+        return false;
 
-	if(bLiftOn)
-		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPLightswitchTex1",class'Texture', True));
+    if(bLiftOn)
+        Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPLightswitchTex1",class'Texture', True));
 
-	if(Skin == None || bLiftOn)
-		Skin = None;
+    if(Skin == None || bLiftOn)
+        Skin = None;
 
-	return true;
+    return true;
 }
 
 function Frob(Actor Frobber, Inventory frobWith)
 {
-	Super.Frob(Frobber, frobWith);
+    Super.Frob(Frobber, frobWith);
 
 
-	if (bOn)
-	{
-		PlaySound(sound'Switch4ClickOff');
-		PlayAnim('Off');
-	}
-	else
-	{
-		PlaySound(sound'Switch4ClickOn');
-		PlayAnim('On');
-	}
+    if (bOn)
+    {
+        PlaySound(sound'Switch4ClickOff');
+        PlayAnim('Off');
+    }
+    else
+    {
+        PlaySound(sound'Switch4ClickOn');
+        PlayAnim('On');
+    }
 
-	bOn = !bOn;
+    bOn = !bOn;
 }
 
 defaultproperties

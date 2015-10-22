@@ -12,85 +12,85 @@ var Texture TADtex[2];
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-	{
-		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPTAD", class'Mesh', True));
-		TADtex[0] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPTADTex1", class'Texture', True));
-		TADtex[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPTADTex2", class'Texture', True));
-	}
+    if(bOn)
+    {
+        Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPTAD", class'Mesh', True));
+        TADtex[0] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPTADTex1", class'Texture', True));
+        TADtex[1] = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPTADTex2", class'Texture', True));
+    }
 
-	if(Mesh == None || TADTex[0] == None || TADTex[1] == None || !bOn)
-	{
-		Mesh = Default.Mesh;
-		TADtex[0] = Default.TADtex[0];
-		TADtex[1] = Default.TADtex[1];
-	}
+    if(Mesh == None || TADTex[0] == None || TADTex[1] == None || !bOn)
+    {
+        Mesh = Default.Mesh;
+        TADtex[0] = Default.TADtex[0];
+        TADtex[1] = Default.TADtex[1];
+    }
 
-	return true;
+    return true;
 }
 
 function Timer()
 {
-	local DeusExPlayer player;
+    local DeusExPlayer player;
 
-	player = DeusExPlayer(GetPlayerPawn());
-	if (player != None)
-	{
-		if (light == None)
-		{
-			light = Spawn(class'HighLight', Self,, Location+vect(0,0,32));
-			light.LightType = LT_None;
-			light.LightBrightness = 128;
-			light.LightHue = 0;
-			light.LightSaturation = 16;
-		}
+    player = DeusExPlayer(GetPlayerPawn());
+    if (player != None)
+    {
+        if (light == None)
+        {
+            light = Spawn(class'HighLight', Self,, Location+vect(0,0,32));
+            light.LightType = LT_None;
+            light.LightBrightness = 128;
+            light.LightHue = 0;
+            light.LightSaturation = 16;
+        }
 
-		if (player.GetActiveConversation(Self, IM_Frob) != None)
-		{
-			// beep periodically
-			if (!IsInState('Conversation'))
-			{
-				bOn = !bOn;
-				if (bOn)
-				{
-					PlaySound(beepSound, SLOT_Misc,,, 512);
-					if (light != None)
-						light.LightType = LT_Steady;
-					Skin = TADTex[1];
-				}
-				else
-				{
-					if (light != None)
-						light.LightType = LT_None;
-					Skin = TADTex[0];
-				}
-			}
-			else
-			{
-				if (light != None)
-					light.LightType = LT_None;
-				Skin = TADTex[0];
-			}
-		}
-		else
-		{
-			// turn off the light
-			if (light != None)
-				light.Destroy();
-			Skin = TADTex[0];
-			SetTimer(0.1, False);
-		}
-	}
+        if (player.GetActiveConversation(Self, IM_Frob) != None)
+        {
+            // beep periodically
+            if (!IsInState('Conversation'))
+            {
+                bOn = !bOn;
+                if (bOn)
+                {
+                    PlaySound(beepSound, SLOT_Misc,,, 512);
+                    if (light != None)
+                        light.LightType = LT_Steady;
+                    Skin = TADTex[1];
+                }
+                else
+                {
+                    if (light != None)
+                        light.LightType = LT_None;
+                    Skin = TADTex[0];
+                }
+            }
+            else
+            {
+                if (light != None)
+                    light.LightType = LT_None;
+                Skin = TADTex[0];
+            }
+        }
+        else
+        {
+            // turn off the light
+            if (light != None)
+                light.Destroy();
+            Skin = TADTex[0];
+            SetTimer(0.1, False);
+        }
+    }
 }
 
 function PostBeginPlay()
 {
-	Super.PostBeginPlay();
+    Super.PostBeginPlay();
 
-	SetTimer(beepInterval*0.5, True);
+    SetTimer(beepInterval*0.5, True);
 }
 
 defaultproperties

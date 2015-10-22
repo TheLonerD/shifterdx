@@ -7,18 +7,18 @@ var() Mesh shellmesh;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmo762mmTex1", class'Texture', True));
+    if(bOn)
+        Skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmo762mmTex1", class'Texture', True));
 
-	if(Skin == None || !bOn)
-		Skin = Default.Skin;
-	else
-		shellmesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAssaultCasing", class'Mesh', True));
+    if(Skin == None || !bOn)
+        Skin = Default.Skin;
+    else
+        shellmesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAssaultCasing", class'Mesh', True));
 
-	return true;
+    return true;
 } 
 
 //
@@ -26,67 +26,67 @@ function bool Facelift(bool bOn)
 //
 simulated function bool SimUseAmmo()
 {
-	local vector offset, tempvec, X, Y, Z;
-	local ShellCasing shell;
-	local DeusExWeapon W;
+    local vector offset, tempvec, X, Y, Z;
+    local ShellCasing shell;
+    local DeusExWeapon W;
 
-	if ( AmmoAmount > 0 )
-	{
-		GetAxes(Pawn(Owner).ViewRotation, X, Y, Z);
-		offset = Owner.CollisionRadius * X + 0.3 * Owner.CollisionRadius * Y;
-		tempvec = 0.8 * Owner.CollisionHeight * Z;
-		offset.Z += tempvec.Z;
+    if ( AmmoAmount > 0 )
+    {
+        GetAxes(Pawn(Owner).ViewRotation, X, Y, Z);
+        offset = Owner.CollisionRadius * X + 0.3 * Owner.CollisionRadius * Y;
+        tempvec = 0.8 * Owner.CollisionHeight * Z;
+        offset.Z += tempvec.Z;
 
-		W = DeusExWeapon(Pawn(Owner).Weapon);
+        W = DeusExWeapon(Pawn(Owner).Weapon);
 
       if ((W != None) && ((W.NoiseLevel < 0.1) || W.bHasSilencer))
          shell = spawn(class'ShellCasingSilent',,, Owner.Location + offset,Pawn(Owner).viewrotation);
       else
          shell = spawn(class'ShellCasing',,, Owner.Location + offset,Pawn(Owner).viewrotation);
 
-		shell.RemoteRole = ROLE_None;
+        shell.RemoteRole = ROLE_None;
 
-		if (shell != None)
-		{
-			shell.Velocity = (FRand()*20+90) * Y + (10-FRand()*20) * X;
-			shell.Velocity.Z = 0;
+        if (shell != None)
+        {
+            shell.Velocity = (FRand()*20+90) * Y + (10-FRand()*20) * X;
+            shell.Velocity.Z = 0;
 
-			if(shellmesh != None)
-				shell.mesh = shellmesh;
-		}
-		return True;
-	}
-	return False;
+            if(shellmesh != None)
+                shell.mesh = shellmesh;
+        }
+        return True;
+    }
+    return False;
 }
 
 function bool UseAmmo(int AmountNeeded)
 {
-	local vector offset, tempvec, X, Y, Z;
-	local ShellCasing shell;
-	local DeusExWeapon W;
+    local vector offset, tempvec, X, Y, Z;
+    local ShellCasing shell;
+    local DeusExWeapon W;
 
-	if (Super.UseAmmo(AmountNeeded))
-	{
-		GetAxes(Pawn(Owner).ViewRotation, X, Y, Z);
-		offset = Owner.CollisionRadius * X + 0.3 * Owner.CollisionRadius * Y;
-		tempvec = 0.8 * Owner.CollisionHeight * Z;
-		offset.Z += tempvec.Z;
+    if (Super.UseAmmo(AmountNeeded))
+    {
+        GetAxes(Pawn(Owner).ViewRotation, X, Y, Z);
+        offset = Owner.CollisionRadius * X + 0.3 * Owner.CollisionRadius * Y;
+        tempvec = 0.8 * Owner.CollisionHeight * Z;
+        offset.Z += tempvec.Z;
 
-		// use silent shells if the weapon has been silenced
-		W = DeusExWeapon(Pawn(Owner).Weapon);
+        // use silent shells if the weapon has been silenced
+        W = DeusExWeapon(Pawn(Owner).Weapon);
       if ( DeusExMPGame(Level.Game) != None )
       {
-			if ( Level.NetMode == NM_ListenServer )
-			{
-				if ((W != None) && ((W.NoiseLevel < 0.1) || W.bHasSilencer))
-					shell = spawn(class'ShellCasingSilent',,, Owner.Location + offset,Pawn(Owner).viewrotation);
-				else
-					shell = spawn(class'ShellCasing',,, Owner.Location + offset,Pawn(Owner).viewrotation);
+            if ( Level.NetMode == NM_ListenServer )
+            {
+                if ((W != None) && ((W.NoiseLevel < 0.1) || W.bHasSilencer))
+                    shell = spawn(class'ShellCasingSilent',,, Owner.Location + offset,Pawn(Owner).viewrotation);
+                else
+                    shell = spawn(class'ShellCasing',,, Owner.Location + offset,Pawn(Owner).viewrotation);
 
-				shell.RemoteRole = ROLE_None;
-			}
-			else
-	         shell = None;
+                shell.RemoteRole = ROLE_None;
+            }
+            else
+             shell = None;
       }
       else
       {
@@ -96,18 +96,18 @@ function bool UseAmmo(int AmountNeeded)
             shell = spawn(class'ShellCasing',,, Owner.Location + offset,Pawn(Owner).viewrotation);
       }
 
-		if (shell != None)
-		{
-			shell.Velocity = (FRand()*20+90) * Y + (10-FRand()*20) * X;
-			shell.Velocity.Z = 0;
+        if (shell != None)
+        {
+            shell.Velocity = (FRand()*20+90) * Y + (10-FRand()*20) * X;
+            shell.Velocity.Z = 0;
 
-			if(shellmesh != None)
-				shell.mesh = shellmesh;
-		}
-		return True;
-	}
+            if(shellmesh != None)
+                shell.mesh = shellmesh;
+        }
+        return True;
+    }
 
-	return False;
+    return False;
 }
 
 defaultproperties

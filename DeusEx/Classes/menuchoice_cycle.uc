@@ -14,7 +14,7 @@ var DXMapList MapList;
 
 event InitWindow()
 {
-	Super.InitWindow();
+    Super.InitWindow();
      
    PopulateCycleTypes();
 
@@ -29,7 +29,7 @@ event InitWindow()
 
 function PopulateCycleTypes()
 {
-	local int typeIndex;
+    local int typeIndex;
 
    MapList = player.Spawn(class'DXMapList');
 

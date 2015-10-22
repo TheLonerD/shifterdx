@@ -5,75 +5,75 @@ class SecurityBot2 extends Robot;
 
 enum ESkinColor
 {
-	SC_UNATCO,
-	SC_Chinese
+    SC_UNATCO,
+    SC_Chinese
 };
 
 var() ESkinColor SkinColor;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPSecBot2", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPSecBot2", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Mesh = Default.Mesh;
-		MultiSkins[1] = Default.MultiSkins[1];
-		switch (SkinColor)
-		{
-			case SC_UNATCO:		MultiSkins[1] = Texture'SecurityBot2Tex1'; break;
-			case SC_Chinese:	MultiSkins[1] = Texture'SecurityBot2Tex2'; break;
-		}
-	}
-	else
-	{
-		switch (SkinColor)
-		{
-			case SC_UNATCO:		MultiSkins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPSecBot2tex1", class'Texture', True)); break;
-			case SC_Chinese:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPSecBot2tex2", class'Texture', True)); break;
-		}
-	}
+    if(Mesh == None || !bOn)
+    {
+        Mesh = Default.Mesh;
+        MultiSkins[1] = Default.MultiSkins[1];
+        switch (SkinColor)
+        {
+            case SC_UNATCO:        MultiSkins[1] = Texture'SecurityBot2Tex1'; break;
+            case SC_Chinese:    MultiSkins[1] = Texture'SecurityBot2Tex2'; break;
+        }
+    }
+    else
+    {
+        switch (SkinColor)
+        {
+            case SC_UNATCO:        MultiSkins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPSecBot2tex1", class'Texture', True)); break;
+            case SC_Chinese:    MultiSkins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPSecBot2tex2", class'Texture', True)); break;
+        }
+    }
 
-	return true;
+    return true;
 }
 
 function BeginPlay()
 {
-	Super.BeginPlay();
+    Super.BeginPlay();
 
-	if(Mesh == Default.Mesh)
-	{
-		switch (SkinColor)
-		{
-			case SC_UNATCO:		MultiSkins[1] = Texture'SecurityBot2Tex1'; break;
-			case SC_Chinese:	MultiSkins[1] = Texture'SecurityBot2Tex2'; break;
-		}
-	}
-	else
-	{
-		switch (SkinColor)
-		{
-			case SC_UNATCO:		MultiSkins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPSecBot2tex1", class'Texture', True)); break;
-			case SC_Chinese:	MultiSkins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPSecBot2tex2", class'Texture', True)); break;
-		}
-	}
+    if(Mesh == Default.Mesh)
+    {
+        switch (SkinColor)
+        {
+            case SC_UNATCO:        MultiSkins[1] = Texture'SecurityBot2Tex1'; break;
+            case SC_Chinese:    MultiSkins[1] = Texture'SecurityBot2Tex2'; break;
+        }
+    }
+    else
+    {
+        switch (SkinColor)
+        {
+            case SC_UNATCO:        MultiSkins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPSecBot2tex1", class'Texture', True)); break;
+            case SC_Chinese:    MultiSkins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPSecBot2tex2", class'Texture', True)); break;
+        }
+    }
 }
 
 function PlayDisabled()
 {
-	local int rnd;
+    local int rnd;
 
-	rnd = Rand(3);
-	if (rnd == 0)
-		TweenAnimPivot('Disabled1', 0.2);
-	else if (rnd == 1)
-		TweenAnimPivot('Disabled2', 0.2);
-	else
-		TweenAnimPivot('Still', 0.2);
+    rnd = Rand(3);
+    if (rnd == 0)
+        TweenAnimPivot('Disabled1', 0.2);
+    else if (rnd == 1)
+        TweenAnimPivot('Disabled2', 0.2);
+    else
+        TweenAnimPivot('Still', 0.2);
 }
 
 defaultproperties

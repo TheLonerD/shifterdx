@@ -9,24 +9,24 @@ class MPBOBAUG extends Human;
 
 event TravelPostAccept()
 {
-	local DeusExLevelInfo info;
+    local DeusExLevelInfo info;
 
-	Super.TravelPostAccept();
+    Super.TravelPostAccept();
 }
 
 function Carcass SpawnCarcass()
 {
-	local Carcass aCorpse;
+    local Carcass aCorpse;
 
-	aCorpse = Super.SpawnCarcass();
+    aCorpse = Super.SpawnCarcass();
 
-	if(aCorpse != None)
-	{
-		aCorpse.Multiskins[0] = Texture'DeusExDeco.Skins.BobPageAugmentedTex2';
-		aCorpse.Multiskins[2] = Texture'DeusExDeco.Skins.BobPageAugmentedTex2';
-	}
+    if(aCorpse != None)
+    {
+        aCorpse.Multiskins[0] = Texture'DeusExDeco.Skins.BobPageAugmentedTex2';
+        aCorpse.Multiskins[2] = Texture'DeusExDeco.Skins.BobPageAugmentedTex2';
+    }
 
-	return aCorpse;
+    return aCorpse;
 }
 
 // ----------------------------------------------------------------------

@@ -15,11 +15,11 @@
 
 class DeusExGoal expands Object;
 
-var travel Name goalName;			// Goal name, "GOAL_somestring"
-var travel String text;				// Actual goal text
-var travel Bool bPrimaryGoal;		// True if Primary Goal
-var travel Bool bCompleted;			// True if Completed
-var travel DeusExGoal next;			// Next goal
+var travel Name goalName;            // Goal name, "GOAL_somestring"
+var travel String text;                // Actual goal text
+var travel Bool bPrimaryGoal;        // True if Primary Goal
+var travel Bool bCompleted;            // True if Completed
+var travel DeusExGoal next;            // Next goal
 
 
 // ----------------------------------------------------------------------
@@ -28,7 +28,7 @@ var travel DeusExGoal next;			// Next goal
 
 function SetName( Name newGoalName )
 {
-	goalName = newGoalName;
+    goalName = newGoalName;
 }
 
 // ----------------------------------------------------------------------
@@ -37,7 +37,7 @@ function SetName( Name newGoalName )
 
 function SetText( String newText )
 {
-	text = newText;
+    text = newText;
 }
 
 // ----------------------------------------------------------------------
@@ -46,7 +46,7 @@ function SetText( String newText )
 
 function SetPrimaryGoal( Bool bNewPrimaryGoal )
 {
-	bPrimaryGoal = bNewPrimaryGoal;
+    bPrimaryGoal = bNewPrimaryGoal;
 }
 
 // ----------------------------------------------------------------------
@@ -55,7 +55,7 @@ function SetPrimaryGoal( Bool bNewPrimaryGoal )
 
 function bool IsPrimaryGoal()
 {
-	return bPrimaryGoal;
+    return bPrimaryGoal;
 }
 
 // ----------------------------------------------------------------------
@@ -66,7 +66,7 @@ function bool IsPrimaryGoal()
 
 function SetCompleted()
 {
-	bCompleted = True;
+    bCompleted = True;
 }
 
 // ----------------------------------------------------------------------
@@ -77,7 +77,7 @@ function SetCompleted()
 
 function bool IsCompleted()
 {
-	return bCompleted;
+    return bCompleted;
 }
 
 defaultproperties

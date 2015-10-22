@@ -11,38 +11,38 @@ class VialCrack extends Consumable;
 
 state Activated
 {
-	function Activate()
-	{
+    function Activate()
+    {
 
-	}
+    }
 
-	function BeginState()
-	{
-		local DeusExPlayer player;
+    function BeginState()
+    {
+        local DeusExPlayer player;
 
-		player = DeusExPlayer(Owner);
+        player = DeusExPlayer(Owner);
 
-		if(player == None)
-			return;
+        if(player == None)
+            return;
 
-		if(player.drugEffectTimer < 0.0)
-			return;
-		else
-			player.drugEffectTimer = -1.0;
-		
-		//=== Here begin the bullet time effects.  Neat how simple it is, huh?
-		//=== The values are relative and not set in stone so that users who must
-		//===  modify the GameSpeed for play (usually laptop users) don't get
-		//===  messed up when they use Zyme.  There is still a risk if the speed has been
-		//===  lowered to something below 0.2, since the absolute lowest the game can run
-		//===  is 0.1 speed.
-		if(player.Level.NetMode == NM_Standalone)
-			player.Level.Game.SetGameSpeed(player.Level.Game.GameSpeed / 2.000);
-		else
-			log("VialCrack: Some smartass put Zyme in a multiplayer map.  Hit them.");
-	
-		Super.BeginState(); //The parent class handles setting the drug effect and all that
-	}
+        if(player.drugEffectTimer < 0.0)
+            return;
+        else
+            player.drugEffectTimer = -1.0;
+        
+        //=== Here begin the bullet time effects.  Neat how simple it is, huh?
+        //=== The values are relative and not set in stone so that users who must
+        //===  modify the GameSpeed for play (usually laptop users) don't get
+        //===  messed up when they use Zyme.  There is still a risk if the speed has been
+        //===  lowered to something below 0.2, since the absolute lowest the game can run
+        //===  is 0.1 speed.
+        if(player.Level.NetMode == NM_Standalone)
+            player.Level.Game.SetGameSpeed(player.Level.Game.GameSpeed / 2.000);
+        else
+            log("VialCrack: Some smartass put Zyme in a multiplayer map.  Hit them.");
+    
+        Super.BeginState(); //The parent class handles setting the drug effect and all that
+    }
 Begin:
 }
 

@@ -5,12 +5,12 @@ class MJ12Commando extends HumanMilitary;
 
 function Bool HasTwoHandedWeapon()
 {
-	return False;
+    return False;
 }
 
 function PlayReloadBegin()
 {
-	TweenAnimPivot('Shoot', 0.1);
+    TweenAnimPivot('Shoot', 0.1);
 }
 
 function PlayReload()
@@ -27,74 +27,74 @@ function PlayIdle()
 
 function TweenToShoot(float tweentime)
 {
-	if (Region.Zone.bWaterZone)
-		TweenAnimPivot('TreadShoot', tweentime, GetSwimPivot());
-	else if (!bCrouching)
-		TweenAnimPivot('Shoot2', tweentime);
+    if (Region.Zone.bWaterZone)
+        TweenAnimPivot('TreadShoot', tweentime, GetSwimPivot());
+    else if (!bCrouching)
+        TweenAnimPivot('Shoot2', tweentime);
 }
 
 function PlayShoot()
 {
-	if (Region.Zone.bWaterZone)
-		PlayAnimPivot('TreadShoot', , 0, GetSwimPivot());
-	else
-		PlayAnimPivot('Shoot2', , 0);
+    if (Region.Zone.bWaterZone)
+        PlayAnimPivot('TreadShoot', , 0, GetSwimPivot());
+    else
+        PlayAnimPivot('Shoot2', , 0);
 }
 
 function bool IgnoreDamageType(Name damageType)
 {
-	if ((damageType == 'TearGas') || (damageType == 'PoisonGas'))
-		return True;
-	else
-		return False;
+    if ((damageType == 'TearGas') || (damageType == 'PoisonGas'))
+        return True;
+    else
+        return False;
 }
 
 function float ShieldDamage(Name damageType)
 {
-	if (IgnoreDamageType(damageType))
-		return 0.0;
-	else if ((damageType == 'Burned') || (damageType == 'Flamed'))
-		return 0.5;
-	else if ((damageType == 'Poison') || (damageType == 'PoisonEffect'))
-		return 0.5;
-	else
-		return Super.ShieldDamage(damageType);
+    if (IgnoreDamageType(damageType))
+        return 0.0;
+    else if ((damageType == 'Burned') || (damageType == 'Flamed'))
+        return 0.5;
+    else if ((damageType == 'Poison') || (damageType == 'PoisonEffect'))
+        return 0.5;
+    else
+        return Super.ShieldDamage(damageType);
 }
 
 
 function GotoDisabledState(name damageType, EHitLocation hitPos)
 {
-	if (!bCollideActors && !bBlockActors && !bBlockPlayers)
-		return;
-	else if (!IgnoreDamageType(damageType) && CanShowPain())
-		TakeHit(hitPos);
-	else
-		GotoNextState();
+    if (!bCollideActors && !bBlockActors && !bBlockPlayers)
+        return;
+    else if (!IgnoreDamageType(damageType) && CanShowPain())
+        TakeHit(hitPos);
+    else
+        GotoNextState();
 }
 
 function Carcass SpawnCarcass()
 {
-	local DeusExCarcass carc;
-	local Inventory item;
+    local DeusExCarcass carc;
+    local Inventory item;
 
-	carc = DeusExCarcass(Super.SpawnCarcass());
+    carc = DeusExCarcass(Super.SpawnCarcass());
 
 
-	//Since the MJ12 Rocket weapon is a native weapon, the ammo
-	// doesn't transfer.  Instead we have to manually give the
-	// MJ12 corpse ammo
-	if(carc != none)
-	{
-		item = Spawn(Class'AmmoRocketMini', carc);
-		if(item != None)
-		{
-			item.InitialState='Idle2';
-			item.GiveTo(Self);
-			item.SetBase(Self);
-			DeleteInventory(item);
-			carc.AddInventory(item);
-		}
-	}
+    //Since the MJ12 Rocket weapon is a native weapon, the ammo
+    // doesn't transfer.  Instead we have to manually give the
+    // MJ12 corpse ammo
+    if(carc != none)
+    {
+        item = Spawn(Class'AmmoRocketMini', carc);
+        if(item != None)
+        {
+            item.InitialState='Idle2';
+            item.GiveTo(Self);
+            item.SetBase(Self);
+            DeleteInventory(item);
+            carc.AddInventory(item);
+        }
+    }
 }
 
 defaultproperties

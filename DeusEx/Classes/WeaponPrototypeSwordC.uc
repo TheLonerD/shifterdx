@@ -6,49 +6,49 @@ class WeaponPrototypeSwordC expands WeaponSword;
 //== No facelift because HDTP lacks the shine overlay layer
 function bool Facelift(bool bOn)
 {
-	return false;
+    return false;
 }
 
 state DownWeapon
 {
-	function BeginState()
-	{
-		Super.BeginState();
-		LightType = LT_None;
-		Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
-		bUnlit = False;
-	}
+    function BeginState()
+    {
+        Super.BeginState();
+        LightType = LT_None;
+        Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
+        bUnlit = False;
+    }
 }
 
 state Idle
 {
-	function BeginState()
-	{
-		Super.BeginState();
-		LightType = LT_Steady;
-		if(!bUnlit)
-		{
-			PlaySound(sound'DeusExSounds.Weapons.NanoSwordSelect', SLOT_None, 0.5,, 768);
-			Texture=Texture'Effects.LaserBeam2';
-			bUnlit = True;
-		}
-	}
+    function BeginState()
+    {
+        Super.BeginState();
+        LightType = LT_Steady;
+        if(!bUnlit)
+        {
+            PlaySound(sound'DeusExSounds.Weapons.NanoSwordSelect', SLOT_None, 0.5,, 768);
+            Texture=Texture'Effects.LaserBeam2';
+            bUnlit = True;
+        }
+    }
 }
 
 auto state Pickup
 {
-	function BeginState()
-	{
-		Super.BeginState();
-		LightType = LT_Steady;
-	}
-	function EndState()
-	{
-		Super.EndState();
-		LightType = LT_None;
-		Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
-		bUnlit = False;
-	}
+    function BeginState()
+    {
+        Super.BeginState();
+        LightType = LT_Steady;
+    }
+    function EndState()
+    {
+        Super.EndState();
+        LightType = LT_None;
+        Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
+        bUnlit = False;
+    }
 }
 
 defaultproperties

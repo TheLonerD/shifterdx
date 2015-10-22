@@ -8,113 +8,113 @@ class WeaponShuriken extends DeusExWeapon;
 
 function bool Facelift(bool bOn)
 {
-	local Name tName;
+    local Name tName;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	tName = GetStateName();
+    tName = GetStateName();
 
-	if(bOn)
-	{
-		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPShuriken", class'mesh', True));
-		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPShurikenPickup", class'mesh', True));
-		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPShuriken3rd", class'mesh', True));
-	}
+    if(bOn)
+    {
+        PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPShuriken", class'mesh', True));
+        PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPShurikenPickup", class'mesh', True));
+        ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPShuriken3rd", class'mesh', True));
+    }
 
-	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
-	{
-		PlayerViewMesh = Default.PlayerViewMesh;
-		PickupViewMesh = Default.PickupViewMesh;
-		ThirdPersonMesh = Default.ThirdPersonMesh;
-	}
-	else
-		Mesh = PickupViewMesh;
+    if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+    {
+        PlayerViewMesh = Default.PlayerViewMesh;
+        PickupViewMesh = Default.PickupViewMesh;
+        ThirdPersonMesh = Default.ThirdPersonMesh;
+    }
+    else
+        Mesh = PickupViewMesh;
 
-	if(tName == 'Pickup')
-		Mesh = PickupViewMesh;
-	else
-		Mesh = PlayerViewMesh;
+    if(tName == 'Pickup')
+        Mesh = PickupViewMesh;
+    else
+        Mesh = PlayerViewMesh;
 
-	return true;
+    return true;
 }
 
 simulated function renderoverlays(Canvas canvas)
 {
-	if(PickupViewMesh != Default.PickupViewMesh)
-		multiskins[0] = Getweaponhandtex();
+    if(PickupViewMesh != Default.PickupViewMesh)
+        multiskins[0] = Getweaponhandtex();
 
-	super.renderoverlays(canvas);
+    super.renderoverlays(canvas);
 
-	if(PickupViewMesh != Default.PickupViewMesh)
-		multiskins[0] = none; 
+    if(PickupViewMesh != Default.PickupViewMesh)
+        multiskins[0] = none; 
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		HitDamage = mpHitDamage;
-		BaseAccuracy = mpBaseAccuracy;
-		ReloadTime = mpReloadTime;
-		AccurateRange = mpAccurateRange;
-		MaxRange = mpMaxRange;
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        HitDamage = mpHitDamage;
+        BaseAccuracy = mpBaseAccuracy;
+        ReloadTime = mpReloadTime;
+        AccurateRange = mpAccurateRange;
+        MaxRange = mpMaxRange;
       PickupAmmoCount = 7;
-	}
+    }
 }
 
 function bool HandlePickupQuery(Inventory Item)
 {
-	local DeusExPlayer player;
-	local bool bResult;
-	local Ammo defAmmo;
+    local DeusExPlayer player;
+    local bool bResult;
+    local Ammo defAmmo;
 
-	player = DeusExPlayer(Owner);
+    player = DeusExPlayer(Owner);
 
-	if (Item.Class == Class)
-	{
-		if (!( (Weapon(item).bWeaponStay && (Level.NetMode == NM_Standalone)) && (!Weapon(item).bHeldItem || Weapon(item).bTossedOut)))
-		{
-			// Only add ammo of the default type
-			// There was an easy way to get 32 20mm shells, buy picking up another assault rifle with 20mm ammo selected
-			if ( AmmoType != None && AmmoName != None && AmmoName != class'AmmoNone' )
-			{
-				defAmmo = Ammo(player.FindInventoryType(AmmoName));
-				defAmmo.AddAmmo( Weapon(Item).PickupAmmoCount );
+    if (Item.Class == Class)
+    {
+        if (!( (Weapon(item).bWeaponStay && (Level.NetMode == NM_Standalone)) && (!Weapon(item).bHeldItem || Weapon(item).bTossedOut)))
+        {
+            // Only add ammo of the default type
+            // There was an easy way to get 32 20mm shells, buy picking up another assault rifle with 20mm ammo selected
+            if ( AmmoType != None && AmmoName != None && AmmoName != class'AmmoNone' )
+            {
+                defAmmo = Ammo(player.FindInventoryType(AmmoName));
+                defAmmo.AddAmmo( Weapon(Item).PickupAmmoCount );
 
-				if ( Level.NetMode != NM_Standalone )
-				{
-					if (( player != None ) && ( player.InHand != None ))
-					{
-						if ( DeusExWeapon(item).class == DeusExWeapon(player.InHand).class )
-							ReadyToFire();
-					}
-				}
+                if ( Level.NetMode != NM_Standalone )
+                {
+                    if (( player != None ) && ( player.InHand != None ))
+                    {
+                        if ( DeusExWeapon(item).class == DeusExWeapon(player.InHand).class )
+                            ReadyToFire();
+                    }
+                }
 
-				player.ClientMessage(Item.PickupMessage @ Item.itemArticle @ Item.itemName, 'Pickup');
+                player.ClientMessage(Item.PickupMessage @ Item.itemArticle @ Item.itemName, 'Pickup');
 
-				Item.Destroy();
+                Item.Destroy();
 
-				return true;
-			}
-		}
-	}
+                return true;
+            }
+        }
+    }
 
-	bResult = Super.HandlePickupQuery(Item);
+    bResult = Super.HandlePickupQuery(Item);
 
-	// Notify the object belt of the new ammo
-	if (player != None)
-		player.UpdateBeltText(Self);
+    // Notify the object belt of the new ammo
+    if (player != None)
+        player.UpdateBeltText(Self);
 
-	return bResult;
+    return bResult;
 }
 
 function bool TestCycleable()
 {
-	return true;
+    return true;
 }
 
 //Damage increased from 15

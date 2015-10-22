@@ -22,19 +22,19 @@ var int itemCount; //The number of items we're tracking
 
 event InitWindow()
 {
-	Super.InitWindow();
+    Super.InitWindow();
 
-	SetOrder(ORDER_DownThenRight);
-	SetChildAlignments(HALIGN_Center, VALIGN_Top);
-	SetMargins(0, 0);
-	SetMinorSpacing(2);
-	MakeWidthsEqual(False);
-	MakeHeightsEqual(False);
+    SetOrder(ORDER_DownThenRight);
+    SetChildAlignments(HALIGN_Center, VALIGN_Top);
+    SetMargins(0, 0);
+    SetMinorSpacing(2);
+    MakeWidthsEqual(False);
+    MakeHeightsEqual(False);
 
-	// Get a pointer to the player
-	player = DeusExPlayer(GetRootWindow().parentPawn);
+    // Get a pointer to the player
+    player = DeusExPlayer(GetRootWindow().parentPawn);
 
-	StyleChanged();
+    StyleChanged();
 }
 
 // ----------------------------------------------------------------------
@@ -43,40 +43,40 @@ event InitWindow()
 
 event SetItem(Inventory invItem, int count)
 {
-	local String labelText;
-	local Texture icontex;
+    local String labelText;
+    local Texture icontex;
 
-	winIcon = NewChild(Class'Window');
-	winIcon.SetSize(42, 37);
-	winIcon.SetBackgroundStyle(DSTY_Masked);
+    winIcon = NewChild(Class'Window');
+    winIcon.SetSize(42, 37);
+    winIcon.SetBackgroundStyle(DSTY_Masked);
 
-	if(invItem.IsA('DeusExAmmo'))
-		if(DeusExAmmo(invItem).DynamicLoadIcon != "")
-			icontex = Texture(DynamicLoadObject(DeusExAmmo(invItem).DynamicLoadIcon, class'Texture', True));
+    if(invItem.IsA('DeusExAmmo'))
+        if(DeusExAmmo(invItem).DynamicLoadIcon != "")
+            icontex = Texture(DynamicLoadObject(DeusExAmmo(invItem).DynamicLoadIcon, class'Texture', True));
 
-	if(icontex == None)
-		icontex = invItem.Icon;
+    if(icontex == None)
+        icontex = invItem.Icon;
 
-	if(icontex == None)
-		icontex = invItem.Default.Icon;
+    if(icontex == None)
+        icontex = invItem.Default.Icon;
 
-	winIcon.SetBackground(icontex);
+    winIcon.SetBackground(icontex);
 
-	itemClass = invItem.Class; //For tracking duplicates
-	itemCount = count;
+    itemClass = invItem.Class; //For tracking duplicates
+    itemCount = count;
 
-	winLabel = TextWindow(NewChild(Class'TextWindow'));
-	winLabel.SetFont(fontLabel);
-	winLabel.SetTextColor(colText);
-	winLabel.SetTextAlignments(HALIGN_Center, VALIGN_Top);
+    winLabel = TextWindow(NewChild(Class'TextWindow'));
+    winLabel.SetFont(fontLabel);
+    winLabel.SetTextColor(colText);
+    winLabel.SetTextAlignments(HALIGN_Center, VALIGN_Top);
 
-	labelText = invItem.beltDescription;
-	if(labelText == "") //== Weird bug with robots, no idea why
-		labelText = invItem.Default.beltDescription;
-	if (count > 1 || invItem.IsA('Ammo'))
-		labelText = labelText $ " (" $ String(count) $ ")";
+    labelText = invItem.beltDescription;
+    if(labelText == "") //== Weird bug with robots, no idea why
+        labelText = invItem.Default.beltDescription;
+    if (count > 1 || invItem.IsA('Ammo'))
+        labelText = labelText $ " (" $ String(count) $ ")";
 
-	winLabel.SetText(labelText);
+    winLabel.SetText(labelText);
 }
 
 // ----------------------------------------------------------------------
@@ -85,14 +85,14 @@ event SetItem(Inventory invItem, int count)
 
 event StyleChanged()
 {
-	local ColorTheme theme;
+    local ColorTheme theme;
 
-	theme = player.ThemeManager.GetCurrentHUDColorTheme();
+    theme = player.ThemeManager.GetCurrentHUDColorTheme();
 
-	colText = theme.GetColorFromName('HUDColor_NormalText');
+    colText = theme.GetColorFromName('HUDColor_NormalText');
 
-	if (winLabel != None)
-		winLabel.SetTextColor(colText);
+    if (winLabel != None)
+        winLabel.SetTextColor(colText);
 }
 
 // ----------------------------------------------------------------------

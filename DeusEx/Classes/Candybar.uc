@@ -5,47 +5,47 @@ class Candybar extends Consumable;
 
 simulated function BeginPlay()
 {
-	Super.BeginPlay();
+    Super.BeginPlay();
 
-	if(Rand(2) == 1)
-		Skin = Texture'CandybarTex2';
+    if(Rand(2) == 1)
+        Skin = Texture'CandybarTex2';
 }
 
 function bool Facelift(bool bOn)
 {
-	local Texture lSkin;
+    local Texture lSkin;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	lSkin = Skin;
+    lSkin = Skin;
 
-	if(bOn && lSkin != Texture'CandybarTex2')
-		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPCandybartex1", class'Texture', true));
+    if(bOn && lSkin != Texture'CandybarTex2')
+        Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPCandybartex1", class'Texture', true));
 
-	if(Skin == None || !bOn)
-	{
-		if(lSkin == Texture'CandybarTex2')
-			Skin = lSkin;
+    if(Skin == None || !bOn)
+    {
+        if(lSkin == Texture'CandybarTex2')
+            Skin = lSkin;
 
-		else
-			Skin = None;
-	}
+        else
+            Skin = None;
+    }
 
-	return true;
+    return true;
 }
 
 state Activated
 {
-	function Activate()
-	{
-		Super.Activate();
-	}
+    function Activate()
+    {
+        Super.Activate();
+    }
 
-	function BeginState()
-	{
-		Super.BeginState();
-	}
+    function BeginState()
+    {
+        Super.BeginState();
+    }
 Begin:
 }
 

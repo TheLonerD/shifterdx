@@ -9,14 +9,14 @@ class MPGRAY extends Human;
 
 function bool HasTwoHandedWeapon()
 {
-	return false;
+    return false;
 }
 
 event TravelPostAccept()
 {
-	local DeusExLevelInfo info;
+    local DeusExLevelInfo info;
 
-	Super.TravelPostAccept();
+    Super.TravelPostAccept();
 }
 
 // ----------------------------------------------------------------------

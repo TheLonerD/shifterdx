@@ -5,26 +5,26 @@ class CrateBreakableMedCombat extends Containers;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-	{
-		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPCrateBreakableMed", class'mesh', True));
-		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCrateBreakableAmmoTex1", class'Texture', True));
+    if(bOn)
+    {
+        Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPCrateBreakableMed", class'mesh', True));
+        Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCrateBreakableAmmoTex1", class'Texture', True));
 
-		//== Fallback for people using the Alpha
-		if(Skin == None)
-			Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCrateBreakableTex3", class'Texture', True));
-	}
+        //== Fallback for people using the Alpha
+        if(Skin == None)
+            Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPCrateBreakableTex3", class'Texture', True));
+    }
 
-	if(Mesh == None || Skin == None || !bOn)
-	{
-		Mesh = Default.Mesh;
-		Skin = Default.Skin;
-	}
+    if(Mesh == None || Skin == None || !bOn)
+    {
+        Mesh = Default.Mesh;
+        Skin = Default.Skin;
+    }
 
-	return true;
+    return true;
 }
 
 defaultproperties

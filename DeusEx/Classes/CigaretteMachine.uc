@@ -17,109 +17,109 @@ var localized String VendProductName;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPcigarettemachine", class'mesh', True));
-	
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(bOn)
+        Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPcigarettemachine", class'mesh', True));
+    
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 function BeginPlay()
 {
-	Super.BeginPlay();
+    Super.BeginPlay();
 
-//	if(VendProduct != None && VendProductName == "")
-//		VendProductName = VendProduct.Default.ItemName;
+//    if(VendProduct != None && VendProductName == "")
+//        VendProductName = VendProduct.Default.ItemName;
 
-	if(VendProductName == "") VendProductName = (class'Cigarettes').Default.ItemName;
+    if(VendProductName == "") VendProductName = (class'Cigarettes').Default.ItemName;
 }
 
 function String GetDecoName()
 {
-	if(numUses > 0)
-	{
-		if(ClassIsChildOf(Class, class'CigaretteMachine'))
-		{
-			if(Cost <= 0)
-				return ItemName $ " (Free!)";
-			return ItemName $ " (" $ Cost $" Credits)";
-		}
+    if(numUses > 0)
+    {
+        if(ClassIsChildOf(Class, class'CigaretteMachine'))
+        {
+            if(Cost <= 0)
+                return ItemName $ " (Free!)";
+            return ItemName $ " (" $ Cost $" Credits)";
+        }
 
-		if(Cost <= 0)
-			return ItemName $ " (" $ VendProductName $ " - Free!)";
-		return ItemName $ " (" $ VendProductName $ " - " $ Cost $ " " $ CostUnit $ ")";
-	}
-	return ItemName $ " (Empty)";
+        if(Cost <= 0)
+            return ItemName $ " (" $ VendProductName $ " - Free!)";
+        return ItemName $ " (" $ VendProductName $ " - " $ Cost $ " " $ CostUnit $ ")";
+    }
+    return ItemName $ " (Empty)";
 }
 
 function Frob(actor Frobber, Inventory frobWith)
 {
-	local DeusExPlayer player;
-	local Vector loc;
-	local Actor product;
-	local string hackstring;
+    local DeusExPlayer player;
+    local Vector loc;
+    local Actor product;
+    local string hackstring;
 
-	Super.Frob(Frobber, frobWith);
-	
-	player = DeusExPlayer(Frobber);
+    Super.Frob(Frobber, frobWith);
+    
+    player = DeusExPlayer(Frobber);
 
-	if (player != None)
-	{
-		if (numUses <= 0)
-		{
-			player.ClientMessage(msgEmpty);
-			return;
-		}
+    if (player != None)
+    {
+        if (numUses <= 0)
+        {
+            player.ClientMessage(msgEmpty);
+            return;
+        }
 
-		if(player.SkillSystem != None && Cost > 0)
-		{
-			if(player.SkillSystem.GetSkillLevelValue(class'SkillComputer') >= 4.000000)
-			{
-				hackstring = (class'HackableDevices').Default.msgHacking;
-				player.ClientMessage( hackstring );
-				Cost = 0;
-			}
-		}
+        if(player.SkillSystem != None && Cost > 0)
+        {
+            if(player.SkillSystem.GetSkillLevelValue(class'SkillComputer') >= 4.000000)
+            {
+                hackstring = (class'HackableDevices').Default.msgHacking;
+                player.ClientMessage( hackstring );
+                Cost = 0;
+            }
+        }
 
-		if (player.Credits >= Cost)
-		{
-			PlaySound(sound'VendingCoin', SLOT_None);
-			loc = Vector(Rotation) * CollisionRadius * 0.8;
-			loc.Z -= CollisionHeight * 0.7; 
-			loc += Location;
+        if (player.Credits >= Cost)
+        {
+            PlaySound(sound'VendingCoin', SLOT_None);
+            loc = Vector(Rotation) * CollisionRadius * 0.8;
+            loc.Z -= CollisionHeight * 0.7; 
+            loc += Location;
 
-			if(VendProduct != None)
-				product = Spawn(VendProduct, None,, loc);
-			else
-				product = Spawn(class'Cigarettes', None,, loc);
+            if(VendProduct != None)
+                product = Spawn(VendProduct, None,, loc);
+            else
+                product = Spawn(class'Cigarettes', None,, loc);
 
-			if (product != None)
-			{
-				PlaySound(sound'VendingSmokes', SLOT_None);
-				product.Velocity = Vector(Rotation) * 100;
-				product.bFixedRotationDir = True;
-				product.RotationRate.Pitch = (32768 - Rand(65536)) * 4.0;
-				product.RotationRate.Yaw = (32768 - Rand(65536)) * 4.0;
+            if (product != None)
+            {
+                PlaySound(sound'VendingSmokes', SLOT_None);
+                product.Velocity = Vector(Rotation) * 100;
+                product.bFixedRotationDir = True;
+                product.RotationRate.Pitch = (32768 - Rand(65536)) * 4.0;
+                product.RotationRate.Yaw = (32768 - Rand(65536)) * 4.0;
 
-				if(product.IsA('Cigarettes') && Rand(2) == 1)
-				{
-					Cigarettes(product).Cig = SC_BigTop;
-					Cigarettes(product).SetSkin();
-				}
-			}
+                if(product.IsA('Cigarettes') && Rand(2) == 1)
+                {
+                    Cigarettes(product).Cig = SC_BigTop;
+                    Cigarettes(product).SetSkin();
+                }
+            }
 
-			player.Credits -= Cost;
-			player.ClientMessage(Sprintf(msgDispensed,Cost));
-			numUses--;
-		}
-		else
-			player.ClientMessage(Sprintf(msgNoCredits,Cost));
-	}
+            player.Credits -= Cost;
+            player.ClientMessage(Sprintf(msgDispensed,Cost));
+            numUses--;
+        }
+        else
+            player.ClientMessage(Sprintf(msgNoCredits,Cost));
+    }
 }
 
 defaultproperties

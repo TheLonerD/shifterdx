@@ -5,7 +5,7 @@ class Secretary extends HumanCivilian;
 
 function bool HasTwoHandedWeapon()
 {
-	return false;
+    return false;
 }
 
 defaultproperties

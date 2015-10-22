@@ -9,91 +9,91 @@ var() float ChangeTimer;
 //== No facelift because HDTP lacks the shine overlay layer
 function bool Facelift(bool bOn)
 {
-	return false;
+    return false;
 }
 
 simulated function Tick(float DeltaTime)
 {
-	local float rnd;
+    local float rnd;
 
-	Super.Tick(DeltaTime);
+    Super.Tick(DeltaTime);
 
-	if(GetStateName() != 'Pickup')
-	{
-		if(bLightOn && ChangeTimer >= 1.000000)
-		{
-			ChangeTimer = 0.000000;
-			rnd = FRand();
-			if(rnd <= 0.200000)
-			{
-				if(Texture == Texture'Effects.Ambrosia_SFX')
-				{
-					PlaySound(sound'Spark2', SLOT_None, 0.5,, 1024);
-					Texture=Texture'Effects.Wepn_Prifle_SFX';
-					HitDamage=15;
-				}
-				else
-				{
-					PlaySound(sound'Spark2', SLOT_None, 0.5,, 1024);
-					Texture=Texture'Effects.Ambrosia_SFX';
-					HitDamage=8;
-				}
-			}
-		}
-		else if(bLightOn)
-			ChangeTimer += DeltaTime;
-	}
+    if(GetStateName() != 'Pickup')
+    {
+        if(bLightOn && ChangeTimer >= 1.000000)
+        {
+            ChangeTimer = 0.000000;
+            rnd = FRand();
+            if(rnd <= 0.200000)
+            {
+                if(Texture == Texture'Effects.Ambrosia_SFX')
+                {
+                    PlaySound(sound'Spark2', SLOT_None, 0.5,, 1024);
+                    Texture=Texture'Effects.Wepn_Prifle_SFX';
+                    HitDamage=15;
+                }
+                else
+                {
+                    PlaySound(sound'Spark2', SLOT_None, 0.5,, 1024);
+                    Texture=Texture'Effects.Ambrosia_SFX';
+                    HitDamage=8;
+                }
+            }
+        }
+        else if(bLightOn)
+            ChangeTimer += DeltaTime;
+    }
 }
 
 state DownWeapon
 {
-	function BeginState()
-	{
-		Super.BeginState();
-		LightType = LT_None;
-		Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
-		bUnlit = False;
-		bLightOn = False;
-	}
+    function BeginState()
+    {
+        Super.BeginState();
+        LightType = LT_None;
+        Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
+        bUnlit = False;
+        bLightOn = False;
+    }
 }
 
 state Idle
 {
-	function BeginState()
-	{
-		Super.BeginState();
-		LightType = LT_Steady;
-		if(!bLightOn)
-		{
-			PlaySound(sound'Spark1', SLOT_None,0.5,, 768);
-			PlaySound(sound'DeusExSounds.Weapons.NanoSwordSelect', SLOT_None, 0.5,, 768);
-			if(HitDamage < 12)
-				Texture=Texture'Effects.Ambrosia_SFX';
-			else
-				Texture=Texture'Effects.Wepn_Prifle_SFX';
+    function BeginState()
+    {
+        Super.BeginState();
+        LightType = LT_Steady;
+        if(!bLightOn)
+        {
+            PlaySound(sound'Spark1', SLOT_None,0.5,, 768);
+            PlaySound(sound'DeusExSounds.Weapons.NanoSwordSelect', SLOT_None, 0.5,, 768);
+            if(HitDamage < 12)
+                Texture=Texture'Effects.Ambrosia_SFX';
+            else
+                Texture=Texture'Effects.Wepn_Prifle_SFX';
 
-			bUnlit = True;
-			bLightOn = True;
-		}
-	}
+            bUnlit = True;
+            bLightOn = True;
+        }
+    }
 }
 
 auto state Pickup
 {
-	function BeginState()
-	{
-		Super.BeginState();
-		LightType = LT_Steady;
-		bLightOn = False;
-	}
-	function EndState()
-	{
-		Super.EndState();
-		LightType = LT_None;
-		Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
-		bUnlit = False;
-		bLightOn = False;
-	}
+    function BeginState()
+    {
+        Super.BeginState();
+        LightType = LT_Steady;
+        bLightOn = False;
+    }
+    function EndState()
+    {
+        Super.EndState();
+        LightType = LT_None;
+        Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
+        bUnlit = False;
+        bLightOn = False;
+    }
 }
 
 defaultproperties

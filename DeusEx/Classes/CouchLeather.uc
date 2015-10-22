@@ -5,44 +5,44 @@ class CouchLeather extends Seat;
 
 enum ESkinColor
 {
-	SC_Black,
-	SC_Blue,
-	SC_Brown,
-	SC_LitGray,
-	SC_Tan
+    SC_Black,
+    SC_Blue,
+    SC_Brown,
+    SC_LitGray,
+    SC_Tan
 };
 
 var() ESkinColor SkinColor;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPCouchLeather", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPCouchLeather", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 function BeginPlay()
 {
-	Super.BeginPlay();
+    Super.BeginPlay();
 
-	if(Mesh == Default.Mesh)
-	{
-		switch (SkinColor)
-		{
-			case SC_Black:		Skin = Texture'CouchLeatherTex1'; break;
-			case SC_Blue:		Skin = Texture'CouchLeatherTex2'; break;
-			case SC_Brown:		Skin = Texture'CouchLeatherTex3'; break;
-			case SC_LitGray:	Skin = Texture'CouchLeatherTex4'; break;
-			case SC_Tan:		Skin = Texture'CouchLeatherTex5'; break;
-		}
-	}
+    if(Mesh == Default.Mesh)
+    {
+        switch (SkinColor)
+        {
+            case SC_Black:        Skin = Texture'CouchLeatherTex1'; break;
+            case SC_Blue:        Skin = Texture'CouchLeatherTex2'; break;
+            case SC_Brown:        Skin = Texture'CouchLeatherTex3'; break;
+            case SC_LitGray:    Skin = Texture'CouchLeatherTex4'; break;
+            case SC_Tan:        Skin = Texture'CouchLeatherTex5'; break;
+        }
+    }
 }
 
 defaultproperties

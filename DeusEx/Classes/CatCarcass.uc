@@ -5,25 +5,25 @@ class CatCarcass extends DeusExCarcass;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPCatCarcass", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPCatCarcass", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Mesh = Default.Mesh;
-		Mesh2 = Default.Mesh2;
-		Mesh3 = Default.Mesh3;
-	}
-	else
-	{
-		Mesh2 = Mesh;
-		Mesh3 = Mesh;
-	}
+    if(Mesh == None || !bOn)
+    {
+        Mesh = Default.Mesh;
+        Mesh2 = Default.Mesh2;
+        Mesh3 = Default.Mesh3;
+    }
+    else
+    {
+        Mesh2 = Mesh;
+        Mesh3 = Mesh;
+    }
 
-	return true;
+    return true;
 } 
 
 defaultproperties

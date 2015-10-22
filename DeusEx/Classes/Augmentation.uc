@@ -2,10 +2,10 @@
 // Augmentation.
 //=============================================================================
 class Augmentation extends Actor
-	intrinsic;
+    intrinsic;
 
 var() bool bAutomatic;
-var() float EnergyRate;			
+var() float EnergyRate;            
 var travel int CurrentLevel;
 var int MaxLevel;
 var texture icon;
@@ -48,13 +48,13 @@ var travel bool bIsActive;
 
 var() enum EAugmentationLocation
 {
-	LOC_Cranial,
-	LOC_Eye,
-	LOC_Torso,
-	LOC_Arm,
-	LOC_Leg,
-	LOC_Subdermal,
-	LOC_Default
+    LOC_Cranial,
+    LOC_Eye,
+    LOC_Torso,
+    LOC_Arm,
+    LOC_Leg,
+    LOC_Subdermal,
+    LOC_Default
 } AugmentationLocation;
 
 // DEUS_EX AMSD In multiplayer, we have strict aug pairs, no two augs can have the
@@ -91,7 +91,7 @@ replication
 state Active
 {
 Begin:
-	log("** AUGMENTATION: .Active should never be called!");
+    log("** AUGMENTATION: .Active should never be called!");
 }
 
 // ----------------------------------------------------------------------
@@ -111,29 +111,29 @@ auto state Inactive
 
 function Activate()
 {
-	// can't do anything if we don't have it
-	if (!bHasIt)
-		return;
+    // can't do anything if we don't have it
+    if (!bHasIt)
+        return;
 
-	if (IsInState('Inactive'))
-	{
-		// this block needs to be before bIsActive is set to True, otherwise
-		// NumAugsActive counts incorrectly and the sound won't work
-		Player.PlaySound(ActivateSound, SLOT_None);
-		if (Player.AugmentationSystem.NumAugsActive() == 0)
-			Player.AmbientSound = LoopSound;
+    if (IsInState('Inactive'))
+    {
+        // this block needs to be before bIsActive is set to True, otherwise
+        // NumAugsActive counts incorrectly and the sound won't work
+        Player.PlaySound(ActivateSound, SLOT_None);
+        if (Player.AugmentationSystem.NumAugsActive() == 0)
+            Player.AmbientSound = LoopSound;
 
-		bIsActive = True;
+        bIsActive = True;
 
-		Player.ClientMessage(Sprintf(AugActivated, AugmentationName));
+        Player.ClientMessage(Sprintf(AugActivated, AugmentationName));
 
-		if (Player.bHUDShowAllAugs)
-			Player.UpdateAugmentationDisplayStatus(Self);
-		else
-			Player.AddAugmentationDisplay(Self);
+        if (Player.bHUDShowAllAugs)
+            Player.UpdateAugmentationDisplayStatus(Self);
+        else
+            Player.AddAugmentationDisplay(Self);
 
-		GotoState('Active');
-	}
+        GotoState('Active');
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -142,32 +142,32 @@ function Activate()
 
 function Deactivate()
 {
-	// can't do anything if we don't have it
-	if (!bHasIt)
-		return;
+    // can't do anything if we don't have it
+    if (!bHasIt)
+        return;
 
-	// If the 'bAlwaysActive' flag is set, this aug can't be
-	// deactivated
-	if (bAlwaysActive)
-		return;
+    // If the 'bAlwaysActive' flag is set, this aug can't be
+    // deactivated
+    if (bAlwaysActive)
+        return;
 
-	if (IsInState('Active'))
-	{
-		bIsActive = False;
+    if (IsInState('Active'))
+    {
+        bIsActive = False;
 
-		Player.ClientMessage(Sprintf(AugDeactivated, AugmentationName));
+        Player.ClientMessage(Sprintf(AugDeactivated, AugmentationName));
 
-		if (Player.bHUDShowAllAugs)
-			Player.UpdateAugmentationDisplayStatus(Self);
-		else
-			Player.RemoveAugmentationDisplay(Self);
+        if (Player.bHUDShowAllAugs)
+            Player.UpdateAugmentationDisplayStatus(Self);
+        else
+            Player.RemoveAugmentationDisplay(Self);
 
-		if (Player.AugmentationSystem.NumAugsActive() == 0)
-			Player.AmbientSound = None;
+        if (Player.AugmentationSystem.NumAugsActive() == 0)
+            Player.AmbientSound = None;
 
-		Player.PlaySound(DeactivateSound, SLOT_None);
-		GotoState('Inactive');
-	}
+        Player.PlaySound(DeactivateSound, SLOT_None);
+        GotoState('Inactive');
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -176,49 +176,49 @@ function Deactivate()
 
 function bool IncLevel()
 {
-	local bool result;
-	local Inventory inv;
-	local AugmentationCannister augCan;
+    local bool result;
+    local Inventory inv;
+    local AugmentationCannister augCan;
 
-	result = false;
+    result = false;
 
-	if ( !CanBeUpgraded() )
-	{
-//		if(AugmentationCannister(player.FindInventoryType(Class'AugmentationCannister')).getAugmentation(0) == self)
-//		{}
-//		else if(AugmentationCannister(player.FindInventoryType(Class'AugmentationCannister')).getAugmentation(1) == self)
-//		{}
-//		else
+    if ( !CanBeUpgraded() )
+    {
+//        if(AugmentationCannister(player.FindInventoryType(Class'AugmentationCannister')).getAugmentation(0) == self)
+//        {}
+//        else if(AugmentationCannister(player.FindInventoryType(Class'AugmentationCannister')).getAugmentation(1) == self)
+//        {}
+//        else
 
-		for(inv = player.Inventory; inv != None; inv = inv.Inventory)
-		{
-			augCan = AugmentationCannister(inv);
+        for(inv = player.Inventory; inv != None; inv = inv.Inventory)
+        {
+            augCan = AugmentationCannister(inv);
 
-			if(augCan != None)
-			{
-				if(augCan.getAugmentation(0) == self || augCan.getAugmentation(1) == self)
-				{
-					result = true;
-					break;
-				}
-			}
-		}
-		//== Only prevent upgrade if we aren't cheating for it
-		if(result || CurrentLevel >= MaxLevel)
-		{
-			Player.ClientMessage(Sprintf(AugAlreadyHave, AugmentationName));
-			return False;
-		}
-	}
+            if(augCan != None)
+            {
+                if(augCan.getAugmentation(0) == self || augCan.getAugmentation(1) == self)
+                {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        //== Only prevent upgrade if we aren't cheating for it
+        if(result || CurrentLevel >= MaxLevel)
+        {
+            Player.ClientMessage(Sprintf(AugAlreadyHave, AugmentationName));
+            return False;
+        }
+    }
 
-	if (bIsActive)
-		Deactivate();
+    if (bIsActive)
+        Deactivate();
 
-	CurrentLevel++;
-				
-	Player.ClientMessage(Sprintf(AugNowHave, AugmentationName, CurrentLevel + 1));
+    CurrentLevel++;
+                
+    Player.ClientMessage(Sprintf(AugNowHave, AugmentationName, CurrentLevel + 1));
 
-	return false;
+    return false;
 }
 
 // ----------------------------------------------------------------------
@@ -231,48 +231,48 @@ function bool IncLevel()
 
 simulated function bool CanBeUpgraded()
 {
-	local bool bCanUpgrade;
-	local Augmentation anAug;
-	local AugmentationUpgradeCannister augUpCan;
-	local AugmentationUpgrade augUp; //grr, stupid badly-coded conversations
-	local AugmentationCannister augCan;
-	local Inventory inv;
+    local bool bCanUpgrade;
+    local Augmentation anAug;
+    local AugmentationUpgradeCannister augUpCan;
+    local AugmentationUpgrade augUp; //grr, stupid badly-coded conversations
+    local AugmentationCannister augCan;
+    local Inventory inv;
 
-	bCanUpgrade = False;
+    bCanUpgrade = False;
 
-	// Check to see if this augmentation is already at 
-	// the maximum level
-	if ( CurrentLevel < MaxLevel )
-	{
-		// Now check to see if the player has a cannister that can 
-		// be used to upgrade this Augmentation
-		augUpCan = AugmentationUpgradeCannister(player.FindInventoryType(Class'AugmentationUpgradeCannister'));
-		augUp = AugmentationUpgrade(player.FindInventoryType(Class'AugmentationUpgrade'));
+    // Check to see if this augmentation is already at 
+    // the maximum level
+    if ( CurrentLevel < MaxLevel )
+    {
+        // Now check to see if the player has a cannister that can 
+        // be used to upgrade this Augmentation
+        augUpCan = AugmentationUpgradeCannister(player.FindInventoryType(Class'AugmentationUpgradeCannister'));
+        augUp = AugmentationUpgrade(player.FindInventoryType(Class'AugmentationUpgrade'));
 
-		if(augUp != None)
-			bCanUpgrade = True;
-		else if(augUpCan != None)
-			bCanUpgrade = True;
-		// Also check for normal aug canisters in case we're at a medbot
-		else //if (bUsingMedbot)
-		{
-			for(inv = player.Inventory; inv != None; inv = inv.Inventory)
-			{
-				augCan = AugmentationCannister(inv);
-	
-				if (augCan != None)
-				{
-					if(augCan.getAugmentation(0) == self || augCan.getAugmentation(1) == self)
-					{
-						bCanUpgrade = True;
-						break;
-					}
-				}
-			}
-		}
-	}
+        if(augUp != None)
+            bCanUpgrade = True;
+        else if(augUpCan != None)
+            bCanUpgrade = True;
+        // Also check for normal aug canisters in case we're at a medbot
+        else //if (bUsingMedbot)
+        {
+            for(inv = player.Inventory; inv != None; inv = inv.Inventory)
+            {
+                augCan = AugmentationCannister(inv);
+    
+                if (augCan != None)
+                {
+                    if(augCan.getAugmentation(0) == self || augCan.getAugmentation(1) == self)
+                    {
+                        bCanUpgrade = True;
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
-	return bCanUpgrade;
+    return bCanUpgrade;
 }
 
 // ----------------------------------------------------------------------
@@ -281,7 +281,7 @@ simulated function bool CanBeUpgraded()
 
 function UsingMedBot(bool bNewUsingMedbot)
 {
-	bUsingMedbot = bNewUsingMedbot;
+    bUsingMedbot = bNewUsingMedbot;
 }
 
 // ----------------------------------------------------------------------
@@ -290,87 +290,87 @@ function UsingMedBot(bool bNewUsingMedbot)
 
 simulated function bool UpdateInfo(Object winObject)
 {
-	local PersonaInfoWindow winInfo;
-	local String strOut;
+    local PersonaInfoWindow winInfo;
+    local String strOut;
 
-	winInfo = PersonaInfoWindow(winObject);
-	if (winInfo == None)
-		return False;
+    winInfo = PersonaInfoWindow(winObject);
+    if (winInfo == None)
+        return False;
 
-	winInfo.Clear();
-	winInfo.SetTitle(AugmentationName);
+    winInfo.Clear();
+    winInfo.SetTitle(AugmentationName);
 
-	if (bUsingMedbot)
-	{
-		winInfo.SetText(Sprintf(OccupiesSlotLabel, AugLocsText[AugmentationLocation]));
-		winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ Description);
-	}
-	else
-	{
-		winInfo.SetText(Description);
-	}
+    if (bUsingMedbot)
+    {
+        winInfo.SetText(Sprintf(OccupiesSlotLabel, AugLocsText[AugmentationLocation]));
+        winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ Description);
+    }
+    else
+    {
+        winInfo.SetText(Description);
+    }
 
-	// Energy Rate
-	winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ Sprintf(EnergyRateLabel, Int(EnergyRate)));
+    // Energy Rate
+    winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ Sprintf(EnergyRateLabel, Int(EnergyRate)));
 
-	// Current Level
-	strOut = Sprintf(CurrentLevelLabel, CurrentLevel + 1);
-	
-	// Can Upgrade / Is Active labels
-	if (CanBeUpgraded())
-		strOut = strOut @ CanUpgradeLabel;
-	else if (CurrentLevel == MaxLevel )
-		strOut = strOut @ MaximumLabel;
+    // Current Level
+    strOut = Sprintf(CurrentLevelLabel, CurrentLevel + 1);
+    
+    // Can Upgrade / Is Active labels
+    if (CanBeUpgraded())
+        strOut = strOut @ CanUpgradeLabel;
+    else if (CurrentLevel == MaxLevel )
+        strOut = strOut @ MaximumLabel;
 
-	winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ strOut);
+    winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ strOut);
 
-	// Always Active?
-	if (bAlwaysActive)
-		winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ AlwaysActiveLabel);
+    // Always Active?
+    if (bAlwaysActive)
+        winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ AlwaysActiveLabel);
 
-	return True;
+    return True;
 }
 
 simulated function bool AppendInfo(Object winObject)
 {
-	local PersonaInfoWindow winInfo;
-	local String strOut;
+    local PersonaInfoWindow winInfo;
+    local String strOut;
 
-	winInfo = PersonaInfoWindow(winObject);
-	if (winInfo == None)
-		return False;
+    winInfo = PersonaInfoWindow(winObject);
+    if (winInfo == None)
+        return False;
 
-	winInfo.AppendText(winInfo.CR() $ winInfo.CR());
+    winInfo.AppendText(winInfo.CR() $ winInfo.CR());
 
-	if (bUsingMedbot)
-	{
-		winInfo.AppendText(Sprintf(OccupiesSlotLabel, AugLocsText[AugmentationLocation]));
-		winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ Description);
-	}
-	else
-	{
-		winInfo.AppendText(Description);
-	}
+    if (bUsingMedbot)
+    {
+        winInfo.AppendText(Sprintf(OccupiesSlotLabel, AugLocsText[AugmentationLocation]));
+        winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ Description);
+    }
+    else
+    {
+        winInfo.AppendText(Description);
+    }
 
-	// Energy Rate
-	winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ Sprintf(EnergyRateLabel, Int(EnergyRate)));
+    // Energy Rate
+    winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ Sprintf(EnergyRateLabel, Int(EnergyRate)));
 
-	// Current Level
-	strOut = Sprintf(CurrentLevelLabel, CurrentLevel + 1);
-	
-	// Can Upgrade / Is Active labels
-	if (CanBeUpgraded())
-		strOut = strOut @ CanUpgradeLabel;
-	else if (CurrentLevel == MaxLevel )
-		strOut = strOut @ MaximumLabel;
+    // Current Level
+    strOut = Sprintf(CurrentLevelLabel, CurrentLevel + 1);
+    
+    // Can Upgrade / Is Active labels
+    if (CanBeUpgraded())
+        strOut = strOut @ CanUpgradeLabel;
+    else if (CurrentLevel == MaxLevel )
+        strOut = strOut @ MaximumLabel;
 
-	winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ strOut);
+    winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ strOut);
 
-	// Always Active?
-	if (bAlwaysActive)
-		winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ AlwaysActiveLabel);
+    // Always Active?
+    if (bAlwaysActive)
+        winInfo.AppendText(winInfo.CR() $ winInfo.CR() $ AlwaysActiveLabel);
 
-	return True;
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -379,7 +379,7 @@ simulated function bool AppendInfo(Object winObject)
 
 simulated function bool IsActive()
 {
-	return bIsActive;
+    return bIsActive;
 }
 
 // ----------------------------------------------------------------------
@@ -388,7 +388,7 @@ simulated function bool IsActive()
 
 simulated function bool IsAlwaysActive()
 {
-	return bAlwaysActive;
+    return bAlwaysActive;
 }
 
 // ----------------------------------------------------------------------
@@ -397,7 +397,7 @@ simulated function bool IsAlwaysActive()
 
 simulated function int GetHotKey()
 {
-	return hotKeyNum;
+    return hotKeyNum;
 }
 
 // ----------------------------------------------------------------------
@@ -406,7 +406,7 @@ simulated function int GetHotKey()
 
 simulated function int GetCurrentLevel()
 {
-	return CurrentLevel;
+    return CurrentLevel;
 }
 
 // ----------------------------------------------------------------------
@@ -417,7 +417,7 @@ simulated function int GetCurrentLevel()
 
 simulated function float GetEnergyRate()
 {
-	return energyRate;
+    return energyRate;
 }
 
 // ----------------------------------------------------------------------

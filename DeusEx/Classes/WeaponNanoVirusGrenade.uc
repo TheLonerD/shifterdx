@@ -5,51 +5,51 @@ class WeaponNanoVirusGrenade extends WeaponGrenade;
 
 function bool Facelift(bool bOn)
 {
-	local Name tName;
+    local Name tName;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	tName = GetStateName();
+    tName = GetStateName();
 
-	if(bOn)
-	{
-		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPNanoVirusGrenade", class'mesh', True));
-		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPNanoVirusGrenadePickup", class'mesh', True));
-		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPNanoVirusGrenade3rd", class'mesh', True));
-	}
+    if(bOn)
+    {
+        PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPNanoVirusGrenade", class'mesh', True));
+        PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPNanoVirusGrenadePickup", class'mesh', True));
+        ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPNanoVirusGrenade3rd", class'mesh', True));
+    }
 
-	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
-	{
-		PlayerViewMesh = Default.PlayerViewMesh;
-		PickupViewMesh = Default.PickupViewMesh;
-		ThirdPersonMesh = Default.ThirdPersonMesh;
-	}
-	else
-		Mesh = PickupViewMesh;
+    if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+    {
+        PlayerViewMesh = Default.PlayerViewMesh;
+        PickupViewMesh = Default.PickupViewMesh;
+        ThirdPersonMesh = Default.ThirdPersonMesh;
+    }
+    else
+        Mesh = PickupViewMesh;
 
-	if(tName == 'Pickup')
-		Mesh = PickupViewMesh;
-	else
-		Mesh = PlayerViewMesh;
+    if(tName == 'Pickup')
+        Mesh = PickupViewMesh;
+    else
+        Mesh = PlayerViewMesh;
 
-	return true;
+    return true;
 }
 
 simulated function renderoverlays(Canvas canvas)
 {
-	if(PickupViewMesh != Default.PickupViewMesh)
-		multiskins[0] = Getweaponhandtex();
+    if(PickupViewMesh != Default.PickupViewMesh)
+        multiskins[0] = Getweaponhandtex();
 
-	super.renderoverlays(canvas);
+    super.renderoverlays(canvas);
 
-	if(PickupViewMesh != Default.PickupViewMesh)
-		multiskins[0] = none; 
+    if(PickupViewMesh != Default.PickupViewMesh)
+        multiskins[0] = none; 
 }
 
 simulated function bool TestCycleable()
 {
-	return (Level.NetMode == NM_Standalone);
+    return (Level.NetMode == NM_Standalone);
 }
 
 //     MultiSkins(4)=FireTexture'Effects.liquid.Virus_SFX'

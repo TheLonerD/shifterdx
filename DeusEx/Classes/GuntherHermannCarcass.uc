@@ -5,36 +5,36 @@ class GuntherHermannCarcass extends DeusExCarcass;
 
 function bool Facelift(bool bOn)
 {
-	local int i;
+    local int i;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	Mesh = Mesh(DynamicLoadObject("HDTPcharacters.HDTPGuntherCarcassA", class'Mesh', True));
+    Mesh = Mesh(DynamicLoadObject("HDTPcharacters.HDTPGuntherCarcassA", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Mesh = Default.Mesh;
-		Mesh2 = Default.Mesh2;
-		Mesh3 = Default.Mesh3;
+    if(Mesh == None || !bOn)
+    {
+        Mesh = Default.Mesh;
+        Mesh2 = Default.Mesh2;
+        Mesh3 = Default.Mesh3;
 
-		Texture = Default.Texture;
+        Texture = Default.Texture;
 
-		for(i = 0; i < 8; i++)
-			MultiSkins[i] = Default.MultiSkins[i];
-	}
-	else
-	{
-		Texture = None;
+        for(i = 0; i < 8; i++)
+            MultiSkins[i] = Default.MultiSkins[i];
+    }
+    else
+    {
+        Texture = None;
 
-		for(i = 0; i < 8; i++)
-			MultiSkins[i] = None;
+        for(i = 0; i < 8; i++)
+            MultiSkins[i] = None;
 
-		Mesh2 = Mesh(DynamicLoadObject("HDTPcharacters.HDTPGuntherCarcassB", class'Mesh', True));
-		Mesh3 = Mesh(DynamicLoadObject("HDTPcharacters.HDTPGuntherCarcassC", class'Mesh', True));
-	}
+        Mesh2 = Mesh(DynamicLoadObject("HDTPcharacters.HDTPGuntherCarcassB", class'Mesh', True));
+        Mesh3 = Mesh(DynamicLoadObject("HDTPcharacters.HDTPGuntherCarcassC", class'Mesh', True));
+    }
 
-	return true;
+    return true;
 }
 
 defaultproperties

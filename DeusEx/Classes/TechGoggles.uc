@@ -13,13 +13,13 @@ var() int visionLevelValue;
 
 function ChargedPickupBegin(DeusExPlayer Player)
 {
-	Super.ChargedPickupBegin(Player);
+    Super.ChargedPickupBegin(Player);
 
-	DeusExRootWindow(Player.rootWindow).hud.augDisplay.activeCount++;
-	bVisionActive = DeusExRootWindow(Player.rootWindow).hud.augDisplay.bVisionActive;
-	visionLevel = DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevel;
-	visionLevelValue = DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevelValue;
-	UpdateHUDDisplay(Player);
+    DeusExRootWindow(Player.rootWindow).hud.augDisplay.activeCount++;
+    bVisionActive = DeusExRootWindow(Player.rootWindow).hud.augDisplay.bVisionActive;
+    visionLevel = DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevel;
+    visionLevelValue = DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevelValue;
+    UpdateHUDDisplay(Player);
 }
 
 // ----------------------------------------------------------------------
@@ -28,12 +28,12 @@ function ChargedPickupBegin(DeusExPlayer Player)
 
 function UpdateHUDDisplay(DeusExPlayer Player)
 {
-	if ((DeusExRootWindow(Player.rootWindow).hud.augDisplay.activeCount == 0) && (IsActive()))
-		DeusExRootWindow(Player.rootWindow).hud.augDisplay.activeCount++;
-	
-	DeusExRootWindow(Player.rootWindow).hud.augDisplay.bVisionActive = True;
-	DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevel = 3;
-	DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevelValue = 300;
+    if ((DeusExRootWindow(Player.rootWindow).hud.augDisplay.activeCount == 0) && (IsActive()))
+        DeusExRootWindow(Player.rootWindow).hud.augDisplay.activeCount++;
+    
+    DeusExRootWindow(Player.rootWindow).hud.augDisplay.bVisionActive = True;
+    DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevel = 3;
+    DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevelValue = 300;
 }
 
 // ----------------------------------------------------------------------
@@ -42,13 +42,13 @@ function UpdateHUDDisplay(DeusExPlayer Player)
 
 function ChargedPickupEnd(DeusExPlayer Player)
 {
-	Super.ChargedPickupEnd(Player);
+    Super.ChargedPickupEnd(Player);
 
-	if (--DeusExRootWindow(Player.rootWindow).hud.augDisplay.activeCount == 0)
-		DeusExRootWindow(Player.rootWindow).hud.augDisplay.bVisionActive = False;
+    if (--DeusExRootWindow(Player.rootWindow).hud.augDisplay.activeCount == 0)
+        DeusExRootWindow(Player.rootWindow).hud.augDisplay.bVisionActive = False;
 
-	DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevelValue = visionLevelValue;
-	DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevel = visionLevel;
+    DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevelValue = visionLevelValue;
+    DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevel = visionLevel;
 }
 
 // ----------------------------------------------------------------------

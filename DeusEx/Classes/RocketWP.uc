@@ -9,64 +9,64 @@ var float mpExplodeDamage;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPRocketHE", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPRocketHE", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 simulated function DrawExplosionEffects(vector HitLocation, vector HitNormal)
 {
-	local ExplosionLight light;
-	local ParticleGenerator gen;
+    local ExplosionLight light;
+    local ParticleGenerator gen;
    local ExplosionSmall expeffect;
 
-	// draw a pretty explosion
-	light = Spawn(class'ExplosionLight',,, HitLocation);
-	if (light != None)
+    // draw a pretty explosion
+    light = Spawn(class'ExplosionLight',,, HitLocation);
+    if (light != None)
    {
       light.RemoteRole = ROLE_None;
-		light.size = 12;
+        light.size = 12;
    }
-	
+    
    expeffect = Spawn(class'ExplosionSmall',,, HitLocation);
    if (expeffect != None)
       expeffect.RemoteRole = ROLE_None;
 
-	// create a particle generator shooting out white-hot fireballs
-	gen = Spawn(class'ParticleGenerator',,, HitLocation, Rotator(HitNormal));
-	if (gen != None)
-	{
+    // create a particle generator shooting out white-hot fireballs
+    gen = Spawn(class'ParticleGenerator',,, HitLocation, Rotator(HitNormal));
+    if (gen != None)
+    {
       gen.RemoteRole = ROLE_None;
-		gen.particleDrawScale = 1.0;
-		gen.checkTime = 0.05;
-		gen.frequency = 1.0;
-		gen.ejectSpeed = 200.0;
-		gen.bGravity = True;
-		gen.bRandomEject = True;
-		gen.particleTexture = Texture'Effects.Fire.FireballWhite';
-		gen.LifeSpan = 2.0;
-	}
+        gen.particleDrawScale = 1.0;
+        gen.checkTime = 0.05;
+        gen.frequency = 1.0;
+        gen.ejectSpeed = 200.0;
+        gen.bGravity = True;
+        gen.bRandomEject = True;
+        gen.particleTexture = Texture'Effects.Fire.FireballWhite';
+        gen.LifeSpan = 2.0;
+    }
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	if ( ( Level.NetMode != NM_Standalone ) && (Class == Class'RocketWP') )
-	{
+    if ( ( Level.NetMode != NM_Standalone ) && (Class == Class'RocketWP') )
+    {
       speed = 2000.0000;
       SetTimer(5,false);
       Damage = mpExplodeDamage;
-		blastRadius = mpBlastRadius;
-		SoundRadius=76;
-	}
+        blastRadius = mpBlastRadius;
+        SoundRadius=76;
+    }
 }
 
 defaultproperties

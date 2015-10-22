@@ -5,75 +5,75 @@ class MilitaryBot extends Robot;
 
 enum ESkinColor
 {
-	SC_UNATCO,
-	SC_Chinese
+    SC_UNATCO,
+    SC_Chinese
 };
 
 var() ESkinColor SkinColor;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPMilBot", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPMilBot", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Mesh = Default.Mesh;
-		MultiSkins[1] = Default.MultiSkins[1];
-		switch (SkinColor)
-		{
-			case SC_UNATCO:		Skin = Texture'MilitaryBotTex1'; break;
-			case SC_Chinese:	Skin = Texture'MilitaryBotTex2'; break;
-		}
-	}
-	else
-	{
-		switch (SkinColor)
-		{
-			case SC_UNATCO:		Skin = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex1", class'Texture', True)); Multiskins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex2", class'Texture', True)); break;
-			case SC_Chinese:	Skin = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex1HK", class'Texture', True)); Multiskins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex2HK", class'Texture', True)); break;
-		}
-	}
+    if(Mesh == None || !bOn)
+    {
+        Mesh = Default.Mesh;
+        MultiSkins[1] = Default.MultiSkins[1];
+        switch (SkinColor)
+        {
+            case SC_UNATCO:        Skin = Texture'MilitaryBotTex1'; break;
+            case SC_Chinese:    Skin = Texture'MilitaryBotTex2'; break;
+        }
+    }
+    else
+    {
+        switch (SkinColor)
+        {
+            case SC_UNATCO:        Skin = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex1", class'Texture', True)); Multiskins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex2", class'Texture', True)); break;
+            case SC_Chinese:    Skin = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex1HK", class'Texture', True)); Multiskins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex2HK", class'Texture', True)); break;
+        }
+    }
 
-	return true;
+    return true;
 }
 
 function BeginPlay()
 {
-	Super.BeginPlay();
+    Super.BeginPlay();
 
-	if(Mesh == Default.Mesh)
-	{
-		switch (SkinColor)
-		{
-			case SC_UNATCO:		Skin = Texture'MilitaryBotTex1'; break;
-			case SC_Chinese:	Skin = Texture'MilitaryBotTex2'; break;
-		}
-	}
-	else
-	{
-		switch (SkinColor)
-		{
-			case SC_UNATCO:		Skin = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex1", class'Texture', True)); Multiskins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex2", class'Texture', True)); break;
-			case SC_Chinese:	Skin = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex1HK", class'Texture', True)); Multiskins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex2HK", class'Texture', True)); break;
-		}
-	}
+    if(Mesh == Default.Mesh)
+    {
+        switch (SkinColor)
+        {
+            case SC_UNATCO:        Skin = Texture'MilitaryBotTex1'; break;
+            case SC_Chinese:    Skin = Texture'MilitaryBotTex2'; break;
+        }
+    }
+    else
+    {
+        switch (SkinColor)
+        {
+            case SC_UNATCO:        Skin = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex1", class'Texture', True)); Multiskins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex2", class'Texture', True)); break;
+            case SC_Chinese:    Skin = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex1HK", class'Texture', True)); Multiskins[1] = Texture(DynamicLoadObject("HDTPCharacters.Skins.HDTPMilBotTex2HK", class'Texture', True)); break;
+        }
+    }
 }
 
 function PlayDisabled()
 {
-	local int rnd;
+    local int rnd;
 
-	rnd = Rand(3);
-	if (rnd == 0)
-		TweenAnimPivot('Disabled1', 0.2);
-	else if (rnd == 1)
-		TweenAnimPivot('Disabled2', 0.2);
-	else
-		TweenAnimPivot('Still', 0.2);
+    rnd = Rand(3);
+    if (rnd == 0)
+        TweenAnimPivot('Disabled1', 0.2);
+    else if (rnd == 1)
+        TweenAnimPivot('Disabled2', 0.2);
+    else
+        TweenAnimPivot('Still', 0.2);
 }
 
 defaultproperties

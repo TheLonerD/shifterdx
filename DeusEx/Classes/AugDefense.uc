@@ -27,12 +27,12 @@ replication
 
 state Active
 {
-	function Timer()
-	{
-		local DeusExProjectile minproj;
-		local float mindist;
+    function Timer()
+    {
+        local DeusExProjectile minproj;
+        local float mindist;
 
-		minproj = None;
+        minproj = None;
 
       // DEUS_EX AMSD Multiplayer check
       if (Player == None)
@@ -41,20 +41,20 @@ state Active
          return;
       }
 
-		// In multiplayer propagate a sound that will let others know their in an aggressive defense field
-		// with range slightly greater than the current level value of the aug
-		if ( (Level.NetMode != NM_Standalone) && ( Level.Timeseconds > defenseSoundTime ))
-		{
-			Player.PlaySound(Sound'AugDefenseOn', SLOT_Interact, 1.0, ,(LevelValues[CurrentLevel]*1.33), 0.75);
-			defenseSoundTime = Level.Timeseconds + defenseSoundDelay;
-		}
+        // In multiplayer propagate a sound that will let others know their in an aggressive defense field
+        // with range slightly greater than the current level value of the aug
+        if ( (Level.NetMode != NM_Standalone) && ( Level.Timeseconds > defenseSoundTime ))
+        {
+            Player.PlaySound(Sound'AugDefenseOn', SLOT_Interact, 1.0, ,(LevelValues[CurrentLevel]*1.33), 0.75);
+            defenseSoundTime = Level.Timeseconds + defenseSoundDelay;
+        }
 
       //DEUS_EX AMSD Exported to function call for duplication in multiplayer.
       minproj = FindNearestProjectile();
 
-		// if we have a valid projectile, send it to the aug display window
-		if (minproj != None)
-		{
+        // if we have a valid projectile, send it to the aug display window
+        if (minproj != None)
+        {
          bDefenseActive = True;
          mindist = VSize(Player.Location - minproj.Location);
 
@@ -67,33 +67,33 @@ state Active
             SetDefenseAugStatus(True,CurrentLevel,minproj);
          }
 
-			// play a warning sound
-			Player.PlaySound(sound'GEPGunLock', SLOT_None,,,, 2.0);
+            // play a warning sound
+            Player.PlaySound(sound'GEPGunLock', SLOT_None,,,, 2.0);
 
-			if (mindist < LevelValues[CurrentLevel])
-			{
+            if (mindist < LevelValues[CurrentLevel])
+            {
             minproj.bAggressiveExploded=True;
-				minproj.Explode(minproj.Location, vect(0,0,1));
-				Player.PlaySound(sound'ProdFire', SLOT_None,,,, 2.0);
-			}
-		}
-		else
-		{
+                minproj.Explode(minproj.Location, vect(0,0,1));
+                Player.PlaySound(sound'ProdFire', SLOT_None,,,, 2.0);
+            }
+        }
+        else
+        {
          if ((Level.NetMode == NM_Standalone) || (bDefenseActive))
             SetDefenseAugStatus(False,CurrentLevel,None);
          bDefenseActive = false;
-		}
-	}
+        }
+    }
 
 Begin:
-	SetTimer(0.1, True);
+    SetTimer(0.1, True);
 }
 
 function Deactivate()
 {
-	Super.Deactivate();
+    Super.Deactivate();
 
-	SetTimer(0.1, False);
+    SetTimer(0.1, False);
    SetDefenseAugStatus(False,CurrentLevel,None);
 }
 
@@ -113,7 +113,7 @@ simulated function DeusExProjectile FindNearestProjectile()
    mindist = 999999;
    foreach AllActors(class'DeusExProjectile', proj)
    {
-	//== Y|y: all this complication when bIgnoresNanoDefense could handle the problem just fine, with a little help
+    //== Y|y: all this complication when bIgnoresNanoDefense could handle the problem just fine, with a little help
       //if (Level.NetMode != NM_Standalone)
          bValidProj = !proj.bIgnoresNanoDefense && !proj.bStuck;
       //else
@@ -124,20 +124,20 @@ simulated function DeusExProjectile FindNearestProjectile()
          // make sure we don't own it
          if (proj.Owner != Player)
          {
-			 // MBCODE : If team game, don't blow up teammates projectiles
-			if (!((TeamDMGame(Player.DXGame) != None) && (TeamDMGame(Player.DXGame).ArePlayersAllied(DeusExPlayer(proj.Owner),Player))))
-			{
-				// make sure it's moving fast enough
-				if (VSize(proj.Velocity) > 100)
-				{
-				   dist = VSize(Player.Location - proj.Location);
-				   if (dist < mindist)
-				   {
-					  mindist = dist;
-					  minproj = proj;
-				   }
-				}
-			}
+             // MBCODE : If team game, don't blow up teammates projectiles
+            if (!((TeamDMGame(Player.DXGame) != None) && (TeamDMGame(Player.DXGame).ArePlayersAllied(DeusExPlayer(proj.Owner),Player))))
+            {
+                // make sure it's moving fast enough
+                if (VSize(proj.Velocity) > 100)
+                {
+                   dist = VSize(Player.Location - proj.Location);
+                   if (dist < mindist)
+                   {
+                      mindist = dist;
+                      minproj = proj;
+                   }
+                }
+            }
          }
       }
    }
@@ -194,15 +194,15 @@ simulated function SetDefenseAugStatus(bool bDefenseActive, int defenseLevel, De
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		LevelValues[3] = mpAugValue;
-		EnergyRate = mpEnergyDrain;
-		defenseSoundTime=0;
-	}
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        LevelValues[3] = mpAugValue;
+        EnergyRate = mpEnergyDrain;
+        defenseSoundTime=0;
+    }
 }
 
 defaultproperties

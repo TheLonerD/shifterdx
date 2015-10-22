@@ -3,7 +3,7 @@
 //=============================================================================
 
 Class MenuChoice_Team extends MenuUIChoiceEnum
-	config;
+    config;
 
 var globalconfig string  TeamNumber[24]; //Team numbers (matches teamdmgame.uc)
 var localized String     TeamNames[24]; //Human readable Team names.
@@ -21,10 +21,10 @@ var int PortraitIndex;
 
 event InitWindow()
 {
-	PopulateTeamChoices();
+    PopulateTeamChoices();
    CreatePortraitButton();
 
-	Super.InitWindow();
+    Super.InitWindow();
 
    SetInitialTeam();
 
@@ -40,7 +40,7 @@ event InitWindow()
 
 function PopulateTeamChoices()
 {
-	local int typeIndex;
+    local int typeIndex;
 
    for (typeIndex = 0; typeIndex < arrayCount(TeamNames); typeIndex++)
    {
@@ -62,7 +62,7 @@ function SetInitialTeam()
    SetValue(defaultValue);
 
    if (TypeString == "")
-	   return;
+       return;
   
    for (typeIndex = 0; typeIndex < arrayCount(TeamNames); typeIndex++)
    {
@@ -106,7 +106,7 @@ function LoadSetting()
    SetValue(DefaultValue);
 
    if (TypeString == "")
-	   return;
+       return;
 
    for (typeIndex = 0; typeIndex < arrayCount(TeamNames); typeIndex++)
    {
@@ -145,12 +145,12 @@ function string GetModuleName(int TeamIndex)
 
 function CreatePortraitButton()
 {
-	btnPortrait = ButtonWindow(NewChild(Class'ButtonWindow'));
+    btnPortrait = ButtonWindow(NewChild(Class'ButtonWindow'));
 
-	btnPortrait.SetSize(116, 163);
-	btnPortrait.SetPos(19, 27);
+    btnPortrait.SetSize(116, 163);
+    btnPortrait.SetPos(19, 27);
 
-	btnPortrait.SetBackgroundStyle(DSTY_Masked);
+    btnPortrait.SetBackgroundStyle(DSTY_Masked);
 }
 
 // ----------------------------------------------------------------------

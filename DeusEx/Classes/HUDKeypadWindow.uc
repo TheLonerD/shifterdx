@@ -10,11 +10,11 @@ var HUDKeypadButton btnKeys[12];
 var TextWindow winText;
 var string inputCode;
 
-var bool bInstantSuccess;		// we had the skill, so grant access immediately
+var bool bInstantSuccess;        // we had the skill, so grant access immediately
 var bool bWait;
 
-var Keypad keypadOwner;			// what keypad owns this window?
-var Phone phoneOwner;			// what Phone owns this window?
+var Keypad keypadOwner;            // what keypad owns this window?
+var Phone phoneOwner;            // what Phone owns this window?
 
 var Texture texBackground;
 var Texture texBorder;
@@ -41,21 +41,21 @@ var localized string msgAccessGranted;
 
 event InitWindow()
 {
-	Super.InitWindow();
+    Super.InitWindow();
 
-	SetWindowAlignments(HALIGN_Center, VALIGN_Center);
-	SetSize(103, 162);
-	SetMouseFocusMode(MFocus_EnterLeave);
+    SetWindowAlignments(HALIGN_Center, VALIGN_Center);
+    SetSize(103, 162);
+    SetMouseFocusMode(MFocus_EnterLeave);
 
-	inputCode="";
+    inputCode="";
 
-	// Create the buttons
-	CreateKeypadButtons();
-	CreateInputTextWindow();
+    // Create the buttons
+    CreateKeypadButtons();
+    CreateInputTextWindow();
 
-	bTickEnabled = True;
+    bTickEnabled = True;
 
-	StyleChanged();
+    StyleChanged();
 }
 
 // ----------------------------------------------------------------------
@@ -66,18 +66,18 @@ event InitWindow()
 
 event DestroyWindow()
 {
-	Super.DestroyWindow();
+    Super.DestroyWindow();
 
-	if(keypadOwner != None)
-		keypadOwner.keypadwindow = None;
+    if(keypadOwner != None)
+        keypadOwner.keypadwindow = None;
 
-	if(phoneOwner != None)
-	{
-		phoneOwner.dialwindow = None;
-		phoneOwner.bUsing = False;
-		if(phoneOwner.AmbientSound != None && phoneOwner.TimerRate <= 0.0)
-			phoneOwner.AmbientSound = None;
-	}
+    if(phoneOwner != None)
+    {
+        phoneOwner.dialwindow = None;
+        phoneOwner.bUsing = False;
+        if(phoneOwner.AmbientSound != None && phoneOwner.TimerRate <= 0.0)
+            phoneOwner.AmbientSound = None;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -88,10 +88,10 @@ event DestroyWindow()
 
 function InitData()
 {
-	GenerateKeypadDisplay();
+    GenerateKeypadDisplay();
 
-	winText.SetTextColor(colHeaderText);
-	winText.SetText(msgEnterCode);
+    winText.SetTextColor(colHeaderText);
+    winText.SetText(msgEnterCode);
 }
 
 // ----------------------------------------------------------------------
@@ -100,22 +100,22 @@ function InitData()
 
 function Tick(float deltaTime)
 {
-	local string theValidCode;
+    local string theValidCode;
 
-	if (!bFirstFrameDone)
-	{
-		SetCursorPos(width, height);
-		bFirstFrameDone = True;
+    if (!bFirstFrameDone)
+    {
+        SetCursorPos(width, height);
+        bFirstFrameDone = True;
 
-		if(keypadOwner != None)
-		{
-			if (bInstantSuccess || keypadOwner.validCode == "")
-			{
-				inputCode = keypadOwner.validCode;
-				ValidateCode();
-			}
-		}
-	}
+        if(keypadOwner != None)
+        {
+            if (bInstantSuccess || keypadOwner.validCode == "")
+            {
+                inputCode = keypadOwner.validCode;
+                ValidateCode();
+            }
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -126,11 +126,11 @@ function Tick(float deltaTime)
 
 event DrawWindow(GC gc)
 {
-	// First draw the background then the border
-	DrawBackground(gc);
-	DrawBorder(gc);
+    // First draw the background then the border
+    DrawBackground(gc);
+    DrawBorder(gc);
 
-	Super.DrawWindow(gc);
+    Super.DrawWindow(gc);
 }
 
 // ----------------------------------------------------------------------
@@ -139,14 +139,14 @@ event DrawWindow(GC gc)
 
 function DrawBackground(GC gc)
 {
-	if (bBackgroundTranslucent)
-		gc.SetStyle(DSTY_Translucent);
-	else
-		gc.SetStyle(DSTY_Masked);
-	
-	gc.SetTileColor(colBackground);
+    if (bBackgroundTranslucent)
+        gc.SetStyle(DSTY_Translucent);
+    else
+        gc.SetStyle(DSTY_Masked);
+    
+    gc.SetTileColor(colBackground);
 
-	gc.DrawTexture(0, 0, width, height, 0, 0, texBackground);
+    gc.DrawTexture(0, 0, width, height, 0, 0, texBackground);
 }
 
 // ----------------------------------------------------------------------
@@ -155,17 +155,17 @@ function DrawBackground(GC gc)
 
 function DrawBorder(GC gc)
 {
-	if (bDrawBorder)
-	{
-		if (bBorderTranslucent)
-			gc.SetStyle(DSTY_Translucent);
-		else
-			gc.SetStyle(DSTY_Masked);
-		
-		gc.SetTileColor(colBorder);
+    if (bDrawBorder)
+    {
+        if (bBorderTranslucent)
+            gc.SetStyle(DSTY_Translucent);
+        else
+            gc.SetStyle(DSTY_Masked);
+        
+        gc.SetTileColor(colBorder);
 
-		gc.DrawTexture(0, 0, width, height, 0, 0, texBorder);
-	}
+        gc.DrawTexture(0, 0, width, height, 0, 0, texBorder);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -174,18 +174,18 @@ function DrawBorder(GC gc)
 
 function CreateKeypadButtons()
 {
-	local int i, x, y;
+    local int i, x, y;
 
-	for (y=0; y<4; y++)
-	{
-		for (x=0; x<3; x++)
-		{
-			i = x + y * 3;
-			btnKeys[i] = HUDKeypadButton(NewChild(Class'HUDKeypadButton'));
-			btnKeys[i].SetPos((x * 26) + 16, (y * 28) + 35);
-			btnKeys[i].num = i;
-		}
-	}
+    for (y=0; y<4; y++)
+    {
+        for (x=0; x<3; x++)
+        {
+            i = x + y * 3;
+            btnKeys[i] = HUDKeypadButton(NewChild(Class'HUDKeypadButton'));
+            btnKeys[i].SetPos((x * 26) + 16, (y * 28) + 35);
+            btnKeys[i].num = i;
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -194,14 +194,14 @@ function CreateKeypadButtons()
 
 function CreateInputTextWindow()
 {
-	winText = TextWindow(NewChild(Class'TextWindow'));
-	winText.SetPos(17, 21);
-	winText.SetSize(75, 11);
-	winText.SetTextMargins(0, 0);
-	winText.SetTextAlignments(HALIGN_Center, VALIGN_Center);
-	winText.SetFont(Font'FontMenuSmall');
-	winText.SetTextColor(colHeaderText);
-	winText.SetText(msgEnterCode);
+    winText = TextWindow(NewChild(Class'TextWindow'));
+    winText.SetPos(17, 21);
+    winText.SetSize(75, 11);
+    winText.SetTextMargins(0, 0);
+    winText.SetTextAlignments(HALIGN_Center, VALIGN_Center);
+    winText.SetFont(Font'FontMenuSmall');
+    winText.SetTextColor(colHeaderText);
+    winText.SetText(msgEnterCode);
 }
 
 // ----------------------------------------------------------------------
@@ -210,25 +210,25 @@ function CreateInputTextWindow()
 
 function bool ButtonActivated( Window buttonPressed )
 {
-	local bool bHandled;
-	local int i;
+    local bool bHandled;
+    local int i;
 
-	bHandled = False;
+    bHandled = False;
 
-	for (i=0; i<12; i++)
-	{
-		if (buttonPressed == btnKeys[i])
-		{
-			PressButton(i);
-			bHandled = True;
-			break;
-		}
-	}
+    for (i=0; i<12; i++)
+    {
+        if (buttonPressed == btnKeys[i])
+        {
+            PressButton(i);
+            bHandled = True;
+            break;
+        }
+    }
 
-	if (!bHandled)
-		bHandled = Super.ButtonActivated(buttonPressed);
+    if (!bHandled)
+        bHandled = Super.ButtonActivated(buttonPressed);
 
-	return bHandled;
+    return bHandled;
 }
 
 // ----------------------------------------------------------------------
@@ -239,47 +239,47 @@ function bool ButtonActivated( Window buttonPressed )
 
 event bool VirtualKeyPressed(EInputKey key, bool bRepeat)
 {
-	local bool bKeyHandled;
+    local bool bKeyHandled;
 
-	bKeyHandled = True;
+    bKeyHandled = True;
 
-	if (IsKeyDown(IK_Alt) || IsKeyDown(IK_Ctrl))
-		return False;
+    if (IsKeyDown(IK_Alt) || IsKeyDown(IK_Ctrl))
+        return False;
 
-	if (!bRepeat)
-	{
-		switch(key) 
-		{	
-			case IK_0:
-			case IK_NUMPAD0:	btnKeys[10].PressButton(); break;
-			case IK_1:
-			case IK_NUMPAD1:	btnKeys[0].PressButton(); break;
-			case IK_2:
-			case IK_NUMPAD2:	btnKeys[1].PressButton(); break;
-			case IK_3:
-			case IK_NUMPAD3:	btnKeys[2].PressButton(); break;
-			case IK_4:
-			case IK_NUMPAD4:	btnKeys[3].PressButton(); break;
-			case IK_5:
-			case IK_NUMPAD5:	btnKeys[4].PressButton(); break;
-			case IK_6:
-			case IK_NUMPAD6:	btnKeys[5].PressButton(); break;
-			case IK_7:
-			case IK_NUMPAD7:	btnKeys[6].PressButton(); break;
-			case IK_8:
-			case IK_NUMPAD8:	btnKeys[7].PressButton(); break;
-			case IK_9:
-			case IK_NUMPAD9:	btnKeys[8].PressButton(); break;
+    if (!bRepeat)
+    {
+        switch(key) 
+        {    
+            case IK_0:
+            case IK_NUMPAD0:    btnKeys[10].PressButton(); break;
+            case IK_1:
+            case IK_NUMPAD1:    btnKeys[0].PressButton(); break;
+            case IK_2:
+            case IK_NUMPAD2:    btnKeys[1].PressButton(); break;
+            case IK_3:
+            case IK_NUMPAD3:    btnKeys[2].PressButton(); break;
+            case IK_4:
+            case IK_NUMPAD4:    btnKeys[3].PressButton(); break;
+            case IK_5:
+            case IK_NUMPAD5:    btnKeys[4].PressButton(); break;
+            case IK_6:
+            case IK_NUMPAD6:    btnKeys[5].PressButton(); break;
+            case IK_7:
+            case IK_NUMPAD7:    btnKeys[6].PressButton(); break;
+            case IK_8:
+            case IK_NUMPAD8:    btnKeys[7].PressButton(); break;
+            case IK_9:
+            case IK_NUMPAD9:    btnKeys[8].PressButton(); break;
 
-			default:
-				bKeyHandled = False;
-		}
-	}
+            default:
+                bKeyHandled = False;
+        }
+    }
 
-	if (!bKeyHandled)
-		return Super.VirtualKeyPressed(key, bRepeat);
-	else
-		return bKeyHandled;
+    if (!bKeyHandled)
+        return Super.VirtualKeyPressed(key, bRepeat);
+    else
+        return bKeyHandled;
 }
 
 // ----------------------------------------------------------------------
@@ -290,47 +290,47 @@ event bool VirtualKeyPressed(EInputKey key, bool bRepeat)
 
 function PressButton(int num)
 {
-	local sound tone;
+    local sound tone;
 
-	if (bWait)
-		return;
+    if (bWait)
+        return;
 
-	if (Len(inputCode) < 16)
-	{
-		inputCode = inputCode $ IndexToString(num);
-		switch (num)
-		{
-			case 0:		tone = sound'Touchtone1'; break;
-			case 1:		tone = sound'Touchtone2'; break;
-			case 2:		tone = sound'Touchtone3'; break;
-			case 3:		tone = sound'Touchtone4'; break;
-			case 4:		tone = sound'Touchtone5'; break;
-			case 5:		tone = sound'Touchtone6'; break;
-			case 6:		tone = sound'Touchtone7'; break;
-			case 7:		tone = sound'Touchtone8'; break;
-			case 8:		tone = sound'Touchtone9'; break;
-			case 9:		tone = sound'Touchtone10'; break;
-			case 10:	tone = sound'Touchtone0'; break;
-			case 11:	tone = sound'Touchtone11'; break;
-		}
+    if (Len(inputCode) < 16)
+    {
+        inputCode = inputCode $ IndexToString(num);
+        switch (num)
+        {
+            case 0:        tone = sound'Touchtone1'; break;
+            case 1:        tone = sound'Touchtone2'; break;
+            case 2:        tone = sound'Touchtone3'; break;
+            case 3:        tone = sound'Touchtone4'; break;
+            case 4:        tone = sound'Touchtone5'; break;
+            case 5:        tone = sound'Touchtone6'; break;
+            case 6:        tone = sound'Touchtone7'; break;
+            case 7:        tone = sound'Touchtone8'; break;
+            case 8:        tone = sound'Touchtone9'; break;
+            case 9:        tone = sound'Touchtone10'; break;
+            case 10:    tone = sound'Touchtone0'; break;
+            case 11:    tone = sound'Touchtone11'; break;
+        }
 
-		player.PlaySound(tone, SLOT_None);
-	}
+        player.PlaySound(tone, SLOT_None);
+    }
 
-	GenerateKeypadDisplay();
-	winText.SetTextColor(colHeaderText);
-	winText.SetText(msgEnterCode);
+    GenerateKeypadDisplay();
+    winText.SetTextColor(colHeaderText);
+    winText.SetText(msgEnterCode);
 
-	if(keypadOwner != None)
-	{
-		if (Len(inputCode) == Len(keypadOwner.validCode))
-			ValidateCode();
-	}
-	else if(phoneOwner != None)
-	{
-		if (Len(inputCode) == Len(phoneOwner.validNumber))
-			ValidateCode();
-	}
+    if(keypadOwner != None)
+    {
+        if (Len(inputCode) == Len(keypadOwner.validCode))
+            ValidateCode();
+    }
+    else if(phoneOwner != None)
+    {
+        if (Len(inputCode) == Len(phoneOwner.validNumber))
+            ValidateCode();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -341,80 +341,80 @@ function PressButton(int num)
 
 function ValidateCode()
 {
-	local Actor A;
-	local int i;
+    local Actor A;
+    local int i;
 
-	if(keypadOwner != None)
-	{
-		if (inputCode == keypadOwner.validCode && (inputCode != "" || bInstantSuccess))
-		{
-			if (keypadOwner.Event != '')
-			{
-				if (keypadOwner.bToggleLock)
-				{
-					// Toggle the locked/unlocked state of the DeusExMover
-	            player.KeypadToggleLocks(keypadOwner);
-				}
-				else
-				{
-					// Trigger the successEvent
-	            player.KeypadRunEvents(keypadOwner, True);
-				}
-			}
-	
-			// UnTrigger event (if used)
-	      // DEUS_EX AMSD Export to player(and then to keypad), for multiplayer.
-	      player.KeypadRunUntriggers(keypadOwner);
-	
-			player.PlaySound(keypadOwner.successSound, SLOT_None);
-			winText.SetTextColor(colGreen);
-			winText.SetText(msgAccessGranted);
-		}
-		else
-		{
-			//Trigger failure event
-	      if (keypadOwner.FailEvent != '')      
-	         player.KeypadRunEvents(keypadOwner, False);
-	
-			player.PlaySound(keypadOwner.failureSound, SLOT_None);
-			winText.SetTextColor(colRed);
-			winText.SetText(msgAccessDenied);
-		}
-	}
-	else if(phoneOwner != None)
-	{
-		if(inputCode == phoneOwner.validNumber && inputCode != "")
-		{
-			player.PlaySound(Sound'DeusExSounds.Generic.Beep2', SLOT_None);
+    if(keypadOwner != None)
+    {
+        if (inputCode == keypadOwner.validCode && (inputCode != "" || bInstantSuccess))
+        {
+            if (keypadOwner.Event != '')
+            {
+                if (keypadOwner.bToggleLock)
+                {
+                    // Toggle the locked/unlocked state of the DeusExMover
+                player.KeypadToggleLocks(keypadOwner);
+                }
+                else
+                {
+                    // Trigger the successEvent
+                player.KeypadRunEvents(keypadOwner, True);
+                }
+            }
+    
+            // UnTrigger event (if used)
+          // DEUS_EX AMSD Export to player(and then to keypad), for multiplayer.
+          player.KeypadRunUntriggers(keypadOwner);
+    
+            player.PlaySound(keypadOwner.successSound, SLOT_None);
+            winText.SetTextColor(colGreen);
+            winText.SetText(msgAccessGranted);
+        }
+        else
+        {
+            //Trigger failure event
+          if (keypadOwner.FailEvent != '')      
+             player.KeypadRunEvents(keypadOwner, False);
+    
+            player.PlaySound(keypadOwner.failureSound, SLOT_None);
+            winText.SetTextColor(colRed);
+            winText.SetText(msgAccessDenied);
+        }
+    }
+    else if(phoneOwner != None)
+    {
+        if(inputCode == phoneOwner.validNumber && inputCode != "")
+        {
+            player.PlaySound(Sound'DeusExSounds.Generic.Beep2', SLOT_None);
 
-			//== Disable the dialtone
-			phoneOwner.AmbientSound = None;
+            //== Disable the dialtone
+            phoneOwner.AmbientSound = None;
 
-			if(phoneOwner.DialEvent != '')
-			{
-				foreach player.AllActors(class'Actor', A, phoneOwner.DialEvent)
-					A.Trigger(phoneOwner, player);
+            if(phoneOwner.DialEvent != '')
+            {
+                foreach player.AllActors(class'Actor', A, phoneOwner.DialEvent)
+                    A.Trigger(phoneOwner, player);
 
-				if(phoneOwner.bEventOnlyOnce)
-					phoneOwner.DialEvent = '';
-			}
-			else
-				player.PlaySound(Sound'Menu_SpeechTest', SLOT_None);
+                if(phoneOwner.bEventOnlyOnce)
+                    phoneOwner.DialEvent = '';
+            }
+            else
+                player.PlaySound(Sound'Menu_SpeechTest', SLOT_None);
 
-			winText.SetTextColor(colGreen);
-			winText.SetText(msgAccessGranted);
-		}
-		else
-		{
-			phoneOwner.AmbientSound = Sound'PhoneBusy';
-			phoneOwner.SetTimer(3.0, False);
-			winText.SetTextColor(colRed);
-			winText.SetText(msgAccessDenied);
-		}
-	}
+            winText.SetTextColor(colGreen);
+            winText.SetText(msgAccessGranted);
+        }
+        else
+        {
+            phoneOwner.AmbientSound = Sound'PhoneBusy';
+            phoneOwner.SetTimer(3.0, False);
+            winText.SetTextColor(colRed);
+            winText.SetText(msgAccessDenied);
+        }
+    }
 
-	bWait = True;
-	AddTimer(1.0, False, 0, 'KeypadDelay');
+    bWait = True;
+    AddTimer(1.0, False, 0, 'KeypadDelay');
 }
 
 // ----------------------------------------------------------------------
@@ -425,26 +425,26 @@ function ValidateCode()
 
 function KeypadDelay(int timerID, int invocations, int clientData)
 {
-	local string theValidCode;
+    local string theValidCode;
 
-	bWait = False;
+    bWait = False;
 
-	// if we entered a valid code, get out
-	if(keypadOwner != None)
-		theValidCode = keypadOwner.validCode;
-	else if(phoneOwner != None)
-		theValidCode = phoneOwner.validNumber;
+    // if we entered a valid code, get out
+    if(keypadOwner != None)
+        theValidCode = keypadOwner.validCode;
+    else if(phoneOwner != None)
+        theValidCode = phoneOwner.validNumber;
 
-	//== One chance only with phones, then we hang up
-	if (inputCode == theValidCode || phoneOwner != None)
-		root.PopWindow();
-	else
-	{
-		inputCode = "";
-		GenerateKeypadDisplay();
-		winText.SetTextColor(colHeaderText);
-		winText.SetText(msgEnterCode);
-	}
+    //== One chance only with phones, then we hang up
+    if (inputCode == theValidCode || phoneOwner != None)
+        root.PopWindow();
+    else
+    {
+        inputCode = "";
+        GenerateKeypadDisplay();
+        winText.SetTextColor(colHeaderText);
+        winText.SetText(msgEnterCode);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -455,21 +455,21 @@ function KeypadDelay(int timerID, int invocations, int clientData)
 
 function string IndexToString(int num)
 {
-	local string str;
+    local string str;
 
-	// buttons 0-8 are ok as is (text 1-9)
-	// button 9 is *
-	// button 10 is 0
-	// button 11 is #
-	switch (num)
-	{
-		case 9:		str = "*"; break;
-		case 10:	str = "0"; break;
-		case 11:	str = "#"; break;
-		default:	str = String(num+1); break;
-	}
+    // buttons 0-8 are ok as is (text 1-9)
+    // button 9 is *
+    // button 10 is 0
+    // button 11 is #
+    switch (num)
+    {
+        case 9:        str = "*"; break;
+        case 10:    str = "0"; break;
+        case 11:    str = "#"; break;
+        default:    str = String(num+1); break;
+    }
 
-	return str;
+    return str;
 }
 
 // ----------------------------------------------------------------------
@@ -480,22 +480,22 @@ function string IndexToString(int num)
 
 function GenerateKeypadDisplay()
 {
-	local int i;
-	local string theValidCode;
+    local int i;
+    local string theValidCode;
 
-	msgEnterCode = "";
+    msgEnterCode = "";
 
-	if(keypadOwner != None)
-		theValidCode = keypadOwner.validCode;
-	else if(phoneOwner != None)
-		theValidCode = phoneOwner.validNumber;
+    if(keypadOwner != None)
+        theValidCode = keypadOwner.validCode;
+    else if(phoneOwner != None)
+        theValidCode = phoneOwner.validNumber;
 
-	for (i=0; i<Len(theValidCode); i++)
-	{
-		if (i == Len(inputCode))
-			msgEnterCode = msgEnterCode $ "|p5";
-		msgEnterCode = msgEnterCode $ "~";
-	}
+    for (i=0; i<Len(theValidCode); i++)
+    {
+        if (i == Len(inputCode))
+            msgEnterCode = msgEnterCode $ "|p5";
+        msgEnterCode = msgEnterCode $ "~";
+    }
 }
 
 
@@ -505,17 +505,17 @@ function GenerateKeypadDisplay()
 
 event StyleChanged()
 {
-	local ColorTheme theme;
+    local ColorTheme theme;
 
-	theme = player.ThemeManager.GetCurrentHUDColorTheme();
+    theme = player.ThemeManager.GetCurrentHUDColorTheme();
 
-	colBackground = theme.GetColorFromName('HUDColor_Background');
-	colBorder     = theme.GetColorFromName('HUDColor_Borders');
-	colHeaderText = theme.GetColorFromName('HUDColor_HeaderText');
+    colBackground = theme.GetColorFromName('HUDColor_Background');
+    colBorder     = theme.GetColorFromName('HUDColor_Borders');
+    colHeaderText = theme.GetColorFromName('HUDColor_HeaderText');
 
-	bBorderTranslucent     = player.GetHUDBorderTranslucency();
-	bBackgroundTranslucent = player.GetHUDBackgroundTranslucency();
-	bDrawBorder            = player.GetHUDBordersVisible();
+    bBorderTranslucent     = player.GetHUDBorderTranslucency();
+    bBackgroundTranslucent = player.GetHUDBackgroundTranslucency();
+    bDrawBorder            = player.GetHUDBordersVisible();
 }
 
 // ----------------------------------------------------------------------

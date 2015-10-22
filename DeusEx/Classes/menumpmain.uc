@@ -12,9 +12,9 @@ class MenuMPMain expands MenuUIMenuWindow;
 
 event InitWindow()
 {
-	Super.InitWindow();
+    Super.InitWindow();
 
-	UpdateButtonStatus();
+    UpdateButtonStatus();
 }
 
 // ----------------------------------------------------------------------
@@ -40,12 +40,12 @@ function UpdateButtonStatus()
 
 function ProcessCustomMenuButton(string key)
 {
-	switch(key)
-	{
-		case "DISCONNECT":
-			Player.DisconnectPlayer();
-			break;
-	}
+    switch(key)
+    {
+        case "DISCONNECT":
+            Player.DisconnectPlayer();
+            break;
+    }
 }
 
 // ----------------------------------------------------------------------

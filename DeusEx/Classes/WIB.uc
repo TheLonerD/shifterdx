@@ -11,17 +11,17 @@ class WIB extends HumanMilitary;
 
 function Carcass SpawnCarcass()
 {
-	if (bStunned)
-		return Super.SpawnCarcass();
+    if (bStunned)
+        return Super.SpawnCarcass();
 
-	Explode();
+    Explode();
 
-	return None;
+    return None;
 }
 
 function Explode(optional vector HitLocation) //== For cross-mod compatibility
 {
-	Super.Explode(HitLocation);
+    Super.Explode(HitLocation);
 }
 
 defaultproperties

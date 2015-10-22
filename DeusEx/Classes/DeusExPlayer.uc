@@ -15,12 +15,12 @@
 //JCDentonMale.uc.  Adding variables to that will not cause issues  
 
 class DeusExPlayer extends PlayerPawnExt
-	native;
+    native;
 
 #exec OBJ LOAD FILE=Effects
 
 // Name and skin assigned to PC by player on the Character Generation screen
-var travel String	TruePlayerName;
+var travel String    TruePlayerName;
 var travel int      PlayerSkin;
 
 // Combat Difficulty, set only at new game time
@@ -41,14 +41,14 @@ var travel int Credits;
 // Energy the player has
 var travel float Energy;
 var travel float EnergyMax;
-var travel float EnergyDrain;				// amount of energy left to drain
-var travel float EnergyDrainTotal;		// total amount of energy to drain
+var travel float EnergyDrain;                // amount of energy left to drain
+var travel float EnergyDrainTotal;        // total amount of energy to drain
 var float MaxRegenPoint;     // in multiplayer, the highest that auto regen will take you
 var float RegenRate;         // the number of points healed per second in mp
 
 // Keyring, used to store any keys the player picks up
-var travel NanoKeyRing KeyRing;		// Inventory Item
-var travel NanoKeyInfo KeyList;		// List of Keys
+var travel NanoKeyRing KeyRing;        // Inventory Item
+var travel NanoKeyInfo KeyList;        // List of Keys
 
 // frob vars
 var() float MaxFrobDistance;
@@ -59,24 +59,24 @@ var float FrobTime;
 var float LastRefreshTime; 
 
 // Conversation System Vars
-var ConPlay conPlay;						// Conversation
-var DataLinkPlay dataLinkPlay;				// Used for DataLinks
-var travel ConHistory conHistory;			// Conversation History
+var ConPlay conPlay;                        // Conversation
+var DataLinkPlay dataLinkPlay;                // Used for DataLinks
+var travel ConHistory conHistory;            // Conversation History
 
 // Inventory System Vars
-var travel byte				invSlots[30];		// 5x6 grid of inventory slots
-var int						maxInvRows;			// Maximum number of inventory rows
-var int						maxInvCols;			// Maximum number of inventory columns
-var travel Inventory		inHand;				// The current object in hand
-var travel Inventory		inHandPending;		// The pending item waiting to be put in hand
-var travel Inventory		ClientinHandPending; // Client temporary inhand pending, for mousewheel use.
-var travel Inventory		LastinHand;			// Last object inhand, so we can detect inhand changes on the client.
-var travel bool				bInHandTransition;	// The inHand is being swapped out
+var travel byte                invSlots[30];        // 5x6 grid of inventory slots
+var int                        maxInvRows;            // Maximum number of inventory rows
+var int                        maxInvCols;            // Maximum number of inventory columns
+var travel Inventory        inHand;                // The current object in hand
+var travel Inventory        inHandPending;        // The pending item waiting to be put in hand
+var travel Inventory        ClientinHandPending; // Client temporary inhand pending, for mousewheel use.
+var travel Inventory        LastinHand;            // Last object inhand, so we can detect inhand changes on the client.
+var travel bool                bInHandTransition;    // The inHand is being swapped out
 // DEUS_EX AMSD  Whether to ignore inv slots in multiplayer
 var bool bBeltIsMPInventory;
 
 // Goal Tracking
-var travel DeusExGoal FirstGoal;	
+var travel DeusExGoal FirstGoal;    
 var travel DeusExGoal LastGoal;
 
 // Note Tracking
@@ -103,9 +103,9 @@ var bool bSecondOptionsSynced;
 
 // used while crouching
 var travel bool bForceDuck;
-var travel bool bCrouchOn;				// used by toggle crouch
-var travel bool bWasCrouchOn;			// used by toggle crouch
-var travel byte lastbDuck;				// used by toggle crouch
+var travel bool bCrouchOn;                // used by toggle crouch
+var travel bool bWasCrouchOn;            // used by toggle crouch
+var travel byte lastbDuck;                // used by toggle crouch
 
 // leaning vars
 var bool bCanLean;
@@ -116,7 +116,7 @@ var float prevLeanDist;
 var bool bToggleWalk;
 
 // communicate run silent value in multiplayer
-var float	RunSilentValue;
+var float    RunSilentValue;
 
 // cheats
 var bool  bWarrenEMPField;
@@ -159,7 +159,7 @@ var float lastThirdPersonConvoTime;
 var Actor lastFirstPersonConvoActor;
 var float lastFirstPersonConvoTime;
 
-var Bool bStartingNewGame;							// Set to True when we're starting a new game. 
+var Bool bStartingNewGame;                            // Set to True when we're starting a new game. 
 var Bool bSavingSkillsAugs;
 
 // Put spy drone here instead of HUD
@@ -169,48 +169,48 @@ var float spyDroneLevelValue;
 var SpyDrone aDrone;
 
 // Buying skills for multiplayer
-var bool		bBuySkills;
+var bool        bBuySkills;
 
 // If player wants to see a profile of the killer in multiplayer
-var bool		bKillerProfile;
+var bool        bKillerProfile;
 
 // Multiplayer notification messages
-const			MPFLAG_FirstSpot				= 0x01;
-const			MPSERVERFLAG_FirstPoison	= 0x01;
-const			MPSERVERFLAG_FirstBurn		= 0x02;
-const			MPSERVERFLAG_TurretInv		= 0x04;
-const			MPSERVERFLAG_CameraInv		= 0x08;
-const			MPSERVERFLAG_LostLegs		= 0x10;
-const			MPSERVERFLAG_DropItem		= 0x20;
-const			MPSERVERFLAG_NoCloakWeapon = 0x40;
+const            MPFLAG_FirstSpot                = 0x01;
+const            MPSERVERFLAG_FirstPoison    = 0x01;
+const            MPSERVERFLAG_FirstBurn        = 0x02;
+const            MPSERVERFLAG_TurretInv        = 0x04;
+const            MPSERVERFLAG_CameraInv        = 0x08;
+const            MPSERVERFLAG_LostLegs        = 0x10;
+const            MPSERVERFLAG_DropItem        = 0x20;
+const            MPSERVERFLAG_NoCloakWeapon = 0x40;
 
-const			mpMsgDelay = 4.0;
+const            mpMsgDelay = 4.0;
 
-var int		mpMsgFlags;
-var int		mpMsgServerFlags;
+var int        mpMsgFlags;
+var int        mpMsgServerFlags;
 
-const	MPMSG_TeamUnatco		=0;
-const	MPMSG_TeamNsf			=1;
-const	MPMSG_TeamHit			=2;
-const	MPMSG_TeamSpot			=3;
-const	MPMSG_FirstPoison		=4;
-const	MPMSG_FirstBurn		=5;
-const	MPMSG_TurretInv		=6;
-const	MPMSG_CameraInv		=7;
-const	MPMSG_CloseKills		=8;
-const	MPMSG_TimeNearEnd		=9;
-const	MPMSG_LostLegs			=10;
-const	MPMSG_DropItem			=11;
+const    MPMSG_TeamUnatco        =0;
+const    MPMSG_TeamNsf            =1;
+const    MPMSG_TeamHit            =2;
+const    MPMSG_TeamSpot            =3;
+const    MPMSG_FirstPoison        =4;
+const    MPMSG_FirstBurn        =5;
+const    MPMSG_TurretInv        =6;
+const    MPMSG_CameraInv        =7;
+const    MPMSG_CloseKills        =8;
+const    MPMSG_TimeNearEnd        =9;
+const    MPMSG_LostLegs            =10;
+const    MPMSG_DropItem            =11;
 const MPMSG_KilledTeammate =12;
-const MPMSG_TeamLAM			=13;
-const MPMSG_TeamComputer	=14;
-const MPMSG_NoCloakWeapon	=15;
-const MPMSG_TeamHackTurret	=16;
+const MPMSG_TeamLAM            =13;
+const MPMSG_TeamComputer    =14;
+const MPMSG_NoCloakWeapon    =15;
+const MPMSG_TeamHackTurret    =16;
 
-var int			mpMsgCode;
-var float		mpMsgTime;
-var int			mpMsgOptionalParam;
-var String		mpMsgOptionalString;
+var int            mpMsgCode;
+var float        mpMsgTime;
+var int            mpMsgOptionalParam;
+var String        mpMsgOptionalString;
 
 // Variables used when starting new game to show the intro first.
 var String      strStartMap;
@@ -221,28 +221,28 @@ var travel Bool bIgnoreNextShowMenu;
 var String NextMap;
 
 // Configuration Variables
-var globalconfig bool bObjectNames;					// Object names on/off
-var globalconfig bool bNPCHighlighting;				// NPC highlighting when new convos
-var globalconfig bool bSubtitles;					// True if Conversation Subtitles are on
-var globalconfig bool bAlwaysRun;					// True to default to running
-var globalconfig bool bToggleCrouch;				// True to let key toggle crouch
-var globalconfig float logTimeout;					// Log Timeout Value
-var globalconfig byte  maxLogLines;					// Maximum number of log lines visible
-var globalconfig bool bHelpMessages;				// Multiplayer help messages
+var globalconfig bool bObjectNames;                    // Object names on/off
+var globalconfig bool bNPCHighlighting;                // NPC highlighting when new convos
+var globalconfig bool bSubtitles;                    // True if Conversation Subtitles are on
+var globalconfig bool bAlwaysRun;                    // True to default to running
+var globalconfig bool bToggleCrouch;                // True to let key toggle crouch
+var globalconfig float logTimeout;                    // Log Timeout Value
+var globalconfig byte  maxLogLines;                    // Maximum number of log lines visible
+var globalconfig bool bHelpMessages;                // Multiplayer help messages
 
 // Overlay Options (TODO: Move to DeusExHUD.uc when serializable)
-var globalconfig byte translucencyLevel;			// 0 - 10?
+var globalconfig byte translucencyLevel;            // 0 - 10?
 var globalconfig bool bObjectBeltVisible;
 var globalconfig bool bHitDisplayVisible;
 var globalconfig bool bAmmoDisplayVisible;
-var globalconfig bool bAugDisplayVisible;	
-var globalconfig bool bDisplayAmmoByClip;	
+var globalconfig bool bAugDisplayVisible;    
+var globalconfig bool bDisplayAmmoByClip;    
 var globalconfig bool bCompassVisible;
 var globalconfig bool bCrosshairVisible;
 var globalconfig bool bAutoReload;
 var globalconfig bool bDisplayAllGoals;
-var globalconfig bool bHUDShowAllAugs;				// TRUE = Always show Augs on HUD
-var globalconfig int  UIBackground;					// 0 = Render 3D, 1 = Snapshot, 2 = Black
+var globalconfig bool bHUDShowAllAugs;                // TRUE = Always show Augs on HUD
+var globalconfig int  UIBackground;                    // 0 = Render 3D, 1 = Snapshot, 2 = Black
 var globalconfig bool bDisplayCompletedGoals;
 var globalconfig bool bShowAmmoDescriptions;
 var globalconfig bool bConfirmSaveDeletes;
@@ -289,8 +289,8 @@ var localized String SkillPointsAward;
 var localized String QuickSaveGameTitle;
 var localized String WeaponUnCloak;
 var localized String TakenOverString;
-var localized String	HeadString;
-var localized String	TorsoString;
+var localized String    HeadString;
+var localized String    TorsoString;
 var localized String LegsString;
 var localized String WithTheString;
 var localized String WithString;
@@ -309,36 +309,36 @@ enum EShieldStatus
 
 var EShieldStatus ShieldStatus;
 
-var Pawn					myBurner;
-var Pawn					myPoisoner;
-var Actor				myProjKiller;
-var Actor				myTurretKiller;
-var Actor				myKiller;
-var KillerProfile		killProfile;
-var InvulnSphere		invulnSph;
+var Pawn                    myBurner;
+var Pawn                    myPoisoner;
+var Actor                myProjKiller;
+var Actor                myTurretKiller;
+var Actor                myKiller;
+var KillerProfile        killProfile;
+var InvulnSphere        invulnSph;
 
 // Conversation Invocation Methods
 enum EInvokeMethod
 {
-	IM_Bump,
-	IM_Frob,
-	IM_Sight,
-	IM_Radius,
-	IM_Named,
-	IM_Other
+    IM_Bump,
+    IM_Frob,
+    IM_Sight,
+    IM_Radius,
+    IM_Named,
+    IM_Other
 };
 
 enum EMusicMode
 {
-	MUS_Ambient,
-	MUS_Combat,
-	MUS_Conversation,
-	MUS_Outro,
-	MUS_Dying
+    MUS_Ambient,
+    MUS_Combat,
+    MUS_Conversation,
+    MUS_Outro,
+    MUS_Dying
 };
 
 var EMusicMode musicMode;
-var byte savedSection;		// last section playing before interrupt
+var byte savedSection;        // last section playing before interrupt
 var float musicCheckTimer;
 var float musicChangeTimer;
 
@@ -354,17 +354,17 @@ var globalconfig bool bQuotesEnabled;
 
 // DEUS_EX AMSD For propagating gametype
 var GameInfo DXGame;
-var float	 ServerTimeDiff;
-var float	 ServerTimeLastRefresh;
+var float     ServerTimeDiff;
+var float     ServerTimeLastRefresh;
 
 // DEUS_EX AMSD For trying higher damage games
 var float MPDamageMult;
 
 // Nintendo immunity
-var float	NintendoImmunityTime;
-var float	NintendoImmunityTimeLeft;
-var bool		bNintendoImmunity;
-const			NintendoDelay = 6.0;
+var float    NintendoImmunityTime;
+var float    NintendoImmunityTimeLeft;
+var bool        bNintendoImmunity;
+const            NintendoDelay = 6.0;
 
 // For closing comptuers if the server quits
 var Computers ActiveComputer;
@@ -392,19 +392,19 @@ replication
     // server to client
     reliable if ((Role == ROLE_Authority) && (bNetOwner))
         AugmentationSystem, SkillSystem, SkillPointsTotal, SkillPointsAvail, inHand, inHandPending, KeyRing, Energy, 
-		  bSpyDroneActive, DXGame, bBuySkills, drugEffectTimer, killProfile;
+          bSpyDroneActive, DXGame, bBuySkills, drugEffectTimer, killProfile;
 
     reliable if (Role == ROLE_Authority)
        ShieldStatus, RunSilentValue, aDrone, NintendoImmunityTimeLeft;
     
     // client to server
-	reliable if (Role < ROLE_Authority)
-		BarkManager, FrobTarget, AugPrefs, bCanLean, curLeanDist, prevLeanDist, 
-		bInHandTransition, bForceDuck, FloorMaterial, WallMaterial, WallNormal, swimTimer, swimDuration;
+    reliable if (Role < ROLE_Authority)
+        BarkManager, FrobTarget, AugPrefs, bCanLean, curLeanDist, prevLeanDist, 
+        bInHandTransition, bForceDuck, FloorMaterial, WallMaterial, WallNormal, swimTimer, swimDuration;
 
-	// Functions the client can call
-	reliable if (Role < ROLE_Authority)
-		DoFrob, ParseLeftClick, ParseRightClick, ReloadWeapon, PlaceItemInSlot, RemoveItemFromSlot, ClearInventorySlots,
+    // Functions the client can call
+    reliable if (Role < ROLE_Authority)
+        DoFrob, ParseLeftClick, ParseRightClick, ReloadWeapon, PlaceItemInSlot, RemoveItemFromSlot, ClearInventorySlots,
       SetInvSlots, FindInventorySlot, ActivateBelt, DropItem, SetInHand, AugAdd, ExtinguishFire, CatchFire,
       AllEnergy, ClearPosition, ClearBelt, AddObjectToBelt, RemoveObjectFromBelt, TeamSay,
       KeypadRunUntriggers, KeypadRunEvents, KeypadToggleLocks, ReceiveFirstOptionSync, ReceiveSecondOptionSync,CreateDrone, MoveDrone,
@@ -419,12 +419,12 @@ replication
    // Functions the server calls in client
    reliable if ((Role == ROLE_Authority) && (bNetOwner))
       UpdateAugmentationDisplayStatus, AddAugmentationDisplay, RemoveAugmentationDisplay, ClearAugmentationDisplay, ShowHud,
-		ActivateKeyPadWindow, SetDamagePercent, SetServerTimeDiff, ClientTurnOffScores;
+        ActivateKeyPadWindow, SetDamagePercent, SetServerTimeDiff, ClientTurnOffScores;
 
    reliable if (Role == ROLE_Authority)
       InvokeComputerScreen, ClientDeath, AddChargedDisplay, RemoveChargedDisplay, MultiplayerDeathMsg, MultiplayerNotifyMsg, 
       BuySkillSound, ShowMultiplayerWin, ForceDroneOff ,AddDamageDisplay, ClientSpawnHits, CloseThisComputer, ClientPlayAnimation, ClientSpawnProjectile, LocalLog,
-	  VerifyRootWindow, VerifyConsole, ForceDisconnect;
+      VerifyRootWindow, VerifyConsole, ForceDisconnect;
 
 }
 
@@ -436,54 +436,54 @@ replication
 
 function PostBeginPlay()
 {
-	local DeusExLevelInfo info;
-	local int levelInfoCount;
+    local DeusExLevelInfo info;
+    local int levelInfoCount;
 
-	Super.PostBeginPlay();
+    Super.PostBeginPlay();
 
-	// Check to make sure there's only *ONE* DeusExLevelInfo and 
-	// go fucking *BOOM* if we find more than one.
+    // Check to make sure there's only *ONE* DeusExLevelInfo and 
+    // go fucking *BOOM* if we find more than one.
 
-	levelInfoCount = 0;
-	foreach AllActors(class'DeusExLevelInfo', info)
-		levelInfoCount++;
+    levelInfoCount = 0;
+    foreach AllActors(class'DeusExLevelInfo', info)
+        levelInfoCount++;
 
-	Assert(levelInfoCount <= 1);
-	
-	// give us a shadow
-   	if (Level.Netmode == NM_Standalone)   
-      		CreateShadow();
+    Assert(levelInfoCount <= 1);
+    
+    // give us a shadow
+       if (Level.Netmode == NM_Standalone)   
+              CreateShadow();
 
-	InitializeSubSystems();
-	DXGame = Level.Game;
-	ShieldStatus = SS_Off;
-	ServerTimeLastRefresh = 0;
+    InitializeSubSystems();
+    DXGame = Level.Game;
+    ShieldStatus = SS_Off;
+    ServerTimeLastRefresh = 0;
 
-	// Safeguard so no cheats in multiplayer
-	if ( Level.NetMode != NM_Standalone )
-		bCheatsEnabled = False;
+    // Safeguard so no cheats in multiplayer
+    if ( Level.NetMode != NM_Standalone )
+        bCheatsEnabled = False;
 
-	//== We're meant to be seeing the Intro.  For whatever reason that didn't happen, so bump us into the first map
-	if(FlagBase != None)
-	{
-		if(Caps(info.mapName) == "DX" && FlagBase.GetBool('ViewIntro'))
-		{
-			FlagBase.DeleteFlag('ViewIntro', FLAG_Bool);
-			StartNewGame(strStartMap);
-		}
-	}
+    //== We're meant to be seeing the Intro.  For whatever reason that didn't happen, so bump us into the first map
+    if(FlagBase != None)
+    {
+        if(Caps(info.mapName) == "DX" && FlagBase.GetBool('ViewIntro'))
+        {
+            FlagBase.DeleteFlag('ViewIntro', FLAG_Bool);
+            StartNewGame(strStartMap);
+        }
+    }
 }
 
 function ServerSetAutoReload( bool bAuto )
 {
-	bAutoReload = bAuto;
+    bAutoReload = bAuto;
 }
 
 // ----------------------------------------------------------------------
 
 function SetServerTimeDiff( float sTime )
 {
-	ServerTimeDiff = (sTime - Level.Timeseconds);
+    ServerTimeDiff = (sTime - Level.Timeseconds);
 }
 
 // ----------------------------------------------------------------------
@@ -500,8 +500,8 @@ simulated function PostNetBeginPlay()
    {
       DrawShield();
       CreatePlayerTracker();
-		if ( NintendoImmunityTimeLeft > 0.0 )
-			DrawInvulnShield();
+        if ( NintendoImmunityTimeLeft > 0.0 )
+            DrawInvulnShield();
       return;
    }
 
@@ -512,9 +512,9 @@ simulated function PostNetBeginPlay()
     {
         CreateColorThemeManager();
         ThemeManager.SetOwner(self);
-        ThemeManager.SetCurrentHUDColorTheme(ThemeManager.GetFirstTheme(1));		
+        ThemeManager.SetCurrentHUDColorTheme(ThemeManager.GetFirstTheme(1));        
         ThemeManager.SetCurrentMenuColorTheme(ThemeManager.GetFirstTheme(0)); 
-        ThemeManager.SetMenuThemeByName(MenuThemeName);	 
+        ThemeManager.SetMenuThemeByName(MenuThemeName);     
         ThemeManager.SetHUDThemeByName(HUDThemeName);
         if (DeusExRootWindow(rootWindow) != None)
            DeusExRootWindow(rootWindow).ChangeStyle();        
@@ -522,9 +522,9 @@ simulated function PostNetBeginPlay()
     ReceiveFirstOptionSync(AugPrefs[0], AugPrefs[1], AugPrefs[2], AugPrefs[3], AugPrefs[4]);
     ReceiveSecondOptionSync(AugPrefs[5], AugPrefs[6], AugPrefs[7], AugPrefs[8]);
     ShieldStatus = SS_Off;
-	 bCheatsEnabled = False;
+     bCheatsEnabled = False;
 
-	 ServerSetAutoReload( bAutoReload );
+     ServerSetAutoReload( bAutoReload );
 }
 
 // ----------------------------------------------------------------------
@@ -533,38 +533,38 @@ simulated function PostNetBeginPlay()
 
 function InitializeSubSystems()
 {
-	// Spawn the BarkManager
-	if (BarkManager == None)
-		BarkManager = Spawn(class'BarkManager', Self);
+    // Spawn the BarkManager
+    if (BarkManager == None)
+        BarkManager = Spawn(class'BarkManager', Self);
 
-	// Spawn the Color Manager
-	CreateColorThemeManager();
+    // Spawn the Color Manager
+    CreateColorThemeManager();
     ThemeManager.SetOwner(self);
 
-	// install the augmentation system if not found
-	if (AugmentationSystem == None)
-	{
-		AugmentationSystem = Spawn(class'AugmentationManager', Self);
-		AugmentationSystem.CreateAugmentations(Self);
-		AugmentationSystem.AddDefaultAugmentations();        
+    // install the augmentation system if not found
+    if (AugmentationSystem == None)
+    {
+        AugmentationSystem = Spawn(class'AugmentationManager', Self);
+        AugmentationSystem.CreateAugmentations(Self);
+        AugmentationSystem.AddDefaultAugmentations();        
         AugmentationSystem.SetOwner(Self);       
-	}
-	else
-	{
-		AugmentationSystem.SetPlayer(Self);
+    }
+    else
+    {
+        AugmentationSystem.SetPlayer(Self);
         AugmentationSystem.SetOwner(Self);
-	}
+    }
 
-	// install the skill system if not found
-	if (SkillSystem == None)
-	{
-		SkillSystem = Spawn(class'SkillManager', Self);
-		SkillSystem.CreateSkills(Self);
-	}
-	else
-	{
-		SkillSystem.SetPlayer(Self);
-	}
+    // install the skill system if not found
+    if (SkillSystem == None)
+    {
+        SkillSystem = Spawn(class'SkillManager', Self);
+        SkillSystem.CreateSkills(Self);
+    }
+    else
+    {
+        SkillSystem.SetPlayer(Self);
+    }
 
    if ((Level.Netmode == NM_Standalone) || (!bBeltIsMPInventory))
    {
@@ -579,18 +579,18 @@ function InitializeSubSystems()
 
 function PostPostBeginPlay()
 {
-	Super.PostPostBeginPlay();
+    Super.PostPostBeginPlay();
 
-	// Bind any conversation events to this DeusExPlayer
-	ConBindEvents();
+    // Bind any conversation events to this DeusExPlayer
+    ConBindEvents();
 
-	// Restore colors that the user selected (as opposed to those
-	// stored in the savegame)
-	ThemeManager.SetMenuThemeByName(MenuThemeName);
-	ThemeManager.SetHUDThemeByName(HUDThemeName);
+    // Restore colors that the user selected (as opposed to those
+    // stored in the savegame)
+    ThemeManager.SetMenuThemeByName(MenuThemeName);
+    ThemeManager.SetHUDThemeByName(HUDThemeName);
 
-	if ((Level.NetMode != NM_Standalone) && ( killProfile == None ))
-		killProfile = Spawn(class'KillerProfile', Self);
+    if ((Level.NetMode != NM_Standalone) && ( killProfile == None ))
+        killProfile = Spawn(class'KillerProfile', Self);
 
 }
 
@@ -600,20 +600,20 @@ function PostPostBeginPlay()
 
 function PreTravel()
 {
-	// Set a flag designating that we're traveling,
-	// so MissionScript can check and not call FirstFrame() for this map.
-	
-	flagBase.SetBool('PlayerTraveling', True, True, 0);
+    // Set a flag designating that we're traveling,
+    // so MissionScript can check and not call FirstFrame() for this map.
+    
+    flagBase.SetBool('PlayerTraveling', True, True, 0);
 
-	SaveSkillPoints();
+    SaveSkillPoints();
 
-	if (dataLinkPlay != None)
-		dataLinkPlay.AbortAndSaveHistory();
+    if (dataLinkPlay != None)
+        dataLinkPlay.AbortAndSaveHistory();
 
-	// If the player is burning (Fire! Fire!), extinguish him
-	// before the map transition.  This is done to fix stuff 
-	// that's fucked up.
-	ExtinguishFire();
+    // If the player is burning (Fire! Fire!), extinguish him
+    // before the map transition.  This is done to fix stuff 
+    // that's fucked up.
+    ExtinguishFire();
 }
 
 // ----------------------------------------------------------------------
@@ -622,183 +622,183 @@ function PreTravel()
 
 event TravelPostAccept()
 {
-	local DeusExLevelInfo info;
-	local MissionScript scr;
-	local bool bScriptRunning;
-	local InterpolationPoint I;
-	local string misstr;
+    local DeusExLevelInfo info;
+    local MissionScript scr;
+    local bool bScriptRunning;
+    local InterpolationPoint I;
+    local string misstr;
 
-	Super.TravelPostAccept();
+    Super.TravelPostAccept();
 
-	// reset the keyboard
-	ResetKeyboard();
+    // reset the keyboard
+    ResetKeyboard();
 
-	info = GetLevelInfo();
+    info = GetLevelInfo();
 
-	if (info != None)
-	{
-		// hack for the DX.dx logo/splash level
-		if (info.MissionNumber == -2)
-		{
-			//== Deus Ex Demo compatibility, MK II
-			//==  The only way we'll have a PlayerTraveling flag on the logo map is if the level we
-			//==  tried to load isn't present, which 99% of the time means this is the demo version
-			if(flagBase.GetBool('PlayerTraveling'))
-			{
-				flagBase.DeleteFlag('PlayerTraveling', FLAG_Bool);
+    if (info != None)
+    {
+        // hack for the DX.dx logo/splash level
+        if (info.MissionNumber == -2)
+        {
+            //== Deus Ex Demo compatibility, MK II
+            //==  The only way we'll have a PlayerTraveling flag on the logo map is if the level we
+            //==  tried to load isn't present, which 99% of the time means this is the demo version
+            if(flagBase.GetBool('PlayerTraveling'))
+            {
+                flagBase.DeleteFlag('PlayerTraveling', FLAG_Bool);
 
-				//== If the ViewIntro flag is set then some other code will be bumping us into
-				//==  the first map in a second, so don't show the demo splash
-				if(!flagBase.GetBool('ViewIntro'))
-					ShowDemoSplash();
-			}
+                //== If the ViewIntro flag is set then some other code will be bumping us into
+                //==  the first map in a second, so don't show the demo splash
+                if(!flagBase.GetBool('ViewIntro'))
+                    ShowDemoSplash();
+            }
 
-			foreach AllActors(class 'InterpolationPoint', I, 'IntroCam')
-			{
-				if (I.Position == 1)
-				{
-					SetCollision(False, False, False);
-					bCollideWorld = False;
-					Target = I;
-					SetPhysics(PHYS_Interpolating);
-					PhysRate = 1.0;
-					PhysAlpha = 0.0;
-					bInterpolating = True;
-					bStasis = False;
-					ShowHud(False);
-					PutInHand(None);
-					GotoState('Interpolating');
-					break;
-				}
-			}
+            foreach AllActors(class 'InterpolationPoint', I, 'IntroCam')
+            {
+                if (I.Position == 1)
+                {
+                    SetCollision(False, False, False);
+                    bCollideWorld = False;
+                    Target = I;
+                    SetPhysics(PHYS_Interpolating);
+                    PhysRate = 1.0;
+                    PhysAlpha = 0.0;
+                    bInterpolating = True;
+                    bStasis = False;
+                    ShowHud(False);
+                    PutInHand(None);
+                    GotoState('Interpolating');
+                    break;
+                }
+            }
 
-			return;
-		}
+            return;
+        }
 
-		// hack for the DXOnly.dx splash level
-		if (info.MissionNumber == -1)
-		{
-			ShowHud(False);
-			GotoState('Paralyzed');
-			return;
-		}
-	}
-	else
-		FlagBase.DeleteFlag('PlayerTraveling', FLAG_Bool);
+        // hack for the DXOnly.dx splash level
+        if (info.MissionNumber == -1)
+        {
+            ShowHud(False);
+            GotoState('Paralyzed');
+            return;
+        }
+    }
+    else
+        FlagBase.DeleteFlag('PlayerTraveling', FLAG_Bool);
 
-	// Restore colors
-	if (ThemeManager != None)
-	{
-		ThemeManager.SetMenuThemeByName(MenuThemeName);
-		ThemeManager.SetHUDThemeByName(HUDThemeName);
-	}
+    // Restore colors
+    if (ThemeManager != None)
+    {
+        ThemeManager.SetMenuThemeByName(MenuThemeName);
+        ThemeManager.SetHUDThemeByName(HUDThemeName);
+    }
 
-	// Make sure any charged pickups that were active 
-	// before travelling are still active.
-	RefreshChargedPickups();
+    // Make sure any charged pickups that were active 
+    // before travelling are still active.
+    RefreshChargedPickups();
 
-	// Make sure the Skills and Augmentation systems 
-	// are properly initialized and reset.
+    // Make sure the Skills and Augmentation systems 
+    // are properly initialized and reset.
 
-	RestoreSkillPoints();
+    RestoreSkillPoints();
 
-	if (SkillSystem != None)
-	{
-		SkillSystem.SetPlayer(Self);
-	}
+    if (SkillSystem != None)
+    {
+        SkillSystem.SetPlayer(Self);
+    }
 
-	if (AugmentationSystem != None)
-	{
-		// set the player correctly
-		AugmentationSystem.SetPlayer(Self);
-		AugmentationSystem.RefreshAugDisplay();
-	}
+    if (AugmentationSystem != None)
+    {
+        // set the player correctly
+        AugmentationSystem.SetPlayer(Self);
+        AugmentationSystem.RefreshAugDisplay();
+    }
 
-	// Nuke any existing conversation
-	if (conPlay != None)
-		conPlay.TerminateConversation();
+    // Nuke any existing conversation
+    if (conPlay != None)
+        conPlay.TerminateConversation();
 
-	// Make sure any objects that care abou the PlayerSkin
-	// are notified
-	UpdatePlayerSkin();
+    // Make sure any objects that care abou the PlayerSkin
+    // are notified
+    UpdatePlayerSkin();
 
-	// If the player was carrying a decoration, 
-	// call TravelPostAccept() so it can initialize itself
-	if (CarriedDecoration != None)
-		CarriedDecoration.TravelPostAccept();
+    // If the player was carrying a decoration, 
+    // call TravelPostAccept() so it can initialize itself
+    if (CarriedDecoration != None)
+        CarriedDecoration.TravelPostAccept();
 
-	// If the player was carrying a decoration, make sure
-	// it's placed back in his hand (since the location
-	// info won't properly travel)
-	PutCarriedDecorationInHand();
+    // If the player was carrying a decoration, make sure
+    // it's placed back in his hand (since the location
+    // info won't properly travel)
+    PutCarriedDecorationInHand();
 
-	// Reset FOV
-	SetFOVAngle(Default.DesiredFOV);
+    // Reset FOV
+    SetFOVAngle(Default.DesiredFOV);
 
-	// If the player had a scope view up, make sure it's 
-	// properly restore
-	RestoreScopeView();
+    // If the player had a scope view up, make sure it's 
+    // properly restore
+    RestoreScopeView();
 
-	// make sure the mission script has been spawned correctly
-	if (info != None)
-	{
-		bScriptRunning = False;
-		foreach AllActors(class'MissionScript', scr)
-			bScriptRunning = True;
+    // make sure the mission script has been spawned correctly
+    if (info != None)
+    {
+        bScriptRunning = False;
+        foreach AllActors(class'MissionScript', scr)
+            bScriptRunning = True;
 
-		if (!bScriptRunning)
-		{
-			if(info.Script != None)
-			{
-				info.SpawnScript();
+        if (!bScriptRunning)
+        {
+            if(info.Script != None)
+            {
+                info.SpawnScript();
 
-				foreach AllActors(class'MissionScript', scr)
-					bScriptRunning = True;
+                foreach AllActors(class'MissionScript', scr)
+                    bScriptRunning = True;
 
-				//== Clearly, something was coded badly here
-				if(!bScriptRunning)
-				{
-					log("Mission Script reference " $ info.Script $ " is incorrect or invalid, removing...");
-					info.Script = None;
-				}
-			}
+                //== Clearly, something was coded badly here
+                if(!bScriptRunning)
+                {
+                    log("Mission Script reference " $ info.Script $ " is incorrect or invalid, removing...");
+                    info.Script = None;
+                }
+            }
 
-			if(info.Script == None)
-			{
-				if(info.missionNumber < 10)
-					misstr = "0"$info.missionNumber;
-				else
-					misstr = String(info.missionNumber);
+            if(info.Script == None)
+            {
+                if(info.missionNumber < 10)
+                    misstr = "0"$info.missionNumber;
+                else
+                    misstr = String(info.missionNumber);
 
-				log("No Mission Script specified, attempting to load default");
+                log("No Mission Script specified, attempting to load default");
 
-				info.Script = class<MissionScript>(DynamicLoadObject("DeusEx.Mission"$misstr,class'Class', True));
+                info.Script = class<MissionScript>(DynamicLoadObject("DeusEx.Mission"$misstr,class'Class', True));
 
-				if(info.Script == None)
-				{
-					log("No existing Mission Script found for DeusEx.Mission" $ misstr $", loading parent Mission Script class.");
-					info.Script = class<MissionScript>(DynamicLoadObject("DeusEx.MissionScript",class'Class'));
-				}
-			}
+                if(info.Script == None)
+                {
+                    log("No existing Mission Script found for DeusEx.Mission" $ misstr $", loading parent Mission Script class.");
+                    info.Script = class<MissionScript>(DynamicLoadObject("DeusEx.MissionScript",class'Class'));
+                }
+            }
 
-			if(!bScriptRunning)
-			{
-				if(info.Script != None)
-					info.SpawnScript();
-				else
-				{
-					log("EPIC FAIL!  Something is REALLY f%$#ed here because we can't load the base MissionScript class.  Manually removing the PlayerTraveling flag so controls work.");
-					FlagBase.DeleteFlag('PlayerTraveling', FLAG_Bool);
-				}
-			}
-		}
-	}
+            if(!bScriptRunning)
+            {
+                if(info.Script != None)
+                    info.SpawnScript();
+                else
+                {
+                    log("EPIC FAIL!  Something is REALLY f%$#ed here because we can't load the base MissionScript class.  Manually removing the PlayerTraveling flag so controls work.");
+                    FlagBase.DeleteFlag('PlayerTraveling', FLAG_Bool);
+                }
+            }
+        }
+    }
 
-	// make sure the player's eye height is correct
-	BaseEyeHeight = CollisionHeight - (GetDefaultCollisionHeight() - Default.BaseEyeHeight);
+    // make sure the player's eye height is correct
+    BaseEyeHeight = CollisionHeight - (GetDefaultCollisionHeight() - Default.BaseEyeHeight);
 
-	//== Apply the HDTP facelift
-	GlobalFacelift(True);
+    //== Apply the HDTP facelift
+    GlobalFacelift(True);
 }
 
 // ----------------------------------------------------------------------
@@ -807,7 +807,7 @@ event TravelPostAccept()
 
 final function UpdateTimePlayed(float deltaTime)
 {
-	saveTime += deltaTime;
+    saveTime += deltaTime;
 }
 
 // ----------------------------------------------------------------------
@@ -816,13 +816,13 @@ final function UpdateTimePlayed(float deltaTime)
 
 function RestoreScopeView()
 {
-	if (inHand != None)
-	{
-		if (inHand.IsA('Binoculars') && (inHand.bActive))
-			Binoculars(inHand).RefreshScopeDisplay(Self, True);
-		else if ((DeusExWeapon(inHand) != None) && (DeusExWeapon(inHand).bZoomed))
-			DeusExWeapon(inHand).RefreshScopeDisplay(Self, True, True);
-	}
+    if (inHand != None)
+    {
+        if (inHand.IsA('Binoculars') && (inHand.bActive))
+            Binoculars(inHand).RefreshScopeDisplay(Self, True);
+        else if ((DeusExWeapon(inHand) != None) && (DeusExWeapon(inHand).bZoomed))
+            DeusExWeapon(inHand).RefreshScopeDisplay(Self, True, True);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -831,22 +831,22 @@ function RestoreScopeView()
 
 function RefreshChargedPickups()
 {
-	local ChargedPickup anItem;
+    local ChargedPickup anItem;
 
-	// Loop through all the ChargedPicksups and look for charged pickups
-	// that are active.  If we find one, add to the user-interface.
+    // Loop through all the ChargedPicksups and look for charged pickups
+    // that are active.  If we find one, add to the user-interface.
 
-	foreach AllActors(class'ChargedPickup', anItem)
-	{
-		if ((anItem.Owner == Self) && (anItem.IsActive()))
-		{
-			// Make sure tech goggles display is refreshed
-			if (anItem.IsA('TechGoggles'))
-				TechGoggles(anItem).UpdateHUDDisplay(Self);
+    foreach AllActors(class'ChargedPickup', anItem)
+    {
+        if ((anItem.Owner == Self) && (anItem.IsActive()))
+        {
+            // Make sure tech goggles display is refreshed
+            if (anItem.IsA('TechGoggles'))
+                TechGoggles(anItem).UpdateHUDDisplay(Self);
 
-			AddChargedDisplay(anItem);
-		}
-	}
+            AddChargedDisplay(anItem);
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -855,38 +855,38 @@ function RefreshChargedPickups()
 
 function UpdatePlayerSkin()
 {
-	local PaulDenton paul;
-	local PaulDentonCarcass paulCarcass;
-	local JCDentonMaleCarcass jcCarcass;
-	local JCDouble jc;
+    local PaulDenton paul;
+    local PaulDentonCarcass paulCarcass;
+    local JCDentonMaleCarcass jcCarcass;
+    local JCDouble jc;
 
-	// Paul Denton
-	foreach AllActors(class'PaulDenton', paul)
-		break;
+    // Paul Denton
+    foreach AllActors(class'PaulDenton', paul)
+        break;
 
-	if (paul != None)
-		paul.SetSkin(Self);
+    if (paul != None)
+        paul.SetSkin(Self);
 
-	// Paul Denton Carcass
-	foreach AllActors(class'PaulDentonCarcass', paulCarcass)
-		break;
+    // Paul Denton Carcass
+    foreach AllActors(class'PaulDentonCarcass', paulCarcass)
+        break;
 
-	if (paulCarcass != None)
-		paulCarcass.SetSkin(Self);
+    if (paulCarcass != None)
+        paulCarcass.SetSkin(Self);
 
-	// JC Denton Carcass
-	foreach AllActors(class'JCDentonMaleCarcass', jcCarcass)
-		break;
+    // JC Denton Carcass
+    foreach AllActors(class'JCDentonMaleCarcass', jcCarcass)
+        break;
 
-	if (jcCarcass != None)
-		jcCarcass.SetSkin(Self);
+    if (jcCarcass != None)
+        jcCarcass.SetSkin(Self);
 
-	// JC's stunt double
-	foreach AllActors(class'JCDouble', jc)
-		break;
+    // JC's stunt double
+    foreach AllActors(class'JCDouble', jc)
+        break;
 
-	if (jc != None)
-		jc.SetSkin(Self);
+    if (jc != None)
+        jc.SetSkin(Self);
 }
 
 
@@ -896,12 +896,12 @@ function UpdatePlayerSkin()
 
 function DeusExLevelInfo GetLevelInfo()
 {
-	local DeusExLevelInfo info;
+    local DeusExLevelInfo info;
 
-	foreach AllActors(class'DeusExLevelInfo', info)
-		break;
+    foreach AllActors(class'DeusExLevelInfo', info)
+        break;
 
-	return info;
+    return info;
 }
 
 //
@@ -920,120 +920,120 @@ exec function DualmapF12() { if ( AugmentationSystem != None) AugmentationSystem
 
 exec function GlobalFacelift(bool bOn)
 {
-	local Actor generic;
+    local Actor generic;
 
-	//== HDTP might break multiplayer compatibility
-	//==  Also, we want to make sure there's something to (un)load before we go running through all this game-slowing madness
-	if((Level.NetMode != NM_StandAlone && bOn) || mesh(DynamicLoadObject("HDTPItems.HDTPsodacan", class'mesh', True)) == None)
-	{
-		//== Set a flag to prevent each object from jumping through the HDTP rigamarole when there's no HDTP stuff
-		flagBase.SetBool('HDTP_NotDetected', True, True, 0);
-		return;
-	}
+    //== HDTP might break multiplayer compatibility
+    //==  Also, we want to make sure there's something to (un)load before we go running through all this game-slowing madness
+    if((Level.NetMode != NM_StandAlone && bOn) || mesh(DynamicLoadObject("HDTPItems.HDTPsodacan", class'mesh', True)) == None)
+    {
+        //== Set a flag to prevent each object from jumping through the HDTP rigamarole when there's no HDTP stuff
+        flagBase.SetBool('HDTP_NotDetected', True, True, 0);
+        return;
+    }
 
-	flagBase.SetBool('HDTP_NotDetected', False);
+    flagBase.SetBool('HDTP_NotDetected', False);
 
-	Facelift(bOn); // Make the player's model look all fancy-like
+    Facelift(bOn); // Make the player's model look all fancy-like
 
-	if(DeusExRootWindow(rootWindow).scopeView != None)
-		DeusExRootWindow(rootWindow).scopeView.Facelift(bOn);
+    if(DeusExRootWindow(rootWindow).scopeView != None)
+        DeusExRootWindow(rootWindow).scopeView.Facelift(bOn);
 
-	foreach AllActors(class'Actor', generic)
-	{
-		if(DeusExDecoration(generic) != None)
-			DeusExDecoration(generic).Facelift(bOn);
+    foreach AllActors(class'Actor', generic)
+    {
+        if(DeusExDecoration(generic) != None)
+            DeusExDecoration(generic).Facelift(bOn);
 
-		if(DeusExWeapon(generic) != None)
-			DeusExWeapon(generic).Facelift(bOn);
+        if(DeusExWeapon(generic) != None)
+            DeusExWeapon(generic).Facelift(bOn);
 
-		if(DeusExPickup(generic) != None)
-			DeusExPickup(generic).Facelift(bOn);
+        if(DeusExPickup(generic) != None)
+            DeusExPickup(generic).Facelift(bOn);
 
-		if(DeusExAmmo(generic) != None)
-			DeusExAmmo(generic).Facelift(bOn);
+        if(DeusExAmmo(generic) != None)
+            DeusExAmmo(generic).Facelift(bOn);
 
-		if(ScriptedPawn(generic) != None)
-			ScriptedPawn(generic).Facelift(bOn);
+        if(ScriptedPawn(generic) != None)
+            ScriptedPawn(generic).Facelift(bOn);
 
-		if(DeusExCarcass(generic) != None)
-			DeusExCarcass(generic).Facelift(bOn);
+        if(DeusExCarcass(generic) != None)
+            DeusExCarcass(generic).Facelift(bOn);
 
-		if(DeusExProjectile(generic) != None)
-			DeusExProjectile(generic).Facelift(bOn);
+        if(DeusExProjectile(generic) != None)
+            DeusExProjectile(generic).Facelift(bOn);
 
-		if(DeusExDecal(generic) != None)
-			DeusExDecal(generic).Facelift(bOn);
+        if(DeusExDecal(generic) != None)
+            DeusExDecal(generic).Facelift(bOn);
 
-		if(DeusExFragment(generic) != None)
-			DeusExFragment(generic).Facelift(bOn);
+        if(DeusExFragment(generic) != None)
+            DeusExFragment(generic).Facelift(bOn);
 
-		//== Annoyingly specific, we must be
-		if(BeamTrigger(generic) != None)
-			BeamTrigger(generic).Facelift(bOn);
+        //== Annoyingly specific, we must be
+        if(BeamTrigger(generic) != None)
+            BeamTrigger(generic).Facelift(bOn);
 
-		if(LaserTrigger(generic) != None)
-			LaserTrigger(generic).Facelift(bOn);
-	}
+        if(LaserTrigger(generic) != None)
+            LaserTrigger(generic).Facelift(bOn);
+    }
 }
 
 function bool Facelift(bool bOn)
 {
-	//== Only do this for DeusEx classes
-	if(instr(String(Class.Name), ".") > -1 && bOn)
-		if(instr(String(Class.Name), "DeusEx.") <= -1)
-			return false;
-	//else
-	//	if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
-	//		return false;
+    //== Only do this for DeusEx classes
+    if(instr(String(Class.Name), ".") > -1 && bOn)
+        if(instr(String(Class.Name), "DeusEx.") <= -1)
+            return false;
+    //else
+    //    if((Class != Class(DynamicLoadObject("DeusEx."$ String(Class.Name), class'Class', True))) && bOn)
+    //        return false;
 
-	return true;
+    return true;
 }
 
 exec function KillAll(class<actor> aClass) //== Overridden for unrealistic fun time
 {
-	local Actor A;
+    local Actor A;
 
-	if( !bCheatsEnabled )
-		return;
-	if ( !bAdmin && (Level.Netmode != NM_Standalone) )
-		return;
-	ForEach AllActors(class 'Actor', A)
-		if ( ClassIsChildOf(A.class, aClass) )
-		{
-			if(combatDifficulty > 4.0 && !A.bNoDelete && !A.bStatic) //Don't bother with the undeletable items
-			{
-				if(ScriptedPawn(A) != None)
-					ScriptedPawn(A).Explode();
-				else if(DeusExDecoration(A) != None)
-					DeusExDecoration(A).Explode(A.Location);
-				else if(DeusExProjectile(A) != None && A.IsInState('Flying'))
-					DeusExProjectile(A).Explode(A.Location, vect(0,0,1));
-				else if(DeusExCarcass(A) != None)
-					DeusExCarcass(A).ChunkUp(100);
-			}
-			A.Destroy();
-		}
+    if( !bCheatsEnabled )
+        return;
+    if ( !bAdmin && (Level.Netmode != NM_Standalone) )
+        return;
+    ForEach AllActors(class 'Actor', A)
+        if ( ClassIsChildOf(A.class, aClass) )
+        {
+            if(combatDifficulty > 4.0 && !A.bNoDelete && !A.bStatic) //Don't bother with the undeletable items
+            {
+                if(ScriptedPawn(A) != None)
+                    ScriptedPawn(A).Explode();
+                else if(DeusExDecoration(A) != None)
+                    DeusExDecoration(A).Explode(A.Location);
+                else if(DeusExProjectile(A) != None && A.IsInState('Flying'))
+                    DeusExProjectile(A).Explode(A.Location, vect(0,0,1));
+                else if(DeusExCarcass(A) != None)
+                    DeusExCarcass(A).ChunkUp(100);
+            }
+            A.Destroy();
+        }
 }
 
 //== Takes a "clean" screenshot, with no HUD, GUI, etc.
 exec function CleanShot()
 {
-	rootWindow.Hide();
-	SShot();
-	rootWindow.Show();
+    rootWindow.Hide();
+    SShot();
+    rootWindow.Show();
 }
 
 exec function AltFire( optional float F )
 {
-	if(DeusExWeapon(Weapon) != None)
-	{
-		if(!DeusExWeapon(Weapon).bHasAltFire && !Weapon.IsA('TnagWeapon')) //That wacky Hejhujka and his alt-fire mutator
-		{
-			DeusExWeapon(Weapon).ScopeToggle();
-			return;
-		}
-	}
-	Super.AltFire(F);
+    if(DeusExWeapon(Weapon) != None)
+    {
+        if(!DeusExWeapon(Weapon).bHasAltFire && !Weapon.IsA('TnagWeapon')) //That wacky Hejhujka and his alt-fire mutator
+        {
+            DeusExWeapon(Weapon).ScopeToggle();
+            return;
+        }
+    }
+    Super.AltFire(F);
 }
 
 //
@@ -1041,28 +1041,28 @@ exec function AltFire( optional float F )
 //
 exec function TeamSay( string Msg )
 {
-	local Pawn P;
-	local String str;
+    local Pawn P;
+    local String str;
 
-	if ( TeamDMGame(DXGame) == None )
-	{
-		Say(Msg);
-		return;
-	}
+    if ( TeamDMGame(DXGame) == None )
+    {
+        Say(Msg);
+        return;
+    }
 
-	str = PlayerReplicationInfo.PlayerName $ ": " $ Msg;
+    str = PlayerReplicationInfo.PlayerName $ ": " $ Msg;
 
-	if ( Role == ROLE_Authority )
-		log( "TeamSay>" $ str );
+    if ( Role == ROLE_Authority )
+        log( "TeamSay>" $ str );
 
-	for( P=Level.PawnList; P!=None; P=P.nextPawn )
-	{
-		if( P.bIsPlayer && (P.PlayerReplicationInfo.Team == PlayerReplicationInfo.Team) )
-		{
-			if ( P.IsA('DeusExPlayer') )
-				DeusExPlayer(P).ClientMessage( str, 'TeamSay', true );
-		}
-	}
+    for( P=Level.PawnList; P!=None; P=P.nextPawn )
+    {
+        if( P.bIsPlayer && (P.PlayerReplicationInfo.Team == PlayerReplicationInfo.Team) )
+        {
+            if ( P.IsA('DeusExPlayer') )
+                DeusExPlayer(P).ClientMessage( str, 'TeamSay', true );
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1071,8 +1071,8 @@ exec function TeamSay( string Msg )
 
 exec function RestartLevel()
 {
-	ResetPlayer();
-	Super.RestartLevel();
+    ResetPlayer();
+    Super.RestartLevel();
 }
 
 // ----------------------------------------------------------------------
@@ -1081,11 +1081,11 @@ exec function RestartLevel()
 
 exec function LoadGame(int saveIndex)
 {
-	// Reset the FOV
-	DesiredFOV = Default.DesiredFOV;
+    // Reset the FOV
+    DesiredFOV = Default.DesiredFOV;
 
-	DeusExRootWindow(rootWindow).ClearWindowStack();
-	ClientTravel("?loadgame=" $ saveIndex, TRAVEL_Absolute, False);
+    DeusExRootWindow(rootWindow).ClearWindowStack();
+    ClientTravel("?loadgame=" $ saveIndex, TRAVEL_Absolute, False);
 }
 
 // ----------------------------------------------------------------------
@@ -1094,26 +1094,26 @@ exec function LoadGame(int saveIndex)
 
 exec function QuickSave()
 {
-	local DeusExLevelInfo info;
+    local DeusExLevelInfo info;
 
-	info = GetLevelInfo();
+    info = GetLevelInfo();
 
-	// Don't allow saving if:
-	//
-	// 1) The player is dead
-	// 2) We're on the logo map
-	// 4) We're interpolating (playing outtro)
-	// 3) A datalink is playing
+    // Don't allow saving if:
+    //
+    // 1) The player is dead
+    // 2) We're on the logo map
+    // 4) We're interpolating (playing outtro)
+    // 3) A datalink is playing
    // 4) We're in a multiplayer game
 
-	if (((info != None) && (info.MissionNumber < 0)) || 
-	   ((IsInState('Dying')) || (IsInState('Paralyzed')) || (IsInState('Interpolating'))) || 
-	   (dataLinkPlay != None) || (Level.Netmode != NM_Standalone))
-	{
-	   return;
-	}
+    if (((info != None) && (info.MissionNumber < 0)) || 
+       ((IsInState('Dying')) || (IsInState('Paralyzed')) || (IsInState('Interpolating'))) || 
+       (dataLinkPlay != None) || (Level.Netmode != NM_Standalone))
+    {
+       return;
+    }
 
-	SaveGame(-1, QuickSaveGameTitle);
+    SaveGame(-1, QuickSaveGameTitle);
 }
 
 // ----------------------------------------------------------------------
@@ -1127,8 +1127,8 @@ exec function QuickLoad()
    if (Level.Netmode != NM_Standalone)
       return;
 
-	if (DeusExRootWindow(rootWindow) != None) 
-		DeusExRootWindow(rootWindow).ConfirmQuickLoad();
+    if (DeusExRootWindow(rootWindow) != None) 
+        DeusExRootWindow(rootWindow).ConfirmQuickLoad();
 }
 
 // ----------------------------------------------------------------------
@@ -1139,7 +1139,7 @@ function QuickLoadConfirmed()
 {
    if (Level.Netmode != NM_Standalone)
       return;
-	LoadGame(-1);
+    LoadGame(-1);
 }
 
 // ----------------------------------------------------------------------
@@ -1148,24 +1148,24 @@ function QuickLoadConfirmed()
 
 function BuySkillSound( int code )
 {
-	local Sound snd;
+    local Sound snd;
 
-	switch( code )
-	{
-		case 0:
-			snd = Sound'Menu_OK';
-			break;
-		case 1:
-			snd = Sound'Menu_Cancel';
-			break;
-		case 2:
-			snd = Sound'Menu_Focus';
-			break;
-		case 3:
-			snd = Sound'Menu_BuySkills';
-			break;
-	}
-	PlaySound( snd, SLOT_Interface, 0.75 );
+    switch( code )
+    {
+        case 0:
+            snd = Sound'Menu_OK';
+            break;
+        case 1:
+            snd = Sound'Menu_Cancel';
+            break;
+        case 2:
+            snd = Sound'Menu_Focus';
+            break;
+        case 3:
+            snd = Sound'Menu_BuySkills';
+            break;
+    }
+    PlaySound( snd, SLOT_Interface, 0.75 );
 }
 
 // ----------------------------------------------------------------------
@@ -1176,34 +1176,34 @@ function BuySkillSound( int code )
 
 exec function StartNewGame(String startMap)
 {
-	local Inventory item, nextItem;
-	if (DeusExRootWindow(rootWindow) != None)
-		DeusExRootWindow(rootWindow).ClearWindowStack();
+    local Inventory item, nextItem;
+    if (DeusExRootWindow(rootWindow) != None)
+        DeusExRootWindow(rootWindow).ClearWindowStack();
 
-	// Set a flag designating that we're traveling,
-	// so MissionScript can check and not call FirstFrame() for this map.
-	flagBase.SetBool('PlayerTraveling', True, True, 0);
+    // Set a flag designating that we're traveling,
+    // so MissionScript can check and not call FirstFrame() for this map.
+    flagBase.SetBool('PlayerTraveling', True, True, 0);
 
-	if(KeyRing != None)
-		KeyRing.RemoveAllKeys();
+    if(KeyRing != None)
+        KeyRing.RemoveAllKeys();
 
-	for(item = Inventory; item != None; item = nextItem)
-	{
-		nextItem = item.Inventory;
-		item.Destroy();
-	}
+    for(item = Inventory; item != None; item = nextItem)
+    {
+        nextItem = item.Inventory;
+        item.Destroy();
+    }
 
-	SaveSkillPoints();
-	ResetPlayer();
-	DeleteSaveGameFiles();
+    SaveSkillPoints();
+    ResetPlayer();
+    DeleteSaveGameFiles();
 
-	bStartingNewGame = True;
+    bStartingNewGame = True;
 
-	// Send the player to the specified map!
-	if (startMap == "")
-		Level.Game.SendPlayer(Self, "01_NYC_UNATCOIsland?Difficulty="$combatDifficulty);		// TODO: Must be stored somewhere!
-	else
-		Level.Game.SendPlayer(Self, startMap$"?Difficulty="$combatDifficulty);
+    // Send the player to the specified map!
+    if (startMap == "")
+        Level.Game.SendPlayer(Self, "01_NYC_UNATCOIsland?Difficulty="$combatDifficulty);        // TODO: Must be stored somewhere!
+    else
+        Level.Game.SendPlayer(Self, startMap$"?Difficulty="$combatDifficulty);
 }
 
 // ----------------------------------------------------------------------
@@ -1212,22 +1212,22 @@ exec function StartNewGame(String startMap)
 
 function StartTrainingMission()
 {
-	if (DeusExRootWindow(rootWindow) != None)
-		DeusExRootWindow(rootWindow).ClearWindowStack();
+    if (DeusExRootWindow(rootWindow) != None)
+        DeusExRootWindow(rootWindow).ClearWindowStack();
 
    // Make sure the player isn't asked to do this more than
-	// once if prompted on the main menu.
-	if (!bAskedToTrain)
-	{
-		bAskedToTrain = True;
-		SaveConfig();
-	}
+    // once if prompted on the main menu.
+    if (!bAskedToTrain)
+    {
+        bAskedToTrain = True;
+        SaveConfig();
+    }
 
    SkillSystem.ResetSkills();
-	ResetPlayer(True);
-	DeleteSaveGameFiles();
-	bStartingNewGame = True;
-	Level.Game.SendPlayer(Self, "00_Training?Difficulty="$combatDifficulty);
+    ResetPlayer(True);
+    DeleteSaveGameFiles();
+    bStartingNewGame = True;
+    Level.Game.SendPlayer(Self, "00_Training?Difficulty="$combatDifficulty);
 }
 
 // ----------------------------------------------------------------------
@@ -1236,29 +1236,29 @@ function StartTrainingMission()
 
 function ShowIntro(optional bool bStartNewGame)
 {
-	local Inventory item, nextItem;
-	local GameDirectory mapDir;
-	local int mapIndex;
-	local bool bFoundAnyMaps;
+    local Inventory item, nextItem;
+    local GameDirectory mapDir;
+    local int mapIndex;
+    local bool bFoundAnyMaps;
 
-	if (DeusExRootWindow(rootWindow) != None)
-		DeusExRootWindow(rootWindow).ClearWindowStack();
+    if (DeusExRootWindow(rootWindow) != None)
+        DeusExRootWindow(rootWindow).ClearWindowStack();
 
-	bStartNewGameAfterIntro = bStartNewGame;
+    bStartNewGameAfterIntro = bStartNewGame;
 
-	for(item = Inventory; item != None; item = nextItem)
-	{
-		nextItem = item.Inventory;
-		item.Destroy();
-	}
+    for(item = Inventory; item != None; item = nextItem)
+    {
+        nextItem = item.Inventory;
+        item.Destroy();
+    }
 
-	// Make sure all augmentations are OFF before going into the intro
-	AugmentationSystem.DeactivateAll();
+    // Make sure all augmentations are OFF before going into the intro
+    AugmentationSystem.DeactivateAll();
 
-	if(bStartNewGame)
-		FlagBase.SetBool('ViewIntro', True, True, 0);
+    if(bStartNewGame)
+        FlagBase.SetBool('ViewIntro', True, True, 0);
 
-	Level.Game.SendPlayer(Self, "00_Intro?Difficulty="$combatDifficulty);
+    Level.Game.SendPlayer(Self, "00_Intro?Difficulty="$combatDifficulty);
 }
 
 // ----------------------------------------------------------------------
@@ -1267,18 +1267,18 @@ function ShowIntro(optional bool bStartNewGame)
 
 function ShowCredits(optional bool bLoadIntro)
 {
-	local DeusExRootWindow root;
-	local CreditsWindow winCredits;
+    local DeusExRootWindow root;
+    local CreditsWindow winCredits;
 
-	root = DeusExRootWindow(rootWindow);
+    root = DeusExRootWindow(rootWindow);
 
-	if (root != None)
-	{
-		// Show the credits screen and force the game not to pause
-		// if we're showing the credits after the endgame
-		winCredits = CreditsWindow(root.InvokeMenuScreen(Class'CreditsWindow', bLoadIntro));
-		winCredits.SetLoadIntro(bLoadIntro);
-	}
+    if (root != None)
+    {
+        // Show the credits screen and force the game not to pause
+        // if we're showing the credits after the endgame
+        winCredits = CreditsWindow(root.InvokeMenuScreen(Class'CreditsWindow', bLoadIntro));
+        winCredits.SetLoadIntro(bLoadIntro);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1319,10 +1319,10 @@ function StartMultiplayerGame(string command)
 
 function NewMultiplayerMatch()
 {
-	DeusExMPGame( DXGame ).RestartPlayer( Self );
-	PlayerReplicationInfo.Score = 0;
-	PlayerReplicationInfo.Deaths = 0;
-	PlayerReplicationInfo.Streak = 0;
+    DeusExMPGame( DXGame ).RestartPlayer( Self );
+    PlayerReplicationInfo.Score = 0;
+    PlayerReplicationInfo.Deaths = 0;
+    PlayerReplicationInfo.Streak = 0;
 }
 
 // ----------------------------------------------------------------------
@@ -1331,28 +1331,28 @@ function NewMultiplayerMatch()
 
 function ShowMultiplayerWin( String winnerName, int winningTeam, String Killer, String Killee, String Method )
 {
-	local HUDMultiplayer mpScr;
-	local DeusExRootWindow root;
+    local HUDMultiplayer mpScr;
+    local DeusExRootWindow root;
 
-	if (( Player != None ) && ( Player.Console != None ))
-		Player.Console.ClearMessages();
+    if (( Player != None ) && ( Player.Console != None ))
+        Player.Console.ClearMessages();
 
-	root = DeusExRootWindow(rootWindow);
+    root = DeusExRootWindow(rootWindow);
 
-	if ( root != None )
-	{
-		mpScr = HUDMultiplayer(root.InvokeUIScreen(Class'HUDMultiplayer', True));
-		root.MaskBackground(True);
+    if ( root != None )
+    {
+        mpScr = HUDMultiplayer(root.InvokeUIScreen(Class'HUDMultiplayer', True));
+        root.MaskBackground(True);
 
-		if ( mpScr != None )
-		{
+        if ( mpScr != None )
+        {
          mpScr.winnerName = winnerName;
-			mpScr.winningTeam = winningTeam;
-			mpScr.winKiller = Killer;
-			mpScr.winKillee = Killee;
-			mpScr.winMethod = Method;
-		}
-	}
+            mpScr.winningTeam = winningTeam;
+            mpScr.winKiller = Killer;
+            mpScr.winKillee = Killee;
+            mpScr.winMethod = Method;
+        }
+    }
 
    //Do cleanup
    if (PlayerIsClient())
@@ -1375,32 +1375,32 @@ function ShowMultiplayerWin( String winnerName, int winningTeam, String Killer, 
 
 function ResetPlayer(optional bool bTraining)
 {
-	local inventory anItem;
-	local inventory nextItem;
+    local inventory anItem;
+    local inventory nextItem;
 
-	ResetPlayerToDefaults();
+    ResetPlayerToDefaults();
 
-	// Reset Augmentations
-	if (AugmentationSystem != None)
-	{
-		AugmentationSystem.ResetAugmentations();
-		AugmentationSystem.Destroy();
-		AugmentationSystem = None;
-	}
+    // Reset Augmentations
+    if (AugmentationSystem != None)
+    {
+        AugmentationSystem.ResetAugmentations();
+        AugmentationSystem.Destroy();
+        AugmentationSystem = None;
+    }
 
-	// Give the player a pistol and a prod
-	if (!bTraining)
-	{
-		anItem = Spawn(class'WeaponPistol');
-		anItem.Frob(Self, None);
-		anItem.bInObjectBelt = True;
-		anItem = Spawn(class'WeaponProd');
-		anItem.Frob(Self, None);
-		anItem.bInObjectBelt = True;
-		anItem = Spawn(class'MedKit');
-		anItem.Frob(Self, None);
-		anItem.bInObjectBelt = True;
-	}
+    // Give the player a pistol and a prod
+    if (!bTraining)
+    {
+        anItem = Spawn(class'WeaponPistol');
+        anItem.Frob(Self, None);
+        anItem.bInObjectBelt = True;
+        anItem = Spawn(class'WeaponProd');
+        anItem.Frob(Self, None);
+        anItem.bInObjectBelt = True;
+        anItem = Spawn(class'MedKit');
+        anItem.Frob(Self, None);
+        anItem.bInObjectBelt = True;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1411,77 +1411,77 @@ function ResetPlayer(optional bool bTraining)
 
 function ResetPlayerToDefaults()
 {
-	local inventory anItem;
-	local inventory nextItem;
+    local inventory anItem;
+    local inventory nextItem;
 
-   	// reset the image linked list
-	FirstImage = None;
+       // reset the image linked list
+    FirstImage = None;
 
-	if (DeusExRootWindow(rootWindow) != None)
-		DeusExRootWindow(rootWindow).ResetFlags();
+    if (DeusExRootWindow(rootWindow) != None)
+        DeusExRootWindow(rootWindow).ResetFlags();
 
-	// Remove all the keys from the keyring before
-	// it gets destroyed
-	if (KeyRing != None)
-	{
-		KeyRing.RemoveAllKeys();
-		if ((Role == ROLE_Authority) && (Level.NetMode != NM_Standalone))
-			KeyRing.ClientRemoveAllKeys();
-		KeyRing = None;
-	}
+    // Remove all the keys from the keyring before
+    // it gets destroyed
+    if (KeyRing != None)
+    {
+        KeyRing.RemoveAllKeys();
+        if ((Role == ROLE_Authority) && (Level.NetMode != NM_Standalone))
+            KeyRing.ClientRemoveAllKeys();
+        KeyRing = None;
+    }
 
 
-	//== Y|y: Silly DX devs, this is how you step through player inventory
-	anItem = Inventory;
+    //== Y|y: Silly DX devs, this is how you step through player inventory
+    anItem = Inventory;
 
-	while(anItem != None)
-	{
-		nextItem = anItem.Inventory;
-		DeleteInventory(anItem);
-		anItem.Destroy();
-		anItem = nextItem;
-	}
+    while(anItem != None)
+    {
+        nextItem = anItem.Inventory;
+        DeleteInventory(anItem);
+        anItem.Destroy();
+        anItem = nextItem;
+    }
 
-	Inventory = None;
+    Inventory = None;
 
-	// Clear object belt
-	if (DeusExRootWindow(rootWindow) != None)
-		DeusExRootWindow(rootWindow).hud.belt.ClearBelt();
+    // Clear object belt
+    if (DeusExRootWindow(rootWindow) != None)
+        DeusExRootWindow(rootWindow).hud.belt.ClearBelt();
 
-	// clear the notes and the goals
-	DeleteAllNotes();
-	DeleteAllGoals();
+    // clear the notes and the goals
+    DeleteAllNotes();
+    DeleteAllGoals();
 
-	// Nuke the history
-	ResetConversationHistory();
+    // Nuke the history
+    ResetConversationHistory();
 
-	// Other defaults
-	Credits = Default.Credits;
-	Energy  = Default.Energy;
-	SkillPointsTotal = Default.SkillPointsTotal;
-	SkillPointsAvail = Default.SkillPointsAvail;
+    // Other defaults
+    Credits = Default.Credits;
+    Energy  = Default.Energy;
+    SkillPointsTotal = Default.SkillPointsTotal;
+    SkillPointsAvail = Default.SkillPointsAvail;
 
-	SetInHandPending(None);
-	SetInHand(None);
+    SetInHandPending(None);
+    SetInHand(None);
 
-	bInHandTransition = False;
+    bInHandTransition = False;
 
-	RestoreAllHealth();
-	ClearLog();
+    RestoreAllHealth();
+    ClearLog();
 
-	// Reset save count/time
-	saveCount = 0;
-	saveTime  = 0.0;
+    // Reset save count/time
+    saveCount = 0;
+    saveTime  = 0.0;
 
-	// Reinitialize all subsystems we've just nuked
-	InitializeSubSystems();
+    // Reinitialize all subsystems we've just nuked
+    InitializeSubSystems();
 
-   	// Give starting inventory.
-   	if (Level.Netmode != NM_Standalone)
-	{
-		NintendoImmunityEffect( True );
-		GiveInitialInventory();
-	}
+       // Give starting inventory.
+       if (Level.Netmode != NM_Standalone)
+    {
+        NintendoImmunityEffect( True );
+        GiveInitialInventory();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1490,13 +1490,13 @@ function ResetPlayerToDefaults()
 
 function CreateKeyRing()
 {
-	if (KeyRing == None)
-	{
-		KeyRing = Spawn(class'NanoKeyRing', Self);
-		KeyRing.InitialState='Idle2';
-		KeyRing.GiveTo(Self);
-		KeyRing.SetBase(Self);
-	}
+    if (KeyRing == None)
+    {
+        KeyRing = Spawn(class'NanoKeyRing', Self);
+        KeyRing.InitialState='Idle2';
+        KeyRing.GiveTo(Self);
+        KeyRing.SetBase(Self);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1505,90 +1505,90 @@ function CreateKeyRing()
 
 simulated function DrugEffects(float deltaTime)
 {
-	local float mult, fov, augLevel;
-	local Rotator rot;
-	local DeusExRootWindow root;
+    local float mult, fov, augLevel;
+    local Rotator rot;
+    local DeusExRootWindow root;
 
-	root = DeusExRootWindow(rootWindow);
+    root = DeusExRootWindow(rootWindow);
 
-	// random wandering and swaying when drugged
-	if (drugEffectTimer > 0.0)
-	{
-		if ((root != None) && (root.hud != None))
-		{
-			if (root.hud.background == None)
-			{
-				root.hud.SetBackground(Texture'DrunkFX');
-				root.hud.SetBackgroundSmoothing(True);
-				root.hud.SetBackgroundStretching(True);
-				root.hud.SetBackgroundStyle(DSTY_Modulated);
-			}
-		}
+    // random wandering and swaying when drugged
+    if (drugEffectTimer > 0.0)
+    {
+        if ((root != None) && (root.hud != None))
+        {
+            if (root.hud.background == None)
+            {
+                root.hud.SetBackground(Texture'DrunkFX');
+                root.hud.SetBackgroundSmoothing(True);
+                root.hud.SetBackgroundStretching(True);
+                root.hud.SetBackgroundStyle(DSTY_Modulated);
+            }
+        }
 
-		mult = FClamp(drugEffectTimer / 10.0, 0.0, 3.0);
-		rot.Pitch = 1024.0 * Cos(Level.TimeSeconds * mult) * deltaTime * mult;
-		rot.Yaw = 1024.0 * Sin(Level.TimeSeconds * mult) * deltaTime * mult;
-		rot.Roll = 0;
+        mult = FClamp(drugEffectTimer / 10.0, 0.0, 3.0);
+        rot.Pitch = 1024.0 * Cos(Level.TimeSeconds * mult) * deltaTime * mult;
+        rot.Yaw = 1024.0 * Sin(Level.TimeSeconds * mult) * deltaTime * mult;
+        rot.Roll = 0;
 
-		rot.Pitch = FClamp(rot.Pitch, -4096, 4096);
-		rot.Yaw = FClamp(rot.Yaw, -4096, 4096);
+        rot.Pitch = FClamp(rot.Pitch, -4096, 4096);
+        rot.Yaw = FClamp(rot.Yaw, -4096, 4096);
 
-		ViewRotation += rot;
+        ViewRotation += rot;
 
-		if ( Level.NetMode == NM_Standalone )
-		{
-			fov = Default.DesiredFOV - drugEffectTimer + Rand(2);
-			fov = FClamp(fov, 30, Default.DesiredFOV);
-			DesiredFOV = fov;
-		}
-		else
-			DesiredFOV = Default.DesiredFOV;
+        if ( Level.NetMode == NM_Standalone )
+        {
+            fov = Default.DesiredFOV - drugEffectTimer + Rand(2);
+            fov = FClamp(fov, 30, Default.DesiredFOV);
+            DesiredFOV = fov;
+        }
+        else
+            DesiredFOV = Default.DesiredFOV;
 
-		//Aug Environment will help with drug effects
-		augLevel = AugmentationSystem.GetAugLevelValue(class'AugEnviro');
-		if(augLevel > 0.0)
-			drugEffectTimer -= deltaTime / augLevel;
-		else
-			drugEffectTimer -= deltaTime;
-		if (drugEffectTimer < 0)
-			drugEffectTimer = 0;
-	}
-	else
-	{
-		if ((root != None) && (root.hud != None))
-		{
-			if (root.hud.background != None)
-			{
-				root.hud.SetBackground(None);
-				root.hud.SetBackgroundStyle(DSTY_Normal);
-				DesiredFOV = Default.DesiredFOV;
-			}
-		}
-	}
+        //Aug Environment will help with drug effects
+        augLevel = AugmentationSystem.GetAugLevelValue(class'AugEnviro');
+        if(augLevel > 0.0)
+            drugEffectTimer -= deltaTime / augLevel;
+        else
+            drugEffectTimer -= deltaTime;
+        if (drugEffectTimer < 0)
+            drugEffectTimer = 0;
+    }
+    else
+    {
+        if ((root != None) && (root.hud != None))
+        {
+            if (root.hud.background != None)
+            {
+                root.hud.SetBackground(None);
+                root.hud.SetBackgroundStyle(DSTY_Normal);
+                DesiredFOV = Default.DesiredFOV;
+            }
+        }
+    }
 }
 
 function ZymeEffects(float deltaTime)
 {
-	//Zyme effect
-	// This function just manages the time and resets it when applicable.  The fact
-	// that the value is negative is what other functions look for.
-	if(drugEffectTimer < 0.0)
-	{
-		drugEffectTimer += deltaTime;
+    //Zyme effect
+    // This function just manages the time and resets it when applicable.  The fact
+    // that the value is negative is what other functions look for.
+    if(drugEffectTimer < 0.0)
+    {
+        drugEffectTimer += deltaTime;
 
-		if(drugEffectTimer >= 0.0)
-		{
-			if(Level.NetMode == NM_Standalone)
-			{
-				flagBase.DeleteFlag('Travel_GameSpeed', FLAG_Float); //Just in case it hasn't been set yet
-				Level.Game.SetGameSpeed(Level.Game.GameSpeed * 2.000);
-			}
-			else
-				log("DeusExPlayer: Somehow the zyme effect was activated in a non-singleplayer map.  WTF?");
-			drugEffectTimer = 60.0;
-			ClientMessage("Zyme effect wears off");
-		}
-	}
+        if(drugEffectTimer >= 0.0)
+        {
+            if(Level.NetMode == NM_Standalone)
+            {
+                flagBase.DeleteFlag('Travel_GameSpeed', FLAG_Float); //Just in case it hasn't been set yet
+                Level.Game.SetGameSpeed(Level.Game.GameSpeed * 2.000);
+            }
+            else
+                log("DeusExPlayer: Somehow the zyme effect was activated in a non-singleplayer map.  WTF?");
+            drugEffectTimer = 60.0;
+            ClientMessage("Zyme effect wears off");
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1597,28 +1597,28 @@ function ZymeEffects(float deltaTime)
 
 function PlayMusic(String musicToPlay, optional int sectionToPlay)
 {
-	local Music LoadedMusic;
-	local EMusicMode newMusicMode;
+    local Music LoadedMusic;
+    local EMusicMode newMusicMode;
 
-	if (musicToPlay != "")
-	{
-		LoadedMusic = Music(DynamicLoadObject(musicToPlay $ "." $ musicToPlay, class'Music'));
+    if (musicToPlay != "")
+    {
+        LoadedMusic = Music(DynamicLoadObject(musicToPlay $ "." $ musicToPlay, class'Music'));
 
-		if (LoadedMusic != None)
-		{
-			switch(sectionToPlay)
-			{
-				case 0:  newMusicMode = MUS_Ambient; break;
-				case 1:  newMusicMode = MUS_Combat; break;
-				case 2:  newMusicMode = MUS_Conversation; break;
-				case 3:  newMusicMode = MUS_Outro; break;
-				case 4:  newMusicMode = MUS_Dying; break;
-				default: newMusicMode = MUS_Ambient; break;
-			}
+        if (LoadedMusic != None)
+        {
+            switch(sectionToPlay)
+            {
+                case 0:  newMusicMode = MUS_Ambient; break;
+                case 1:  newMusicMode = MUS_Combat; break;
+                case 2:  newMusicMode = MUS_Conversation; break;
+                case 3:  newMusicMode = MUS_Outro; break;
+                case 4:  newMusicMode = MUS_Dying; break;
+                default: newMusicMode = MUS_Ambient; break;
+            }
 
-			ClientSetMusic(LoadedMusic, newMusicMode, 255, MTRAN_FastFade);
-		}
-	}
+            ClientSetMusic(LoadedMusic, newMusicMode, 255, MTRAN_FastFade);
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1629,10 +1629,10 @@ function PlayMusic(String musicToPlay, optional int sectionToPlay)
 
 exec function PlayMusicWindow()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	InvokeUIScreen(Class'PlayMusicWindow');
+    InvokeUIScreen(Class'PlayMusicWindow');
 }
 
 // ----------------------------------------------------------------------
@@ -1649,48 +1649,48 @@ exec function PlayMusicWindow()
 
 function UpdateDynamicMusic(float deltaTime)
 {
-	local bool bCombat;
-	local ScriptedPawn npc;
-	local Pawn CurPawn;
-	local DeusExLevelInfo info;
-	local Music LevelSong;
-	local String SongString;
-	local byte LevelSongSection;
-	local EMusicMode newMusicMode;
+    local bool bCombat;
+    local ScriptedPawn npc;
+    local Pawn CurPawn;
+    local DeusExLevelInfo info;
+    local Music LevelSong;
+    local String SongString;
+    local byte LevelSongSection;
+    local EMusicMode newMusicMode;
 
-	//== In case any of the mission song info gets all f%$#ed up (like NYC in mission 8)
-	if (Level.Song == None)
-	{
-		//== If we have music playing we may as well just stick with that
-		LevelSong = Song;
+    //== In case any of the mission song info gets all f%$#ed up (like NYC in mission 8)
+    if (Level.Song == None)
+    {
+        //== If we have music playing we may as well just stick with that
+        LevelSong = Song;
 
-		if(LevelSong == None || LevelSong.Class.Name == '')
-		{
-			SongString = FlagBase.GetName('Song_Name1') $"."$ FlagBase.GetName('Song_Name2');
+        if(LevelSong == None || LevelSong.Class.Name == '')
+        {
+            SongString = FlagBase.GetName('Song_Name1') $"."$ FlagBase.GetName('Song_Name2');
 
-			if(SongString != "None.None")
-			{
-				log("UpdateDynamicMusic()============> No music specified in map, loading from flags.  Attempted load name is "$ SongString);
+            if(SongString != "None.None")
+            {
+                log("UpdateDynamicMusic()============> No music specified in map, loading from flags.  Attempted load name is "$ SongString);
 
-				LevelSong = Music(DynamicLoadObject(SongString, class'Music'));
+                LevelSong = Music(DynamicLoadObject(SongString, class'Music'));
 
-				//== We'll just assume this is the appropriate song type.  Later updates will catch us if we're wrong
-				newMusicMode = MUS_Ambient;
+                //== We'll just assume this is the appropriate song type.  Later updates will catch us if we're wrong
+                newMusicMode = MUS_Ambient;
 
-				//== Instant transition
-				ClientSetMusic(LevelSong, newMusicMode, 255, MTRAN_Instant);
-				return;
-			}
-		}
+                //== Instant transition
+                ClientSetMusic(LevelSong, newMusicMode, 255, MTRAN_Instant);
+                return;
+            }
+        }
 
-		if(LevelSong == None)
-			return;
-	}
-	else
-	{
-		LevelSongSection = Level.SongSection;
-		LevelSong = Level.Song;
-	}
+        if(LevelSong == None)
+            return;
+    }
+    else
+    {
+        LevelSongSection = Level.SongSection;
+        LevelSong = Level.Song;
+    }
 
    // DEUS_EX AMSD In singleplayer, do the old thing.
    // In multiplayer, we can come out of dying.
@@ -1706,56 +1706,56 @@ function UpdateDynamicMusic(float deltaTime)
    }
       
 
-	musicCheckTimer += deltaTime;
-	musicChangeTimer += deltaTime;
+    musicCheckTimer += deltaTime;
+    musicChangeTimer += deltaTime;
 
-	if (IsInState('Interpolating'))
-	{
-		// don't mess with the music on any of the intro maps
-		info = GetLevelInfo();
-		if ((info != None) && (info.MissionNumber < 0))
-		{
-			musicMode = MUS_Outro;
-			return;
-		}
+    if (IsInState('Interpolating'))
+    {
+        // don't mess with the music on any of the intro maps
+        info = GetLevelInfo();
+        if ((info != None) && (info.MissionNumber < 0))
+        {
+            musicMode = MUS_Outro;
+            return;
+        }
 
-		if (musicMode != MUS_Outro)
-		{
-			ClientSetMusic(LevelSong, 5, 255, MTRAN_FastFade);
-			musicMode = MUS_Outro;
-		}
-	}
-	else if (IsInState('Conversation'))
-	{
-		if (musicMode != MUS_Conversation)
-		{
-			// save our place in the ambient track
-			if (musicMode == MUS_Ambient)
-				savedSection = SongSection;
-			else
-				savedSection = 255;
+        if (musicMode != MUS_Outro)
+        {
+            ClientSetMusic(LevelSong, 5, 255, MTRAN_FastFade);
+            musicMode = MUS_Outro;
+        }
+    }
+    else if (IsInState('Conversation'))
+    {
+        if (musicMode != MUS_Conversation)
+        {
+            // save our place in the ambient track
+            if (musicMode == MUS_Ambient)
+                savedSection = SongSection;
+            else
+                savedSection = 255;
 
-			ClientSetMusic(LevelSong, 4, 255, MTRAN_Fade);
-			musicMode = MUS_Conversation;
-		}
-	}
-	else if (IsInState('Dying'))
-	{
-		if (musicMode != MUS_Dying)
-		{
-			ClientSetMusic(LevelSong, 1, 255, MTRAN_Fade);
-			musicMode = MUS_Dying;
-		}
-	}
-	else
-	{
-		// only check for combat music every second
-		if (musicCheckTimer >= 1.0)
-		{
-			musicCheckTimer = 0.0;
-			bCombat = False;
+            ClientSetMusic(LevelSong, 4, 255, MTRAN_Fade);
+            musicMode = MUS_Conversation;
+        }
+    }
+    else if (IsInState('Dying'))
+    {
+        if (musicMode != MUS_Dying)
+        {
+            ClientSetMusic(LevelSong, 1, 255, MTRAN_Fade);
+            musicMode = MUS_Dying;
+        }
+    }
+    else
+    {
+        // only check for combat music every second
+        if (musicCheckTimer >= 1.0)
+        {
+            musicCheckTimer = 0.0;
+            bCombat = False;
 
-			// check a 100 foot radius around me for combat
+            // check a 100 foot radius around me for combat
          // XXXDEUS_EX AMSD Slow Pawn Iterator
          //foreach RadiusActors(class'ScriptedPawn', npc, 1600)
          for (CurPawn = Level.PawnList; CurPawn != None; CurPawn = CurPawn.NextPawn)
@@ -1771,72 +1771,72 @@ function UpdateDynamicMusic(float deltaTime)
             }
          }
 
-			if (bCombat)
-			{
-				if (musicMode != MUS_Combat)
-				{
-					// save our place in the ambient track
-					if (musicMode == MUS_Ambient)
-						savedSection = SongSection;
-					else
-						savedSection = 255;
+            if (bCombat)
+            {
+                if (musicMode != MUS_Combat)
+                {
+                    // save our place in the ambient track
+                    if (musicMode == MUS_Ambient)
+                        savedSection = SongSection;
+                    else
+                        savedSection = 255;
 
-					if(musicChangeTimer >= 20.0)
-						ClientSetMusic(LevelSong, 3, 255, MTRAN_Instant);
-					else
-						ClientSetMusic(LevelSong, 3, 255, MTRAN_FastFade);
-					musicMode = MUS_Combat;
-				}
+                    if(musicChangeTimer >= 20.0)
+                        ClientSetMusic(LevelSong, 3, 255, MTRAN_Instant);
+                    else
+                        ClientSetMusic(LevelSong, 3, 255, MTRAN_FastFade);
+                    musicMode = MUS_Combat;
+                }
 
-				musicChangeTimer = 0.0;
-			}
-			else if (musicMode != MUS_Ambient)
-			{
-				// wait until we've been out of combat for 5 seconds before switching music
-				if (musicChangeTimer >= 5.0)
-				{
-					// use the default ambient section for this map
-					if (savedSection == 255)
-						savedSection = LevelSongSection;
+                musicChangeTimer = 0.0;
+            }
+            else if (musicMode != MUS_Ambient)
+            {
+                // wait until we've been out of combat for 5 seconds before switching music
+                if (musicChangeTimer >= 5.0)
+                {
+                    // use the default ambient section for this map
+                    if (savedSection == 255)
+                        savedSection = LevelSongSection;
 
-					if(musicChangeTimer >= 20.0)
-						ClientSetMusic(LevelSong, savedSection, 255, MTRAN_Instant);
-					// fade slower for combat transitions
-					else if (musicMode == MUS_Combat)
-						ClientSetMusic(LevelSong, savedSection, 255, MTRAN_SlowFade);
-					else
-						ClientSetMusic(LevelSong, savedSection, 255, MTRAN_Fade);
+                    if(musicChangeTimer >= 20.0)
+                        ClientSetMusic(LevelSong, savedSection, 255, MTRAN_Instant);
+                    // fade slower for combat transitions
+                    else if (musicMode == MUS_Combat)
+                        ClientSetMusic(LevelSong, savedSection, 255, MTRAN_SlowFade);
+                    else
+                        ClientSetMusic(LevelSong, savedSection, 255, MTRAN_Fade);
 
-					savedSection = 255;
-					musicMode = MUS_Ambient;
-					musicChangeTimer = 0.0;
-				}
-			}
-		}
-	}
+                    savedSection = 255;
+                    musicMode = MUS_Ambient;
+                    musicChangeTimer = 0.0;
+                }
+            }
+        }
+    }
 }
 
 function SetMusicMode(string TMusicMode)
 {
-	switch(TMusicMode)
-	{
-		case "1":
-			MusicMode = MUS_Combat;
-			break;
-		case "2":
-			MusicMode = MUS_Conversation;
-			break;
-		case "3":
-			MusicMode = MUS_Outro;
-			break;
-		case "4":
-			MusicMode = MUS_Dying;
-			break;
-		case "0":
-		default:
-			MusicMode = MUS_Ambient;
-			break;
-	}
+    switch(TMusicMode)
+    {
+        case "1":
+            MusicMode = MUS_Combat;
+            break;
+        case "2":
+            MusicMode = MUS_Conversation;
+            break;
+        case "3":
+            MusicMode = MUS_Outro;
+            break;
+        case "4":
+            MusicMode = MUS_Dying;
+            break;
+        case "0":
+        default:
+            MusicMode = MUS_Ambient;
+            break;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1845,22 +1845,22 @@ function SetMusicMode(string TMusicMode)
 
 function MaintainEnergy(float deltaTime)
 {
-	local Float energyUse;
+    local Float energyUse;
    local Float energyRegen;
 
-	// make sure we can't continue to go negative if we take damage
-	// after we're already out of energy
-	if (Energy <= 0)
-	{
-		Energy = 0;
-		EnergyDrain = 0;
-		EnergyDrainTotal = 0;
-	}
+    // make sure we can't continue to go negative if we take damage
+    // after we're already out of energy
+    if (Energy <= 0)
+    {
+        Energy = 0;
+        EnergyDrain = 0;
+        EnergyDrainTotal = 0;
+    }
 
    energyUse = 0;
 
-	// Don't waste time doing this if the player is dead or paralyzed
-	if ((!IsInState('Dying')) && (!IsInState('Paralyzed')))
+    // Don't waste time doing this if the player is dead or paralyzed
+    if ((!IsInState('Dying')) && (!IsInState('Paralyzed')))
    {
       if (Energy > 0)
       {
@@ -1907,7 +1907,7 @@ function MaintainEnergy(float deltaTime)
          energyRegen = RegenRate * deltaTime;
          Energy += energyRegen;
       }
-	}
+    }
 }
 // ----------------------------------------------------------------------
 // RefreshSystems()
@@ -1916,7 +1916,7 @@ function MaintainEnergy(float deltaTime)
 
 simulated function RefreshSystems(float DeltaTime)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
    if (Level.NetMode == NM_Standalone)
       return;
@@ -1947,10 +1947,10 @@ simulated function RefreshSystems(float DeltaTime)
 
 function RepairInventory()
 {
-   local byte				LocalInvSlots[30];		// 5x6 grid of inventory slots
+   local byte                LocalInvSlots[30];        // 5x6 grid of inventory slots
    local int i;
-	local int slotsCol;
-	local int slotsRow;
+    local int slotsCol;
+    local int slotsRow;
    local Inventory curInv;
 
    if ((Level.NetMode != NM_Standalone) && (bBeltIsMPInventory))
@@ -1966,7 +1966,7 @@ function RepairInventory()
       for (curInv = Inventory; curInv != None; curInv = curInv.Inventory)
       {
          // Make sure this item is located in a valid position
-	 // Exclude for special slot items, e.g. inventory for equipped NPCs
+     // Exclude for special slot items, e.g. inventory for equipped NPCs
          if (( curInv.invPosX != -1 ) && ( curInv.invPosY != -1 ))
          {
             // fill inventory slots
@@ -1995,9 +1995,9 @@ function RepairInventory()
 
 function Bleed(float deltaTime)
 {
-	local float  dropPeriod;
-	local float  adjustedRate;
-	local vector bloodVector;
+    local float  dropPeriod;
+    local float  adjustedRate;
+    local vector bloodVector;
 
    if ((DeusExMPGame(Level.Game) != None) && (!DeusExMPGame(Level.Game).bSpawnEffects))
    {
@@ -2006,26 +2006,26 @@ function Bleed(float deltaTime)
       return;
    }
 
-	// Copied from ScriptedPawn::Tick()
-	bleedRate = FClamp(bleedRate, 0.0, 1.0);
-	if (bleedRate > 0)
-	{
-		adjustedRate = (1.0-bleedRate)*1.0+0.1;  // max 10 drops per second
-		dropPeriod = adjustedRate / FClamp(VSize(Velocity)/512.0, 0.05, 1.0);
-		dropCounter += deltaTime;
-		while (dropCounter >= dropPeriod)
-		{
-			bloodVector = vect(0,0,1)*CollisionHeight*0.5;  // so folks don't bleed from the crotch
-			spawn(Class'BloodDrop',,,bloodVector+Location);
-			dropCounter -= dropPeriod;
-		}
-		bleedRate -= deltaTime/clotPeriod;
-	}
-	if (bleedRate <= 0)
-	{
-		dropCounter = 0;
-		bleedRate   = 0;
-	}
+    // Copied from ScriptedPawn::Tick()
+    bleedRate = FClamp(bleedRate, 0.0, 1.0);
+    if (bleedRate > 0)
+    {
+        adjustedRate = (1.0-bleedRate)*1.0+0.1;  // max 10 drops per second
+        dropPeriod = adjustedRate / FClamp(VSize(Velocity)/512.0, 0.05, 1.0);
+        dropCounter += deltaTime;
+        while (dropCounter >= dropPeriod)
+        {
+            bloodVector = vect(0,0,1)*CollisionHeight*0.5;  // so folks don't bleed from the crotch
+            spawn(Class'BloodDrop',,,bloodVector+Location);
+            dropCounter -= dropPeriod;
+        }
+        bleedRate -= deltaTime/clotPeriod;
+    }
+    if (bleedRate <= 0)
+    {
+        dropCounter = 0;
+        bleedRate   = 0;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -2036,24 +2036,24 @@ function Bleed(float deltaTime)
 
 function UpdatePoison(float deltaTime)
 {
-	if (Health <= 0)  // no more pain -- you're already dead!
-		return;
+    if (Health <= 0)  // no more pain -- you're already dead!
+        return;
 
-	if (InConversation())  // kinda hacky...
-		return;
+    if (InConversation())  // kinda hacky...
+        return;
 
-	if (poisonCounter > 0)
-	{
-		poisonTimer += deltaTime;
-		if (poisonTimer >= 2.0)  // pain every two seconds
-		{
-			poisonTimer = 0;
-			poisonCounter--;
-			TakeDamage(poisonDamage, myPoisoner, Location, vect(0,0,0), 'PoisonEffect');
-		}
-		if ((poisonCounter <= 0) || (Health <= 0))
-			StopPoison();
-	}
+    if (poisonCounter > 0)
+    {
+        poisonTimer += deltaTime;
+        if (poisonTimer >= 2.0)  // pain every two seconds
+        {
+            poisonTimer = 0;
+            poisonCounter--;
+            TakeDamage(poisonDamage, myPoisoner, Location, vect(0,0,0), 'PoisonEffect');
+        }
+        if ((poisonCounter <= 0) || (Health <= 0))
+            StopPoison();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -2064,40 +2064,40 @@ function UpdatePoison(float deltaTime)
 
 function StartPoison( Pawn poisoner, int Damage )
 {
-	local float augLevel;
+    local float augLevel;
 
-	if ( Level.NetMode != NM_Standalone )
-	{
-		// Don't do poison and drug effects if in multiplayer and AugEnviro is on
-		augLevel = AugmentationSystem.GetAugLevelValue(class'AugEnviro');
-		if ( augLevel != -1.0 )
-			return;
-	}
+    if ( Level.NetMode != NM_Standalone )
+    {
+        // Don't do poison and drug effects if in multiplayer and AugEnviro is on
+        augLevel = AugmentationSystem.GetAugLevelValue(class'AugEnviro');
+        if ( augLevel != -1.0 )
+            return;
+    }
 
-	myPoisoner = poisoner;
+    myPoisoner = poisoner;
 
-	if (Health <= 0)  // no more pain -- you're already dead!
-		return;
+    if (Health <= 0)  // no more pain -- you're already dead!
+        return;
 
-	if (InConversation())  // kinda hacky...
-		return;
+    if (InConversation())  // kinda hacky...
+        return;
 
-	poisonCounter = 4;    // take damage no more than four times (over 8 seconds)
-	poisonTimer   = 0;    // reset pain timer
-	if (poisonDamage < Damage)  // set damage amount
-		poisonDamage = Damage;
+    poisonCounter = 4;    // take damage no more than four times (over 8 seconds)
+    poisonTimer   = 0;    // reset pain timer
+    if (poisonDamage < Damage)  // set damage amount
+        poisonDamage = Damage;
 
-	if(drugEffectTimer >= 0.0 || drugEffectTimer <= -4.1)
-		drugEffectTimer += 4;  // make the player vomit for the next four seconds
-	else
-		drugEffectTimer = -0.1;
+    if(drugEffectTimer >= 0.0 || drugEffectTimer <= -4.1)
+        drugEffectTimer += 4;  // make the player vomit for the next four seconds
+    else
+        drugEffectTimer = -0.1;
 
-	// In multiplayer, don't let the effect last longer than 30 seconds
-	if ( Level.NetMode != NM_Standalone )
-	{
-		if ( drugEffectTimer > 30 )
-			drugEffectTimer = 30;
-	}
+    // In multiplayer, don't let the effect last longer than 30 seconds
+    if ( Level.NetMode != NM_Standalone )
+    {
+        if ( drugEffectTimer > 30 )
+            drugEffectTimer = 30;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -2108,10 +2108,10 @@ function StartPoison( Pawn poisoner, int Damage )
 
 function StopPoison()
 {
-	myPoisoner = None;
-	poisonCounter = 0;
-	poisonTimer   = 0;
-	poisonDamage  = 0;
+    myPoisoner = None;
+    poisonCounter = 0;
+    poisonTimer   = 0;
+    poisonDamage  = 0;
 }
 
 // ----------------------------------------------------------------------
@@ -2122,26 +2122,26 @@ function StopPoison()
 
 function SpawnEMPSparks(Actor empActor, Rotator rot)
 {
-	local ParticleGenerator sparkGen;
+    local ParticleGenerator sparkGen;
 
-	if ((empActor == None) || empActor.bDeleteMe)
-		return;
+    if ((empActor == None) || empActor.bDeleteMe)
+        return;
 
-	sparkGen = Spawn(class'ParticleGenerator', empActor,, empActor.Location, rot);
-	if (sparkGen != None)
-	{
-		sparkGen.SetBase(empActor);
-		sparkGen.LifeSpan = 3;
-		sparkGen.particleTexture = Texture'Effects.Fire.SparkFX1';
-		sparkGen.particleDrawScale = 0.1;
-		sparkGen.bRandomEject = True;
-		sparkGen.ejectSpeed = 100.0;
-		sparkGen.bGravity = True;
-		sparkGen.bParticlesUnlit = True;
-		sparkGen.frequency = 1.0;
-		sparkGen.riseRate = 10;
-		sparkGen.spawnSound = Sound'Spark2';
-	}
+    sparkGen = Spawn(class'ParticleGenerator', empActor,, empActor.Location, rot);
+    if (sparkGen != None)
+    {
+        sparkGen.SetBase(empActor);
+        sparkGen.LifeSpan = 3;
+        sparkGen.particleTexture = Texture'Effects.Fire.SparkFX1';
+        sparkGen.particleDrawScale = 0.1;
+        sparkGen.bRandomEject = True;
+        sparkGen.ejectSpeed = 100.0;
+        sparkGen.bGravity = True;
+        sparkGen.bParticlesUnlit = True;
+        sparkGen.frequency = 1.0;
+        sparkGen.riseRate = 10;
+        sparkGen.spawnSound = Sound'Spark2';
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -2152,103 +2152,103 @@ function SpawnEMPSparks(Actor empActor, Rotator rot)
 
 function UpdateWarrenEMPField(float deltaTime)
 {
-	local float          empRadius;
-	local Robot          curRobot;
-	local AlarmUnit      curAlarm;
-	local AutoTurret     curTurret;
-	local LaserTrigger   curLaser;
-	local BeamTrigger    curBeam;
-	local SecurityCamera curCamera;
-	local int            option;
+    local float          empRadius;
+    local Robot          curRobot;
+    local AlarmUnit      curAlarm;
+    local AutoTurret     curTurret;
+    local LaserTrigger   curLaser;
+    local BeamTrigger    curBeam;
+    local SecurityCamera curCamera;
+    local int            option;
 
-	if (bWarrenEMPField)
-	{
-		WarrenTimer -= deltaTime;
-		if (WarrenTimer <= 0)
-		{
-			WarrenTimer = 0.15;
+    if (bWarrenEMPField)
+    {
+        WarrenTimer -= deltaTime;
+        if (WarrenTimer <= 0)
+        {
+            WarrenTimer = 0.15;
 
-			empRadius = 600;
-			if (WarrenSlot == 0)
-			{
-				foreach RadiusActors(Class'Robot', curRobot, empRadius)
-				{
-					if ((curRobot.LastRendered() < 2.0) && (curRobot.CrazedTimer <= 0) &&
-					    (curRobot.EMPHitPoints > 0))
-					{
-						if (curRobot.CheckPawnAllianceType(self) == ALLIANCE_Hostile)
-							option = Rand(2);
-						else
-							option = 0;
-						if (option == 0)
-							curRobot.TakeDamage(curRobot.EMPHitPoints*2, self, curRobot.Location, vect(0,0,0), 'EMP');
-						else
-							curRobot.TakeDamage(100, self, curRobot.Location, vect(0,0,0), 'NanoVirus');
-						SpawnEMPSparks(curRobot, Rotator(Location-curRobot.Location));
-					}
-				}
-			}
-			else if (WarrenSlot == 1)
-			{
-				foreach RadiusActors(Class'AlarmUnit', curAlarm, empRadius)
-				{
-					if ((curAlarm.LastRendered() < 2.0) && !curAlarm.bConfused)
-					{
-						curAlarm.TakeDamage(100, self, curAlarm.Location, vect(0,0,0), 'EMP');
-						SpawnEMPSparks(curAlarm, curAlarm.Rotation);
-					}
-				}
-			}
-			else if (WarrenSlot == 2)
-			{
-				foreach RadiusActors(Class'AutoTurret', curTurret, empRadius)
-				{
-					if ((curTurret.LastRendered() < 2.0) && !curTurret.bConfused)
-					{
-						curTurret.TakeDamage(100, self, curTurret.Location, vect(0,0,0), 'EMP');
-						SpawnEMPSparks(curTurret, Rotator(Location-curTurret.Location));
-					}
-				}
-			}
-			else if (WarrenSlot == 3)
-			{
-				foreach RadiusActors(Class'LaserTrigger', curLaser, empRadius)
-				{
-					if ((curLaser.LastRendered() < 2.0) && !curLaser.bConfused)
-					{
-						curLaser.TakeDamage(100, self, curLaser.Location, vect(0,0,0), 'EMP');
-						SpawnEMPSparks(curLaser, curLaser.Rotation);
-					}
-				}
-			}
-			else if (WarrenSlot == 4)
-			{
-				foreach RadiusActors(Class'BeamTrigger', curBeam, empRadius)
-				{
-					if ((curBeam.LastRendered() < 2.0) && !curBeam.bConfused)
-					{
-						curBeam.TakeDamage(100, self, curBeam.Location, vect(0,0,0), 'EMP');
-						SpawnEMPSparks(curBeam, curBeam.Rotation);
-					}
-				}
-			}
-			else if (WarrenSlot == 5)
-			{
-				foreach RadiusActors(Class'SecurityCamera', curCamera, empRadius)
-				{
-					if ((curCamera.LastRendered() < 2.0) && !curCamera.bConfused)
-					{
-						curCamera.TakeDamage(100, self, curCamera.Location, vect(0,0,0), 'EMP');
-						SpawnEMPSparks(curCamera, Rotator(Location-curCamera.Location));
-					}
-				}
-			}
+            empRadius = 600;
+            if (WarrenSlot == 0)
+            {
+                foreach RadiusActors(Class'Robot', curRobot, empRadius)
+                {
+                    if ((curRobot.LastRendered() < 2.0) && (curRobot.CrazedTimer <= 0) &&
+                        (curRobot.EMPHitPoints > 0))
+                    {
+                        if (curRobot.CheckPawnAllianceType(self) == ALLIANCE_Hostile)
+                            option = Rand(2);
+                        else
+                            option = 0;
+                        if (option == 0)
+                            curRobot.TakeDamage(curRobot.EMPHitPoints*2, self, curRobot.Location, vect(0,0,0), 'EMP');
+                        else
+                            curRobot.TakeDamage(100, self, curRobot.Location, vect(0,0,0), 'NanoVirus');
+                        SpawnEMPSparks(curRobot, Rotator(Location-curRobot.Location));
+                    }
+                }
+            }
+            else if (WarrenSlot == 1)
+            {
+                foreach RadiusActors(Class'AlarmUnit', curAlarm, empRadius)
+                {
+                    if ((curAlarm.LastRendered() < 2.0) && !curAlarm.bConfused)
+                    {
+                        curAlarm.TakeDamage(100, self, curAlarm.Location, vect(0,0,0), 'EMP');
+                        SpawnEMPSparks(curAlarm, curAlarm.Rotation);
+                    }
+                }
+            }
+            else if (WarrenSlot == 2)
+            {
+                foreach RadiusActors(Class'AutoTurret', curTurret, empRadius)
+                {
+                    if ((curTurret.LastRendered() < 2.0) && !curTurret.bConfused)
+                    {
+                        curTurret.TakeDamage(100, self, curTurret.Location, vect(0,0,0), 'EMP');
+                        SpawnEMPSparks(curTurret, Rotator(Location-curTurret.Location));
+                    }
+                }
+            }
+            else if (WarrenSlot == 3)
+            {
+                foreach RadiusActors(Class'LaserTrigger', curLaser, empRadius)
+                {
+                    if ((curLaser.LastRendered() < 2.0) && !curLaser.bConfused)
+                    {
+                        curLaser.TakeDamage(100, self, curLaser.Location, vect(0,0,0), 'EMP');
+                        SpawnEMPSparks(curLaser, curLaser.Rotation);
+                    }
+                }
+            }
+            else if (WarrenSlot == 4)
+            {
+                foreach RadiusActors(Class'BeamTrigger', curBeam, empRadius)
+                {
+                    if ((curBeam.LastRendered() < 2.0) && !curBeam.bConfused)
+                    {
+                        curBeam.TakeDamage(100, self, curBeam.Location, vect(0,0,0), 'EMP');
+                        SpawnEMPSparks(curBeam, curBeam.Rotation);
+                    }
+                }
+            }
+            else if (WarrenSlot == 5)
+            {
+                foreach RadiusActors(Class'SecurityCamera', curCamera, empRadius)
+                {
+                    if ((curCamera.LastRendered() < 2.0) && !curCamera.bConfused)
+                    {
+                        curCamera.TakeDamage(100, self, curCamera.Location, vect(0,0,0), 'EMP');
+                        SpawnEMPSparks(curCamera, Rotator(Location-curCamera.Location));
+                    }
+                }
+            }
 
-			WarrenSlot++;
-			if (WarrenSlot >= 6)
-				WarrenSlot = 0;
-		}
-	}
+            WarrenSlot++;
+            if (WarrenSlot >= 6)
+                WarrenSlot = 0;
+        }
+    }
 }
 
 
@@ -2345,25 +2345,25 @@ function UpdateTranslucency(float DeltaTime)
 
 function RestoreSkillPoints()
 {
-	local name flagName;
+    local name flagName;
 
-	bSavingSkillsAugs = False;
+    bSavingSkillsAugs = False;
 
-	// Get the skill points available
-	flagName = rootWindow.StringToName("SKTemp_SkillPointsAvail");
-	if (flagBase.CheckFlag(flagName, FLAG_Int))
-	{
-		SkillPointsAvail = flagBase.GetInt(flagName);
-		flagBase.DeleteFlag(flagName, FLAG_Int);
-	}
+    // Get the skill points available
+    flagName = rootWindow.StringToName("SKTemp_SkillPointsAvail");
+    if (flagBase.CheckFlag(flagName, FLAG_Int))
+    {
+        SkillPointsAvail = flagBase.GetInt(flagName);
+        flagBase.DeleteFlag(flagName, FLAG_Int);
+    }
 
-	// Get the skill points total
-	flagName = rootWindow.StringToName("SKTemp_SkillPointsTotal");
-	if (flagBase.CheckFlag(flagName, FLAG_Int))
-	{
-		SkillPointsTotal = flagBase.GetInt(flagName);
-		flagBase.DeleteFlag(flagName, FLAG_Int);
-	}
+    // Get the skill points total
+    flagName = rootWindow.StringToName("SKTemp_SkillPointsTotal");
+    if (flagBase.CheckFlag(flagName, FLAG_Int))
+    {
+        SkillPointsTotal = flagBase.GetInt(flagName);
+        flagBase.DeleteFlag(flagName, FLAG_Int);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -2374,21 +2374,21 @@ function RestoreSkillPoints()
 
 function SaveSkillPoints()
 {
-	local name flagName;
+    local name flagName;
 
-	// Save/Restore must be done as atomic unit
-	if (bSavingSkillsAugs)
-		return;
+    // Save/Restore must be done as atomic unit
+    if (bSavingSkillsAugs)
+        return;
 
-	bSavingSkillsAugs = True;
+    bSavingSkillsAugs = True;
 
-	// Save the skill points available
-	flagName = rootWindow.StringToName("SKTemp_SkillPointsAvail");
-	flagBase.SetInt(flagName, SkillPointsAvail);
+    // Save the skill points available
+    flagName = rootWindow.StringToName("SKTemp_SkillPointsAvail");
+    flagBase.SetInt(flagName, SkillPointsAvail);
 
-	// Save the skill points available
-	flagName = rootWindow.StringToName("SKTemp_SkillPointsTotal");
-	flagBase.SetInt(flagName, SkillPointsTotal);
+    // Save the skill points available
+    flagName = rootWindow.StringToName("SKTemp_SkillPointsTotal");
+    flagBase.SetInt(flagName, SkillPointsTotal);
 }
 
 // ----------------------------------------------------------------------
@@ -2400,18 +2400,18 @@ function SaveSkillPoints()
 
 exec function AugAdd(class<Augmentation> aWantedAug)
 {
-	local Augmentation anAug;
+    local Augmentation anAug;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (AugmentationSystem != None)
-	{
-		anAug = AugmentationSystem.GivePlayerAugmentation(aWantedAug);
+    if (AugmentationSystem != None)
+    {
+        anAug = AugmentationSystem.GivePlayerAugmentation(aWantedAug);
 
-		if (anAug == None)
-			ClientMessage(GetItemName(String(aWantedAug)) $ " is not a valid augmentation!");
-	}
+        if (anAug == None)
+            ClientMessage(GetItemName(String(aWantedAug)) $ " is not a valid augmentation!");
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -2420,22 +2420,22 @@ exec function AugAdd(class<Augmentation> aWantedAug)
 
 exec function ActivateAugmentation(int num)
 {
-	local Augmentation anAug;
-	local int count, wantedSlot, slotIndex;
-	local bool bFound;
+    local Augmentation anAug;
+    local int count, wantedSlot, slotIndex;
+    local bool bFound;
 
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	if (Energy == 0)
-	{
-		ClientMessage(EnergyDepleted);
-		PlaySound(AugmentationSystem.FirstAug.DeactivateSound, SLOT_None);
-		return;
-	}
+    if (Energy == 0)
+    {
+        ClientMessage(EnergyDepleted);
+        PlaySound(AugmentationSystem.FirstAug.DeactivateSound, SLOT_None);
+        return;
+    }
 
-	if (AugmentationSystem != None)
-		AugmentationSystem.ActivateAugByKey(num);
+    if (AugmentationSystem != None)
+        AugmentationSystem.ActivateAugByKey(num);
 }
 
 // ----------------------------------------------------------------------
@@ -2444,8 +2444,8 @@ exec function ActivateAugmentation(int num)
 
 exec function ActivateAllAugs()
 {
-	if (AugmentationSystem != None)
-		AugmentationSystem.ActivateAll();
+    if (AugmentationSystem != None)
+        AugmentationSystem.ActivateAll();
 }
 
 // ----------------------------------------------------------------------
@@ -2454,8 +2454,8 @@ exec function ActivateAllAugs()
 
 exec function DeactivateAllAugs()
 {
-	if (AugmentationSystem != None)
-		AugmentationSystem.DeactivateAll();
+    if (AugmentationSystem != None)
+        AugmentationSystem.DeactivateAll();
 }
 
 // ----------------------------------------------------------------------
@@ -2464,10 +2464,10 @@ exec function DeactivateAllAugs()
 
 exec function SwitchAmmo()
 {
-	if (DeusExWeapon(inHand) != None)
-		DeusExWeapon(inHand).CycleAmmo();
-	else if(inHand.IsA('DeusExPickup'))
-		DeusExPickup(inHand).SwitchItem();
+    if (DeusExWeapon(inHand) != None)
+        DeusExWeapon(inHand).CycleAmmo();
+    else if(inHand.IsA('DeusExPickup'))
+        DeusExPickup(inHand).SwitchItem();
 }
 
 // ----------------------------------------------------------------------
@@ -2476,12 +2476,12 @@ exec function SwitchAmmo()
 
 function RemoveInventoryType(Class<Inventory> removeType)
 {
-	local Inventory item;
+    local Inventory item;
 
-	item = FindInventoryType(removeType);
+    item = FindInventoryType(removeType);
 
-	if (item != None)
-		DeleteInventory(item);
+    if (item != None)
+        DeleteInventory(item);
 }
 
 // ----------------------------------------------------------------------
@@ -2491,8 +2491,8 @@ function RemoveInventoryType(Class<Inventory> removeType)
 function AddAugmentationDisplay(Augmentation aug)
 {
    //DEUS_EX AMSD Added none check here.
-	if ((rootWindow != None) && (aug != None))
-		DeusExRootWindow(rootWindow).hud.activeItems.AddIcon(aug.SmallIcon, aug);
+    if ((rootWindow != None) && (aug != None))
+        DeusExRootWindow(rootWindow).hud.activeItems.AddIcon(aug.SmallIcon, aug);
 }
 
 // ----------------------------------------------------------------------
@@ -2501,7 +2501,7 @@ function AddAugmentationDisplay(Augmentation aug)
 
 function RemoveAugmentationDisplay(Augmentation aug)
 {
-	DeusExRootWindow(rootWindow).hud.activeItems.RemoveIcon(aug);
+    DeusExRootWindow(rootWindow).hud.activeItems.RemoveIcon(aug);
 }
 
 // ----------------------------------------------------------------------
@@ -2510,7 +2510,7 @@ function RemoveAugmentationDisplay(Augmentation aug)
 
 function ClearAugmentationDisplay()
 {
-	DeusExRootWindow(rootWindow).hud.activeItems.ClearAugmentationDisplay();
+    DeusExRootWindow(rootWindow).hud.activeItems.ClearAugmentationDisplay();
 }
 
 // ----------------------------------------------------------------------
@@ -2519,7 +2519,7 @@ function ClearAugmentationDisplay()
 
 function UpdateAugmentationDisplayStatus(Augmentation aug)
 {
-	DeusExRootWindow(rootWindow).hud.activeItems.UpdateAugIconStatus(aug);
+    DeusExRootWindow(rootWindow).hud.activeItems.UpdateAugIconStatus(aug);
 }
 
 // ----------------------------------------------------------------------
@@ -2528,7 +2528,7 @@ function UpdateAugmentationDisplayStatus(Augmentation aug)
 
 function AddChargedDisplay(ChargedPickup item)
 {
-   if ( (PlayerIsClient()) || (Level.NetMode == NM_Standalone) )	
+   if ( (PlayerIsClient()) || (Level.NetMode == NM_Standalone) )    
       DeusExRootWindow(rootWindow).hud.activeItems.AddIcon(item.ChargedIcon, item);
 }
 
@@ -2538,7 +2538,7 @@ function AddChargedDisplay(ChargedPickup item)
 
 function RemoveChargedDisplay(ChargedPickup item)
 {
-   if ( (PlayerIsClient()) || (Level.NetMode == NM_Standalone) )	
+   if ( (PlayerIsClient()) || (Level.NetMode == NM_Standalone) )    
       DeusExRootWindow(rootWindow).hud.activeItems.RemoveIcon(item);
 }
 
@@ -2595,7 +2595,7 @@ function InvokeComputerScreen(Computers computerToActivate, float CompHackTime, 
       termwindow = NetworkTerminal(root.InvokeUIScreen(computerToActivate.terminalType, True));
       if (termwindow != None)
       {
-			computerToActivate.termwindow = termwindow;
+            computerToActivate.termwindow = termwindow;
          termWindow.SetCompOwner(computerToActivate);
          // If multiplayer, start hacking if there are no users
          if ((Level.NetMode != NM_Standalone) && (!termWindow.bHacked) && (computerToActivate.NumUsers() == 0) && 
@@ -2620,8 +2620,8 @@ function InvokeComputerScreen(Computers computerToActivate, float CompHackTime, 
 
 function CloseThisComputer( Computers comp )
 {
-	if ((comp != None) && ( comp.termwindow != None ))
-		comp.termwindow.CloseScreen("EXIT");
+    if ((comp != None) && ( comp.termwindow != None ))
+        comp.termwindow.CloseScreen("EXIT");
 }
 
 //client->server (window to player)
@@ -2639,7 +2639,7 @@ function SetComputerHackTime(Computers computerToSet, float HackTime, float Clie
 //client->server (window to player)
 function UpdateCameraRotation(SecurityCamera camera, Rotator rot)
 {
-	camera.DesiredRotation = rot;
+    camera.DesiredRotation = rot;
 }
 
 //client->server (window to player)
@@ -2647,7 +2647,7 @@ function ToggleCameraState(SecurityCamera cam, ElectronicDevices compOwner)
 {
    if (cam.bActive)
    {
-      cam.UnTrigger(compOwner, self);	
+      cam.UnTrigger(compOwner, self);    
       cam.team = -1;
    }
    else            
@@ -2666,43 +2666,43 @@ function SetTurretState(AutoTurret turret, bool bActive, bool bDisabled)
 {
    turret.bActive   = bActive;
    turret.bDisabled = bDisabled;
-	turret.bComputerReset = False;
+    turret.bComputerReset = False;
 }
 
 //client->server (window to player)
 function SetTurretTrackMode(ComputerSecurity computer, AutoTurret turret, bool bTrackPlayers, bool bTrackPawns)
 {
-	local String str;
+    local String str;
 
    turret.bTrackPlayersOnly = bTrackPlayers;
    turret.bTrackPawnsOnly   = bTrackPawns;
-	turret.bComputerReset = False;
+    turret.bComputerReset = False;
 
    //in multiplayer, behave differently
    //set the safe target to ourself.
    if (Level.NetMode != NM_Standalone)
    {
       //we abuse the names of the booleans here.
-		turret.SetSafeTarget( Self );
+        turret.SetSafeTarget( Self );
 
-		if (Role == ROLE_Authority)
-		{
-			if ( TeamDMGame(DXGame) != None )
-			{
-				computer.team = PlayerReplicationInfo.team;
-				turret.team = PlayerReplicationInfo.Team;
-				if ( !turret.bDisabled )
-				{
-					str = TakenOverString $ turret.titleString $ ".";
-					TeamSay( str );
-				}
-			}
-			else
-			{
-				computer.team = PlayerReplicationInfo.PlayerID;
-				turret.team = PlayerReplicationInfo.PlayerID;
-			}
-		}
+        if (Role == ROLE_Authority)
+        {
+            if ( TeamDMGame(DXGame) != None )
+            {
+                computer.team = PlayerReplicationInfo.team;
+                turret.team = PlayerReplicationInfo.Team;
+                if ( !turret.bDisabled )
+                {
+                    str = TakenOverString $ turret.titleString $ ".";
+                    TeamSay( str );
+                }
+            }
+            else
+            {
+                computer.team = PlayerReplicationInfo.PlayerID;
+                turret.team = PlayerReplicationInfo.PlayerID;
+            }
+        }
    }
 }
 
@@ -2720,7 +2720,7 @@ function MakeCameraAlly(SecurityCamera camera)
 function PunishDetection(int DamageAmount)
 {
    if (DamageAmount > 0)
-      TakeDamage(DamageAmount, None, vect(0,0,0), vect(0,0,0), 'EMP');	
+      TakeDamage(DamageAmount, None, vect(0,0,0), vect(0,0,0), 'EMP');    
 }
 
 // ----------------------------------------------------------------------
@@ -2733,7 +2733,7 @@ function PunishDetection(int DamageAmount)
 
 function AddDamageDisplay(name damageType, vector hitOffset)
 {
-	DeusExRootWindow(rootWindow).hud.damageDisplay.AddIcon(damageType, hitOffset);
+    DeusExRootWindow(rootWindow).hud.damageDisplay.AddIcon(damageType, hitOffset);
 }
 
 // ----------------------------------------------------------------------
@@ -2744,7 +2744,7 @@ function AddDamageDisplay(name damageType, vector hitOffset)
 
 function SetDamagePercent(float percent)
 {
-	DeusExRootWindow(rootWindow).hud.damageDisplay.SetPercent(percent);
+    DeusExRootWindow(rootWindow).hud.damageDisplay.SetPercent(percent);
 }
 
 // ----------------------------------------------------------------------
@@ -2757,9 +2757,9 @@ function SetDamagePercent(float percent)
 // this is called by MESH NOTIFY
 // ----------------------------------------------------------------------
 
-function PlayBodyThud()													
+function PlayBodyThud()                                                    
 {
-	PlaySound(sound'BodyThud', SLOT_Interact);
+    PlaySound(sound'BodyThud', SLOT_Interact);
 }
 
 // ----------------------------------------------------------------------
@@ -2770,29 +2770,29 @@ function PlayBodyThud()
 
 function name GetWallMaterial(out vector wallNormal)
 {
-	local vector EndTrace, HitLocation, HitNormal;
-	local actor target;
-	local int texFlags, grabDist;
-	local name texName, texGroup;
+    local vector EndTrace, HitLocation, HitNormal;
+    local actor target;
+    local int texFlags, grabDist;
+    local name texName, texGroup;
 
-	// if we are falling, then increase our grabbing distance
-	if (Physics == PHYS_Falling)
-		grabDist = 3.0;
-	else
-		grabDist = 1.5;
+    // if we are falling, then increase our grabbing distance
+    if (Physics == PHYS_Falling)
+        grabDist = 3.0;
+    else
+        grabDist = 1.5;
 
-	// trace out in front of us
-	EndTrace = Location + (Vector(Rotation) * CollisionRadius * grabDist);
+    // trace out in front of us
+    EndTrace = Location + (Vector(Rotation) * CollisionRadius * grabDist);
 
- 	foreach TraceTexture(class'Actor', target, texName, texGroup, texFlags, HitLocation, HitNormal, EndTrace)
-	{
-		if ((target == Level) || target.IsA('Mover'))
-			break;
-	}
+     foreach TraceTexture(class'Actor', target, texName, texGroup, texFlags, HitLocation, HitNormal, EndTrace)
+    {
+        if ((target == Level) || target.IsA('Mover'))
+            break;
+    }
 
-	wallNormal = HitNormal;
+    wallNormal = HitNormal;
 
-	return texGroup;
+    return texGroup;
 }
 
 // ----------------------------------------------------------------------
@@ -2803,21 +2803,21 @@ function name GetWallMaterial(out vector wallNormal)
 
 function name GetFloorMaterial()
 {
-	local vector EndTrace, HitLocation, HitNormal;
-	local actor target;
-	local int texFlags;
-	local name texName, texGroup;
+    local vector EndTrace, HitLocation, HitNormal;
+    local actor target;
+    local int texFlags;
+    local name texName, texGroup;
 
-	// trace down to our feet
-	EndTrace = Location - CollisionHeight * 2 * vect(0,0,1);
+    // trace down to our feet
+    EndTrace = Location - CollisionHeight * 2 * vect(0,0,1);
 
-	foreach TraceTexture(class'Actor', target, texName, texGroup, texFlags, HitLocation, HitNormal, EndTrace)
-	{
-		if ((target == Level) || target.IsA('Mover'))
-			break;
-	}
+    foreach TraceTexture(class'Actor', target, texName, texGroup, texFlags, HitLocation, HitNormal, EndTrace)
+    {
+        if ((target == Level) || target.IsA('Mover'))
+            break;
+    }
 
-	return texGroup;
+    return texGroup;
 }
 
 // ----------------------------------------------------------------------
@@ -2830,174 +2830,174 @@ function name GetFloorMaterial()
 
 simulated function PlayFootStep()
 {
-	local Sound stepSound;
-	local float rnd;
-	local float speedFactor, massFactor;
-	local float volume, pitch, range;
-	local float radius, mult;
-	local float volumeMultiplier;
-	local DeusExPlayer pp;
-	local bool bOtherPlayer;
+    local Sound stepSound;
+    local float rnd;
+    local float speedFactor, massFactor;
+    local float volume, pitch, range;
+    local float radius, mult;
+    local float volumeMultiplier;
+    local DeusExPlayer pp;
+    local bool bOtherPlayer;
 
-	// Only do this on ourself, since this takes into account aug stealth and such
-	if ( Level.NetMode != NM_StandAlone )
-		pp = DeusExPlayer( GetPlayerPawn() );
+    // Only do this on ourself, since this takes into account aug stealth and such
+    if ( Level.NetMode != NM_StandAlone )
+        pp = DeusExPlayer( GetPlayerPawn() );
 
-	if ( pp != Self )
-		bOtherPlayer = True;
-	else
-		bOtherPlayer = False;
+    if ( pp != Self )
+        bOtherPlayer = True;
+    else
+        bOtherPlayer = False;
 
-	rnd = FRand();
+    rnd = FRand();
 
-	volumeMultiplier = 1.0;
-	if (IsInState('PlayerSwimming') || (Physics == PHYS_Swimming))
-	{
-		volumeMultiplier = 0.5;
-		if (rnd < 0.5)
-			stepSound = Sound'Swimming';
-		else
-			stepSound = Sound'Treading';
-	}
-	else if (FootRegion.Zone.bWaterZone)
-	{
-		volumeMultiplier = 1.0;
-		if (rnd < 0.33)
-			stepSound = Sound'WaterStep1';
-		else if (rnd < 0.66)
-			stepSound = Sound'WaterStep2';
-		else
-			stepSound = Sound'WaterStep3';
-	}
-	else
-	{
-		switch(FloorMaterial)
-		{
-			case 'Textile':
-			case 'Paper':
-				volumeMultiplier = 0.7;
-				if (rnd < 0.25)
-					stepSound = Sound'CarpetStep1';
-				else if (rnd < 0.5)
-					stepSound = Sound'CarpetStep2';
-				else if (rnd < 0.75)
-					stepSound = Sound'CarpetStep3';
-				else
-					stepSound = Sound'CarpetStep4';
-				break;
+    volumeMultiplier = 1.0;
+    if (IsInState('PlayerSwimming') || (Physics == PHYS_Swimming))
+    {
+        volumeMultiplier = 0.5;
+        if (rnd < 0.5)
+            stepSound = Sound'Swimming';
+        else
+            stepSound = Sound'Treading';
+    }
+    else if (FootRegion.Zone.bWaterZone)
+    {
+        volumeMultiplier = 1.0;
+        if (rnd < 0.33)
+            stepSound = Sound'WaterStep1';
+        else if (rnd < 0.66)
+            stepSound = Sound'WaterStep2';
+        else
+            stepSound = Sound'WaterStep3';
+    }
+    else
+    {
+        switch(FloorMaterial)
+        {
+            case 'Textile':
+            case 'Paper':
+                volumeMultiplier = 0.7;
+                if (rnd < 0.25)
+                    stepSound = Sound'CarpetStep1';
+                else if (rnd < 0.5)
+                    stepSound = Sound'CarpetStep2';
+                else if (rnd < 0.75)
+                    stepSound = Sound'CarpetStep3';
+                else
+                    stepSound = Sound'CarpetStep4';
+                break;
 
-			case 'Foliage':
-			case 'Earth':
-				volumeMultiplier = 0.6;
-				if (rnd < 0.25)
-					stepSound = Sound'GrassStep1';
-				else if (rnd < 0.5)
-					stepSound = Sound'GrassStep2';
-				else if (rnd < 0.75)
-					stepSound = Sound'GrassStep3';
-				else
-					stepSound = Sound'GrassStep4';
-				break;
+            case 'Foliage':
+            case 'Earth':
+                volumeMultiplier = 0.6;
+                if (rnd < 0.25)
+                    stepSound = Sound'GrassStep1';
+                else if (rnd < 0.5)
+                    stepSound = Sound'GrassStep2';
+                else if (rnd < 0.75)
+                    stepSound = Sound'GrassStep3';
+                else
+                    stepSound = Sound'GrassStep4';
+                break;
 
-			case 'Metal':
-			case 'Ladder':
-				volumeMultiplier = 1.0;
-				if (rnd < 0.25)
-					stepSound = Sound'MetalStep1';
-				else if (rnd < 0.5)
-					stepSound = Sound'MetalStep2';
-				else if (rnd < 0.75)
-					stepSound = Sound'MetalStep3';
-				else
-					stepSound = Sound'MetalStep4';
-				break;
+            case 'Metal':
+            case 'Ladder':
+                volumeMultiplier = 1.0;
+                if (rnd < 0.25)
+                    stepSound = Sound'MetalStep1';
+                else if (rnd < 0.5)
+                    stepSound = Sound'MetalStep2';
+                else if (rnd < 0.75)
+                    stepSound = Sound'MetalStep3';
+                else
+                    stepSound = Sound'MetalStep4';
+                break;
 
-			case 'Ceramic':
-			case 'Glass':
-			case 'Tiles':
-				volumeMultiplier = 0.7;
-				if (rnd < 0.25)
-					stepSound = Sound'TileStep1';
-				else if (rnd < 0.5)
-					stepSound = Sound'TileStep2';
-				else if (rnd < 0.75)
-					stepSound = Sound'TileStep3';
-				else
-					stepSound = Sound'TileStep4';
-				break;
+            case 'Ceramic':
+            case 'Glass':
+            case 'Tiles':
+                volumeMultiplier = 0.7;
+                if (rnd < 0.25)
+                    stepSound = Sound'TileStep1';
+                else if (rnd < 0.5)
+                    stepSound = Sound'TileStep2';
+                else if (rnd < 0.75)
+                    stepSound = Sound'TileStep3';
+                else
+                    stepSound = Sound'TileStep4';
+                break;
 
-			case 'Wood':
-				volumeMultiplier = 0.7;
-				if (rnd < 0.25)
-					stepSound = Sound'WoodStep1';
-				else if (rnd < 0.5)
-					stepSound = Sound'WoodStep2';
-				else if (rnd < 0.75)
-					stepSound = Sound'WoodStep3';
-				else
-					stepSound = Sound'WoodStep4';
-				break;
+            case 'Wood':
+                volumeMultiplier = 0.7;
+                if (rnd < 0.25)
+                    stepSound = Sound'WoodStep1';
+                else if (rnd < 0.5)
+                    stepSound = Sound'WoodStep2';
+                else if (rnd < 0.75)
+                    stepSound = Sound'WoodStep3';
+                else
+                    stepSound = Sound'WoodStep4';
+                break;
 
-			case 'Brick':
-			case 'Concrete':
-			case 'Stone':
-			case 'Stucco':
-			default:
-				volumeMultiplier = 0.7;
-				if (rnd < 0.25)
-					stepSound = Sound'StoneStep1';
-				else if (rnd < 0.5)
-					stepSound = Sound'StoneStep2';
-				else if (rnd < 0.75)
-					stepSound = Sound'StoneStep3';
-				else
-					stepSound = Sound'StoneStep4';
-				break;
-		}
-	}
+            case 'Brick':
+            case 'Concrete':
+            case 'Stone':
+            case 'Stucco':
+            default:
+                volumeMultiplier = 0.7;
+                if (rnd < 0.25)
+                    stepSound = Sound'StoneStep1';
+                else if (rnd < 0.5)
+                    stepSound = Sound'StoneStep2';
+                else if (rnd < 0.75)
+                    stepSound = Sound'StoneStep3';
+                else
+                    stepSound = Sound'StoneStep4';
+                break;
+        }
+    }
 
-	// compute sound volume, range and pitch, based on mass and speed
-	if (IsInState('PlayerSwimming') || (Physics == PHYS_Swimming))
-		speedFactor = WaterSpeed/180.0;
-	else
-		speedFactor = VSize(Velocity)/180.0;
+    // compute sound volume, range and pitch, based on mass and speed
+    if (IsInState('PlayerSwimming') || (Physics == PHYS_Swimming))
+        speedFactor = WaterSpeed/180.0;
+    else
+        speedFactor = VSize(Velocity)/180.0;
 
-	massFactor  = Mass/150.0;
-	radius      = 375.0;
-	volume      = (speedFactor+0.2) * massFactor;
-	range       = radius * volume;
-	pitch       = (volume+0.5);
-	volume      = FClamp(volume, 0, 1.0) * 0.5;		// Hack to compensate for increased footstep volume.											
-	range       = FClamp(range, 0.01, radius*4);
-	pitch       = FClamp(pitch, 1.0, 1.5);
-	if(DrugEffectTimer < 0)
-		pitch *= 0.5;
+    massFactor  = Mass/150.0;
+    radius      = 375.0;
+    volume      = (speedFactor+0.2) * massFactor;
+    range       = radius * volume;
+    pitch       = (volume+0.5);
+    volume      = FClamp(volume, 0, 1.0) * 0.5;        // Hack to compensate for increased footstep volume.                                            
+    range       = FClamp(range, 0.01, radius*4);
+    pitch       = FClamp(pitch, 1.0, 1.5);
+    if(DrugEffectTimer < 0)
+        pitch *= 0.5;
 
-	// AugStealth decreases our footstep volume
-	volume *= RunSilentValue;
+    // AugStealth decreases our footstep volume
+    volume *= RunSilentValue;
 
-	if ( Level.NetMode == NM_Standalone )
-		PlaySound(stepSound, SLOT_Interact, volume, , range, pitch);
-	else	// special case for multiplayer
-	{
-		if ( !bIsWalking )
-		{
-			// Tone down player's own footsteps
-			if ( !bOtherPlayer )
-			{
-				volume *= 0.33;
-				PlaySound(stepSound, SLOT_Interact, volume, , range, pitch);
-			}
-			else // Exagerate other players sounds (range slightly greater than distance you see with vision aug)
-			{
-				volume *= 2.0;
-				range = (class'AugVision'.Default.mpAugValue * 1.2);
-				volume = FClamp(volume, 0, 1.0);
-				PlaySound(stepSound, SLOT_Interact, volume, , range, pitch);
-			}
-		}
-	}
-	AISendEvent('LoudNoise', EAITYPE_Audio, volume*volumeMultiplier, range*volumeMultiplier);
+    if ( Level.NetMode == NM_Standalone )
+        PlaySound(stepSound, SLOT_Interact, volume, , range, pitch);
+    else    // special case for multiplayer
+    {
+        if ( !bIsWalking )
+        {
+            // Tone down player's own footsteps
+            if ( !bOtherPlayer )
+            {
+                volume *= 0.33;
+                PlaySound(stepSound, SLOT_Interact, volume, , range, pitch);
+            }
+            else // Exagerate other players sounds (range slightly greater than distance you see with vision aug)
+            {
+                volume *= 2.0;
+                range = (class'AugVision'.Default.mpAugValue * 1.2);
+                volume = FClamp(volume, 0, 1.0);
+                PlaySound(stepSound, SLOT_Interact, volume, , range, pitch);
+            }
+        }
+    }
+    AISendEvent('LoudNoise', EAITYPE_Audio, volume*volumeMultiplier, range*volumeMultiplier);
 }
 
 // ----------------------------------------------------------------------
@@ -3008,37 +3008,37 @@ simulated function PlayFootStep()
 
 function bool IsHighlighted(actor A)
 {
-	if (bBehindView)
-		return False;
+    if (bBehindView)
+        return False;
 
-	if (A != None)
-	{
-		if (A.bDeleteMe || A.bHidden)
-			return False;
+    if (A != None)
+    {
+        if (A.bDeleteMe || A.bHidden)
+            return False;
 
-		if (A.IsA('Pawn'))
-		{
-			if (!bNPCHighlighting)
-				return False;
-		}
+        if (A.IsA('Pawn'))
+        {
+            if (!bNPCHighlighting)
+                return False;
+        }
 
-		if (A.IsA('DeusExMover') && !DeusExMover(A).bHighlight)
-			return False;
-		else if (A.IsA('Mover') && !A.IsA('DeusExMover'))
-			return False;
-		else if (A.IsA('DeusExDecoration') && !DeusExDecoration(A).bHighlight)
-			return False;
-		else if (A.IsA('DeusExCarcass') && !DeusExCarcass(A).bHighlight)
-			return False;
-		else if (A.IsA('ThrownProjectile') && !ThrownProjectile(A).bHighlight)
-			return False;
-		else if (A.IsA('DeusExProjectile') && !DeusExProjectile(A).bStuck)
-			return False;
-		else if (A.IsA('ScriptedPawn') && !ScriptedPawn(A).bHighlight)
-			return False;
-	}
+        if (A.IsA('DeusExMover') && !DeusExMover(A).bHighlight)
+            return False;
+        else if (A.IsA('Mover') && !A.IsA('DeusExMover'))
+            return False;
+        else if (A.IsA('DeusExDecoration') && !DeusExDecoration(A).bHighlight)
+            return False;
+        else if (A.IsA('DeusExCarcass') && !DeusExCarcass(A).bHighlight)
+            return False;
+        else if (A.IsA('ThrownProjectile') && !ThrownProjectile(A).bHighlight)
+            return False;
+        else if (A.IsA('DeusExProjectile') && !DeusExProjectile(A).bStuck)
+            return False;
+        else if (A.IsA('ScriptedPawn') && !ScriptedPawn(A).bHighlight)
+            return False;
+    }
 
-	return True;
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -3049,12 +3049,12 @@ function bool IsHighlighted(actor A)
 
 function bool IsFrobbable(actor A)
 {
-	if (!A.bHidden)
-		if (A.IsA('Mover') || A.IsA('DeusExDecoration') || A.IsA('Inventory') ||
-			A.IsA('ScriptedPawn') || A.IsA('DeusExCarcass') || A.IsA('DeusExProjectile'))
-			return True;
+    if (!A.bHidden)
+        if (A.IsA('Mover') || A.IsA('DeusExDecoration') || A.IsA('Inventory') ||
+            A.IsA('ScriptedPawn') || A.IsA('DeusExCarcass') || A.IsA('DeusExProjectile'))
+            return True;
 
-	return False;
+    return False;
 }
 
 // ----------------------------------------------------------------------
@@ -3065,89 +3065,89 @@ function bool IsFrobbable(actor A)
 
 function HighlightCenterObject()
 {
-	local Actor target, smallestTarget;
-	local Vector HitLoc, HitNormal, StartTrace, EndTrace;
-	local DeusExRootWindow root;
-	local float minSize;
-	local bool bFirstTarget;
+    local Actor target, smallestTarget;
+    local Vector HitLoc, HitNormal, StartTrace, EndTrace;
+    local DeusExRootWindow root;
+    local float minSize;
+    local bool bFirstTarget;
 
-	if (IsInState('Dying'))
-		return;
+    if (IsInState('Dying'))
+        return;
 
-	root = DeusExRootWindow(rootWindow);
+    root = DeusExRootWindow(rootWindow);
 
-	// only do the trace every tenth of a second
-	if (FrobTime >= 0.1)
-	{
-		// figure out how far ahead we should trace
-		StartTrace = Location;
-		EndTrace = Location + (Vector(ViewRotation) * MaxFrobDistance);
+    // only do the trace every tenth of a second
+    if (FrobTime >= 0.1)
+    {
+        // figure out how far ahead we should trace
+        StartTrace = Location;
+        EndTrace = Location + (Vector(ViewRotation) * MaxFrobDistance);
 
-		// adjust for the eye height
-		StartTrace.Z += BaseEyeHeight;
-		EndTrace.Z += BaseEyeHeight;
+        // adjust for the eye height
+        StartTrace.Z += BaseEyeHeight;
+        EndTrace.Z += BaseEyeHeight;
 
-		smallestTarget = None;
-		minSize = 99999;
-		bFirstTarget = True;
+        smallestTarget = None;
+        minSize = 99999;
+        bFirstTarget = True;
 
-		// find the object that we are looking at
-		// make sure we don't select the object that we're carrying
-		// use the last traced object as the target...this will handle
-		// smaller items under larger items for example
-		// ScriptedPawns always have precedence, though
-		foreach TraceActors(class'Actor', target, HitLoc, HitNormal, EndTrace, StartTrace)
-		{
-			if (IsFrobbable(target) && (target != CarriedDecoration))
-			{
-				if (target.IsA('ScriptedPawn'))
-				{
-					smallestTarget = target;
-					break;
-				}
-				else if (target.IsA('Mover') && bFirstTarget)
-				{
-					smallestTarget = target;
-					break;
-				}
-				else if (target.CollisionRadius < minSize)
-				{
-					minSize = target.CollisionRadius;
-					smallestTarget = target;
-					bFirstTarget = False;
-				}
-			}
-		}
-		FrobTarget = smallestTarget;
+        // find the object that we are looking at
+        // make sure we don't select the object that we're carrying
+        // use the last traced object as the target...this will handle
+        // smaller items under larger items for example
+        // ScriptedPawns always have precedence, though
+        foreach TraceActors(class'Actor', target, HitLoc, HitNormal, EndTrace, StartTrace)
+        {
+            if (IsFrobbable(target) && (target != CarriedDecoration))
+            {
+                if (target.IsA('ScriptedPawn'))
+                {
+                    smallestTarget = target;
+                    break;
+                }
+                else if (target.IsA('Mover') && bFirstTarget)
+                {
+                    smallestTarget = target;
+                    break;
+                }
+                else if (target.CollisionRadius < minSize)
+                {
+                    minSize = target.CollisionRadius;
+                    smallestTarget = target;
+                    bFirstTarget = False;
+                }
+            }
+        }
+        FrobTarget = smallestTarget;
 
-		if(ScriptedPawn(FrobTarget) != None)
-		{
-			if(ScriptedPawn(FrobTarget).bCanGiveWeapon && ScriptedPawn(FrobTarget).CheckPawnAllianceType(Self) != ALLIANCE_Hostile)
-			{
-				if(VSize(FrobTarget.Location - Location) <= 64 && root != None && DeusExWeapon(inHand) != None)
-				{
-					if(!root.hud.startDisplay.bTickEnabled)
-					{
-						root.hud.startDisplay.message = "";
-						root.hud.startDisplay.charIndex = 0;
-						root.hud.startDisplay.winText.SetText("");
-						root.hud.startDisplay.winTextShadow.SetText("");
+        if(ScriptedPawn(FrobTarget) != None)
+        {
+            if(ScriptedPawn(FrobTarget).bCanGiveWeapon && ScriptedPawn(FrobTarget).CheckPawnAllianceType(Self) != ALLIANCE_Hostile)
+            {
+                if(VSize(FrobTarget.Location - Location) <= 64 && root != None && DeusExWeapon(inHand) != None)
+                {
+                    if(!root.hud.startDisplay.bTickEnabled)
+                    {
+                        root.hud.startDisplay.message = "";
+                        root.hud.startDisplay.charIndex = 0;
+                        root.hud.startDisplay.winText.SetText("");
+                        root.hud.startDisplay.winTextShadow.SetText("");
 
-						if(DeusExWeapon(inHand) != None)
-							root.hud.startDisplay.AddMessage("Press 'Drop Item' to give "$ ScriptedPawn(FrobTarget).FamiliarName $" the "$ inHand.ItemName);
+                        if(DeusExWeapon(inHand) != None)
+                            root.hud.startDisplay.AddMessage("Press 'Drop Item' to give "$ ScriptedPawn(FrobTarget).FamiliarName $" the "$ inHand.ItemName);
 
-						if(root.hud.startDisplay.message != "")
-							root.hud.startDisplay.StartMessage();
-					}
+                        if(root.hud.startDisplay.message != "")
+                            root.hud.startDisplay.StartMessage();
+                    }
 
-					root.hud.startDisplay.DisplayTime = 0.15;
-				}
-			}
-		}
+                    root.hud.startDisplay.DisplayTime = 0.15;
+                }
+            }
+        }
 
-		// reset our frob timer
-		FrobTime = 0;
-	}
+        // reset our frob timer
+        FrobTime = 0;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -3162,47 +3162,47 @@ function HighlightCenterObject()
 function Landed(vector HitNormal)
 {
     local vector legLocation;
-	local int augLevel;
-	local float augReduce, dmg;
+    local int augLevel;
+    local float augReduce, dmg;
 
-	//Note - physics changes type to PHYS_Walking by default for landed pawns
-	PlayLanded(Velocity.Z);
-	if (Velocity.Z < -1.4 * JumpZ)
-	{
-		MakeNoise(-0.5 * Velocity.Z/(FMax(JumpZ, 150.0)));
-		if ((Velocity.Z < -700) && (ReducedDamageType != 'All'))
-			if ( Role == ROLE_Authority )
+    //Note - physics changes type to PHYS_Walking by default for landed pawns
+    PlayLanded(Velocity.Z);
+    if (Velocity.Z < -1.4 * JumpZ)
+    {
+        MakeNoise(-0.5 * Velocity.Z/(FMax(JumpZ, 150.0)));
+        if ((Velocity.Z < -700) && (ReducedDamageType != 'All'))
+            if ( Role == ROLE_Authority )
             {
-				// check our jump augmentation and reduce falling damage if we have it
-				// jump augmentation doesn't exist anymore - use Speed instaed
-				// reduce an absolute amount of damage instead of a relative amount
-				augReduce = 0;
-				if (AugmentationSystem != None)
-				{
-					augLevel = AugmentationSystem.GetClassLevel(class'AugSpeed');
-					if (augLevel >= 0)
-						augReduce = 15 * (augLevel+1);
-				}
+                // check our jump augmentation and reduce falling damage if we have it
+                // jump augmentation doesn't exist anymore - use Speed instaed
+                // reduce an absolute amount of damage instead of a relative amount
+                augReduce = 0;
+                if (AugmentationSystem != None)
+                {
+                    augLevel = AugmentationSystem.GetClassLevel(class'AugSpeed');
+                    if (augLevel >= 0)
+                        augReduce = 15 * (augLevel+1);
+                }
 
-				//Calculate the zyme effect
-				if(drugEffectTimer < 0) //(FindInventoryType(Class'DeusEx.ZymeCharged') != None)
-					augReduce += 10;
+                //Calculate the zyme effect
+                if(drugEffectTimer < 0) //(FindInventoryType(Class'DeusEx.ZymeCharged') != None)
+                    augReduce += 10;
 
-				dmg = Max((-0.16 * (Velocity.Z + 700)) - augReduce, 0);
-				legLocation = Location + vect(-1,0,-1);			// damage left leg
-				TakeDamage(dmg, None, legLocation, vect(0,0,0), 'fell');
+                dmg = Max((-0.16 * (Velocity.Z + 700)) - augReduce, 0);
+                legLocation = Location + vect(-1,0,-1);            // damage left leg
+                TakeDamage(dmg, None, legLocation, vect(0,0,0), 'fell');
 
-				legLocation = Location + vect(1,0,-1);			// damage right leg
-				TakeDamage(dmg, None, legLocation, vect(0,0,0), 'fell');
+                legLocation = Location + vect(1,0,-1);            // damage right leg
+                TakeDamage(dmg, None, legLocation, vect(0,0,0), 'fell');
 
-				dmg = Max((-0.06 * (Velocity.Z + 700)) - augReduce, 0);
-				legLocation = Location + vect(0,0,1);			// damage torso
-				TakeDamage(dmg, None, legLocation, vect(0,0,0), 'fell');
+                dmg = Max((-0.06 * (Velocity.Z + 700)) - augReduce, 0);
+                legLocation = Location + vect(0,0,1);            // damage torso
+                TakeDamage(dmg, None, legLocation, vect(0,0,0), 'fell');
             }
-	}
-	else if ( (Level.Game != None) && (Level.Game.Difficulty > 1) && (Velocity.Z > 0.5 * JumpZ) )
-		MakeNoise(0.1 * Level.Game.Difficulty);				
-	bJustLanded = true;
+    }
+    else if ( (Level.Game != None) && (Level.Game.Difficulty > 1) && (Velocity.Z > 0.5 * JumpZ) )
+        MakeNoise(0.1 * Level.Game.Difficulty);                
+    bJustLanded = true;
 }
 
 // ----------------------------------------------------------------------
@@ -3214,34 +3214,34 @@ function Landed(vector HitNormal)
 
 function SupportActor(Actor standingActor)
 {
-	local vector newVelocity;
-	local float  angle;
-	local float  zVelocity;
-	local float  baseMass;
-	local float  standingMass;
-	local vector damagePoint;
-	local float  damage;
+    local vector newVelocity;
+    local float  angle;
+    local float  zVelocity;
+    local float  baseMass;
+    local float  standingMass;
+    local vector damagePoint;
+    local float  damage;
 
-	zVelocity    = standingActor.Velocity.Z;
-	standingMass = FMax(1, standingActor.Mass);
-	baseMass     = FMax(1, Mass);
-	damagePoint  = Location + vect(0,0,1)*(CollisionHeight-1);
-	damage       = (1 - (standingMass/baseMass) * (zVelocity/100));
+    zVelocity    = standingActor.Velocity.Z;
+    standingMass = FMax(1, standingActor.Mass);
+    baseMass     = FMax(1, Mass);
+    damagePoint  = Location + vect(0,0,1)*(CollisionHeight-1);
+    damage       = (1 - (standingMass/baseMass) * (zVelocity/100));
 
-	// Have we been stomped?
-	if ((zVelocity*standingMass < -7500) && (damage > 0))
-		TakeDamage(damage, standingActor.Instigator, damagePoint, 0.2*standingActor.Velocity, 'stomped');
+    // Have we been stomped?
+    if ((zVelocity*standingMass < -7500) && (damage > 0))
+        TakeDamage(damage, standingActor.Instigator, damagePoint, 0.2*standingActor.Velocity, 'stomped');
 
-	// Bounce the actor off the player
-	angle = FRand()*Pi*2;
-	newVelocity.X = cos(angle);
-	newVelocity.Y = sin(angle);
-	newVelocity.Z = 0;
-	newVelocity *= FRand()*25 + 25;
-	newVelocity += standingActor.Velocity;
-	newVelocity.Z = 50;
-	standingActor.Velocity = newVelocity;
-	standingActor.SetPhysics(PHYS_Falling);
+    // Bounce the actor off the player
+    angle = FRand()*Pi*2;
+    newVelocity.X = cos(angle);
+    newVelocity.Y = sin(angle);
+    newVelocity.Z = 0;
+    newVelocity *= FRand()*25 + 25;
+    newVelocity += standingActor.Velocity;
+    newVelocity.Z = 50;
+    standingActor.Velocity = newVelocity;
+    standingActor.SetPhysics(PHYS_Falling);
 }
 
 // ----------------------------------------------------------------------
@@ -3253,38 +3253,38 @@ function SupportActor(Actor standingActor)
 
 function Carcass SpawnCarcass()
 {
-	local DeusExCarcass carc;
-	local Inventory item;
-	local Vector loc;
+    local DeusExCarcass carc;
+    local Inventory item;
+    local Vector loc;
 
-	// don't spawn a carcass if we've been gibbed
-	if (Health < -80)
+    // don't spawn a carcass if we've been gibbed
+    if (Health < -80)
       return None;
 
-	carc = DeusExCarcass(Spawn(CarcassType));
-	if (carc != None)
-	{
-		carc.Initfor(self);
+    carc = DeusExCarcass(Spawn(CarcassType));
+    if (carc != None)
+    {
+        carc.Initfor(self);
 
-		// move it down to the ground
-		loc = Location;
-		loc.z -= CollisionHeight;
-		loc.z += carc.CollisionHeight;
-		carc.SetLocation(loc);
+        // move it down to the ground
+        loc = Location;
+        loc.z -= CollisionHeight;
+        loc.z += carc.CollisionHeight;
+        carc.SetLocation(loc);
 
-		if (Player != None)
-			carc.bPlayerCarcass = true;
-		MoveTarget = carc; //for Player 3rd person views
+        if (Player != None)
+            carc.bPlayerCarcass = true;
+        MoveTarget = carc; //for Player 3rd person views
 
-		// give the carcass the player's inventory
-		for (item=Inventory; item!=None; item=Inventory)
-		{
-			DeleteInventory(item);
-			carc.AddInventory(item);
-		}
-	}
+        // give the carcass the player's inventory
+        for (item=Inventory; item!=None; item=Inventory)
+        {
+            DeleteInventory(item);
+            carc.AddInventory(item);
+        }
+    }
 
-	return carc;
+    return carc;
 }
 
 // ----------------------------------------------------------------------
@@ -3295,8 +3295,8 @@ function Carcass SpawnCarcass()
 
 function Reloading(DeusExWeapon weapon, float reloadTime)
 {
-	if (!IsLeaning() && !bIsCrouching && (Physics != PHYS_Swimming) && !IsInState('Dying'))
-		PlayAnim('Reload', 1.0 / reloadTime, 0.1);
+    if (!IsLeaning() && !bIsCrouching && (Physics != PHYS_Swimming) && !IsInState('Dying'))
+        PlayAnim('Reload', 1.0 / reloadTime, 0.1);
 }
 function DoneReloading(DeusExWeapon weapon);
 
@@ -3306,26 +3306,26 @@ function DoneReloading(DeusExWeapon weapon);
 
 function int HealPlayer(int baseHealPoints, optional Bool bUseMedicineSkill)
 {
-	local float mult;
-	local int adjustedHealAmount, aha2, tempaha;
-	local int origHealAmount;
-	local float dividedHealAmount;
+    local float mult;
+    local int adjustedHealAmount, aha2, tempaha;
+    local int origHealAmount;
+    local float dividedHealAmount;
 
-	if (bUseMedicineSkill)
-		adjustedHealAmount = CalculateSkillHealAmount(baseHealPoints);
-	else
-		adjustedHealAmount = baseHealPoints;
+    if (bUseMedicineSkill)
+        adjustedHealAmount = CalculateSkillHealAmount(baseHealPoints);
+    else
+        adjustedHealAmount = baseHealPoints;
 
-	origHealAmount = adjustedHealAmount;
+    origHealAmount = adjustedHealAmount;
 
-	if (adjustedHealAmount > 0)
-	{
-		if (bUseMedicineSkill)
-			PlaySound(sound'MedicalHiss', SLOT_None,,, 256);
+    if (adjustedHealAmount > 0)
+    {
+        if (bUseMedicineSkill)
+            PlaySound(sound'MedicalHiss', SLOT_None,,, 256);
 
-		// Heal by 3 regions via multiplayer game
-		if (( Level.NetMode == NM_DedicatedServer ) || ( Level.NetMode == NM_ListenServer ))
-		{
+        // Heal by 3 regions via multiplayer game
+        if (( Level.NetMode == NM_DedicatedServer ) || ( Level.NetMode == NM_ListenServer ))
+        {
          // DEUS_EX AMSD If legs broken, heal them a little bit first
          if (HealthLegLeft == 0)
          {
@@ -3336,53 +3336,53 @@ function int HealPlayer(int baseHealPoints, optional Bool bUseMedicineSkill)
             adjustedHealAmount = adjustedHealAmount - aha2;
             HealPart(HealthLegLeft, aha2);
             HealPart(HealthLegRight,tempaha);
-				mpMsgServerFlags = mpMsgServerFlags & (~MPSERVERFLAG_LostLegs);
+                mpMsgServerFlags = mpMsgServerFlags & (~MPSERVERFLAG_LostLegs);
          }
-			HealPart(HealthHead, adjustedHealAmount);
+            HealPart(HealthHead, adjustedHealAmount);
 
-			if ( adjustedHealAmount > 0 )
-			{
-				aha2 = adjustedHealAmount;
-				HealPart(HealthTorso, aha2);
-				aha2 = adjustedHealAmount;
-				HealPart(HealthArmRight,aha2);
-				HealPart(HealthArmLeft, adjustedHealAmount);
-			}
-			if ( adjustedHealAmount > 0 )
-			{
-				aha2 = adjustedHealAmount;
-				HealPart(HealthLegRight, aha2);
-				HealPart(HealthLegLeft, adjustedHealAmount);
-			}
-		}
-		else
-		{
-			HealPart(HealthHead, adjustedHealAmount);
-			HealPart(HealthTorso, adjustedHealAmount);
-			HealPart(HealthLegRight, adjustedHealAmount);
-			HealPart(HealthLegLeft, adjustedHealAmount);
-			HealPart(HealthArmRight, adjustedHealAmount);
-			HealPart(HealthArmLeft, adjustedHealAmount);
-		}
+            if ( adjustedHealAmount > 0 )
+            {
+                aha2 = adjustedHealAmount;
+                HealPart(HealthTorso, aha2);
+                aha2 = adjustedHealAmount;
+                HealPart(HealthArmRight,aha2);
+                HealPart(HealthArmLeft, adjustedHealAmount);
+            }
+            if ( adjustedHealAmount > 0 )
+            {
+                aha2 = adjustedHealAmount;
+                HealPart(HealthLegRight, aha2);
+                HealPart(HealthLegLeft, adjustedHealAmount);
+            }
+        }
+        else
+        {
+            HealPart(HealthHead, adjustedHealAmount);
+            HealPart(HealthTorso, adjustedHealAmount);
+            HealPart(HealthLegRight, adjustedHealAmount);
+            HealPart(HealthLegLeft, adjustedHealAmount);
+            HealPart(HealthArmRight, adjustedHealAmount);
+            HealPart(HealthArmLeft, adjustedHealAmount);
+        }
 
-		GenerateTotalHealth();
+        GenerateTotalHealth();
 
-		adjustedHealAmount = origHealAmount - adjustedHealAmount;
+        adjustedHealAmount = origHealAmount - adjustedHealAmount;
 
-		if (origHealAmount == baseHealPoints)
-		{
-			if (adjustedHealAmount == 1)
-				ClientMessage(Sprintf(HealedPointLabel, adjustedHealAmount));
-			else
-				ClientMessage(Sprintf(HealedPointsLabel, adjustedHealAmount));
-		}
-		else
-		{
-			ClientMessage(Sprintf(HealedPointsLabel, adjustedHealAmount));
-		}
-	}
+        if (origHealAmount == baseHealPoints)
+        {
+            if (adjustedHealAmount == 1)
+                ClientMessage(Sprintf(HealedPointLabel, adjustedHealAmount));
+            else
+                ClientMessage(Sprintf(HealedPointsLabel, adjustedHealAmount));
+        }
+        else
+        {
+            ClientMessage(Sprintf(HealedPointsLabel, adjustedHealAmount));
+        }
+    }
 
-	return adjustedHealAmount;
+    return adjustedHealAmount;
 }
 
 // ----------------------------------------------------------------------
@@ -3391,13 +3391,13 @@ function int HealPlayer(int baseHealPoints, optional Bool bUseMedicineSkill)
 
 function int ChargePlayer(int baseChargePoints)
 {
-	local int chargedPoints;
+    local int chargedPoints;
 
-	chargedPoints = Min(EnergyMax - Int(Energy), baseChargePoints);
+    chargedPoints = Min(EnergyMax - Int(Energy), baseChargePoints);
 
-	Energy += chargedPoints;
+    Energy += chargedPoints;
 
-	return chargedPoints;	
+    return chargedPoints;    
 }
 
 // ----------------------------------------------------------------------
@@ -3406,19 +3406,19 @@ function int ChargePlayer(int baseChargePoints)
 
 function int CalculateSkillHealAmount(int baseHealPoints)
 {
-	local float mult;
-	local int adjustedHealAmount;
+    local float mult;
+    local int adjustedHealAmount;
 
-	// check skill use
-	if (SkillSystem != None)
-	{
-		mult = SkillSystem.GetSkillLevelValue(class'SkillMedicine');
+    // check skill use
+    if (SkillSystem != None)
+    {
+        mult = SkillSystem.GetSkillLevelValue(class'SkillMedicine');
 
-		// apply the skill
-		adjustedHealAmount = baseHealPoints * mult;
-	}
+        // apply the skill
+        adjustedHealAmount = baseHealPoints * mult;
+    }
 
-	return adjustedHealAmount;
+    return adjustedHealAmount;
 }
 
 // ----------------------------------------------------------------------
@@ -3427,16 +3427,16 @@ function int CalculateSkillHealAmount(int baseHealPoints)
 
 function HealPart(out int points, out int amt)
 {
-	local int spill;
+    local int spill;
 
-	points += amt;
-	spill = points - 100;
-	if (spill > 0)
-		points = 100;
-	else
-		spill = 0;
+    points += amt;
+    spill = points - 100;
+    if (spill > 0)
+        points = 100;
+    else
+        spill = 0;
 
-	amt = spill;
+    amt = spill;
 }
 
 // ----------------------------------------------------------------------
@@ -3447,41 +3447,41 @@ function HealPart(out int points, out int amt)
 
 function HandleWalking()
 {
-	Super.HandleWalking();
+    Super.HandleWalking();
 
-	if (bAlwaysRun)
-		bIsWalking = (bRun != 0) || (bDuck != 0); 
-	else
-		bIsWalking = (bRun == 0) || (bDuck != 0); 
+    if (bAlwaysRun)
+        bIsWalking = (bRun != 0) || (bDuck != 0); 
+    else
+        bIsWalking = (bRun == 0) || (bDuck != 0); 
 
-	// handle the toggle walk key
-	if (bToggleWalk)
-		bIsWalking = !bIsWalking;
+    // handle the toggle walk key
+    if (bToggleWalk)
+        bIsWalking = !bIsWalking;
 
-	if (bToggleCrouch)
-	{
-		if (!bCrouchOn && !bWasCrouchOn && (bDuck != 0))
-		{
-			bCrouchOn = True;
-		}
-		else if (bCrouchOn && !bWasCrouchOn && (bDuck == 0))
-		{
-			bWasCrouchOn = True;
-		}
-		else if (bCrouchOn && bWasCrouchOn && (bDuck == 0) && (lastbDuck != 0))
-		{
-			bCrouchOn = False;
-			bWasCrouchOn = False;
-		}
+    if (bToggleCrouch)
+    {
+        if (!bCrouchOn && !bWasCrouchOn && (bDuck != 0))
+        {
+            bCrouchOn = True;
+        }
+        else if (bCrouchOn && !bWasCrouchOn && (bDuck == 0))
+        {
+            bWasCrouchOn = True;
+        }
+        else if (bCrouchOn && bWasCrouchOn && (bDuck == 0) && (lastbDuck != 0))
+        {
+            bCrouchOn = False;
+            bWasCrouchOn = False;
+        }
 
-		if (bCrouchOn)
-		{
-			bIsCrouching = True;
-			bDuck = 1;
-		}
+        if (bCrouchOn)
+        {
+            bIsCrouching = True;
+            bDuck = 1;
+        }
 
-		lastbDuck = bDuck;
-	}
+        lastbDuck = bDuck;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -3494,62 +3494,62 @@ function HandleWalking()
 
 function DoJump( optional float F )
 {
-	local DeusExWeapon w;
-	local float scaleFactor, augLevel, pitch;
+    local DeusExWeapon w;
+    local float scaleFactor, augLevel, pitch;
 
-	if ((CarriedDecoration != None) && (CarriedDecoration.Mass > 20))
-		return;
-	else if (bForceDuck || IsLeaning())
-		return;
+    if ((CarriedDecoration != None) && (CarriedDecoration.Mass > 20))
+        return;
+    else if (bForceDuck || IsLeaning())
+        return;
 
-	pitch = 1.0;
-	if(drugEffectTimer < 0)
-		pitch = 0.5;
+    pitch = 1.0;
+    if(drugEffectTimer < 0)
+        pitch = 0.5;
 
-	//== Temporary; replace with proper rotation and all that jazz
-	if (Physics == PHYS_Walking || Physics == PHYS_Spider)
-	{
-		if ( Role == ROLE_Authority )
-			PlaySound(JumpSound, SLOT_None, 1.5, true, 1200, (1.0 - 0.2*FRand()) * pitch );
-		if ( (Level.Game != None) && (Level.Game.Difficulty > 0) )
-			MakeNoise(0.1 * Level.Game.Difficulty);
-		PlayInAir();
+    //== Temporary; replace with proper rotation and all that jazz
+    if (Physics == PHYS_Walking || Physics == PHYS_Spider)
+    {
+        if ( Role == ROLE_Authority )
+            PlaySound(JumpSound, SLOT_None, 1.5, true, 1200, (1.0 - 0.2*FRand()) * pitch );
+        if ( (Level.Game != None) && (Level.Game.Difficulty > 0) )
+            MakeNoise(0.1 * Level.Game.Difficulty);
+        PlayInAir();
 
-		Velocity.Z = JumpZ;
+        Velocity.Z = JumpZ;
 
-		//Zyme effect
-		if(drugEffectTimer < 0) //(FindInventoryType(Class'DeusEx.ZymeCharged') != None)
-			Velocity.Z += Default.JumpZ * 0.2;
+        //Zyme effect
+        if(drugEffectTimer < 0) //(FindInventoryType(Class'DeusEx.ZymeCharged') != None)
+            Velocity.Z += Default.JumpZ * 0.2;
 
-		if ( Level.NetMode != NM_Standalone )
-		{
-		         if (AugmentationSystem == None)
-		            augLevel = -1.0;
-		         else			
-		            augLevel = AugmentationSystem.GetAugLevelValue(class'AugSpeed');
-			w = DeusExWeapon(InHand);
-			if ((augLevel != -1.0) && ( w != None ) && ( w.Mass > 30.0))
-			{
-				scaleFactor = 1.0 - FClamp( ((w.Mass - 30.0)/55.0), 0.0, 0.5 );
-				Velocity.Z *= scaleFactor;
-			}
-		}
-		
-		// reduce the jump velocity if you are crouching
-//		if (bIsCrouching)
-//			Velocity.Z *= 0.9;
+        if ( Level.NetMode != NM_Standalone )
+        {
+                 if (AugmentationSystem == None)
+                    augLevel = -1.0;
+                 else            
+                    augLevel = AugmentationSystem.GetAugLevelValue(class'AugSpeed');
+            w = DeusExWeapon(InHand);
+            if ((augLevel != -1.0) && ( w != None ) && ( w.Mass > 30.0))
+            {
+                scaleFactor = 1.0 - FClamp( ((w.Mass - 30.0)/55.0), 0.0, 0.5 );
+                Velocity.Z *= scaleFactor;
+            }
+        }
+        
+        // reduce the jump velocity if you are crouching
+//        if (bIsCrouching)
+//            Velocity.Z *= 0.9;
 
-		if ( Base != Level )
-			Velocity.Z += Base.Velocity.Z;
-		SetPhysics(PHYS_Falling);
-		if ( bCountJumps && (Role == ROLE_Authority) )
-			Inventory.OwnerJumped();
-	}
+        if ( Base != Level )
+            Velocity.Z += Base.Velocity.Z;
+        SetPhysics(PHYS_Falling);
+        if ( bCountJumps && (Role == ROLE_Authority) )
+            Inventory.OwnerJumped();
+    }
 }
 
 function bool IsLeaning()
 {
-	return (curLeanDist != 0);
+    return (curLeanDist != 0);
 }
 
 // ----------------------------------------------------------------------
@@ -3558,85 +3558,85 @@ function bool IsLeaning()
 
 function bool SetBasedPawnSize(float newRadius, float newHeight)
 {
-	local float  oldRadius, oldHeight;
-	local bool   bSuccess;
-	local vector centerDelta, lookDir, upDir;
-	local float  deltaEyeHeight;
-	local Decoration savedDeco;
+    local float  oldRadius, oldHeight;
+    local bool   bSuccess;
+    local vector centerDelta, lookDir, upDir;
+    local float  deltaEyeHeight;
+    local Decoration savedDeco;
 
-	if (newRadius < 0)
-		newRadius = 0;
-	if (newHeight < 0)
-		newHeight = 0;
+    if (newRadius < 0)
+        newRadius = 0;
+    if (newHeight < 0)
+        newHeight = 0;
 
-	oldRadius = CollisionRadius;
-	oldHeight = CollisionHeight;
+    oldRadius = CollisionRadius;
+    oldHeight = CollisionHeight;
 
-	if ( Level.NetMode == NM_Standalone )
-	{
-		if ((oldRadius == newRadius) && (oldHeight == newHeight))
-			return true;
-	}
+    if ( Level.NetMode == NM_Standalone )
+    {
+        if ((oldRadius == newRadius) && (oldHeight == newHeight))
+            return true;
+    }
 
-	centerDelta    = vect(0, 0, 1)*(newHeight-oldHeight);
-	deltaEyeHeight = GetDefaultCollisionHeight() - Default.BaseEyeHeight;
+    centerDelta    = vect(0, 0, 1)*(newHeight-oldHeight);
+    deltaEyeHeight = GetDefaultCollisionHeight() - Default.BaseEyeHeight;
 
-	if ( Level.NetMode != NM_Standalone )
-	{
-		if ((oldRadius == newRadius) && (oldHeight == newHeight) && (BaseEyeHeight == newHeight - deltaEyeHeight))
-			return true;
-	}
+    if ( Level.NetMode != NM_Standalone )
+    {
+        if ((oldRadius == newRadius) && (oldHeight == newHeight) && (BaseEyeHeight == newHeight - deltaEyeHeight))
+            return true;
+    }
 
-	if (CarriedDecoration != None)
-		savedDeco = CarriedDecoration;
+    if (CarriedDecoration != None)
+        savedDeco = CarriedDecoration;
 
-	bSuccess = false;
-	if ((newHeight <= CollisionHeight) && (newRadius <= CollisionRadius))  // shrink
-	{
-		SetCollisionSize(newRadius, newHeight);
-		if (Move(centerDelta))
-			bSuccess = true;
-		else
-			SetCollisionSize(oldRadius, oldHeight);
-	}
-	else
-	{
-		if (Move(centerDelta))
-		{
-			SetCollisionSize(newRadius, newHeight);
-			bSuccess = true;
-		}
-	}
+    bSuccess = false;
+    if ((newHeight <= CollisionHeight) && (newRadius <= CollisionRadius))  // shrink
+    {
+        SetCollisionSize(newRadius, newHeight);
+        if (Move(centerDelta))
+            bSuccess = true;
+        else
+            SetCollisionSize(oldRadius, oldHeight);
+    }
+    else
+    {
+        if (Move(centerDelta))
+        {
+            SetCollisionSize(newRadius, newHeight);
+            bSuccess = true;
+        }
+    }
 
-	if (bSuccess)
-	{
-		// make sure we don't lose our carried decoration
-		if (savedDeco != None)
-		{
-			savedDeco.SetPhysics(PHYS_None);
-			savedDeco.SetBase(Self);
-			savedDeco.SetCollision(False, False, False);
+    if (bSuccess)
+    {
+        // make sure we don't lose our carried decoration
+        if (savedDeco != None)
+        {
+            savedDeco.SetPhysics(PHYS_None);
+            savedDeco.SetBase(Self);
+            savedDeco.SetCollision(False, False, False);
 
-			// reset the decoration's location
-			lookDir = Vector(Rotation);
-			lookDir.Z = 0;				
-			upDir = vect(0,0,0);
-			upDir.Z = CollisionHeight / 2;		// put it up near eye level
-			savedDeco.SetLocation(Location + upDir + (0.5 * CollisionRadius + CarriedDecoration.CollisionRadius) * lookDir);
-		}
+            // reset the decoration's location
+            lookDir = Vector(Rotation);
+            lookDir.Z = 0;                
+            upDir = vect(0,0,0);
+            upDir.Z = CollisionHeight / 2;        // put it up near eye level
+            savedDeco.SetLocation(Location + upDir + (0.5 * CollisionRadius + CarriedDecoration.CollisionRadius) * lookDir);
+        }
 
-//		PrePivotOffset  = vect(0, 0, 1)*(GetDefaultCollisionHeight()-newHeight);
-		PrePivot        -= centerDelta;
-//		DesiredPrePivot -= centerDelta;
-		BaseEyeHeight   = newHeight - deltaEyeHeight;
+//        PrePivotOffset  = vect(0, 0, 1)*(GetDefaultCollisionHeight()-newHeight);
+        PrePivot        -= centerDelta;
+//        DesiredPrePivot -= centerDelta;
+        BaseEyeHeight   = newHeight - deltaEyeHeight;
 
-		// Complaints that eye height doesn't seem like your crouching in multiplayer
-		if (( Level.NetMode != NM_Standalone ) && (bIsCrouching || bForceDuck) )
-			EyeHeight		-= (centerDelta.Z * 2.5);
-		else
-			EyeHeight		-= centerDelta.Z;
-	}
-	return (bSuccess);
+        // Complaints that eye height doesn't seem like your crouching in multiplayer
+        if (( Level.NetMode != NM_Standalone ) && (bIsCrouching || bForceDuck) )
+            EyeHeight        -= (centerDelta.Z * 2.5);
+        else
+            EyeHeight        -= centerDelta.Z;
+    }
+    return (bSuccess);
 }
 
 // ----------------------------------------------------------------------
@@ -3645,7 +3645,7 @@ function bool SetBasedPawnSize(float newRadius, float newHeight)
 
 function bool ResetBasedPawnSize()
 {
-	return SetBasedPawnSize(Default.CollisionRadius, GetDefaultCollisionHeight());
+    return SetBasedPawnSize(Default.CollisionRadius, GetDefaultCollisionHeight());
 }
 
 // ----------------------------------------------------------------------
@@ -3654,7 +3654,7 @@ function bool ResetBasedPawnSize()
 
 function float GetDefaultCollisionHeight()
 {
-	return (Default.CollisionHeight-4.5);
+    return (Default.CollisionHeight-4.5);
 }
 
 // ----------------------------------------------------------------------
@@ -3663,26 +3663,26 @@ function float GetDefaultCollisionHeight()
 
 function float GetCurrentGroundSpeed()
 {
-	local float augValue, speed;
+    local float augValue, speed;
 
-	// Remove this later and find who's causing this to Access None MB
-	if ( AugmentationSystem == None )
-		return 0;
+    // Remove this later and find who's causing this to Access None MB
+    if ( AugmentationSystem == None )
+        return 0;
 
    augValue = AugmentationSystem.GetAugLevelValue(class'AugSpeed');
 
-	if (augValue == -1.0)
-		augValue = 1.0;
+    if (augValue == -1.0)
+        augValue = 1.0;
 
-	if (( Level.NetMode != NM_Standalone ) && Self.IsA('Human') )
-		speed = Human(Self).mpGroundSpeed * augValue;
-	else
-		speed = Default.GroundSpeed * augValue;
+    if (( Level.NetMode != NM_Standalone ) && Self.IsA('Human') )
+        speed = Human(Self).mpGroundSpeed * augValue;
+    else
+        speed = Default.GroundSpeed * augValue;
 
-	if(drugEffectTimer < 0) //(FindInventoryType(Class'DeusEx.ZymeCharged') != None)
-		speed += Default.GroundSpeed * 0.2;
+    if(drugEffectTimer < 0) //(FindInventoryType(Class'DeusEx.ZymeCharged') != None)
+        speed += Default.GroundSpeed * 0.2;
 
-	return speed;
+    return speed;
 }
 
 // ----------------------------------------------------------------------
@@ -3690,20 +3690,20 @@ function float GetCurrentGroundSpeed()
 // ----------------------------------------------------------------------
 function CreateDrone()
 {
-	local Vector loc;
+    local Vector loc;
 
-	loc = (2.0 + class'SpyDrone'.Default.CollisionRadius + CollisionRadius) * Vector(ViewRotation);
-	loc.Z = BaseEyeHeight;
-	loc += Location;
-	aDrone = Spawn(class'SpyDrone', Self,, loc, ViewRotation);
-	if (aDrone != None)
-	{
-		aDrone.Speed = 3 * spyDroneLevelValue;
-		aDrone.MaxSpeed = 3 * spyDroneLevelValue;
-		aDrone.Damage = 5 * spyDroneLevelValue;
-		aDrone.blastRadius = 8 * spyDroneLevelValue;
-		// window construction now happens in Tick()
-	}
+    loc = (2.0 + class'SpyDrone'.Default.CollisionRadius + CollisionRadius) * Vector(ViewRotation);
+    loc.Z = BaseEyeHeight;
+    loc += Location;
+    aDrone = Spawn(class'SpyDrone', Self,, loc, ViewRotation);
+    if (aDrone != None)
+    {
+        aDrone.Speed = 3 * spyDroneLevelValue;
+        aDrone.MaxSpeed = 3 * spyDroneLevelValue;
+        aDrone.Damage = 5 * spyDroneLevelValue;
+        aDrone.blastRadius = 8 * spyDroneLevelValue;
+        // window construction now happens in Tick()
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -3712,85 +3712,85 @@ function CreateDrone()
 
 simulated function MoveDrone( float DeltaTime, Vector loc )
 {
-	// if the wanted velocity is zero, apply drag so we slow down gradually
-	if (VSize(loc) == 0)
+    // if the wanted velocity is zero, apply drag so we slow down gradually
+    if (VSize(loc) == 0)
    {
       aDrone.Velocity *= 0.9;
    }
-	else
+    else
    {
       aDrone.Velocity += deltaTime * aDrone.MaxSpeed * loc;
    }
 
-	// add slight bobbing
+    // add slight bobbing
    // DEUS_EX AMSD Only do the bobbing in singleplayer, we want stationary drones stationary.
-   if (Level.Netmode == NM_Standalone)	
+   if (Level.Netmode == NM_Standalone)    
       aDrone.Velocity += deltaTime * Sin(Level.TimeSeconds * 2.0) * vect(0,0,1);
 }
 
 function ServerUpdateLean( Vector desiredLoc )
 {
-	local Vector gndCheck, traceSize, HitNormal, HitLocation;
-	local Actor HitActor, HitActorGnd;
+    local Vector gndCheck, traceSize, HitNormal, HitLocation;
+    local Actor HitActor, HitActorGnd;
 
-	// First check to see if anything is in the way
-	traceSize.X = CollisionRadius;
-	traceSize.Y = CollisionRadius;
-	traceSize.Z = CollisionHeight;
-	HitActor = Trace( HitLocation, HitNormal, desiredLoc, Location, True, traceSize );
+    // First check to see if anything is in the way
+    traceSize.X = CollisionRadius;
+    traceSize.Y = CollisionRadius;
+    traceSize.Z = CollisionHeight;
+    HitActor = Trace( HitLocation, HitNormal, desiredLoc, Location, True, traceSize );
 
-	// Make we don't lean off the edge of something
-	if ( HitActor == None )	// Don't bother if we're going to fail to set anyway
-	{
-		gndCheck = desiredLoc - vect(0,0,1) * CollisionHeight;
-		HitActorGnd = Trace( HitLocation, HitNormal, gndCheck, desiredLoc, True, traceSize );
-	}
+    // Make we don't lean off the edge of something
+    if ( HitActor == None )    // Don't bother if we're going to fail to set anyway
+    {
+        gndCheck = desiredLoc - vect(0,0,1) * CollisionHeight;
+        HitActorGnd = Trace( HitLocation, HitNormal, gndCheck, desiredLoc, True, traceSize );
+    }
 
-	if ( (HitActor == None) && (HitActorGnd != None) )
-		SetLocation( desiredLoc );
+    if ( (HitActor == None) && (HitActorGnd != None) )
+        SetLocation( desiredLoc );
 
-//	SetRotation( rot );
+//    SetRotation( rot );
 }
 
 //== Overloaded so spider stuff works
 function UpdateRotation(float DeltaTime, float maxPitch)
 {
-	local rotator newRotation;
+    local rotator newRotation;
 
-	DesiredRotation = ViewRotation; //save old rotation
+    DesiredRotation = ViewRotation; //save old rotation
 
-	ViewRotation.Pitch += 32.0 * DeltaTime * aLookUp;
-	ViewRotation.Pitch = ViewRotation.Pitch & 65535;
-	If ((ViewRotation.Pitch > 18000) && (ViewRotation.Pitch < 49152))
-	{
-		If (aLookUp > 0) 
-			ViewRotation.Pitch = 18000;
-		else
-			ViewRotation.Pitch = 49152;
-	}
-	ViewRotation.Yaw += 32.0 * DeltaTime * aTurn;
-	ViewShake(deltaTime);
-	ViewFlash(deltaTime);
-		
-	newRotation = Rotation;
-	newRotation.Yaw = ViewRotation.Yaw;
-	if(Physics != PHYS_Spider)
-	{
-		newRotation.Pitch = ViewRotation.Pitch;
-		If ( (newRotation.Pitch > maxPitch * RotationRate.Pitch) && (newRotation.Pitch < 65536 - maxPitch * RotationRate.Pitch) )
-		{
-			If (ViewRotation.Pitch < 32768) 
-				newRotation.Pitch = maxPitch * RotationRate.Pitch;
-			else
-				newRotation.Pitch = 65536 - maxPitch * RotationRate.Pitch;
-		}
+    ViewRotation.Pitch += 32.0 * DeltaTime * aLookUp;
+    ViewRotation.Pitch = ViewRotation.Pitch & 65535;
+    If ((ViewRotation.Pitch > 18000) && (ViewRotation.Pitch < 49152))
+    {
+        If (aLookUp > 0) 
+            ViewRotation.Pitch = 18000;
+        else
+            ViewRotation.Pitch = 49152;
+    }
+    ViewRotation.Yaw += 32.0 * DeltaTime * aTurn;
+    ViewShake(deltaTime);
+    ViewFlash(deltaTime);
+        
+    newRotation = Rotation;
+    newRotation.Yaw = ViewRotation.Yaw;
+    if(Physics != PHYS_Spider)
+    {
+        newRotation.Pitch = ViewRotation.Pitch;
+        If ( (newRotation.Pitch > maxPitch * RotationRate.Pitch) && (newRotation.Pitch < 65536 - maxPitch * RotationRate.Pitch) )
+        {
+            If (ViewRotation.Pitch < 32768) 
+                newRotation.Pitch = maxPitch * RotationRate.Pitch;
+            else
+                newRotation.Pitch = 65536 - maxPitch * RotationRate.Pitch;
+        }
 
-    		// added to keep the player's model from pitching or rolling - DEUS_EX CNN
-		newRotation.Pitch = 0;
-		newRotation.Roll = 0;
-	}
+            // added to keep the player's model from pitching or rolling - DEUS_EX CNN
+        newRotation.Pitch = 0;
+        newRotation.Roll = 0;
+    }
 
-	setRotation(newRotation);
+    setRotation(newRotation);
 }
 
 
@@ -3800,504 +3800,504 @@ function UpdateRotation(float DeltaTime, float maxPitch)
 
 state PlayerWalking
 {
-	//== Wall walk for Run Silent aug.  Aren't I awesome?
-/*	event BumpWall(vector HitLocation, vector HitNormal)
-	{
-		local Rotator rot;
-		if((Physics == PHYS_Falling || (Physics == PHYS_Spider && HitNormal != Floor)) && RunSilentValue < 1.0 )
-		{
-			SetPhysics(PHYS_Spider);
-			rot = Rotator(Floor);
-			rot.Yaw = Rotation.Yaw;
-			ViewRotation.Roll = rot.Roll;
+    //== Wall walk for Run Silent aug.  Aren't I awesome?
+/*    event BumpWall(vector HitLocation, vector HitNormal)
+    {
+        local Rotator rot;
+        if((Physics == PHYS_Falling || (Physics == PHYS_Spider && HitNormal != Floor)) && RunSilentValue < 1.0 )
+        {
+            SetPhysics(PHYS_Spider);
+            rot = Rotator(Floor);
+            rot.Yaw = Rotation.Yaw;
+            ViewRotation.Roll = rot.Roll;
 
-			SetRotation(rot);
-		}
-		Global.BumpWall(HitLocation, HitNormal);
-	} */
+            SetRotation(rot);
+        }
+        Global.BumpWall(HitLocation, HitNormal);
+    } */
 
-	//== We need to overwrite this so spider animations play
-	function AnimEnd()
-	{
-		local name MyAnimGroup;
+    //== We need to overwrite this so spider animations play
+    function AnimEnd()
+    {
+        local name MyAnimGroup;
 
-		bAnimTransition = false;
-		if (Physics == PHYS_Walking || Physics == PHYS_Spider)
-		{
-			if (bIsCrouching)
-			{
-				if ( !bIsTurning && ((Velocity.X * Velocity.X + Velocity.Y * Velocity.Y) < 1000) )
-					PlayDuck();	
-				else
-					PlayCrawling();
-			}
-			else
-			{
-				MyAnimGroup = GetAnimGroup(AnimSequence);
-				if ((Velocity.X * Velocity.X + Velocity.Y * Velocity.Y) < 1000)
-				{
-					if ( MyAnimGroup == 'Waiting' )
-						PlayWaiting();
-					else
-					{
-						bAnimTransition = true;
-						TweenToWaiting(0.2);
-					}
-				}	
-				else if (bIsWalking)
-				{
-					if ( (MyAnimGroup == 'Waiting') || (MyAnimGroup == 'Landing') || (MyAnimGroup == 'Gesture') || (MyAnimGroup == 'TakeHit')  )
-					{
-						TweenToWalking(0.1);
-						bAnimTransition = true;
-					}
-					else 
-						PlayWalking();
-				}
-				else
-				{
-					if ( (MyAnimGroup == 'Waiting') || (MyAnimGroup == 'Landing') || (MyAnimGroup == 'Gesture') || (MyAnimGroup == 'TakeHit')  )
-					{
-						bAnimTransition = true;
-						TweenToRunning(0.1);
-					}
-					else
-						PlayRunning();
-				}
-			}
-		}
-		else
-			PlayInAir();
-	}
+        bAnimTransition = false;
+        if (Physics == PHYS_Walking || Physics == PHYS_Spider)
+        {
+            if (bIsCrouching)
+            {
+                if ( !bIsTurning && ((Velocity.X * Velocity.X + Velocity.Y * Velocity.Y) < 1000) )
+                    PlayDuck();    
+                else
+                    PlayCrawling();
+            }
+            else
+            {
+                MyAnimGroup = GetAnimGroup(AnimSequence);
+                if ((Velocity.X * Velocity.X + Velocity.Y * Velocity.Y) < 1000)
+                {
+                    if ( MyAnimGroup == 'Waiting' )
+                        PlayWaiting();
+                    else
+                    {
+                        bAnimTransition = true;
+                        TweenToWaiting(0.2);
+                    }
+                }    
+                else if (bIsWalking)
+                {
+                    if ( (MyAnimGroup == 'Waiting') || (MyAnimGroup == 'Landing') || (MyAnimGroup == 'Gesture') || (MyAnimGroup == 'TakeHit')  )
+                    {
+                        TweenToWalking(0.1);
+                        bAnimTransition = true;
+                    }
+                    else 
+                        PlayWalking();
+                }
+                else
+                {
+                    if ( (MyAnimGroup == 'Waiting') || (MyAnimGroup == 'Landing') || (MyAnimGroup == 'Gesture') || (MyAnimGroup == 'TakeHit')  )
+                    {
+                        bAnimTransition = true;
+                        TweenToRunning(0.1);
+                    }
+                    else
+                        PlayRunning();
+                }
+            }
+        }
+        else
+            PlayInAir();
+    }
 
-	function PlayerMove ( float DeltaTime )
-	{
-		local float alpha;
+    function PlayerMove ( float DeltaTime )
+    {
+        local float alpha;
 
-		alpha = DodgeClickTime;
+        alpha = DodgeClickTime;
 
-		//== Selectively enable/disable player dodge
-		if(Level.NetMode == NM_Standalone)
-		{
-			//== Unrealistic, make sure dodging is enabled
-			if(combatDifficulty > 4.0 && alpha <= 0.0)
-				DodgeClickTime = 0.3;
-			//== All other modes, dodging is not allowed
-			else if(combatDifficulty <= 4.0)
-				DodgeClickTime = 0.0;
-		}
+        //== Selectively enable/disable player dodge
+        if(Level.NetMode == NM_Standalone)
+        {
+            //== Unrealistic, make sure dodging is enabled
+            if(combatDifficulty > 4.0 && alpha <= 0.0)
+                DodgeClickTime = 0.3;
+            //== All other modes, dodging is not allowed
+            else if(combatDifficulty <= 4.0)
+                DodgeClickTime = 0.0;
+        }
 
-		Super.PlayerMove(DeltaTime);
+        Super.PlayerMove(DeltaTime);
 
-		//== Whatever we did, reset the dodge interval when we're done
-		DodgeClickTime = alpha;
-	}
+        //== Whatever we did, reset the dodge interval when we're done
+        DodgeClickTime = alpha;
+    }
 
-	// lets us affect the player's movement
-	function ProcessMove ( float DeltaTime, vector newAccel, eDodgeDir DodgeMove, rotator DeltaRot)
-	{
-		local int newSpeed, defSpeed;
-		local name mat;
-		local vector HitLocation, HitNormal, checkpoint, downcheck;
-		local Actor HitActor, HitActorDown;
-		local bool bCantStandUp;
-		local Vector loc, traceSize;
-		local float alpha, maxLeanDist;
-		local float legTotal, weapSkill;
-		local vector OldAccel;
+    // lets us affect the player's movement
+    function ProcessMove ( float DeltaTime, vector newAccel, eDodgeDir DodgeMove, rotator DeltaRot)
+    {
+        local int newSpeed, defSpeed;
+        local name mat;
+        local vector HitLocation, HitNormal, checkpoint, downcheck;
+        local Actor HitActor, HitActorDown;
+        local bool bCantStandUp;
+        local Vector loc, traceSize;
+        local float alpha, maxLeanDist;
+        local float legTotal, weapSkill;
+        local vector OldAccel;
 
-		// if the spy drone augmentation is active
-		if (bSpyDroneActive)
-		{
-			if ( aDrone != None ) 
-			{
-				// put away whatever is in our hand
-				if (inHand != None)
-					PutInHand(None);
+        // if the spy drone augmentation is active
+        if (bSpyDroneActive)
+        {
+            if ( aDrone != None ) 
+            {
+                // put away whatever is in our hand
+                if (inHand != None)
+                    PutInHand(None);
 
-				// make the drone's rotation match the player's view
-				aDrone.SetRotation(ViewRotation);
+                // make the drone's rotation match the player's view
+                aDrone.SetRotation(ViewRotation);
 
-				// move the drone
-				loc = Normal((aUp * vect(0,0,1) + aForward * vect(1,0,0) + aStrafe * vect(0,1,0)) >> ViewRotation);
+                // move the drone
+                loc = Normal((aUp * vect(0,0,1) + aForward * vect(1,0,0) + aStrafe * vect(0,1,0)) >> ViewRotation);
 
-				// opportunity for client to translate movement to server
-				MoveDrone( DeltaTime, loc );
+                // opportunity for client to translate movement to server
+                MoveDrone( DeltaTime, loc );
 
-				// freeze the player
-				Velocity = vect(0,0,0);
-			}
-			return;
-		}
+                // freeze the player
+                Velocity = vect(0,0,0);
+            }
+            return;
+        }
 
-		defSpeed = GetCurrentGroundSpeed();
+        defSpeed = GetCurrentGroundSpeed();
 
       // crouching makes you two feet tall
-		if (bIsCrouching || bForceDuck)
-		{
-			if ( Level.NetMode != NM_Standalone )
-				SetBasedPawnSize(Default.CollisionRadius, 30.0);
-			else
-				SetBasedPawnSize(Default.CollisionRadius, 16);
+        if (bIsCrouching || bForceDuck)
+        {
+            if ( Level.NetMode != NM_Standalone )
+                SetBasedPawnSize(Default.CollisionRadius, 30.0);
+            else
+                SetBasedPawnSize(Default.CollisionRadius, 16);
 
-			// check to see if we could stand up if we wanted to
-			checkpoint = Location;
-			// check normal standing height
-			checkpoint.Z = checkpoint.Z - CollisionHeight + 2 * GetDefaultCollisionHeight();
-			traceSize.X = CollisionRadius;
-			traceSize.Y = CollisionRadius;
-			traceSize.Z = 1;
-			HitActor = Trace(HitLocation, HitNormal, checkpoint, Location, True, traceSize);
-			if (HitActor == None)
-				bCantStandUp = False;
-			else
-				bCantStandUp = True;
-		}
-		else
-		{
+            // check to see if we could stand up if we wanted to
+            checkpoint = Location;
+            // check normal standing height
+            checkpoint.Z = checkpoint.Z - CollisionHeight + 2 * GetDefaultCollisionHeight();
+            traceSize.X = CollisionRadius;
+            traceSize.Y = CollisionRadius;
+            traceSize.Z = 1;
+            HitActor = Trace(HitLocation, HitNormal, checkpoint, Location, True, traceSize);
+            if (HitActor == None)
+                bCantStandUp = False;
+            else
+                bCantStandUp = True;
+        }
+        else
+        {
          // DEUS_EX AMSD Changed this to grab defspeed, because GetCurrentGroundSpeed takes 31k cycles to run.
-			GroundSpeed = defSpeed;
+            GroundSpeed = defSpeed;
 
-			// make sure the collision height is fudged for the floor problem - CNN
-			if (!IsLeaning())
-			{
-				ResetBasedPawnSize();
-			}
-		}
+            // make sure the collision height is fudged for the floor problem - CNN
+            if (!IsLeaning())
+            {
+                ResetBasedPawnSize();
+            }
+        }
 
-		if (bCantStandUp)
-			bForceDuck = True;
-		else
-			bForceDuck = False;
+        if (bCantStandUp)
+            bForceDuck = True;
+        else
+            bForceDuck = False;
 
-		// if the player's legs are damaged, then reduce our speed accordingly
-		newSpeed = defSpeed;
+        // if the player's legs are damaged, then reduce our speed accordingly
+        newSpeed = defSpeed;
 
-		if ( Level.NetMode == NM_Standalone )
-		{
-			if (HealthLegLeft < 1)
-				newSpeed -= (defSpeed/2) * 0.25;
-			else if (HealthLegLeft < 34)
-				newSpeed -= (defSpeed/2) * 0.15;
-			else if (HealthLegLeft < 67)
-				newSpeed -= (defSpeed/2) * 0.10;
+        if ( Level.NetMode == NM_Standalone )
+        {
+            if (HealthLegLeft < 1)
+                newSpeed -= (defSpeed/2) * 0.25;
+            else if (HealthLegLeft < 34)
+                newSpeed -= (defSpeed/2) * 0.15;
+            else if (HealthLegLeft < 67)
+                newSpeed -= (defSpeed/2) * 0.10;
 
-			if (HealthLegRight < 1)
-				newSpeed -= (defSpeed/2) * 0.25;
-			else if (HealthLegRight < 34)
-				newSpeed -= (defSpeed/2) * 0.15;
-			else if (HealthLegRight < 67)
-				newSpeed -= (defSpeed/2) * 0.10;
+            if (HealthLegRight < 1)
+                newSpeed -= (defSpeed/2) * 0.25;
+            else if (HealthLegRight < 34)
+                newSpeed -= (defSpeed/2) * 0.15;
+            else if (HealthLegRight < 67)
+                newSpeed -= (defSpeed/2) * 0.10;
 
-			if (HealthTorso < 67)
-				newSpeed -= (defSpeed/2) * 0.05;
-		}
+            if (HealthTorso < 67)
+                newSpeed -= (defSpeed/2) * 0.05;
+        }
 
-		// let the player pull themselves along with their hands even if both of
-		// their legs are blown off
-		if ((HealthLegLeft < 1) && (HealthLegRight < 1))
-		{
-			newSpeed = defSpeed * 0.8;
-			bIsWalking = True;
-			bForceDuck = True;
-		}
-		// make crouch speed faster than normal
-		else if (bIsCrouching || bForceDuck)
-		{
-//			newSpeed = defSpeed * 1.8;		// DEUS_EX CNN - uncomment to speed up crouch
-			bIsWalking = True;
-		}
+        // let the player pull themselves along with their hands even if both of
+        // their legs are blown off
+        if ((HealthLegLeft < 1) && (HealthLegRight < 1))
+        {
+            newSpeed = defSpeed * 0.8;
+            bIsWalking = True;
+            bForceDuck = True;
+        }
+        // make crouch speed faster than normal
+        else if (bIsCrouching || bForceDuck)
+        {
+//            newSpeed = defSpeed * 1.8;        // DEUS_EX CNN - uncomment to speed up crouch
+            bIsWalking = True;
+        }
 
-		// CNN - Took this out because it sucks ASS!
-		// if the legs are seriously damaged, increase the head bob
-		// (unless the player has turned it off)
-/*		if (Bob > 0.0)
-		{
-			legTotal = (HealthLegLeft + HealthLegRight) / 2.0;
-			if (legTotal < 50)
-				Bob = Default.Bob * FClamp(0.05*(70 - legTotal), 1.0, 3.0);
-			else
-				Bob = Default.Bob;
-		}
+        // CNN - Took this out because it sucks ASS!
+        // if the legs are seriously damaged, increase the head bob
+        // (unless the player has turned it off)
+/*        if (Bob > 0.0)
+        {
+            legTotal = (HealthLegLeft + HealthLegRight) / 2.0;
+            if (legTotal < 50)
+                Bob = Default.Bob * FClamp(0.05*(70 - legTotal), 1.0, 3.0);
+            else
+                Bob = Default.Bob;
+        }
 */
-		// slow the player down if he's carrying something heavy
-		// Like a DEAD BODY!  AHHHHHH!!!
-		if (CarriedDecoration != None)
-		{
-			newSpeed -= CarriedDecoration.Mass * 2;
-		}
-		// don't slow the player down if he's skilled at the corresponding weapon skill  
-		else if ((DeusExWeapon(Weapon) != None) && (Weapon.Mass > 30) && (DeusExWeapon(Weapon).GetWeaponSkill() > -0.25) && (Level.NetMode==NM_Standalone))
-		{
-			bIsWalking = True;
-			newSpeed = defSpeed;
-		}
-		else if ((inHand != None) && inHand.IsA('POVCorpse'))
-		{
-			newSpeed -= inHand.Mass * 3;
-		}
+        // slow the player down if he's carrying something heavy
+        // Like a DEAD BODY!  AHHHHHH!!!
+        if (CarriedDecoration != None)
+        {
+            newSpeed -= CarriedDecoration.Mass * 2;
+        }
+        // don't slow the player down if he's skilled at the corresponding weapon skill  
+        else if ((DeusExWeapon(Weapon) != None) && (Weapon.Mass > 30) && (DeusExWeapon(Weapon).GetWeaponSkill() > -0.25) && (Level.NetMode==NM_Standalone))
+        {
+            bIsWalking = True;
+            newSpeed = defSpeed;
+        }
+        else if ((inHand != None) && inHand.IsA('POVCorpse'))
+        {
+            newSpeed -= inHand.Mass * 3;
+        }
 
-		// Multiplayer movement adjusters
-		if ( Level.NetMode != NM_Standalone )
-		{
-			if ( Weapon != None )
-			{
-				weapSkill = DeusExWeapon(Weapon).GetWeaponSkill();
-				// Slow down heavy weapons in multiplayer
-				if ((DeusExWeapon(Weapon) != None) && (Weapon.Mass > 30) )
-				{
-					newSpeed = defSpeed;
-					newSpeed -= ((( Weapon.Mass - 30.0 ) / (class'WeaponGEPGun'.Default.Mass - 30.0 )) * (0.70 + weapSkill) * defSpeed );
-				}
-				// Slow turn rate of GEP gun in multiplayer to discourage using it as the most effective close quarters weapon
-				if ((WeaponGEPGun(Weapon) != None) && (!WeaponGEPGun(Weapon).bZoomed))
-					TurnRateAdjuster = FClamp( 0.20 + -(weapSkill*0.5), 0.25, 1.0 );
-				else
-					TurnRateAdjuster = 1.0;
-			}
-			else
-				TurnRateAdjuster = 1.0;
-		}
+        // Multiplayer movement adjusters
+        if ( Level.NetMode != NM_Standalone )
+        {
+            if ( Weapon != None )
+            {
+                weapSkill = DeusExWeapon(Weapon).GetWeaponSkill();
+                // Slow down heavy weapons in multiplayer
+                if ((DeusExWeapon(Weapon) != None) && (Weapon.Mass > 30) )
+                {
+                    newSpeed = defSpeed;
+                    newSpeed -= ((( Weapon.Mass - 30.0 ) / (class'WeaponGEPGun'.Default.Mass - 30.0 )) * (0.70 + weapSkill) * defSpeed );
+                }
+                // Slow turn rate of GEP gun in multiplayer to discourage using it as the most effective close quarters weapon
+                if ((WeaponGEPGun(Weapon) != None) && (!WeaponGEPGun(Weapon).bZoomed))
+                    TurnRateAdjuster = FClamp( 0.20 + -(weapSkill*0.5), 0.25, 1.0 );
+                else
+                    TurnRateAdjuster = 1.0;
+            }
+            else
+                TurnRateAdjuster = 1.0;
+        }
 
-		// if we are moving really slow, force us to walking
-		if ((newSpeed <= defSpeed / 3) && !bForceDuck)
-		{
-			bIsWalking = True;
-			newSpeed = defSpeed;
-		}
+        // if we are moving really slow, force us to walking
+        if ((newSpeed <= defSpeed / 3) && !bForceDuck)
+        {
+            bIsWalking = True;
+            newSpeed = defSpeed;
+        }
 
-		// if we are moving backwards, we should move slower
+        // if we are moving backwards, we should move slower
       // DEUS_EX AMSD Turns out this wasn't working right in multiplayer, I have a fix
       // for it, but it would change all our balance.
-		if ((aForward < 0) && (Level.NetMode == NM_Standalone))
-			newSpeed *= 0.65;
+        if ((aForward < 0) && (Level.NetMode == NM_Standalone))
+            newSpeed *= 0.65;
 
-		//Zyme effect
-		if(drugEffectTimer < 0) //(FindInventoryType(Class'DeusEx.ZymeCharged') != None)
-			newSpeed *= 1.2;
+        //Zyme effect
+        if(drugEffectTimer < 0) //(FindInventoryType(Class'DeusEx.ZymeCharged') != None)
+            newSpeed *= 1.2;
 
-		GroundSpeed = FMax(newSpeed, 100);
+        GroundSpeed = FMax(newSpeed, 100);
 
-		// if we are moving or crouching, we can't lean
-		// uncomment below line to disallow leaning during crouch
+        // if we are moving or crouching, we can't lean
+        // uncomment below line to disallow leaning during crouch
 
-			if ((VSize(Velocity) < 10) && (aForward == 0))		// && !bIsCrouching && !bForceDuck)
-				bCanLean = True;
-			else
-				bCanLean = False;
+            if ((VSize(Velocity) < 10) && (aForward == 0))        // && !bIsCrouching && !bForceDuck)
+                bCanLean = True;
+            else
+                bCanLean = False;
 
-			// check leaning buttons (axis aExtra0 is used for leaning)
-			maxLeanDist = 40;
+            // check leaning buttons (axis aExtra0 is used for leaning)
+            maxLeanDist = 40;
 
-			if (IsLeaning())
-			{
-				if ( PlayerIsClient() || (Level.NetMode == NM_Standalone) )
-					ViewRotation.Roll = curLeanDist * 20;
-			
-				if (!bIsCrouching && !bForceDuck)
-					SetBasedPawnSize(CollisionRadius, GetDefaultCollisionHeight() - Abs(curLeanDist) / 3.0);
-			}
-			if (bCanLean && (aExtra0 != 0))
-			{
-				// lean
-				DropDecoration();		// drop the decoration that we are carrying
-				if (AnimSequence != 'CrouchWalk')
-					PlayCrawling();
+            if (IsLeaning())
+            {
+                if ( PlayerIsClient() || (Level.NetMode == NM_Standalone) )
+                    ViewRotation.Roll = curLeanDist * 20;
+            
+                if (!bIsCrouching && !bForceDuck)
+                    SetBasedPawnSize(CollisionRadius, GetDefaultCollisionHeight() - Abs(curLeanDist) / 3.0);
+            }
+            if (bCanLean && (aExtra0 != 0))
+            {
+                // lean
+                DropDecoration();        // drop the decoration that we are carrying
+                if (AnimSequence != 'CrouchWalk')
+                    PlayCrawling();
 
-				alpha = maxLeanDist * aExtra0 * 2.0 * DeltaTime;
+                alpha = maxLeanDist * aExtra0 * 2.0 * DeltaTime;
 
-				loc = vect(0,0,0);
-				loc.Y = alpha;
-				if (Abs(curLeanDist + alpha) < maxLeanDist)
-				{
-					// check to make sure the destination not blocked
-					checkpoint = (loc >> Rotation) + Location;
-					traceSize.X = CollisionRadius;
-					traceSize.Y = CollisionRadius;
-					traceSize.Z = CollisionHeight;
-					HitActor = Trace(HitLocation, HitNormal, checkpoint, Location, True, traceSize);
+                loc = vect(0,0,0);
+                loc.Y = alpha;
+                if (Abs(curLeanDist + alpha) < maxLeanDist)
+                {
+                    // check to make sure the destination not blocked
+                    checkpoint = (loc >> Rotation) + Location;
+                    traceSize.X = CollisionRadius;
+                    traceSize.Y = CollisionRadius;
+                    traceSize.Z = CollisionHeight;
+                    HitActor = Trace(HitLocation, HitNormal, checkpoint, Location, True, traceSize);
 
-					// check down as well to make sure there's a floor there
-					downcheck = checkpoint - vect(0,0,1) * CollisionHeight;
-					HitActorDown = Trace(HitLocation, HitNormal, downcheck, checkpoint, True, traceSize);
-					if ((HitActor == None) && (HitActorDown != None))
-					{
-						if ( PlayerIsClient() || (Level.NetMode == NM_Standalone))
-						{
-							SetLocation(checkpoint);
-							ServerUpdateLean( checkpoint );
-							curLeanDist += alpha;
-						}
-					}
-				}
-				else
-				{
-					if ( PlayerIsClient() || (Level.NetMode == NM_Standalone) )
-						curLeanDist = aExtra0 * maxLeanDist;
-				}
-			}
-			else if (IsLeaning())	//if (!bCanLean && IsLeaning())	// uncomment this to not hold down lean
-			{
-				// un-lean
-				if (AnimSequence == 'CrouchWalk')
-					PlayRising();
+                    // check down as well to make sure there's a floor there
+                    downcheck = checkpoint - vect(0,0,1) * CollisionHeight;
+                    HitActorDown = Trace(HitLocation, HitNormal, downcheck, checkpoint, True, traceSize);
+                    if ((HitActor == None) && (HitActorDown != None))
+                    {
+                        if ( PlayerIsClient() || (Level.NetMode == NM_Standalone))
+                        {
+                            SetLocation(checkpoint);
+                            ServerUpdateLean( checkpoint );
+                            curLeanDist += alpha;
+                        }
+                    }
+                }
+                else
+                {
+                    if ( PlayerIsClient() || (Level.NetMode == NM_Standalone) )
+                        curLeanDist = aExtra0 * maxLeanDist;
+                }
+            }
+            else if (IsLeaning())    //if (!bCanLean && IsLeaning())    // uncomment this to not hold down lean
+            {
+                // un-lean
+                if (AnimSequence == 'CrouchWalk')
+                    PlayRising();
 
-				if ( PlayerIsClient() || (Level.NetMode == NM_Standalone))
-				{
-					prevLeanDist = curLeanDist;
-					alpha = FClamp(7.0 * DeltaTime, 0.001, 0.9);
-					curLeanDist *= 1.0 - alpha;
-					if (Abs(curLeanDist) < 1.0)
-						curLeanDist = 0;
-				}
+                if ( PlayerIsClient() || (Level.NetMode == NM_Standalone))
+                {
+                    prevLeanDist = curLeanDist;
+                    alpha = FClamp(7.0 * DeltaTime, 0.001, 0.9);
+                    curLeanDist *= 1.0 - alpha;
+                    if (Abs(curLeanDist) < 1.0)
+                        curLeanDist = 0;
+                }
 
-				loc = vect(0,0,0);
-				loc.Y = -(prevLeanDist - curLeanDist);
+                loc = vect(0,0,0);
+                loc.Y = -(prevLeanDist - curLeanDist);
 
-				// check to make sure the destination not blocked
-				checkpoint = (loc >> Rotation) + Location;
-				traceSize.X = CollisionRadius;
-				traceSize.Y = CollisionRadius;
-				traceSize.Z = CollisionHeight;
-				HitActor = Trace(HitLocation, HitNormal, checkpoint, Location, True, traceSize);
+                // check to make sure the destination not blocked
+                checkpoint = (loc >> Rotation) + Location;
+                traceSize.X = CollisionRadius;
+                traceSize.Y = CollisionRadius;
+                traceSize.Z = CollisionHeight;
+                HitActor = Trace(HitLocation, HitNormal, checkpoint, Location, True, traceSize);
 
-				// check down as well to make sure there's a floor there
-				downcheck = checkpoint - vect(0,0,1) * CollisionHeight;
-				HitActorDown = Trace(HitLocation, HitNormal, downcheck, checkpoint, True, traceSize);
-				if ((HitActor == None) && (HitActorDown != None))
-				{
-					if ( PlayerIsClient() || (Level.NetMode == NM_Standalone))
-					{
-						SetLocation( checkpoint );
-						ServerUpdateLean( checkpoint );
-					}
-				}
-			}
+                // check down as well to make sure there's a floor there
+                downcheck = checkpoint - vect(0,0,1) * CollisionHeight;
+                HitActorDown = Trace(HitLocation, HitNormal, downcheck, checkpoint, True, traceSize);
+                if ((HitActor == None) && (HitActorDown != None))
+                {
+                    if ( PlayerIsClient() || (Level.NetMode == NM_Standalone))
+                    {
+                        SetLocation( checkpoint );
+                        ServerUpdateLean( checkpoint );
+                    }
+                }
+            }
 
 
-		//== Overwritten, so spider stuff works		
-		//Super.ProcessMove(DeltaTime, newAccel, DodgeMove, DeltaRot);
-		      
-		OldAccel = Acceleration;
-		Acceleration = NewAccel;
-		bIsTurning = ( Abs(DeltaRot.Yaw/DeltaTime) > 5000 );
-		if ( (DodgeMove == DODGE_Active) && (Physics == PHYS_Falling) )
-			DodgeDir = DODGE_Active;	
-		else if ( (DodgeMove != DODGE_None) && (DodgeMove < DODGE_Active) )
-			Dodge(DodgeMove);
+        //== Overwritten, so spider stuff works        
+        //Super.ProcessMove(DeltaTime, newAccel, DodgeMove, DeltaRot);
+              
+        OldAccel = Acceleration;
+        Acceleration = NewAccel;
+        bIsTurning = ( Abs(DeltaRot.Yaw/DeltaTime) > 5000 );
+        if ( (DodgeMove == DODGE_Active) && (Physics == PHYS_Falling) )
+            DodgeDir = DODGE_Active;    
+        else if ( (DodgeMove != DODGE_None) && (DodgeMove < DODGE_Active) )
+            Dodge(DodgeMove);
 
-		if ( bPressedJump )
-			DoJump();
+        if ( bPressedJump )
+            DoJump();
 
-		if ( (Physics == PHYS_Walking || Physics == PHYS_Spider) && (GetAnimGroup(AnimSequence) != 'Dodge') )
-		{
-			if (!bIsCrouching)
-			{
-				if (bDuck != 0)
-				{
-					bIsCrouching = true;
-					PlayDuck();
-				}
-			}
-			else if (bDuck == 0)
-			{
-				OldAccel = vect(0,0,0);
-				bIsCrouching = false;
-				TweenToRunning(0.1);
-			}
+        if ( (Physics == PHYS_Walking || Physics == PHYS_Spider) && (GetAnimGroup(AnimSequence) != 'Dodge') )
+        {
+            if (!bIsCrouching)
+            {
+                if (bDuck != 0)
+                {
+                    bIsCrouching = true;
+                    PlayDuck();
+                }
+            }
+            else if (bDuck == 0)
+            {
+                OldAccel = vect(0,0,0);
+                bIsCrouching = false;
+                TweenToRunning(0.1);
+            }
 
-			if ( !bIsCrouching )
-			{
-				if ( (!bAnimTransition || (AnimFrame > 0)) && (GetAnimGroup(AnimSequence) != 'Landing') )
-				{
-					if ( Acceleration != vect(0,0,0) )
-					{
-						if ( (GetAnimGroup(AnimSequence) == 'Waiting') || (GetAnimGroup(AnimSequence) == 'Gesture') || (GetAnimGroup(AnimSequence) == 'TakeHit') )
-						{
-							bAnimTransition = true;
-							TweenToRunning(0.1);
-						}
-					}
-			 		else if ( (Velocity.X * Velocity.X + Velocity.Y * Velocity.Y < 1000) 
-						&& (GetAnimGroup(AnimSequence) != 'Gesture') ) 
-			 		{
-			 			if ( GetAnimGroup(AnimSequence) == 'Waiting' )
-			 			{
-							if ( bIsTurning && (AnimFrame >= 0) ) 
-							{
-								bAnimTransition = true;
-								PlayTurning();
-							}
-						}
-			 			else if ( !bIsTurning ) 
-						{
-							bAnimTransition = true;
-							TweenToWaiting(0.2);
-						}
-					}
-				}
-			}
-			else
-			{
-				if ( (OldAccel == vect(0,0,0)) && (Acceleration != vect(0,0,0)) )
-					PlayCrawling();
-			 	else if ( !bIsTurning && (Acceleration == vect(0,0,0)) && (AnimFrame > 0.1) )
-					PlayDuck();
-			}
-		}
-	}
+            if ( !bIsCrouching )
+            {
+                if ( (!bAnimTransition || (AnimFrame > 0)) && (GetAnimGroup(AnimSequence) != 'Landing') )
+                {
+                    if ( Acceleration != vect(0,0,0) )
+                    {
+                        if ( (GetAnimGroup(AnimSequence) == 'Waiting') || (GetAnimGroup(AnimSequence) == 'Gesture') || (GetAnimGroup(AnimSequence) == 'TakeHit') )
+                        {
+                            bAnimTransition = true;
+                            TweenToRunning(0.1);
+                        }
+                    }
+                     else if ( (Velocity.X * Velocity.X + Velocity.Y * Velocity.Y < 1000) 
+                        && (GetAnimGroup(AnimSequence) != 'Gesture') ) 
+                     {
+                         if ( GetAnimGroup(AnimSequence) == 'Waiting' )
+                         {
+                            if ( bIsTurning && (AnimFrame >= 0) ) 
+                            {
+                                bAnimTransition = true;
+                                PlayTurning();
+                            }
+                        }
+                         else if ( !bIsTurning ) 
+                        {
+                            bAnimTransition = true;
+                            TweenToWaiting(0.2);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if ( (OldAccel == vect(0,0,0)) && (Acceleration != vect(0,0,0)) )
+                    PlayCrawling();
+                 else if ( !bIsTurning && (Acceleration == vect(0,0,0)) && (AnimFrame > 0.1) )
+                    PlayDuck();
+            }
+        }
+    }
 
-	function ZoneChange(ZoneInfo NewZone)
-	{
-		// if we jump into water, empty our hands
-		if (NewZone.bWaterZone)
-			DropDecoration();
+    function ZoneChange(ZoneInfo NewZone)
+    {
+        // if we jump into water, empty our hands
+        if (NewZone.bWaterZone)
+            DropDecoration();
 
-		Super.ZoneChange(NewZone);
-	}
+        Super.ZoneChange(NewZone);
+    }
 
-	event PlayerTick(float deltaTime)
-	{
+    event PlayerTick(float deltaTime)
+    {
         //DEUS_EX AMSD Additional updates
         //Because of replication delay, aug icons end up being a step behind generally.  So refresh them
         //every freaking tick.  
         RefreshSystems(deltaTime);
 
-		DrugEffects(deltaTime);
-		Bleed(deltaTime);
-		HighlightCenterObject();
+        DrugEffects(deltaTime);
+        Bleed(deltaTime);
+        HighlightCenterObject();
 
-		ZymeEffects(deltaTime);
+        ZymeEffects(deltaTime);
 
 
-		UpdateDynamicMusic(deltaTime);
-		UpdateWarrenEMPField(deltaTime);
+        UpdateDynamicMusic(deltaTime);
+        UpdateWarrenEMPField(deltaTime);
       // DEUS_EX AMSD Move these funcions to a multiplayer tick
       // so that only that call gets propagated to the server.
       MultiplayerTick(deltaTime);
       // DEUS_EX AMSD For multiplayer...
-		FrobTime += deltaTime;
+        FrobTime += deltaTime;
 
-		// save some texture info
-		FloorMaterial = GetFloorMaterial();
-		WallMaterial = GetWallMaterial(WallNormal);
+        // save some texture info
+        FloorMaterial = GetFloorMaterial();
+        WallMaterial = GetWallMaterial(WallNormal);
 
-		// Check if player has walked outside a first-person convo.
-		CheckActiveConversationRadius();
+        // Check if player has walked outside a first-person convo.
+        CheckActiveConversationRadius();
 
-		// Check if all the people involved in a conversation are 
-		// still within a reasonable radius.
-		CheckActorDistances();
+        // Check if all the people involved in a conversation are 
+        // still within a reasonable radius.
+        CheckActorDistances();
 
-		// handle poison
+        // handle poison
       //DEUS_EX AMSD Now handled in multiplayertick
-		//UpdatePoison(deltaTime);
+        //UpdatePoison(deltaTime);
 
-		// Update Time Played
-		UpdateTimePlayed(deltaTime);
+        // Update Time Played
+        UpdateTimePlayed(deltaTime);
 
-		Super.PlayerTick(deltaTime);
-	}
+        Super.PlayerTick(deltaTime);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -4306,44 +4306,44 @@ state PlayerWalking
 
 state PlayerFlying
 {
-	function ZoneChange(ZoneInfo NewZone)
-	{
-		// if we jump into water, empty our hands
-		if (NewZone.bWaterZone)
-			DropDecoration();
+    function ZoneChange(ZoneInfo NewZone)
+    {
+        // if we jump into water, empty our hands
+        if (NewZone.bWaterZone)
+            DropDecoration();
 
-		Super.ZoneChange(NewZone);
-	}
+        Super.ZoneChange(NewZone);
+    }
 
-	event PlayerTick(float deltaTime)
-	{
+    event PlayerTick(float deltaTime)
+    {
 
         //DEUS_EX AMSD Additional updates
         //Because of replication delay, aug icons end up being a step behind generally.  So refresh them
         //every freaking tick.  
         RefreshSystems(deltaTime);
 
-		DrugEffects(deltaTime);
-		HighlightCenterObject();
-		UpdateDynamicMusic(deltaTime);
-		ZymeEffects(deltaTime);
+        DrugEffects(deltaTime);
+        HighlightCenterObject();
+        UpdateDynamicMusic(deltaTime);
+        ZymeEffects(deltaTime);
 
       // DEUS_EX AMSD For multiplayer...
       MultiplayerTick(deltaTime);
-		FrobTime += deltaTime;
+        FrobTime += deltaTime;
 
-		// Check if player has walked outside a first-person convo.
-		CheckActiveConversationRadius();
+        // Check if player has walked outside a first-person convo.
+        CheckActiveConversationRadius();
 
-		// Check if all the people involved in a conversation are 
-		// still within a reasonable radius.
-		CheckActorDistances();
+        // Check if all the people involved in a conversation are 
+        // still within a reasonable radius.
+        CheckActorDistances();
 
-		// Update Time Played
-		UpdateTimePlayed(deltaTime);
+        // Update Time Played
+        UpdateTimePlayed(deltaTime);
 
-		Super.PlayerTick(deltaTime);
-	}
+        Super.PlayerTick(deltaTime);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -4352,41 +4352,41 @@ state PlayerFlying
 
 event HeadZoneChange(ZoneInfo newHeadZone)
 {
-	local float mult, augLevel;
-	
-	// hack to get the zone's ambientsound working until Tim fixes it
-	if (newHeadZone.AmbientSound != None)
-		newHeadZone.SoundRadius = 255;
-	if (HeadRegion.Zone.AmbientSound != None)
-		HeadRegion.Zone.SoundRadius = 0;
+    local float mult, augLevel;
+    
+    // hack to get the zone's ambientsound working until Tim fixes it
+    if (newHeadZone.AmbientSound != None)
+        newHeadZone.SoundRadius = 255;
+    if (HeadRegion.Zone.AmbientSound != None)
+        HeadRegion.Zone.SoundRadius = 0;
 
-	if (newHeadZone.bWaterZone && !HeadRegion.Zone.bWaterZone)
-	{
-		// make sure we're not crouching when we start swimming
-		bIsCrouching = False;
-		bCrouchOn = False;
-		bWasCrouchOn = False;
-		bDuck = 0;
-		lastbDuck = 0;
-		Velocity = vect(0,0,0);
-		Acceleration = vect(0,0,0);
-		mult = SkillSystem.GetSkillLevelValue(class'SkillSwimming');
-		swimDuration = UnderWaterTime * mult;
-		swimTimer = swimDuration;
-		if (( Level.NetMode != NM_Standalone ) && Self.IsA('Human') )
-		{
-			if ( AugmentationSystem != None )
-				augLevel = AugmentationSystem.GetAugLevelValue(class'AugAqualung');
-			if ( augLevel == -1.0 )
-				WaterSpeed = Human(Self).Default.mpWaterSpeed * mult;
-			else
-				WaterSpeed = Human(Self).Default.mpWaterSpeed * 2.0 * mult;
-		}
-		else
-			WaterSpeed = Default.WaterSpeed * mult;
-	}
+    if (newHeadZone.bWaterZone && !HeadRegion.Zone.bWaterZone)
+    {
+        // make sure we're not crouching when we start swimming
+        bIsCrouching = False;
+        bCrouchOn = False;
+        bWasCrouchOn = False;
+        bDuck = 0;
+        lastbDuck = 0;
+        Velocity = vect(0,0,0);
+        Acceleration = vect(0,0,0);
+        mult = SkillSystem.GetSkillLevelValue(class'SkillSwimming');
+        swimDuration = UnderWaterTime * mult;
+        swimTimer = swimDuration;
+        if (( Level.NetMode != NM_Standalone ) && Self.IsA('Human') )
+        {
+            if ( AugmentationSystem != None )
+                augLevel = AugmentationSystem.GetAugLevelValue(class'AugAqualung');
+            if ( augLevel == -1.0 )
+                WaterSpeed = Human(Self).Default.mpWaterSpeed * mult;
+            else
+                WaterSpeed = Human(Self).Default.mpWaterSpeed * 2.0 * mult;
+        }
+        else
+            WaterSpeed = Default.WaterSpeed * mult;
+    }
 
-	Super.HeadZoneChange(newHeadZone);
+    Super.HeadZoneChange(newHeadZone);
 }
 
 // ----------------------------------------------------------------------
@@ -4395,120 +4395,120 @@ event HeadZoneChange(ZoneInfo newHeadZone)
 
 state PlayerSwimming
 {
-	function GrabDecoration()
-	{
-		// we can't grab decorations underwater
-	}
+    function GrabDecoration()
+    {
+        // we can't grab decorations underwater
+    }
 
-	function ZoneChange(ZoneInfo NewZone)
-	{
-		// if we jump into water, empty our hands
-		if (NewZone.bWaterZone)
-		{
-			DropDecoration();
-			if (bOnFire)
-				ExtinguishFire();
-		}
+    function ZoneChange(ZoneInfo NewZone)
+    {
+        // if we jump into water, empty our hands
+        if (NewZone.bWaterZone)
+        {
+            DropDecoration();
+            if (bOnFire)
+                ExtinguishFire();
+        }
 
-		Super.ZoneChange(NewZone);
-	}
+        Super.ZoneChange(NewZone);
+    }
 
-	event PlayerTick(float deltaTime)
-	{
-		local vector loc;
+    event PlayerTick(float deltaTime)
+    {
+        local vector loc;
 
         //DEUS_EX AMSD Additional updates
         //Because of replication delay, aug icons end up being a step behind generally.  So refresh them
         //every freaking tick.  
         RefreshSystems(deltaTime);
 
-		DrugEffects(deltaTime);
-		HighlightCenterObject();
-		UpdateDynamicMusic(deltaTime);
-		ZymeEffects(deltaTime);
+        DrugEffects(deltaTime);
+        HighlightCenterObject();
+        UpdateDynamicMusic(deltaTime);
+        ZymeEffects(deltaTime);
 
       // DEUS_EX AMSD For multiplayer...
       MultiplayerTick(deltaTime);
-		FrobTime += deltaTime;
+        FrobTime += deltaTime;
 
-		if (bOnFire)
-			ExtinguishFire();
+        if (bOnFire)
+            ExtinguishFire();
 
-		// save some texture info
-		FloorMaterial = GetFloorMaterial();
-		WallMaterial = GetWallMaterial(WallNormal);
+        // save some texture info
+        FloorMaterial = GetFloorMaterial();
+        WallMaterial = GetWallMaterial(WallNormal);
 
-		// don't let the player run if swimming
-		bIsWalking = True;
+        // don't let the player run if swimming
+        bIsWalking = True;
 
-		// update our swimming info
-		swimTimer -= deltaTime;
-		swimTimer = FMax(0, swimTimer);
+        // update our swimming info
+        swimTimer -= deltaTime;
+        swimTimer = FMax(0, swimTimer);
 
-		if ( Role == ROLE_Authority )
-		{
-			if (swimTimer > 0)
-				PainTime = swimTimer;
-		}
+        if ( Role == ROLE_Authority )
+        {
+            if (swimTimer > 0)
+                PainTime = swimTimer;
+        }
 
-		// Check if player has walked outside a first-person convo.
-		CheckActiveConversationRadius();
+        // Check if player has walked outside a first-person convo.
+        CheckActiveConversationRadius();
 
-		// Check if all the people involved in a conversation are 
-		// still within a reasonable radius.
-		CheckActorDistances();
+        // Check if all the people involved in a conversation are 
+        // still within a reasonable radius.
+        CheckActorDistances();
 
-		// Randomly spawn an air bubble every 0.2 seconds
-		// Place them in front of the player's eyes
-		swimBubbleTimer += deltaTime;
-		if (swimBubbleTimer >= 0.2)
-		{
-			swimBubbleTimer = 0;
-			if (FRand() < 0.4)
-			{
-				loc = Location + VRand() * 4;
-				loc += Vector(ViewRotation) * CollisionRadius * 2;
-				loc.Z += CollisionHeight * 0.9;
-				Spawn(class'AirBubble', Self,, loc);
-			}
-		}
+        // Randomly spawn an air bubble every 0.2 seconds
+        // Place them in front of the player's eyes
+        swimBubbleTimer += deltaTime;
+        if (swimBubbleTimer >= 0.2)
+        {
+            swimBubbleTimer = 0;
+            if (FRand() < 0.4)
+            {
+                loc = Location + VRand() * 4;
+                loc += Vector(ViewRotation) * CollisionRadius * 2;
+                loc.Z += CollisionHeight * 0.9;
+                Spawn(class'AirBubble', Self,, loc);
+            }
+        }
 
-		// handle poison
+        // handle poison
       //DEUS_EX AMSD Now handled in multiplayertick
-		//UpdatePoison(deltaTime);
+        //UpdatePoison(deltaTime);
 
-		// Update Time Played
-		UpdateTimePlayed(deltaTime);
+        // Update Time Played
+        UpdateTimePlayed(deltaTime);
 
-		Super.PlayerTick(deltaTime);
-	}
+        Super.PlayerTick(deltaTime);
+    }
 
-	function BeginState()
-	{
-		local float mult, augLevel;
+    function BeginState()
+    {
+        local float mult, augLevel;
 
-		// set us to be two feet high
-		SetBasedPawnSize(Default.CollisionRadius, 16);
+        // set us to be two feet high
+        SetBasedPawnSize(Default.CollisionRadius, 16);
 
-		// get our skill info
-		mult = SkillSystem.GetSkillLevelValue(class'SkillSwimming');
-		swimDuration = UnderWaterTime * mult;
-		swimTimer = swimDuration;
-		swimBubbleTimer = 0;
-		if (( Level.NetMode != NM_Standalone ) && Self.IsA('Human') )
-		{
-			if ( AugmentationSystem != None )
-				augLevel = AugmentationSystem.GetAugLevelValue(class'AugAqualung');
-			if ( augLevel == -1.0 )
-				WaterSpeed = Human(Self).Default.mpWaterSpeed * mult;
-			else
-				WaterSpeed = Human(Self).Default.mpWaterSpeed * 2.0 * mult;
-		}
-		else
-			WaterSpeed = Default.WaterSpeed * mult;
+        // get our skill info
+        mult = SkillSystem.GetSkillLevelValue(class'SkillSwimming');
+        swimDuration = UnderWaterTime * mult;
+        swimTimer = swimDuration;
+        swimBubbleTimer = 0;
+        if (( Level.NetMode != NM_Standalone ) && Self.IsA('Human') )
+        {
+            if ( AugmentationSystem != None )
+                augLevel = AugmentationSystem.GetAugLevelValue(class'AugAqualung');
+            if ( augLevel == -1.0 )
+                WaterSpeed = Human(Self).Default.mpWaterSpeed * mult;
+            else
+                WaterSpeed = Human(Self).Default.mpWaterSpeed * 2.0 * mult;
+        }
+        else
+            WaterSpeed = Default.WaterSpeed * mult;
 
-		Super.BeginState();
-	}
+        Super.BeginState();
+    }
 }
 
 
@@ -4520,198 +4520,198 @@ state PlayerSwimming
 
 state Dying
 {
-	ignores all;
+    ignores all;
 
-	event PlayerTick(float deltaTime)
-	{
+    event PlayerTick(float deltaTime)
+    {
       if (PlayerIsClient())      
          ClientDeath();
-		UpdateDynamicMusic(deltaTime);
+        UpdateDynamicMusic(deltaTime);
 
-		Super.PlayerTick(deltaTime);
-	}
+        Super.PlayerTick(deltaTime);
+    }
 
-	exec function Fire(optional float F)
-	{
-		if ( Level.NetMode != NM_Standalone )
+    exec function Fire(optional float F)
+    {
+        if ( Level.NetMode != NM_Standalone )
         Super.Fire();
-	}
+    }
 
-	exec function ShowMainMenu()
-	{
-		// reduce the white glow when the menu is up
-		if (InstantFog != vect(0,0,0))
-		{
-			InstantFog   = vect(0.1,0.1,0.1);
-			InstantFlash = 0.01;
+    exec function ShowMainMenu()
+    {
+        // reduce the white glow when the menu is up
+        if (InstantFog != vect(0,0,0))
+        {
+            InstantFog   = vect(0.1,0.1,0.1);
+            InstantFlash = 0.01;
 
-			// force an update
-			ViewFlash(1.0);
-		}
+            // force an update
+            ViewFlash(1.0);
+        }
 
-		Global.ShowMainMenu();
-	}
+        Global.ShowMainMenu();
+    }
 
-	function BeginState()
-	{
-		FrobTime = Level.TimeSeconds;
-		ShowHud(False);
+    function BeginState()
+    {
+        FrobTime = Level.TimeSeconds;
+        ShowHud(False);
       ClientDeath();
-	}
+    }
 
    function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector momentum, name damageType)
-	{
-	}
+    {
+    }
 
-	function PlayerCalcView(out actor ViewActor, out vector CameraLocation, out rotator CameraRotation)
-	{
-		local vector ViewVect, HitLocation, HitNormal, whiteVec;
-		local float ViewDist;
-		local actor HitActor;
-		local float time;
+    function PlayerCalcView(out actor ViewActor, out vector CameraLocation, out rotator CameraRotation)
+    {
+        local vector ViewVect, HitLocation, HitNormal, whiteVec;
+        local float ViewDist;
+        local actor HitActor;
+        local float time;
 
-		ViewActor = Self;
-		if (bHidden)
-		{
-			// spiral up and around carcass and fade to white in five seconds
-			time = Level.TimeSeconds - FrobTime;
+        ViewActor = Self;
+        if (bHidden)
+        {
+            // spiral up and around carcass and fade to white in five seconds
+            time = Level.TimeSeconds - FrobTime;
 
-			if ( ((myKiller != None) && (killProfile != None) && (!killProfile.bKilledSelf)) || 
-				  ((killProfile != None) && killProfile.bValid && (!killProfile.bKilledSelf)))
-			{
-				if ( killProfile.bValid && killProfile.bTurretKilled )
-					ViewVect = killProfile.killerLoc - Location;
-				else if ( killProfile.bValid && killProfile.bProximityKilled )
-					ViewVect = killProfile.killerLoc - Location;
-				else if (( !killProfile.bKilledSelf ) && ( myKiller != None ))
-					ViewVect = myKiller.Location - Location;
-				CameraLocation = Location;
-				CameraRotation = Rotator(ViewVect);
-			}
-			else if (time < 8.0)
-			{
-				whiteVec.X = time / 16.0;
-				whiteVec.Y = time / 16.0;
-				whiteVec.Z = time / 16.0;
-				CameraRotation.Pitch = -16384;
-				CameraRotation.Yaw = (time * 8192.0) % 65536;
-				ViewDist = 32 + time * 32;
-				InstantFog = whiteVec;
-				InstantFlash = 0.5;
-				ViewFlash(1.0);
-				// make sure we don't go through the ceiling
-				ViewVect = vect(0,0,1);
-				HitActor = Trace(HitLocation, HitNormal, Location + ViewDist * ViewVect, Location);
-				if ( HitActor != None )
-					CameraLocation = HitLocation;
-				else
-					CameraLocation = Location + ViewDist * ViewVect;
-			}
-			else
-			{
-				if  ( Level.NetMode != NM_Standalone )
-				{
-					// Don't fade to black in multiplayer
-				}
-				else
-				{
-					// then, fade out to black in four seconds and bring up
-					// the main menu automatically
-					whiteVec.X = FMax(0.5 - (time-8.0) / 8.0, -1.0);
-					whiteVec.Y = FMax(0.5 - (time-8.0) / 8.0, -1.0);
-					whiteVec.Z = FMax(0.5 - (time-8.0) / 8.0, -1.0);
-					CameraRotation.Pitch = -16384;
-					CameraRotation.Yaw = (time * 8192.0) % 65536;
-					 ViewDist = 32 + 8.0 * 32;
-					InstantFog = whiteVec;
-					InstantFlash = whiteVec.X;
-					ViewFlash(1.0);
+            if ( ((myKiller != None) && (killProfile != None) && (!killProfile.bKilledSelf)) || 
+                  ((killProfile != None) && killProfile.bValid && (!killProfile.bKilledSelf)))
+            {
+                if ( killProfile.bValid && killProfile.bTurretKilled )
+                    ViewVect = killProfile.killerLoc - Location;
+                else if ( killProfile.bValid && killProfile.bProximityKilled )
+                    ViewVect = killProfile.killerLoc - Location;
+                else if (( !killProfile.bKilledSelf ) && ( myKiller != None ))
+                    ViewVect = myKiller.Location - Location;
+                CameraLocation = Location;
+                CameraRotation = Rotator(ViewVect);
+            }
+            else if (time < 8.0)
+            {
+                whiteVec.X = time / 16.0;
+                whiteVec.Y = time / 16.0;
+                whiteVec.Z = time / 16.0;
+                CameraRotation.Pitch = -16384;
+                CameraRotation.Yaw = (time * 8192.0) % 65536;
+                ViewDist = 32 + time * 32;
+                InstantFog = whiteVec;
+                InstantFlash = 0.5;
+                ViewFlash(1.0);
+                // make sure we don't go through the ceiling
+                ViewVect = vect(0,0,1);
+                HitActor = Trace(HitLocation, HitNormal, Location + ViewDist * ViewVect, Location);
+                if ( HitActor != None )
+                    CameraLocation = HitLocation;
+                else
+                    CameraLocation = Location + ViewDist * ViewVect;
+            }
+            else
+            {
+                if  ( Level.NetMode != NM_Standalone )
+                {
+                    // Don't fade to black in multiplayer
+                }
+                else
+                {
+                    // then, fade out to black in four seconds and bring up
+                    // the main menu automatically
+                    whiteVec.X = FMax(0.5 - (time-8.0) / 8.0, -1.0);
+                    whiteVec.Y = FMax(0.5 - (time-8.0) / 8.0, -1.0);
+                    whiteVec.Z = FMax(0.5 - (time-8.0) / 8.0, -1.0);
+                    CameraRotation.Pitch = -16384;
+                    CameraRotation.Yaw = (time * 8192.0) % 65536;
+                     ViewDist = 32 + 8.0 * 32;
+                    InstantFog = whiteVec;
+                    InstantFlash = whiteVec.X;
+                    ViewFlash(1.0);
 
-					// start the splash screen after a bit
-					// only if we don't have a menu open
-					// DEUS_EX AMSD Don't do this in multiplayer!!!!
-					if (Level.NetMode == NM_Standalone)
-					{
-						if (whiteVec == vect(-1.0,-1.0,-1.0))
-							if ((MenuUIWindow(DeusExRootWindow(rootWindow).GetTopWindow()) == None) &&
-								(ToolWindow(DeusExRootWindow(rootWindow).GetTopWindow()) == None))
-								ConsoleCommand("OPEN DXONLY");
-					}
-				}
-				// make sure we don't go through the ceiling
-				ViewVect = vect(0,0,1);
-				HitActor = Trace(HitLocation, HitNormal, Location + ViewDist * ViewVect, Location);
-				if ( HitActor != None )
-					CameraLocation = HitLocation;
-				else
-					CameraLocation = Location + ViewDist * ViewVect;
-			}
-		}
-		else
-		{
-			// use FrobTime as the cool DeathCam timer
-			FrobTime = Level.TimeSeconds;
+                    // start the splash screen after a bit
+                    // only if we don't have a menu open
+                    // DEUS_EX AMSD Don't do this in multiplayer!!!!
+                    if (Level.NetMode == NM_Standalone)
+                    {
+                        if (whiteVec == vect(-1.0,-1.0,-1.0))
+                            if ((MenuUIWindow(DeusExRootWindow(rootWindow).GetTopWindow()) == None) &&
+                                (ToolWindow(DeusExRootWindow(rootWindow).GetTopWindow()) == None))
+                                ConsoleCommand("OPEN DXONLY");
+                    }
+                }
+                // make sure we don't go through the ceiling
+                ViewVect = vect(0,0,1);
+                HitActor = Trace(HitLocation, HitNormal, Location + ViewDist * ViewVect, Location);
+                if ( HitActor != None )
+                    CameraLocation = HitLocation;
+                else
+                    CameraLocation = Location + ViewDist * ViewVect;
+            }
+        }
+        else
+        {
+            // use FrobTime as the cool DeathCam timer
+            FrobTime = Level.TimeSeconds;
 
-			// make sure we don't go through the wall
-		    ViewDist = 190;
-			ViewVect = vect(1,0,0) >> Rotation;
-			HitActor = Trace( HitLocation, HitNormal, 
-					Location - ViewDist * vector(CameraRotation), Location, false, vect(12,12,2));
-			if ( HitActor != None )
-				CameraLocation = HitLocation;
-			else
-				CameraLocation = Location - ViewDist * ViewVect;
-		}
+            // make sure we don't go through the wall
+            ViewDist = 190;
+            ViewVect = vect(1,0,0) >> Rotation;
+            HitActor = Trace( HitLocation, HitNormal, 
+                    Location - ViewDist * vector(CameraRotation), Location, false, vect(12,12,2));
+            if ( HitActor != None )
+                CameraLocation = HitLocation;
+            else
+                CameraLocation = Location - ViewDist * ViewVect;
+        }
 
-		// don't fog view if we are "paused"
-		if (DeusExRootWindow(rootWindow).bUIPaused)
-		{
-			InstantFog   = vect(0,0,0);
-			InstantFlash = 0;
-			ViewFlash(1.0);
-		}
-	}
+        // don't fog view if we are "paused"
+        if (DeusExRootWindow(rootWindow).bUIPaused)
+        {
+            InstantFog   = vect(0,0,0);
+            InstantFlash = 0;
+            ViewFlash(1.0);
+        }
+    }
 
 Begin:
-	// Dead players comes back to life with scope view, so this is here to prevent that
-	if ( DeusExWeapon(inHand) != None )
-	{
-		DeusExWeapon(inHand).bZoomed = False;
-		DeusExWeapon(inHand).RefreshScopeDisplay(Self, True, False);
-	}
+    // Dead players comes back to life with scope view, so this is here to prevent that
+    if ( DeusExWeapon(inHand) != None )
+    {
+        DeusExWeapon(inHand).bZoomed = False;
+        DeusExWeapon(inHand).RefreshScopeDisplay(Self, True, False);
+    }
 
-	if ( DeusExRootWindow(rootWindow).hud.augDisplay != None )
-	{
-		DeusExRootWindow(rootWindow).hud.augDisplay.bVisionActive = False;
-		DeusExRootWindow(rootWindow).hud.augDisplay.activeCount = 0;
-	}
+    if ( DeusExRootWindow(rootWindow).hud.augDisplay != None )
+    {
+        DeusExRootWindow(rootWindow).hud.augDisplay.bVisionActive = False;
+        DeusExRootWindow(rootWindow).hud.augDisplay.activeCount = 0;
+    }
 
-	// Don't come back to life drugged or posioned
-	poisonCounter		= 0; 
-	poisonTimer			= 0;    
-	drugEffectTimer	= 0;
+    // Don't come back to life drugged or posioned
+    poisonCounter        = 0; 
+    poisonTimer            = 0;    
+    drugEffectTimer    = 0;
 
-	// Don't come back to life crouched
-	bCrouchOn			= False;
-	bWasCrouchOn		= False;
-	bIsCrouching		= False;
-	bForceDuck			= False;
-	lastbDuck			= 0;
-	bDuck					= 0;
+    // Don't come back to life crouched
+    bCrouchOn            = False;
+    bWasCrouchOn        = False;
+    bIsCrouching        = False;
+    bForceDuck            = False;
+    lastbDuck            = 0;
+    bDuck                    = 0;
 
-	FrobTime = Level.TimeSeconds;
-	bBehindView = True;
-	Velocity = vect(0,0,0);
-	Acceleration = vect(0,0,0);
-	DesiredFOV = Default.DesiredFOV;
-	FinishAnim();
-	KillShadow();
+    FrobTime = Level.TimeSeconds;
+    bBehindView = True;
+    Velocity = vect(0,0,0);
+    Acceleration = vect(0,0,0);
+    DesiredFOV = Default.DesiredFOV;
+    FinishAnim();
+    KillShadow();
 
    FlashTimer = 0;
 
-	// hide us and spawn the carcass
-	bHidden = True;
-	SpawnCarcass();
+    // hide us and spawn the carcass
+    bHidden = True;
+    SpawnCarcass();
    //DEUS_EX AMSD Players should not leave physical versions of themselves around :)
    if (Level.NetMode != NM_Standalone)
       HidePlayer();
@@ -4723,98 +4723,98 @@ Begin:
 
 state Interpolating
 {
-	ignores all;
+    ignores all;
 
-	function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector momentum, name damageType)
-	{
-	}
+    function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector momentum, name damageType)
+    {
+    }
 
-	// check to see if we are done interpolating, if so, then travel to the next map
-	event InterpolateEnd(Actor Other)
-	{
-		local GameDirectory mapDir;
-		local int mapIndex;
-		local bool bFoundAnyMaps;
+    // check to see if we are done interpolating, if so, then travel to the next map
+    event InterpolateEnd(Actor Other)
+    {
+        local GameDirectory mapDir;
+        local int mapIndex;
+        local bool bFoundAnyMaps;
 
-		if (InterpolationPoint(Other).bEndOfPath)
-			if (NextMap != "")
-			{
-				// DEUS_EX_DEMO
-				//
-				// If this is the demo, show the demo splash screen, which
-				// will exit the game after the player presses a key/mouseclick
-				//== ...but ONLY for these maps, and only if they aren't available
+        if (InterpolationPoint(Other).bEndOfPath)
+            if (NextMap != "")
+            {
+                // DEUS_EX_DEMO
+                //
+                // If this is the demo, show the demo splash screen, which
+                // will exit the game after the player presses a key/mouseclick
+                //== ...but ONLY for these maps, and only if they aren't available
 
-//				if(NextMap == "02_NYC_BatteryPark" || NextMap == "03_NYC_UNATCOIsland" || NextMap == "06_HONGKONG_HELIBASE")
-//				{
-//					//== Okay, because I care ENTIRELY TOO MUCH we need to have some code that makes
-//					//==  sure the next level is there, and if not that it shows the demo splash.
-//					mapDir = new(None) Class'GameDirectory';
-//					mapDir.SetDirType(mapDir.EGameDirectoryTypes.GD_Maps);
-//					mapDir.GetGameDirectory();
-//	
-//					for( mapIndex=0; mapIndex<mapDir.GetDirCount(); mapIndex++)
-//					{
-//						if(Caps(mapDir.GetDirFilename(mapIndex)) == Caps(NextMap))
-//						{
-//							Level.Game.SendPlayer(Self, NextMap$"?Difficulty="$combatDifficulty);
-//							return;
-//						}
-//						//== Make sure we can even detect any maps at all (e.g. the Steam version)
-//						else if(Caps(mapDir.GetDirFilename(mapIndex)) == "DX" || Caps(mapDir.GetDirFilename(mapIndex)) == "ENTRY" || Caps(mapDir.GetDirFilename(mapIndex)) == "DXONLY")
-//							bFoundAnyMaps = True;
-//					}
+//                if(NextMap == "02_NYC_BatteryPark" || NextMap == "03_NYC_UNATCOIsland" || NextMap == "06_HONGKONG_HELIBASE")
+//                {
+//                    //== Okay, because I care ENTIRELY TOO MUCH we need to have some code that makes
+//                    //==  sure the next level is there, and if not that it shows the demo splash.
+//                    mapDir = new(None) Class'GameDirectory';
+//                    mapDir.SetDirType(mapDir.EGameDirectoryTypes.GD_Maps);
+//                    mapDir.GetGameDirectory();
+//    
+//                    for( mapIndex=0; mapIndex<mapDir.GetDirCount(); mapIndex++)
+//                    {
+//                        if(Caps(mapDir.GetDirFilename(mapIndex)) == Caps(NextMap))
+//                        {
+//                            Level.Game.SendPlayer(Self, NextMap$"?Difficulty="$combatDifficulty);
+//                            return;
+//                        }
+//                        //== Make sure we can even detect any maps at all (e.g. the Steam version)
+//                        else if(Caps(mapDir.GetDirFilename(mapIndex)) == "DX" || Caps(mapDir.GetDirFilename(mapIndex)) == "ENTRY" || Caps(mapDir.GetDirFilename(mapIndex)) == "DXONLY")
+//                            bFoundAnyMaps = True;
+//                    }
 //
-//					if(bFoundAnyMaps)
-//					{
-//						ShowDemoSplash();
-//						return;
-//					}
-//				}
+//                    if(bFoundAnyMaps)
+//                    {
+//                        ShowDemoSplash();
+//                        return;
+//                    }
+//                }
 
-				Level.Game.SendPlayer(Self, NextMap$"?Difficulty="$combatDifficulty);
-			}
-	}
+                Level.Game.SendPlayer(Self, NextMap$"?Difficulty="$combatDifficulty);
+            }
+    }
 
-	exec function Fire(optional float F)
-	{
-		local DeusExLevelInfo info;
+    exec function Fire(optional float F)
+    {
+        local DeusExLevelInfo info;
 
-		// only bring up the menu if we're not in a mission outro
-		info = GetLevelInfo();
-		if ((info != None) && (info.MissionNumber < 0))
-			ShowMainMenu();
-	}
+        // only bring up the menu if we're not in a mission outro
+        info = GetLevelInfo();
+        if ((info != None) && (info.MissionNumber < 0))
+            ShowMainMenu();
+    }
 
-	event PlayerTick(float deltaTime)
-	{
-		UpdateInHand();
-		UpdateDynamicMusic(deltaTime);
-		ShowHud(False);
-	}
+    event PlayerTick(float deltaTime)
+    {
+        UpdateInHand();
+        UpdateDynamicMusic(deltaTime);
+        ShowHud(False);
+    }
 
 Begin:
-	if (bOnFire)
-		ExtinguishFire();
+    if (bOnFire)
+        ExtinguishFire();
 
-	bDetectable = False;
+    bDetectable = False;
 
-	// put away your weapon
-	if (Weapon != None)
-	{
-		Weapon.bHideWeapon = True;
-		Weapon = None;
-		PutInHand(None);
-	}
+    // put away your weapon
+    if (Weapon != None)
+    {
+        Weapon.bHideWeapon = True;
+        Weapon = None;
+        PutInHand(None);
+    }
 
-	// can't carry decorations across levels
-	if (CarriedDecoration != None)
-	{
-		CarriedDecoration.Destroy();
-		CarriedDecoration = None;
-	}
+    // can't carry decorations across levels
+    if (CarriedDecoration != None)
+    {
+        CarriedDecoration.Destroy();
+        CarriedDecoration = None;
+    }
 
-	PlayAnim('Still');
+    PlayAnim('Still');
 }
 
 // ----------------------------------------------------------------------
@@ -4823,74 +4823,74 @@ Begin:
 
 state Paralyzed
 {
-	ignores all;
+    ignores all;
 
-	function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector momentum, name damageType)
-	{
-	}
+    function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector momentum, name damageType)
+    {
+    }
 
-	exec function Fire(optional float F)
-	{
-		ShowMainMenu();
-	}
+    exec function Fire(optional float F)
+    {
+        ShowMainMenu();
+    }
 
-	event PlayerTick(float deltaTime)
-	{
-		UpdateInHand();
-		ShowHud(False);
-		ViewFlash(deltaTime);
-	}
+    event PlayerTick(float deltaTime)
+    {
+        UpdateInHand();
+        ShowHud(False);
+        ViewFlash(deltaTime);
+    }
 
 Begin:
-	if (bOnFire)
-		ExtinguishFire();
+    if (bOnFire)
+        ExtinguishFire();
 
-	bDetectable = False;
+    bDetectable = False;
 
-	// put away your weapon
-	if (Weapon != None)
-	{
-		Weapon.bHideWeapon = True;
-		Weapon = None;
-		PutInHand(None);
-	}
+    // put away your weapon
+    if (Weapon != None)
+    {
+        Weapon.bHideWeapon = True;
+        Weapon = None;
+        PutInHand(None);
+    }
 
-	// can't carry decorations across levels
-	if (CarriedDecoration != None)
-	{
-		CarriedDecoration.Destroy();
-		CarriedDecoration = None;
-	}
+    // can't carry decorations across levels
+    if (CarriedDecoration != None)
+    {
+        CarriedDecoration.Destroy();
+        CarriedDecoration = None;
+    }
 
-	SetPhysics(PHYS_None);
-	PlayAnim('Still');
-	Stop;
+    SetPhysics(PHYS_None);
+    PlayAnim('Still');
+    Stop;
 
 Letterbox:
-	if (bOnFire)
-		ExtinguishFire();
+    if (bOnFire)
+        ExtinguishFire();
 
-	bDetectable = False;
+    bDetectable = False;
 
-	// put away your weapon
-	if (Weapon != None)
-	{
-		Weapon.bHideWeapon = True;
-		Weapon = None;
-		PutInHand(None);
-	}
+    // put away your weapon
+    if (Weapon != None)
+    {
+        Weapon.bHideWeapon = True;
+        Weapon = None;
+        PutInHand(None);
+    }
 
-	// can't carry decorations across levels
-	if (CarriedDecoration != None)
-	{
-		CarriedDecoration.Destroy();
-		CarriedDecoration = None;
-	}
+    // can't carry decorations across levels
+    if (CarriedDecoration != None)
+    {
+        CarriedDecoration.Destroy();
+        CarriedDecoration = None;
+    }
 
-	SetPhysics(PHYS_None);
-	PlayAnim('Still');
-	if (rootWindow != None)
-		rootWindow.NewChild(class'CinematicWindow');
+    SetPhysics(PHYS_None);
+    PlayAnim('Still');
+    if (rootWindow != None)
+        rootWindow.NewChild(class'CinematicWindow');
 }
 
 // ----------------------------------------------------------------------
@@ -4902,9 +4902,9 @@ simulated event RenderOverlays( canvas Canvas )
 {
    Super.RenderOverlays(Canvas);
 
-	if (!IsInState('Interpolating') && !IsInState('Paralyzed'))
-		if ((inHand != None) && (!inHand.IsA('Weapon')))
-			inHand.RenderOverlays(Canvas);
+    if (!IsInState('Interpolating') && !IsInState('Paralyzed'))
+        if ((inHand != None) && (!inHand.IsA('Weapon')))
+            inHand.RenderOverlays(Canvas);
 }
 
 // ----------------------------------------------------------------------
@@ -4915,11 +4915,11 @@ simulated event RenderOverlays( canvas Canvas )
 
 function bool RestrictInput()
 {
-	//== Adding a check for the Traveling flag makes sure players can't drop items in the Mission 5 capture sequence
-	if (IsInState('Interpolating') || IsInState('Dying') || IsInState('Paralyzed') || (FlagBase.GetBool('PlayerTraveling') && !bCheatsEnabled))
-		return True;
+    //== Adding a check for the Traveling flag makes sure players can't drop items in the Mission 5 capture sequence
+    if (IsInState('Interpolating') || IsInState('Dying') || IsInState('Paralyzed') || (FlagBase.GetBool('PlayerTraveling') && !bCheatsEnabled))
+        return True;
 
-	return False;
+    return False;
 }
 
 
@@ -4928,17 +4928,17 @@ function bool RestrictInput()
 // ----------------------------------------------------------------------
 function DroneExplode()
 {
-	local AugDrone anAug;
+    local AugDrone anAug;
 
-	if (aDrone != None)
-	{
-		aDrone.Explode(aDrone.Location, vect(0,0,1));
+    if (aDrone != None)
+    {
+        aDrone.Explode(aDrone.Location, vect(0,0,1));
       //DEUS_EX AMSD Don't blow up OTHER player drones...
       anAug = AugDrone(AugmentationSystem.FindAugmentation(class'AugDrone'));
-		//foreach AllActors(class'AugDrone', anAug)			
+        //foreach AllActors(class'AugDrone', anAug)            
       if (anAug != None)      
          anAug.Deactivate();
-	}
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -4947,15 +4947,15 @@ function DroneExplode()
 
 exec function BuySkills()
 {
-	if ( Level.NetMode != NM_Standalone )
-	{
-		// First turn off scores if we're heading into skill menu
-		if ( !bBuySkills )
-			ClientTurnOffScores();
+    if ( Level.NetMode != NM_Standalone )
+    {
+        // First turn off scores if we're heading into skill menu
+        if ( !bBuySkills )
+            ClientTurnOffScores();
 
-		bBuySkills = !bBuySkills;
-		BuySkillSound( 2 );
-	}
+        bBuySkills = !bBuySkills;
+        BuySkillSound( 2 );
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -4964,7 +4964,7 @@ exec function BuySkills()
 
 exec function KillerProfile()
 {
-	bKillerProfile = !bKillerProfile;
+    bKillerProfile = !bKillerProfile;
 }
 
 // ----------------------------------------------------------------------
@@ -4972,8 +4972,8 @@ exec function KillerProfile()
 // ----------------------------------------------------------------------
 function ClientTurnOffScores()
 {
-	if ( bShowScores )
-		bShowScores = False;
+    if ( bShowScores )
+        bShowScores = False;
 }
 
 // ----------------------------------------------------------------------
@@ -4982,10 +4982,10 @@ function ClientTurnOffScores()
 
 exec function ShowScores()
 {
-	if ( bBuySkills && !bShowScores )
-		BuySkills();
+    if ( bBuySkills && !bShowScores )
+        BuySkills();
 
-	bShowScores = !bShowScores;
+    bShowScores = !bShowScores;
 }
 
 // ----------------------------------------------------------------------
@@ -4994,54 +4994,54 @@ exec function ShowScores()
 
 exec function ParseLeftClick()
 {
-	//
-	// ParseLeftClick deals with things in your HAND
-	//
-	// Precedence:
-	// - Detonate spy drone
-	// - Fire (handled automatically by user.ini bindings)
-	// - Use inHand
-	//
+    //
+    // ParseLeftClick deals with things in your HAND
+    //
+    // Precedence:
+    // - Detonate spy drone
+    // - Fire (handled automatically by user.ini bindings)
+    // - Use inHand
+    //
 
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	// if the spy drone augmentation is active, blow it up
-	if (bSpyDroneActive)
-	{
-		DroneExplode();
-		return;
-	}
+    // if the spy drone augmentation is active, blow it up
+    if (bSpyDroneActive)
+    {
+        DroneExplode();
+        return;
+    }
 
-	if ((inHand != None) && !bInHandTransition)
-	{
-		if (inHand.bActivatable)
-			inHand.Activate();
-		else if (FrobTarget != None)
-		{
-			// special case for using keys or lockpicks on doors
-			if (FrobTarget.IsA('DeusExMover'))
-				if (inHand.IsA('NanoKeyRing') || inHand.IsA('Lockpick'))
-					DoFrob(Self, inHand);
+    if ((inHand != None) && !bInHandTransition)
+    {
+        if (inHand.bActivatable)
+            inHand.Activate();
+        else if (FrobTarget != None)
+        {
+            // special case for using keys or lockpicks on doors
+            if (FrobTarget.IsA('DeusExMover'))
+                if (inHand.IsA('NanoKeyRing') || inHand.IsA('Lockpick'))
+                    DoFrob(Self, inHand);
 
-			// special case for using multitools on hackable things
-			if (FrobTarget.IsA('HackableDevices'))
-			{
-				if (inHand.IsA('Multitool'))
-				{
-					if (( Level.Netmode != NM_Standalone ) && (TeamDMGame(DXGame) != None) && FrobTarget.IsA('AutoTurretGun') && (AutoTurretGun(FrobTarget).team==PlayerReplicationInfo.team) )
-					{
-						MultiplayerNotifyMsg( MPMSG_TeamHackTurret );
-						return;
-					}
-					else
-						DoFrob(Self, inHand);
-				}
-			}
-		}
-	}
-	else if(IsA('trestkon') && inHand == None && !bInHandTransition)
-		ConsoleCommand("selectfists");
+            // special case for using multitools on hackable things
+            if (FrobTarget.IsA('HackableDevices'))
+            {
+                if (inHand.IsA('Multitool'))
+                {
+                    if (( Level.Netmode != NM_Standalone ) && (TeamDMGame(DXGame) != None) && FrobTarget.IsA('AutoTurretGun') && (AutoTurretGun(FrobTarget).team==PlayerReplicationInfo.team) )
+                    {
+                        MultiplayerNotifyMsg( MPMSG_TeamHackTurret );
+                        return;
+                    }
+                    else
+                        DoFrob(Self, inHand);
+                }
+            }
+        }
+    }
+    else if(IsA('trestkon') && inHand == None && !bInHandTransition)
+        ConsoleCommand("selectfists");
 }
 
 // ----------------------------------------------------------------------
@@ -5050,144 +5050,144 @@ exec function ParseLeftClick()
 
 exec function ParseRightClick()
 {
-	//
-	// ParseRightClick deals with things in the WORLD
-	//
-	// Precedence:
-	// - Pickup highlighted Inventory
-	// - Frob highlighted object
-	// - Grab highlighted Decoration
-	// - Put away (or drop if it's a deco) inHand
-	//
+    //
+    // ParseRightClick deals with things in the WORLD
+    //
+    // Precedence:
+    // - Pickup highlighted Inventory
+    // - Frob highlighted object
+    // - Grab highlighted Decoration
+    // - Put away (or drop if it's a deco) inHand
+    //
 
-	local AutoTurret turret;
-	local int ViewIndex;
-	local bool bPlayerOwnsIt;
+    local AutoTurret turret;
+    local int ViewIndex;
+    local bool bPlayerOwnsIt;
    local Inventory oldFirstItem;
-	local Inventory oldInHand;
-	local Decoration oldCarriedDecoration;
-	local Vector loc;
+    local Inventory oldInHand;
+    local Decoration oldCarriedDecoration;
+    local Vector loc;
 
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
    oldFirstItem = Inventory;
-	oldInHand = inHand;
-	oldCarriedDecoration = CarriedDecoration;
+    oldInHand = inHand;
+    oldCarriedDecoration = CarriedDecoration;
 
-	if (FrobTarget != None)
-		loc = FrobTarget.Location;
+    if (FrobTarget != None)
+        loc = FrobTarget.Location;
 
-	if (FrobTarget != None)
-	{
-		// First check if this is a NanoKey, in which case we just
-		// want to add it to the NanoKeyRing without disrupting
-		// what the player is holding
+    if (FrobTarget != None)
+    {
+        // First check if this is a NanoKey, in which case we just
+        // want to add it to the NanoKeyRing without disrupting
+        // what the player is holding
 
-		if (FrobTarget.IsA('NanoKey'))
-		{
-			PickupNanoKey(NanoKey(FrobTarget));
-			FrobTarget.Destroy();
-			FrobTarget = None;
-			return;
-		}
-		else if (FrobTarget.IsA('Inventory'))
-		{
-			// If this is an item that can be stacked, check to see if 
-			// we already have one, in which case we don't need to 
-			// allocate more space in the inventory grid.
-			// 
-			// TODO: This logic may have to get more involved if/when 
-			// we start allowing other types of objects to get stacked.
+        if (FrobTarget.IsA('NanoKey'))
+        {
+            PickupNanoKey(NanoKey(FrobTarget));
+            FrobTarget.Destroy();
+            FrobTarget = None;
+            return;
+        }
+        else if (FrobTarget.IsA('Inventory'))
+        {
+            // If this is an item that can be stacked, check to see if 
+            // we already have one, in which case we don't need to 
+            // allocate more space in the inventory grid.
+            // 
+            // TODO: This logic may have to get more involved if/when 
+            // we start allowing other types of objects to get stacked.
 
-			//== Special code for DXMP, so consumables are instantly used
-			if(Level.NetMode != NM_Standalone && Consumable(FrobTarget) != None)
-			{
-				FrobTarget.Frob(Self, inHand);
-				return;
-			}
-			else if (HandleItemPickup(FrobTarget, True) == False)
-				return;
+            //== Special code for DXMP, so consumables are instantly used
+            if(Level.NetMode != NM_Standalone && Consumable(FrobTarget) != None)
+            {
+                FrobTarget.Frob(Self, inHand);
+                return;
+            }
+            else if (HandleItemPickup(FrobTarget, True) == False)
+                return;
 
-			// if the frob succeeded, put it in the player's inventory
-		         //DEUS_EX AMSD ARGH! Because of the way respawning works, the item I pick up
-		         //is NOT the same as the frobtarget if I do a pickup.  So how do I tell that
-		         //I've successfully picked it up?  Well, if the first item in my inventory 
-		         //changed, I picked up a new item.
-			if ( ((Level.NetMode == NM_Standalone) && (Inventory(FrobTarget).Owner == Self)) ||
-		              ((Level.NetMode != NM_Standalone) && (oldFirstItem != Inventory)) )
-			{
-		            if (Level.NetMode == NM_Standalone)
-		               FindInventorySlot(Inventory(FrobTarget));
-		            else
-		               FindInventorySlot(Inventory);
-			    FrobTarget = None;
-			}
-		}
-		else if (FrobTarget.IsA('Decoration') && Decoration(FrobTarget).bPushable)
-		{
-			GrabDecoration();
-		}
-		else
-		{
-			if (( Level.NetMode != NM_Standalone ) && ( TeamDMGame(DXGame) != None ))
-			{
-				if ( FrobTarget.IsA('LAM') || FrobTarget.IsA('GasGrenade') || FrobTarget.IsA('EMPGrenade'))
-				{
-					if ((ThrownProjectile(FrobTarget).team == PlayerReplicationInfo.team) && ( ThrownProjectile(FrobTarget).Owner != Self ))
-					{
-						if ( ThrownProjectile(FrobTarget).bDisabled )		// You can re-enable a grenade for a teammate
-						{
-							ThrownProjectile(FrobTarget).ReEnable();
-							return;
-						}
-						MultiplayerNotifyMsg( MPMSG_TeamLAM );
-						return;
-					}
-				}
-				if ( FrobTarget.IsA('ComputerSecurity') && (PlayerReplicationInfo.team == ComputerSecurity(FrobTarget).team) )
-				{
-					// Let controlling player re-hack his/her own computer
-					bPlayerOwnsIt = False;
-					foreach AllActors(class'AutoTurret',turret)
-					{
-						for (ViewIndex = 0; ViewIndex < ArrayCount(ComputerSecurity(FrobTarget).Views); ViewIndex++)
-						{
-							if (ComputerSecurity(FrobTarget).Views[ViewIndex].turretTag == turret.Tag)
-							{
-								if (( turret.safeTarget == Self ) || ( turret.savedTarget == Self ))
-								{
-									bPlayerOwnsIt = True;
-									break;
-								}
-							}
-						}
-					}
-					if ( !bPlayerOwnsIt )
-					{
-						MultiplayerNotifyMsg( MPMSG_TeamComputer );
-						return;
-					}
-				}
-			}
-			// otherwise, just frob it
-			DoFrob(Self, None);
-		}
-	}
-	else
-	{
-		// if there's no FrobTarget, put away an inventory item or drop a decoration
-		// or drop the corpse
-		if (( (inHand != None) && inHand.IsA('POVCorpse') ) )// || (inHand.IsA('Flare') && Flare(inHand).AmbientSound != None))
-			DropItem();
-		else
-			PutInHand(None);
-	}
+            // if the frob succeeded, put it in the player's inventory
+                 //DEUS_EX AMSD ARGH! Because of the way respawning works, the item I pick up
+                 //is NOT the same as the frobtarget if I do a pickup.  So how do I tell that
+                 //I've successfully picked it up?  Well, if the first item in my inventory 
+                 //changed, I picked up a new item.
+            if ( ((Level.NetMode == NM_Standalone) && (Inventory(FrobTarget).Owner == Self)) ||
+                      ((Level.NetMode != NM_Standalone) && (oldFirstItem != Inventory)) )
+            {
+                    if (Level.NetMode == NM_Standalone)
+                       FindInventorySlot(Inventory(FrobTarget));
+                    else
+                       FindInventorySlot(Inventory);
+                FrobTarget = None;
+            }
+        }
+        else if (FrobTarget.IsA('Decoration') && Decoration(FrobTarget).bPushable)
+        {
+            GrabDecoration();
+        }
+        else
+        {
+            if (( Level.NetMode != NM_Standalone ) && ( TeamDMGame(DXGame) != None ))
+            {
+                if ( FrobTarget.IsA('LAM') || FrobTarget.IsA('GasGrenade') || FrobTarget.IsA('EMPGrenade'))
+                {
+                    if ((ThrownProjectile(FrobTarget).team == PlayerReplicationInfo.team) && ( ThrownProjectile(FrobTarget).Owner != Self ))
+                    {
+                        if ( ThrownProjectile(FrobTarget).bDisabled )        // You can re-enable a grenade for a teammate
+                        {
+                            ThrownProjectile(FrobTarget).ReEnable();
+                            return;
+                        }
+                        MultiplayerNotifyMsg( MPMSG_TeamLAM );
+                        return;
+                    }
+                }
+                if ( FrobTarget.IsA('ComputerSecurity') && (PlayerReplicationInfo.team == ComputerSecurity(FrobTarget).team) )
+                {
+                    // Let controlling player re-hack his/her own computer
+                    bPlayerOwnsIt = False;
+                    foreach AllActors(class'AutoTurret',turret)
+                    {
+                        for (ViewIndex = 0; ViewIndex < ArrayCount(ComputerSecurity(FrobTarget).Views); ViewIndex++)
+                        {
+                            if (ComputerSecurity(FrobTarget).Views[ViewIndex].turretTag == turret.Tag)
+                            {
+                                if (( turret.safeTarget == Self ) || ( turret.savedTarget == Self ))
+                                {
+                                    bPlayerOwnsIt = True;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if ( !bPlayerOwnsIt )
+                    {
+                        MultiplayerNotifyMsg( MPMSG_TeamComputer );
+                        return;
+                    }
+                }
+            }
+            // otherwise, just frob it
+            DoFrob(Self, None);
+        }
+    }
+    else
+    {
+        // if there's no FrobTarget, put away an inventory item or drop a decoration
+        // or drop the corpse
+        if (( (inHand != None) && inHand.IsA('POVCorpse') ) )// || (inHand.IsA('Flare') && Flare(inHand).AmbientSound != None))
+            DropItem();
+        else
+            PutInHand(None);
+    }
 
-	if ((oldInHand == None) && (inHand != None))
-		PlayPickupAnim(loc);
-	else if ((oldCarriedDecoration == None) && (CarriedDecoration != None))
-		PlayPickupAnim(loc);
+    if ((oldInHand == None) && (inHand != None))
+        PlayPickupAnim(loc);
+    else if ((oldCarriedDecoration == None) && (CarriedDecoration != None))
+        PlayPickupAnim(loc);
 }
 
 // ----------------------------------------------------------------------
@@ -5196,10 +5196,10 @@ exec function ParseRightClick()
 
 function PlayPickupAnim(Vector locPickup)
 {
-	if (Location.Z - locPickup.Z < 16)
-		PlayAnim('PushButton',,0.1);
-	else
-		PlayAnim('Pickup',,0.1);
+    if (Location.Z - locPickup.Z < 16)
+        PlayAnim('PushButton',,0.1);
+    else
+        PlayAnim('Pickup',,0.1);
 }
 
 // ----------------------------------------------------------------------
@@ -5208,112 +5208,112 @@ function PlayPickupAnim(Vector locPickup)
 
 function bool HandleItemPickup(Actor FrobTarget, optional bool bSearchOnly)
 {
-	local bool bCanPickup;
-	local bool bSlotSearchNeeded;
-	local Inventory foundItem;
+    local bool bCanPickup;
+    local bool bSlotSearchNeeded;
+    local Inventory foundItem;
 
-	bSlotSearchNeeded = True;
-	bCanPickup = True;
+    bSlotSearchNeeded = True;
+    bCanPickup = True;
 
-	// Special checks for objects that do not require phsyical inventory
-	// in order to be picked up:
-	// 
-	// - NanoKeys
-	// - DataVaultImages
-	// - Credits
+    // Special checks for objects that do not require phsyical inventory
+    // in order to be picked up:
+    // 
+    // - NanoKeys
+    // - DataVaultImages
+    // - Credits
 
-	if ((FrobTarget.IsA('DataVaultImage')) || (FrobTarget.IsA('NanoKey')) || (FrobTarget.IsA('Credits')))
-	{
-		bSlotSearchNeeded = False;
-	}
-	else if (FrobTarget.IsA('DeusExPickup'))
-	{
-		// If an object of this type already exists in the player's inventory *AND*
-		// the object is stackable, then we don't need to search.
+    if ((FrobTarget.IsA('DataVaultImage')) || (FrobTarget.IsA('NanoKey')) || (FrobTarget.IsA('Credits')))
+    {
+        bSlotSearchNeeded = False;
+    }
+    else if (FrobTarget.IsA('DeusExPickup'))
+    {
+        // If an object of this type already exists in the player's inventory *AND*
+        // the object is stackable, then we don't need to search.
 
-		if ((FindInventoryType(FrobTarget.Class) != None) && (DeusExPickup(FrobTarget).bCanHaveMultipleCopies))
-			bSlotSearchNeeded = False;
-	}
-	else 
-	{
-		// If this isn't ammo or a weapon that we already have, 
-		// check if there's enough room in the player's inventory
-		// to hold this item.
+        if ((FindInventoryType(FrobTarget.Class) != None) && (DeusExPickup(FrobTarget).bCanHaveMultipleCopies))
+            bSlotSearchNeeded = False;
+    }
+    else 
+    {
+        // If this isn't ammo or a weapon that we already have, 
+        // check if there's enough room in the player's inventory
+        // to hold this item.
 
-		foundItem = GetWeaponOrAmmo(Inventory(FrobTarget));
+        foundItem = GetWeaponOrAmmo(Inventory(FrobTarget));
 
-		if (foundItem != None)
-		{
-			bSlotSearchNeeded = False;
+        if (foundItem != None)
+        {
+            bSlotSearchNeeded = False;
 
-			// if this is an ammo, and we're full of it, abort the pickup
-			if (foundItem.IsA('Ammo'))
-			{
-				if (Ammo(foundItem).AmmoAmount >= Ammo(foundItem).MaxAmmo)
-				{
-					ClientMessage(TooMuchAmmo);
-					bCanPickup = False;
-				}
-			}
+            // if this is an ammo, and we're full of it, abort the pickup
+            if (foundItem.IsA('Ammo'))
+            {
+                if (Ammo(foundItem).AmmoAmount >= Ammo(foundItem).MaxAmmo)
+                {
+                    ClientMessage(TooMuchAmmo);
+                    bCanPickup = False;
+                }
+            }
 
-			// If this is a grenade or LAM (what a pain in the ass) then also check
-			// to make sure we don't have too many grenades already
-			else if (foundItem.IsA('WeaponGrenade'))
-			{
-				if (DeusExWeapon(foundItem).AmmoType.AmmoAmount >= DeusExWeapon(foundItem).AmmoType.MaxAmmo)
-				{
-					ClientMessage(TooMuchAmmo);
-					bCanPickup = False;
-				}
-			}
+            // If this is a grenade or LAM (what a pain in the ass) then also check
+            // to make sure we don't have too many grenades already
+            else if (foundItem.IsA('WeaponGrenade'))
+            {
+                if (DeusExWeapon(foundItem).AmmoType.AmmoAmount >= DeusExWeapon(foundItem).AmmoType.MaxAmmo)
+                {
+                    ClientMessage(TooMuchAmmo);
+                    bCanPickup = False;
+                }
+            }
 
 
-			// Otherwise, if this is a single-use weapon, prevent the player
-			// from picking up
+            // Otherwise, if this is a single-use weapon, prevent the player
+            // from picking up
 
-			else if (foundItem.IsA('Weapon'))
-			{
-				// If these fields are set as checked, then this is a 
-				// single use weapon, and if we already have one in our 
-				// inventory another cannot be picked up (puke). 
+            else if (foundItem.IsA('Weapon'))
+            {
+                // If these fields are set as checked, then this is a 
+                // single use weapon, and if we already have one in our 
+                // inventory another cannot be picked up (puke). 
 
-				bSlotSearchNeeded = ( (Weapon(foundItem).ReloadCount == 0) &&  //was bCanPickup = !
-				                 (Weapon(foundItem).PickupAmmoCount == 0) && 
-				                 (Weapon(foundItem).AmmoName != None) );
+                bSlotSearchNeeded = ( (Weapon(foundItem).ReloadCount == 0) &&  //was bCanPickup = !
+                                 (Weapon(foundItem).PickupAmmoCount == 0) && 
+                                 (Weapon(foundItem).AmmoName != None) );
 
-//				if (!bCanPickup)
-//					ClientMessage(Sprintf(CanCarryOnlyOne, foundItem.itemName));
-			} 
-		}
-	}
-	
-	if (bSlotSearchNeeded && bCanPickup)
-	{
-		if (FindInventorySlot(Inventory(FrobTarget), bSearchOnly) == False)
-		{
-			ClientMessage(Sprintf(InventoryFull, Inventory(FrobTarget).itemName));
-			bCanPickup = False;
-			ServerConditionalNotifyMsg( MPMSG_DropItem );
-		}
-	}
-	
-	if (bCanPickup)
-	{
-		if ( (Level.NetMode != NM_Standalone) && (FrobTarget.IsA('DeusExWeapon') || FrobTarget.IsA('DeusExAmmo')) )
-			PlaySound(sound'WeaponPickup', SLOT_Interact, 0.5+FRand()*0.25, , 256, 0.95+FRand()*0.1);
-		DoFrob(Self, inHand);
+//                if (!bCanPickup)
+//                    ClientMessage(Sprintf(CanCarryOnlyOne, foundItem.itemName));
+            } 
+        }
+    }
+    
+    if (bSlotSearchNeeded && bCanPickup)
+    {
+        if (FindInventorySlot(Inventory(FrobTarget), bSearchOnly) == False)
+        {
+            ClientMessage(Sprintf(InventoryFull, Inventory(FrobTarget).itemName));
+            bCanPickup = False;
+            ServerConditionalNotifyMsg( MPMSG_DropItem );
+        }
+    }
+    
+    if (bCanPickup)
+    {
+        if ( (Level.NetMode != NM_Standalone) && (FrobTarget.IsA('DeusExWeapon') || FrobTarget.IsA('DeusExAmmo')) )
+            PlaySound(sound'WeaponPickup', SLOT_Interact, 0.5+FRand()*0.25, , 256, 0.95+FRand()*0.1);
+        DoFrob(Self, inHand);
 
-		// This is bad. We need to reset the number so restocking works
-		if ( Level.NetMode != NM_Standalone )
-		{
-			if ( FrobTarget.IsA('DeusExWeapon') && (DeusExWeapon(FrobTarget).PickupAmmoCount == 0) )
-			{
-				DeusExWeapon(FrobTarget).PickupAmmoCount = DeusExWeapon(FrobTarget).Default.mpPickupAmmoCount * 3;
-			}
-		}
-	}
+        // This is bad. We need to reset the number so restocking works
+        if ( Level.NetMode != NM_Standalone )
+        {
+            if ( FrobTarget.IsA('DeusExWeapon') && (DeusExWeapon(FrobTarget).PickupAmmoCount == 0) )
+            {
+                DeusExWeapon(FrobTarget).PickupAmmoCount = DeusExWeapon(FrobTarget).Default.mpPickupAmmoCount * 3;
+            }
+        }
+    }
 
-	return bCanPickup;
+    return bCanPickup;
 }
 
 // ----------------------------------------------------------------------
@@ -5322,11 +5322,11 @@ function bool HandleItemPickup(Actor FrobTarget, optional bool bSearchOnly)
 
 function NanoKeyInfo CreateNanoKeyInfo()
 {
-	local NanoKeyInfo newKey;
+    local NanoKeyInfo newKey;
 
-	newKey = new(Self) Class'NanoKeyInfo';
+    newKey = new(Self) Class'NanoKeyInfo';
 
-	return newKey;
+    return newKey;
 }
 
 // ----------------------------------------------------------------------
@@ -5340,13 +5340,13 @@ function NanoKeyInfo CreateNanoKeyInfo()
 
 function PickupNanoKey(NanoKey newKey)
 {
-	KeyRing.GiveKey(newKey.KeyID, newKey.Description);
+    KeyRing.GiveKey(newKey.KeyID, newKey.Description);
    //DEUS_EX AMSD In multiplayer, propagate the key to the client if the server
    if ((Role == ROLE_Authority) && (Level.NetMode != NM_Standalone))
    {
       KeyRing.GiveClientKey(newKey.KeyID, newKey.Description);
    }   
-	ClientMessage(Sprintf(AddedNanoKey, newKey.Description));
+    ClientMessage(Sprintf(AddedNanoKey, newKey.Description));
 }
 
 // ----------------------------------------------------------------------
@@ -5355,10 +5355,10 @@ function PickupNanoKey(NanoKey newKey)
 
 exec function RemoveNanoKey(Name KeyToRemove)
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	KeyRing.RemoveKey(KeyToRemove);
+    KeyRing.RemoveKey(KeyToRemove);
    if ((Role == ROLE_Authority) && (Level.NetMode != NM_Standalone))
    {
       KeyRing.RemoveClientKey(KeyToRemove);
@@ -5371,10 +5371,10 @@ exec function RemoveNanoKey(Name KeyToRemove)
 
 exec function GiveNanoKey(Name newKeyID, String newDescription)
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	KeyRing.GiveKey(newKeyID, newDescription);
+    KeyRing.GiveKey(newKeyID, newDescription);
    //DEUS_EX AMSD In multiplayer, propagate the key to the client if the server
    if ((Role == ROLE_Authority) && (Level.NetMode != NM_Standalone))
    {
@@ -5391,36 +5391,36 @@ exec function GiveNanoKey(Name newKeyID, String newDescription)
 
 function DoFrob(Actor Frobber, Inventory frobWith)
 {
-	local DeusExRootWindow root;
-	local Ammo ammo;
-	local Inventory item;
-	local Actor A;
+    local DeusExRootWindow root;
+    local Ammo ammo;
+    local Inventory item;
+    local Actor A;
 
-	// make sure nothing is based on us if we're an inventory
-	if (FrobTarget.IsA('Inventory'))
-		foreach FrobTarget.BasedActors(class'Actor', A)
-			A.SetBase(None);
+    // make sure nothing is based on us if we're an inventory
+    if (FrobTarget.IsA('Inventory'))
+        foreach FrobTarget.BasedActors(class'Actor', A)
+            A.SetBase(None);
 
-	FrobTarget.Frob(Frobber, frobWith);
+    FrobTarget.Frob(Frobber, frobWith);
 
-	// if the object destroyed itself, get out
-	if (FrobTarget == None)
-		return;
+    // if the object destroyed itself, get out
+    if (FrobTarget == None)
+        return;
 
-	// if the inventory item aborted it's own pickup, get out
-	if (FrobTarget.IsA('Inventory') && (FrobTarget.Owner != Self))
-		return;
+    // if the inventory item aborted it's own pickup, get out
+    if (FrobTarget.IsA('Inventory') && (FrobTarget.Owner != Self))
+        return;
 
-	// alert NPCs that I'm messing with stuff
-	if (FrobTarget.bOwned)
-		AISendEvent('Futz', EAITYPE_Visual);
+    // alert NPCs that I'm messing with stuff
+    if (FrobTarget.bOwned)
+        AISendEvent('Futz', EAITYPE_Visual);
 
-	// play an animation
-	PlayPickupAnim(FrobTarget.Location);
+    // play an animation
+    PlayPickupAnim(FrobTarget.Location);
 
-	// set the base so the inventory follows us around correctly
-	if (FrobTarget.IsA('Inventory'))
-		FrobTarget.SetBase(Frobber);
+    // set the base so the inventory follows us around correctly
+    if (FrobTarget.IsA('Inventory'))
+        FrobTarget.SetBase(Frobber);
 }
 
 // ----------------------------------------------------------------------
@@ -5431,32 +5431,32 @@ function DoFrob(Actor Frobber, Inventory frobWith)
 
 exec function PutInHand(optional Inventory inv)
 {
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	// can't put anything in hand if you're using a spy drone
-	if ((inHand == None) && bSpyDroneActive)
-		return;
+    // can't put anything in hand if you're using a spy drone
+    if ((inHand == None) && bSpyDroneActive)
+        return;
 
-	// can't do anything if you're carrying a corpse
-	if (( (inHand != None) && inHand.IsA('POVCorpse') ) )//|| (inHand.IsA('Flare') && Flare(inHand).AmbientSound != None))
-		return;
+    // can't do anything if you're carrying a corpse
+    if (( (inHand != None) && inHand.IsA('POVCorpse') ) )//|| (inHand.IsA('Flare') && Flare(inHand).AmbientSound != None))
+        return;
 
-	if (inv != None)
-	{
-		// can't put ammo in hand
-		if (inv.IsA('Ammo'))
-			return;
+    if (inv != None)
+    {
+        // can't put ammo in hand
+        if (inv.IsA('Ammo'))
+            return;
 
-		// Can't put an active charged item in hand
-		if ((inv.IsA('ChargedPickup')) && (ChargedPickup(inv).IsActive()))
-			return;
-	}
+        // Can't put an active charged item in hand
+        if ((inv.IsA('ChargedPickup')) && (ChargedPickup(inv).IsActive()))
+            return;
+    }
 
-	if (CarriedDecoration != None)
-		DropDecoration();
+    if (CarriedDecoration != None)
+        DropDecoration();
 
-	SetInHandPending(inv);
+    SetInHandPending(inv);
 }
 
 // ----------------------------------------------------------------------
@@ -5465,13 +5465,13 @@ exec function PutInHand(optional Inventory inv)
 
 function UpdateBeltText(Inventory item)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	root = DeusExRootWindow(rootWindow);
+    root = DeusExRootWindow(rootWindow);
 
-	// Update object belt text
-	if ((item.bInObjectBelt) && (root != None))
-		root.hud.belt.UpdateObjectText(item.beltPos);		
+    // Update object belt text
+    if ((item.bInObjectBelt) && (root != None))
+        root.hud.belt.UpdateObjectText(item.beltPos);        
 }
 
 // ----------------------------------------------------------------------
@@ -5483,7 +5483,7 @@ function UpdateBeltText(Inventory item)
 
 function UpdateAmmoBeltText(Ammo ammo)
 {
-	local Inventory inv;
+    local Inventory inv;
 
 
 }
@@ -5494,14 +5494,14 @@ function UpdateAmmoBeltText(Ammo ammo)
 
 function SetInHand(Inventory newInHand)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	inHand = newInHand;
+    inHand = newInHand;
 
-	// Notify the hud
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		root.hud.belt.UpdateInHand();
+    // Notify the hud
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        root.hud.belt.UpdateInHand();
 }
 
 // ----------------------------------------------------------------------
@@ -5510,16 +5510,16 @@ function SetInHand(Inventory newInHand)
 
 function SetInHandPending(Inventory newInHandPending)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if ( newInHandPending == None )
-		ClientInHandPending = None;
+    if ( newInHandPending == None )
+        ClientInHandPending = None;
 
-	inHandPending = newInHandPending;
+    inHandPending = newInHandPending;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		root.hud.belt.UpdateInHand();
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        root.hud.belt.UpdateInHand();
 }
 
 // ----------------------------------------------------------------------
@@ -5535,124 +5535,124 @@ function SetInHandPending(Inventory newInHandPending)
 
 function UpdateInHand()
 {
-	local bool bSwitch;
+    local bool bSwitch;
 
-	//sync up clientinhandpending.
-	if (inHandPending != inHand)
-		ClientInHandPending = inHandPending;
+    //sync up clientinhandpending.
+    if (inHandPending != inHand)
+        ClientInHandPending = inHandPending;
 
    //DEUS_EX AMSD  Don't let clients do this.
    if (Role < ROLE_Authority)
       return;
 
-	if (inHand != inHandPending)
-	{
-		bInHandTransition = True;
-		bSwitch = False;
-		if (inHand != None)
-		{
-			// turn it off if it is on
-			if (inHand.bActive && !inHand.IsA('ChargedPickup'))
-				inHand.Activate();
+    if (inHand != inHandPending)
+    {
+        bInHandTransition = True;
+        bSwitch = False;
+        if (inHand != None)
+        {
+            // turn it off if it is on
+            if (inHand.bActive && !inHand.IsA('ChargedPickup'))
+                inHand.Activate();
 
-			if (inHand.IsA('SkilledTool'))
-			{
-				if (inHand.IsInState('Idle'))
-				{
-					SkilledTool(inHand).PutDown();
-				}
-				else if (inHand.IsInState('Idle2'))
-				{
-					bSwitch = True;
-				}
-			}
-			else if (inHand.IsA('DeusExWeapon'))
-			{
-				if (inHand.IsInState('Idle') || inHand.IsInState('Reload'))
-					DeusExWeapon(inHand).PutDown();
-				else if (inHand.IsInState('DownWeapon') && (Weapon == None))
-					bSwitch = True;
-			}
-			else
-			{
-				bSwitch = True;
-			}
-		}
-		else
-		{
-			bSwitch = True;
-		}
+            if (inHand.IsA('SkilledTool'))
+            {
+                if (inHand.IsInState('Idle'))
+                {
+                    SkilledTool(inHand).PutDown();
+                }
+                else if (inHand.IsInState('Idle2'))
+                {
+                    bSwitch = True;
+                }
+            }
+            else if (inHand.IsA('DeusExWeapon'))
+            {
+                if (inHand.IsInState('Idle') || inHand.IsInState('Reload'))
+                    DeusExWeapon(inHand).PutDown();
+                else if (inHand.IsInState('DownWeapon') && (Weapon == None))
+                    bSwitch = True;
+            }
+            else
+            {
+                bSwitch = True;
+            }
+        }
+        else
+        {
+            bSwitch = True;
+        }
 
-		// OK to actually switch?
-		if (bSwitch)
-		{
-			SetInHand(inHandPending);
-			SelectedItem = inHandPending;
+        // OK to actually switch?
+        if (bSwitch)
+        {
+            SetInHand(inHandPending);
+            SelectedItem = inHandPending;
 
-			if (inHand != None)
-			{
-				if (inHand.IsA('SkilledTool'))
-					SkilledTool(inHand).BringUp();
-				else if (inHand.IsA('DeusExWeapon'))
-				{
-					if ( Weapon == None )
-					{
-						PendingWeapon = Weapon(inHand);
-						ChangedWeapon();
-					}
-					else if ( Weapon != Weapon(inHand) )
-					{
-						PendingWeapon = Weapon(inHand);
-						if ( !Weapon.PutDown() )
-							PendingWeapon = None;
-					}
+            if (inHand != None)
+            {
+                if (inHand.IsA('SkilledTool'))
+                    SkilledTool(inHand).BringUp();
+                else if (inHand.IsA('DeusExWeapon'))
+                {
+                    if ( Weapon == None )
+                    {
+                        PendingWeapon = Weapon(inHand);
+                        ChangedWeapon();
+                    }
+                    else if ( Weapon != Weapon(inHand) )
+                    {
+                        PendingWeapon = Weapon(inHand);
+                        if ( !Weapon.PutDown() )
+                            PendingWeapon = None;
+                    }
 
-					//== Bad, bad code.  Doesn't let us use multiple copies of the same weapon
-//					SwitchWeapon(DeusExWeapon(inHand).InventoryGroup);
-				}
-			}
-		}
-	}
-	else
-	{
-		bInHandTransition = False;
+                    //== Bad, bad code.  Doesn't let us use multiple copies of the same weapon
+//                    SwitchWeapon(DeusExWeapon(inHand).InventoryGroup);
+                }
+            }
+        }
+    }
+    else
+    {
+        bInHandTransition = False;
 
-		// Added this code because it's now possible to reselect an in-hand
-		// item while we're putting it down, so we need to bring it back up...
+        // Added this code because it's now possible to reselect an in-hand
+        // item while we're putting it down, so we need to bring it back up...
 
-		if (inHand != None)
-		{
-			// if we put the item away, bring it back up
-			if (inHand.IsA('SkilledTool'))
-			{
-				if (inHand.IsInState('Idle2'))
-					SkilledTool(inHand).BringUp();
-			}
-			else if (inHand.IsA('DeusExWeapon'))
-			{
-				if (inHand.IsInState('DownWeapon') && (Weapon == None))
-				{
-					if ( Weapon == None )
-					{
-						PendingWeapon = Weapon(inHand);
-						ChangedWeapon();
-					}
-					else if ( Weapon != Weapon(inHand) )
-					{
-						PendingWeapon = Weapon(inHand);
-						if ( !Weapon.PutDown() )
-							PendingWeapon = None;
-					}
+        if (inHand != None)
+        {
+            // if we put the item away, bring it back up
+            if (inHand.IsA('SkilledTool'))
+            {
+                if (inHand.IsInState('Idle2'))
+                    SkilledTool(inHand).BringUp();
+            }
+            else if (inHand.IsA('DeusExWeapon'))
+            {
+                if (inHand.IsInState('DownWeapon') && (Weapon == None))
+                {
+                    if ( Weapon == None )
+                    {
+                        PendingWeapon = Weapon(inHand);
+                        ChangedWeapon();
+                    }
+                    else if ( Weapon != Weapon(inHand) )
+                    {
+                        PendingWeapon = Weapon(inHand);
+                        if ( !Weapon.PutDown() )
+                            PendingWeapon = None;
+                    }
 
-					//== Bad, bad code.  Doesn't let us use multiple copies of the same weapon
-//					SwitchWeapon(DeusExWeapon(inHand).InventoryGroup);
-				}
-			}
-		}
+                    //== Bad, bad code.  Doesn't let us use multiple copies of the same weapon
+//                    SwitchWeapon(DeusExWeapon(inHand).InventoryGroup);
+                }
+            }
+        }
 
-	}
+    }
 
-	UpdateCarcassEvent();
+    UpdateCarcassEvent();
 }
 
 // ----------------------------------------------------------------------
@@ -5663,10 +5663,10 @@ function UpdateInHand()
 
 function UpdateCarcassEvent()
 {
-	if ((inHand != None) && (inHand.IsA('POVCorpse')))
-		AIStartEvent('Carcass', EAITYPE_Visual);
-	else
-		AIEndEvent('Carcass', EAITYPE_Visual);
+    if ((inHand != None) && (inHand.IsA('POVCorpse')))
+        AIStartEvent('Carcass', EAITYPE_Visual);
+    else
+        AIEndEvent('Carcass', EAITYPE_Visual);
 }
 
 // ----------------------------------------------------------------------
@@ -5677,58 +5677,58 @@ function UpdateCarcassEvent()
 
 function Bool IsEmptyItemSlot( Inventory anItem, int col, int row )
 {
-	local int slotsCol;
-	local int slotsRow;
-	local Bool bEmpty;
-	local Inventory inv;
-	local DeusExRootWindow root;
-	local PersonaScreenInventory winInv;
+    local int slotsCol;
+    local int slotsRow;
+    local Bool bEmpty;
+    local Inventory inv;
+    local DeusExRootWindow root;
+    local PersonaScreenInventory winInv;
 
-	if ( anItem == None )
-		return False;
+    if ( anItem == None )
+        return False;
 
    //=== If cheats are off, then don't let us do the "overlap" trick
    root = DeusExRootWindow(rootWindow);   
    winInv = PersonaScreenInventory(root.GetTopWindow());
    if(!bCheatsEnabled && (winInv == None || !winInv.bDragging))
    {
-	inv = Inventory;
-	while(inv != None)
-	{
-		SetInvSlots(inv, 1);
-		inv = inv.Inventory;
-	}	
+    inv = Inventory;
+    while(inv != None)
+    {
+        SetInvSlots(inv, 1);
+        inv = inv.Inventory;
+    }    
    }
 
-	// First make sure the item can fit horizontally
-	// and vertically
-	if (( col + anItem.invSlotsX > maxInvCols ) ||
-		( row + anItem.invSlotsY > maxInvRows ))
-			return False;
+    // First make sure the item can fit horizontally
+    // and vertically
+    if (( col + anItem.invSlotsX > maxInvCols ) ||
+        ( row + anItem.invSlotsY > maxInvRows ))
+            return False;
 
    if ((Level.NetMode != NM_Standalone) && (bBeltIsMPInventory))
       return True;
 
-	// Now check this and the needed surrounding slots
-	// to see if all the slots are empty
+    // Now check this and the needed surrounding slots
+    // to see if all the slots are empty
 
-	bEmpty = True;
-	for( slotsRow=0; slotsRow < anItem.invSlotsY; slotsRow++ )
-	{
-		for ( slotsCol=0; slotsCol < anItem.invSlotsX; slotsCol++ )
-		{
-			if ( invSlots[((slotsRow + row) * maxInvCols) + (slotsCol + col)] == 1 )
-			{
-				bEmpty = False;
-				break;
-			}
-		}
+    bEmpty = True;
+    for( slotsRow=0; slotsRow < anItem.invSlotsY; slotsRow++ )
+    {
+        for ( slotsCol=0; slotsCol < anItem.invSlotsX; slotsCol++ )
+        {
+            if ( invSlots[((slotsRow + row) * maxInvCols) + (slotsCol + col)] == 1 )
+            {
+                bEmpty = False;
+                break;
+            }
+        }
 
-		if ( !bEmpty )
-			break;
-	}
+        if ( !bEmpty )
+            break;
+    }
 
-	return bEmpty;
+    return bEmpty;
 }
 
 // ----------------------------------------------------------------------
@@ -5739,39 +5739,39 @@ function Bool IsEmptyItemSlot( Inventory anItem, int col, int row )
 
 function Bool IsEmptyItemSlotXY( int invSlotsX, int invSlotsY, int col, int row )
 {
-	local int slotsCol;
-	local int slotsRow;
-	local Bool bEmpty;
+    local int slotsCol;
+    local int slotsRow;
+    local Bool bEmpty;
 
-	// First make sure the item can fit horizontally
-	// and vertically
-	if (( col + invSlotsX > maxInvCols ) ||
-		( row + invSlotsY > maxInvRows ))
-			return False;
+    // First make sure the item can fit horizontally
+    // and vertically
+    if (( col + invSlotsX > maxInvCols ) ||
+        ( row + invSlotsY > maxInvRows ))
+            return False;
 
    if ((Level.NetMode != NM_Standalone) && (bBeltIsMPInventory))
       return True;
 
    // Now check this and the needed surrounding slots
-	// to see if all the slots are empty
+    // to see if all the slots are empty
 
-	bEmpty = True;
-	for( slotsRow=0; slotsRow < invSlotsY; slotsRow++ )
-	{
-		for ( slotsCol=0; slotsCol < invSlotsX; slotsCol++ )
-		{
-			if ( invSlots[((slotsRow + row) * maxInvCols) + (slotsCol + col)] == 1 )
-			{
-				bEmpty = False;
-				break;
-			}
-		}
+    bEmpty = True;
+    for( slotsRow=0; slotsRow < invSlotsY; slotsRow++ )
+    {
+        for ( slotsCol=0; slotsCol < invSlotsX; slotsCol++ )
+        {
+            if ( invSlots[((slotsRow + row) * maxInvCols) + (slotsCol + col)] == 1 )
+            {
+                bEmpty = False;
+                break;
+            }
+        }
 
-		if ( !bEmpty )
-			break;
-	}
+        if ( !bEmpty )
+            break;
+    }
 
-	return bEmpty;
+    return bEmpty;
 }
 
 // ----------------------------------------------------------------------
@@ -5780,20 +5780,20 @@ function Bool IsEmptyItemSlotXY( int invSlotsX, int invSlotsY, int col, int row 
 
 function SetInvSlots( Inventory anItem, int newValue )
 {
-	local int slotsCol;
-	local int slotsRow;
+    local int slotsCol;
+    local int slotsRow;
 
-	if ( anItem == None )
-		return;
+    if ( anItem == None )
+        return;
 
-	// Make sure this item is located in a valid position
-	if (( anItem.invPosX != -1 ) && ( anItem.invPosY != -1 ))
-	{
-		// fill inventory slots
-		for( slotsRow=0; slotsRow < anItem.invSlotsY; slotsRow++ )
-			for ( slotsCol=0; slotsCol < anItem.invSlotsX; slotsCol++ )
-				invSlots[((slotsRow + anItem.invPosY) * maxInvCols) + (slotsCol + anItem.invPosX)] = newValue;
-	}
+    // Make sure this item is located in a valid position
+    if (( anItem.invPosX != -1 ) && ( anItem.invPosY != -1 ))
+    {
+        // fill inventory slots
+        for( slotsRow=0; slotsRow < anItem.invSlotsY; slotsRow++ )
+            for ( slotsCol=0; slotsCol < anItem.invSlotsX; slotsCol++ )
+                invSlots[((slotsRow + anItem.invPosY) * maxInvCols) + (slotsCol + anItem.invPosX)] = newValue;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -5802,11 +5802,11 @@ function SetInvSlots( Inventory anItem, int newValue )
 
 function PlaceItemInSlot( Inventory anItem, int col, int row )
 {
-	// Save in the original Inventory item also
-	anItem.invPosX = col;
-	anItem.invPosY = row;
+    // Save in the original Inventory item also
+    anItem.invPosX = col;
+    anItem.invPosY = row;
 
-	SetInvSlots(anItem, 1);
+    SetInvSlots(anItem, 1);
 }
 
 // ----------------------------------------------------------------------
@@ -5817,15 +5817,15 @@ function PlaceItemInSlot( Inventory anItem, int col, int row )
 
 function RemoveItemFromSlot(Inventory anItem)
 {
-	if (anItem != None)
-	{
-		if(anItem.invPosX != -2 && anItem.invPosY != -2)
-		{
-			SetInvSlots(anItem, 0);
-			anItem.invPosX = -1;
-			anItem.invPosY = -1;
-		}
-	}
+    if (anItem != None)
+    {
+        if(anItem.invPosX != -2 && anItem.invPosY != -2)
+        {
+            SetInvSlots(anItem, 0);
+            anItem.invPosX = -1;
+            anItem.invPosY = -1;
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -5836,10 +5836,10 @@ function RemoveItemFromSlot(Inventory anItem)
 
 function ClearInventorySlots()
 {
-	local int slotIndex;
+    local int slotIndex;
 
-	for(slotIndex=0; slotIndex<arrayCount(invSlots); slotIndex++)
-		invSlots[slotIndex] = 0;
+    for(slotIndex=0; slotIndex<arrayCount(invSlots); slotIndex++)
+        invSlots[slotIndex] = 0;
 }
 
 // ----------------------------------------------------------------------
@@ -5852,60 +5852,60 @@ function ClearInventorySlots()
 
 function Bool FindInventorySlot(Inventory anItem, optional Bool bSearchOnly)
 {
-	local bool bPositionFound;
-	local int row;
-	local int col;
-	local int newSlotX;
-	local int newSlotY;
-	local int i;
-	local int counter;
+    local bool bPositionFound;
+    local int row;
+    local int col;
+    local int newSlotX;
+    local int newSlotY;
+    local int i;
+    local int counter;
         local int beltpos;
-	local ammo foundAmmo;
+    local ammo foundAmmo;
 
-	if (anItem == None)
-		return False;
-	
-	// Special checks for objects that do not require phsyical inventory
-	// in order to be picked up:
-	// 
-	// - NanoKeys
-	// - DataVaultImages
-	// - Credits
-	// - Ammo
+    if (anItem == None)
+        return False;
+    
+    // Special checks for objects that do not require phsyical inventory
+    // in order to be picked up:
+    // 
+    // - NanoKeys
+    // - DataVaultImages
+    // - Credits
+    // - Ammo
 
-	if ((anItem.IsA('DataVaultImage')) || (anItem.IsA('NanoKey')) || (anItem.IsA('Credits')) || (anItem.IsA('Ammo')))
-		return True;
+    if ((anItem.IsA('DataVaultImage')) || (anItem.IsA('NanoKey')) || (anItem.IsA('Credits')) || (anItem.IsA('Ammo')))
+        return True;
 
-	   bPositionFound = False;
-	   // DEUS_EX AMSD In multiplayer, due to propagation delays, the inventory refreshers in the
-	   // personascreeninventory can keep bouncing items back and forth.  So just return true and
-	   // place the item where it already was.
-	   if ((anItem.invPosX != -1) && (anItem.invPosY != -1) && (Level.NetMode != NM_Standalone) && (!bSearchOnly))
-	   {
-	      SetInvSlots(anItem,1);
-	      log("Trying to place item "$anItem$" when already placed at "$anItem.invPosX$", "$anItem.invPosY$".");
-	      return True;
-	   }
+       bPositionFound = False;
+       // DEUS_EX AMSD In multiplayer, due to propagation delays, the inventory refreshers in the
+       // personascreeninventory can keep bouncing items back and forth.  So just return true and
+       // place the item where it already was.
+       if ((anItem.invPosX != -1) && (anItem.invPosY != -1) && (Level.NetMode != NM_Standalone) && (!bSearchOnly))
+       {
+          SetInvSlots(anItem,1);
+          log("Trying to place item "$anItem$" when already placed at "$anItem.invPosX$", "$anItem.invPosY$".");
+          return True;
+       }
 
-	// Loop through all slots, looking for a fit
-	for (row=0; row<maxInvRows; row++)
-	{	
-		if (row + anItem.invSlotsY > maxInvRows)
-			break;
+    // Loop through all slots, looking for a fit
+    for (row=0; row<maxInvRows; row++)
+    {    
+        if (row + anItem.invSlotsY > maxInvRows)
+            break;
 
-		// Make sure the item can fit vertically
-		for(col=0; col<maxInvCols; col++)
-		{
-			if (IsEmptyItemSlot(anItem, col, row ))
-			{
-				bPositionFound = True;
-				break;
-			}
-		}
+        // Make sure the item can fit vertically
+        for(col=0; col<maxInvCols; col++)
+        {
+            if (IsEmptyItemSlot(anItem, col, row ))
+            {
+                bPositionFound = True;
+                break;
+            }
+        }
 
-		if (bPositionFound)
-			break;
-	}
+        if (bPositionFound)
+            break;
+    }
 
    if ((Level.NetMode != NM_Standalone) && (bBeltIsMPInventory))
    {
@@ -5917,32 +5917,32 @@ function Bool FindInventorySlot(Inventory anItem, optional Bool bSearchOnly)
          {
             if ( (DeusExRootWindow(rootWindow).hud.belt.objects[beltpos].item == None) && (anItem.TestMPBeltSpot(beltpos)) )
             {
-		//For multi-slot weapons, make sure there's enough slots for them to occupy
-		if(MPBeltSizer(anItem) > 1)
-		{
-			counter = 0;
-			//Check slots 1 through 6
-			for(i = 1; i <= 6; i++)
-			{
-				//If the slot is empty...
-				if(DeusExRootWindow(rootWindow).hud.belt.objects[i].item == None)
-					counter++; //... add to the counter
-			}
+        //For multi-slot weapons, make sure there's enough slots for them to occupy
+        if(MPBeltSizer(anItem) > 1)
+        {
+            counter = 0;
+            //Check slots 1 through 6
+            for(i = 1; i <= 6; i++)
+            {
+                //If the slot is empty...
+                if(DeusExRootWindow(rootWindow).hud.belt.objects[i].item == None)
+                    counter++; //... add to the counter
+            }
 
-			//If the counter is less than the number of slots it needs to take up,
-			// end the function and return false
-			if(counter < MPBeltSizer(anItem))
-				return False;
+            //If the counter is less than the number of slots it needs to take up,
+            // end the function and return false
+            if(counter < MPBeltSizer(anItem))
+                return False;
 
-			//Otherwise we continue
-		}
+            //Otherwise we continue
+        }
                bPositionFound = True;
             }
-	    //=== For the new way Deus Ex MP will work.  The Change Ammo button will be very important -- Y|yukichigai
-	    else if(DeusExWeapon(anItem).TestCycleable() || anItem.IsA('Multitool') || anItem.IsA('Lockpick') || anItem.IsA('BioelectricCell') || anItem.IsA('MedKit'))
-	    {
-		bPositionFound = True;
-	    }
+        //=== For the new way Deus Ex MP will work.  The Change Ammo button will be very important -- Y|yukichigai
+        else if(DeusExWeapon(anItem).TestCycleable() || anItem.IsA('Multitool') || anItem.IsA('Lockpick') || anItem.IsA('BioelectricCell') || anItem.IsA('MedKit'))
+        {
+        bPositionFound = True;
+        }
          }
       }
       else
@@ -5953,12 +5953,12 @@ function Bool FindInventorySlot(Inventory anItem, optional Bool bSearchOnly)
 
    if ((bPositionFound) && (!bSearchOnly))
    {
-		PlaceItemInSlot(anItem, col, row);
+        PlaceItemInSlot(anItem, col, row);
    }
    
-	return bPositionFound;
+    return bPositionFound;
 }
-				
+                
 // ----------------------------------------------------------------------
 // FindInventorySlotXY()
 //
@@ -5968,52 +5968,52 @@ function Bool FindInventorySlot(Inventory anItem, optional Bool bSearchOnly)
 
 function Bool FindInventorySlotXY(int invSlotsX, int invSlotsY, out int newSlotX, out int newSlotY)
 {
-	local bool bPositionFound;
-	local int row;
-	local int col;
+    local bool bPositionFound;
+    local int row;
+    local int col;
 
-	bPositionFound = False;
+    bPositionFound = False;
 
-	// Loop through all slots, looking for a fit
-	for (row=0; row<maxInvRows; row++)
-	{	
-		if (row + invSlotsY > maxInvRows)
-			break;
+    // Loop through all slots, looking for a fit
+    for (row=0; row<maxInvRows; row++)
+    {    
+        if (row + invSlotsY > maxInvRows)
+            break;
 
-		// Make sure the item can fit vertically
-		for(col=0; col<maxInvCols; col++)
-		{
-			if (IsEmptyItemSlotXY(invSlotsX, invSlotsY, col, row))
-			{
-				newSlotX = col;
-				newSlotY = row;
+        // Make sure the item can fit vertically
+        for(col=0; col<maxInvCols; col++)
+        {
+            if (IsEmptyItemSlotXY(invSlotsX, invSlotsY, col, row))
+            {
+                newSlotX = col;
+                newSlotY = row;
 
-				bPositionFound = True;
-				break;
-			}
-		}
+                bPositionFound = True;
+                break;
+            }
+        }
 
-		if (bPositionFound)
-			break;
-	}
+        if (bPositionFound)
+            break;
+    }
 
-	return bPositionFound;
+    return bPositionFound;
 }
 
 function Inventory FindInventoryType( class DesiredClass )
 {
-	local Inventory Inv;
+    local Inventory Inv;
 
-	Inv = Super.FindInventoryType(DesiredClass);
+    Inv = Super.FindInventoryType(DesiredClass);
 
 
-	if(Inv != None)
-	{
-		//== Don't mess up the special carry items
-		if(Inv.invPosX == -2 || Inv.invPosY == -2)
-			return None;
-	}
-	return Inv;
+    if(Inv != None)
+    {
+        //== Don't mess up the special carry items
+        if(Inv.invPosX == -2 || Inv.invPosY == -2)
+            return None;
+    }
+    return Inv;
 } 
 
 // ----------------------------------------------------------------------
@@ -6024,32 +6024,32 @@ function Inventory FindInventoryType( class DesiredClass )
 
 exec function DumpInventoryGrid()
 {
-	local int slotsCol;
-	local int slotsRow;
-	local String gridRow;
+    local int slotsCol;
+    local int slotsRow;
+    local String gridRow;
 
-	log("DumpInventoryGrid()");
-	log("=============================================================");
-	
-	log("        1 2 3 4 5");
-	log("-----------------");
+    log("DumpInventoryGrid()");
+    log("=============================================================");
+    
+    log("        1 2 3 4 5");
+    log("-----------------");
 
 
-	for( slotsRow=0; slotsRow < maxInvRows; slotsRow++ )
-	{
-		gridRow = "Row #" $ slotsRow $ ": ";
+    for( slotsRow=0; slotsRow < maxInvRows; slotsRow++ )
+    {
+        gridRow = "Row #" $ slotsRow $ ": ";
 
-		for ( slotsCol=0; slotsCol < maxInvCols; slotsCol++ )
-		{
-			if ( invSlots[(slotsRow * maxInvCols) + slotsCol] == 1)
-				gridRow = gridRow $ "X ";
-			else
-				gridRow = gridRow $ "  ";
-		}
-		
-		log(gridRow);
-	}
-	log("=============================================================");
+        for ( slotsCol=0; slotsCol < maxInvCols; slotsCol++ )
+        {
+            if ( invSlots[(slotsRow * maxInvCols) + slotsCol] == 1)
+                gridRow = gridRow $ "X ";
+            else
+                gridRow = gridRow $ "  ";
+        }
+        
+        log(gridRow);
+    }
+    log("=============================================================");
 }
 
 // ----------------------------------------------------------------------
@@ -6092,11 +6092,11 @@ function AddObjectToBelt(Inventory item, int pos, bool bOverride)
 
 function Inventory GetWeaponOrAmmo(Inventory queryItem)
 {
-	// First check to see if this item is actually a weapon or ammo
-	if ((Weapon(queryItem) != None) || (Ammo(queryItem) != None))
-		return FindInventoryType(queryItem.Class);
-	else 
-		return None;
+    // First check to see if this item is actually a weapon or ammo
+    if ((Weapon(queryItem) != None) || (Ammo(queryItem) != None))
+        return FindInventoryType(queryItem.Class);
+    else 
+        return None;
 }
 
 // ----------------------------------------------------------------------
@@ -6107,14 +6107,14 @@ function Inventory GetWeaponOrAmmo(Inventory queryItem)
 
 exec function Summon(string ClassName)
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if(!bAdmin && (Level.Netmode != NM_Standalone))
-		return;
-	if(instr(ClassName, ".") == -1)
-		ClassName = "DeusEx." $ ClassName;
-	Super.Summon(ClassName);
+    if(!bAdmin && (Level.Netmode != NM_Standalone))
+        return;
+    if(instr(ClassName, ".") == -1)
+        ClassName = "DeusEx." $ ClassName;
+    Super.Summon(ClassName);
 }
 
 
@@ -6126,64 +6126,64 @@ exec function Summon(string ClassName)
 
 exec function SpawnMass(Name ClassName, optional int TotalCount)
 {
-	local actor        spawnee;
-	local vector       spawnPos;
-	local vector       center;
-	local rotator      direction;
-	local int          maxTries;
-	local int          count;
-	local int          numTries;
-	local float        maxRange;
-	local float        range;
-	local float        angle;
-	local class<Actor> spawnClass;
-	local string		holdName;
+    local actor        spawnee;
+    local vector       spawnPos;
+    local vector       center;
+    local rotator      direction;
+    local int          maxTries;
+    local int          count;
+    local int          numTries;
+    local float        maxRange;
+    local float        range;
+    local float        angle;
+    local class<Actor> spawnClass;
+    local string        holdName;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (!bAdmin && (Level.Netmode != NM_Standalone))
-		return;
+    if (!bAdmin && (Level.Netmode != NM_Standalone))
+        return;
 
-	if (instr(ClassName, ".") == -1)
-		holdName = "DeusEx." $ ClassName;
-	else
-		holdName = "" $ ClassName;  // barf
+    if (instr(ClassName, ".") == -1)
+        holdName = "DeusEx." $ ClassName;
+    else
+        holdName = "" $ ClassName;  // barf
 
-	spawnClass = class<actor>(DynamicLoadObject(holdName, class'Class'));
-	if (spawnClass == None)
-	{
-		ClientMessage("Illegal actor name "$GetItemName(String(ClassName)));
-		return;
-	}
+    spawnClass = class<actor>(DynamicLoadObject(holdName, class'Class'));
+    if (spawnClass == None)
+    {
+        ClientMessage("Illegal actor name "$GetItemName(String(ClassName)));
+        return;
+    }
 
-	if (totalCount <= 0)
-		totalCount = 10;
-	if (totalCount > 250)
-		totalCount = 250;
-	maxTries = totalCount*2;
-	count = 0;
-	numTries = 0;
-	maxRange = sqrt(totalCount/3.1416)*4*SpawnClass.Default.CollisionRadius;
+    if (totalCount <= 0)
+        totalCount = 10;
+    if (totalCount > 250)
+        totalCount = 250;
+    maxTries = totalCount*2;
+    count = 0;
+    numTries = 0;
+    maxRange = sqrt(totalCount/3.1416)*4*SpawnClass.Default.CollisionRadius;
 
-	direction = ViewRotation;
-	direction.pitch = 0;
-	direction.roll  = 0;
-	center = Location + Vector(direction)*(maxRange+SpawnClass.Default.CollisionRadius+CollisionRadius+20);
-	while ((count < totalCount) && (numTries < maxTries))
-	{
-		angle = FRand()*3.14159265359*2;
-		range = sqrt(FRand())*maxRange;
-		spawnPos.X = sin(angle)*range;
-		spawnPos.Y = cos(angle)*range;
-		spawnPos.Z = 0;
-		spawnee = spawn(SpawnClass,,,center+spawnPos, Rotation);
-		if (spawnee != None)
-			count++;
-		numTries++;
-	}
+    direction = ViewRotation;
+    direction.pitch = 0;
+    direction.roll  = 0;
+    center = Location + Vector(direction)*(maxRange+SpawnClass.Default.CollisionRadius+CollisionRadius+20);
+    while ((count < totalCount) && (numTries < maxTries))
+    {
+        angle = FRand()*3.14159265359*2;
+        range = sqrt(FRand())*maxRange;
+        spawnPos.X = sin(angle)*range;
+        spawnPos.Y = cos(angle)*range;
+        spawnPos.Z = 0;
+        spawnee = spawn(SpawnClass,,,center+spawnPos, Rotation);
+        if (spawnee != None)
+            count++;
+        numTries++;
+    }
 
-	ClientMessage(count$" actor(s) spawned");
+    ClientMessage(count$" actor(s) spawned");
 
 }
 
@@ -6193,10 +6193,10 @@ exec function SpawnMass(Name ClassName, optional int TotalCount)
 
 exec function ToggleWalk()
 {
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	bToggleWalk = !bToggleWalk;
+    bToggleWalk = !bToggleWalk;
 }
 
 // ----------------------------------------------------------------------
@@ -6207,14 +6207,14 @@ exec function ToggleWalk()
 
 exec function ReloadWeapon()
 {
-	local DeusExWeapon W;
+    local DeusExWeapon W;
 
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	W = DeusExWeapon(Weapon);
-	if (W != None)
-		W.ReloadAmmo();
+    W = DeusExWeapon(Weapon);
+    if (W != None)
+        W.ReloadAmmo();
 }
 
 // ----------------------------------------------------------------------
@@ -6225,14 +6225,14 @@ exec function ReloadWeapon()
 
 exec function ToggleScope()
 {
-	local DeusExWeapon W;
+    local DeusExWeapon W;
 
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	W = DeusExWeapon(Weapon);
-	if (W != None)
-		W.ScopeToggle();
+    W = DeusExWeapon(Weapon);
+    if (W != None)
+        W.ScopeToggle();
 }
 
 // ----------------------------------------------------------------------
@@ -6243,44 +6243,44 @@ exec function ToggleScope()
 
 exec function ToggleLaser()
 {
-	local DeusExWeapon W;
+    local DeusExWeapon W;
 
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	W = DeusExWeapon(Weapon);
-	if (W != None)
-		W.LaserToggle();
+    W = DeusExWeapon(Weapon);
+    if (W != None)
+        W.LaserToggle();
 }
 
 // check to see if the player can lift a certain decoration taking
 // into account his muscle augs
 function bool CanBeLifted(Decoration deco)
 {
-	local int augLevel, augMult;
-	local float maxLift;
+    local int augLevel, augMult;
+    local float maxLift;
 
-	maxLift = 50;
-	if (AugmentationSystem != None)
-	{
-		augLevel = AugmentationSystem.GetClassLevel(class'AugMuscle');
-		augMult = 1;
-		if (augLevel >= 0)
-			augMult = augLevel+2;
-		maxLift *= augMult;
-	}
+    maxLift = 50;
+    if (AugmentationSystem != None)
+    {
+        augLevel = AugmentationSystem.GetClassLevel(class'AugMuscle');
+        augMult = 1;
+        if (augLevel >= 0)
+            augMult = augLevel+2;
+        maxLift *= augMult;
+    }
 
-	if (!deco.bPushable || (deco.Mass > maxLift) || (deco.StandingCount > 0))
-	{
-		if (deco.bPushable)
-			ClientMessage(TooHeavyToLift);
-		else
-			ClientMessage(CannotLift);
+    if (!deco.bPushable || (deco.Mass > maxLift) || (deco.StandingCount > 0))
+    {
+        if (deco.bPushable)
+            ClientMessage(TooHeavyToLift);
+        else
+            ClientMessage(CannotLift);
 
-		return False;
-	}
+        return False;
+    }
 
-	return True;
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -6292,72 +6292,72 @@ function bool CanBeLifted(Decoration deco)
 
 function GrabDecoration()
 {
-	// can't grab decorations while leaning
-	if (IsLeaning())
-		return;
+    // can't grab decorations while leaning
+    if (IsLeaning())
+        return;
 
-	//== New stuff.  Special function that lets us open and loot containers instead of smashy-smash
-	if(Containers(FrobTarget) != None)
-	{
-		if(Containers(FrobTarget).bLootable && !Containers(FrobTarget).bLooted)
-		{
-			Containers(FrobTarget).Loot(Self);
-			return;
-		}
-	}
+    //== New stuff.  Special function that lets us open and loot containers instead of smashy-smash
+    if(Containers(FrobTarget) != None)
+    {
+        if(Containers(FrobTarget).bLootable && !Containers(FrobTarget).bLooted)
+        {
+            Containers(FrobTarget).Loot(Self);
+            return;
+        }
+    }
 
-	// can't grab decorations while holding something else
-	if (inHand != None)
-	{
-		ClientMessage(HandsFull);
-		return;
-	}
+    // can't grab decorations while holding something else
+    if (inHand != None)
+    {
+        ClientMessage(HandsFull);
+        return;
+    }
 
-	if (carriedDecoration == None)
-		if ((FrobTarget != None) && FrobTarget.IsA('Decoration') && (Weapon == None))
-			if (CanBeLifted(Decoration(FrobTarget)))
-			{
-				CarriedDecoration = Decoration(FrobTarget);
-				PutCarriedDecorationInHand();
-			}
+    if (carriedDecoration == None)
+        if ((FrobTarget != None) && FrobTarget.IsA('Decoration') && (Weapon == None))
+            if (CanBeLifted(Decoration(FrobTarget)))
+            {
+                CarriedDecoration = Decoration(FrobTarget);
+                PutCarriedDecorationInHand();
+            }
 }
-	
+    
 // ----------------------------------------------------------------------
 // PutCarriedDecorationInHand()
 // ----------------------------------------------------------------------
 
 function PutCarriedDecorationInHand()
 {
-	local vector lookDir, upDir;
+    local vector lookDir, upDir;
 
-	if (CarriedDecoration != None)
-	{
-		lookDir = Vector(Rotation);
-		lookDir.Z = 0;				
-		upDir = vect(0,0,0);
-		upDir.Z = CollisionHeight / 2;		// put it up near eye level
-		CarriedDecoration.SetPhysics(PHYS_Falling);
+    if (CarriedDecoration != None)
+    {
+        lookDir = Vector(Rotation);
+        lookDir.Z = 0;                
+        upDir = vect(0,0,0);
+        upDir.Z = CollisionHeight / 2;        // put it up near eye level
+        CarriedDecoration.SetPhysics(PHYS_Falling);
 
-		if ( CarriedDecoration.SetLocation(Location + upDir + (0.5 * CollisionRadius + CarriedDecoration.CollisionRadius) * lookDir) )
-		{
-			CarriedDecoration.SetPhysics(PHYS_None);
-			CarriedDecoration.SetBase(self);
-			CarriedDecoration.SetCollision(False, False, False);
-			CarriedDecoration.bCollideWorld = False;
+        if ( CarriedDecoration.SetLocation(Location + upDir + (0.5 * CollisionRadius + CarriedDecoration.CollisionRadius) * lookDir) )
+        {
+            CarriedDecoration.SetPhysics(PHYS_None);
+            CarriedDecoration.SetBase(self);
+            CarriedDecoration.SetCollision(False, False, False);
+            CarriedDecoration.bCollideWorld = False;
 
-			// make it translucent
-			CarriedDecoration.Style = STY_Translucent;
-			CarriedDecoration.ScaleGlow = 1.0;
-			CarriedDecoration.bUnlit = True;
+            // make it translucent
+            CarriedDecoration.Style = STY_Translucent;
+            CarriedDecoration.ScaleGlow = 1.0;
+            CarriedDecoration.bUnlit = True;
 
-			FrobTarget = None;
-		}
-		else
-		{
-			ClientMessage(NoRoomToLift);
-			CarriedDecoration = None;
-		}
-	}
+            FrobTarget = None;
+        }
+        else
+        {
+            ClientMessage(NoRoomToLift);
+            CarriedDecoration = None;
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -6369,98 +6369,98 @@ function PutCarriedDecorationInHand()
 
 function DropDecoration()
 {
-	local Vector X, Y, Z, dropVect, origLoc, HitLocation, HitNormal, extent;
-	local float velscale, size, mult;
-	local bool bSuccess;
-	local Actor hitActor;
+    local Vector X, Y, Z, dropVect, origLoc, HitLocation, HitNormal, extent;
+    local float velscale, size, mult;
+    local bool bSuccess;
+    local Actor hitActor;
 
-	bSuccess = False;
+    bSuccess = False;
 
-	if (CarriedDecoration != None)
-	{
-		origLoc = CarriedDecoration.Location;
-		GetAxes(Rotation, X, Y, Z);
+    if (CarriedDecoration != None)
+    {
+        origLoc = CarriedDecoration.Location;
+        GetAxes(Rotation, X, Y, Z);
 
-		// if we are highlighting something, try to place the object on the target
-		if ((FrobTarget != None) && !FrobTarget.IsA('Pawn'))
-		{
-			CarriedDecoration.Velocity = vect(0,0,0);
+        // if we are highlighting something, try to place the object on the target
+        if ((FrobTarget != None) && !FrobTarget.IsA('Pawn'))
+        {
+            CarriedDecoration.Velocity = vect(0,0,0);
 
-			// try to drop the object about one foot above the target
-			size = FrobTarget.CollisionRadius - CarriedDecoration.CollisionRadius * 2;
-			dropVect.X = size/2 - FRand() * size;
-			dropVect.Y = size/2 - FRand() * size;
-			dropVect.Z = FrobTarget.CollisionHeight + CarriedDecoration.CollisionHeight + 16;
-			dropVect += FrobTarget.Location;
-		}
-		else
-		{
-			// throw velocity is based on augmentation
-			if (AugmentationSystem != None)
-			{
-				mult = AugmentationSystem.GetAugLevelValue(class'AugMuscle');
-				if (mult == -1.0)
-					mult = 1.0;
-			}
+            // try to drop the object about one foot above the target
+            size = FrobTarget.CollisionRadius - CarriedDecoration.CollisionRadius * 2;
+            dropVect.X = size/2 - FRand() * size;
+            dropVect.Y = size/2 - FRand() * size;
+            dropVect.Z = FrobTarget.CollisionHeight + CarriedDecoration.CollisionHeight + 16;
+            dropVect += FrobTarget.Location;
+        }
+        else
+        {
+            // throw velocity is based on augmentation
+            if (AugmentationSystem != None)
+            {
+                mult = AugmentationSystem.GetAugLevelValue(class'AugMuscle');
+                if (mult == -1.0)
+                    mult = 1.0;
+            }
 
-			//== We shouldn't throw items due to being dropped whilst in a conversation, because that tends to kill or PO who we're conversing with
-			if (IsLeaning() || IsInState('Conversation'))
-				CarriedDecoration.Velocity = vect(0,0,0);
-			else
-				CarriedDecoration.Velocity = Vector(ViewRotation) * mult * 500 + vect(0,0,220) + 40 * VRand();
+            //== We shouldn't throw items due to being dropped whilst in a conversation, because that tends to kill or PO who we're conversing with
+            if (IsLeaning() || IsInState('Conversation'))
+                CarriedDecoration.Velocity = vect(0,0,0);
+            else
+                CarriedDecoration.Velocity = Vector(ViewRotation) * mult * 500 + vect(0,0,220) + 40 * VRand();
 
-			// scale it based on the mass
-			velscale = FClamp(CarriedDecoration.Mass / 20.0, 1.0, 40.0);
+            // scale it based on the mass
+            velscale = FClamp(CarriedDecoration.Mass / 20.0, 1.0, 40.0);
 
-			CarriedDecoration.Velocity /= velscale;
-			dropVect = Location + (CarriedDecoration.CollisionRadius + CollisionRadius + 4) * X;
-			dropVect.Z += BaseEyeHeight;
-		}
+            CarriedDecoration.Velocity /= velscale;
+            dropVect = Location + (CarriedDecoration.CollisionRadius + CollisionRadius + 4) * X;
+            dropVect.Z += BaseEyeHeight;
+        }
 
-		// is anything blocking the drop point? (like thin doors)
-		if (FastTrace(dropVect))
-		{
-			CarriedDecoration.SetCollision(True, True, True);
-			CarriedDecoration.bCollideWorld = True;
+        // is anything blocking the drop point? (like thin doors)
+        if (FastTrace(dropVect))
+        {
+            CarriedDecoration.SetCollision(True, True, True);
+            CarriedDecoration.bCollideWorld = True;
 
-			// check to see if there's space there
-			extent.X = CarriedDecoration.CollisionRadius;
-			extent.Y = CarriedDecoration.CollisionRadius;
-			extent.Z = 1;
-			hitActor = Trace(HitLocation, HitNormal, dropVect, CarriedDecoration.Location, True, extent);
+            // check to see if there's space there
+            extent.X = CarriedDecoration.CollisionRadius;
+            extent.Y = CarriedDecoration.CollisionRadius;
+            extent.Z = 1;
+            hitActor = Trace(HitLocation, HitNormal, dropVect, CarriedDecoration.Location, True, extent);
 
-			if ((hitActor == None) && CarriedDecoration.SetLocation(dropVect))
-				bSuccess = True;
-			else
-			{
-				CarriedDecoration.SetCollision(False, False, False);
-				CarriedDecoration.bCollideWorld = False;
-			}
-		}
+            if ((hitActor == None) && CarriedDecoration.SetLocation(dropVect))
+                bSuccess = True;
+            else
+            {
+                CarriedDecoration.SetCollision(False, False, False);
+                CarriedDecoration.bCollideWorld = False;
+            }
+        }
 
-		// if we can drop it here, then drop it
-		if (bSuccess)
-		{
-			CarriedDecoration.bWasCarried = True;
-			CarriedDecoration.SetBase(None);
-			CarriedDecoration.SetPhysics(PHYS_Falling);
-			CarriedDecoration.Instigator = Self;
+        // if we can drop it here, then drop it
+        if (bSuccess)
+        {
+            CarriedDecoration.bWasCarried = True;
+            CarriedDecoration.SetBase(None);
+            CarriedDecoration.SetPhysics(PHYS_Falling);
+            CarriedDecoration.Instigator = Self;
 
-			// turn off translucency
-			CarriedDecoration.Style = CarriedDecoration.Default.Style;
-			CarriedDecoration.bUnlit = CarriedDecoration.Default.bUnlit;
-			if (CarriedDecoration.IsA('DeusExDecoration'))
-				DeusExDecoration(CarriedDecoration).ResetScaleGlow();
+            // turn off translucency
+            CarriedDecoration.Style = CarriedDecoration.Default.Style;
+            CarriedDecoration.bUnlit = CarriedDecoration.Default.bUnlit;
+            if (CarriedDecoration.IsA('DeusExDecoration'))
+                DeusExDecoration(CarriedDecoration).ResetScaleGlow();
 
-			CarriedDecoration = None;
-		}
-		else
-		{
-			// otherwise, don't drop it and display a message
-			CarriedDecoration.SetLocation(origLoc);
-			ClientMessage(CannotDropHere);
-		}
-	}
+            CarriedDecoration = None;
+        }
+        else
+        {
+            // otherwise, don't drop it and display a message
+            CarriedDecoration.SetLocation(origLoc);
+            ClientMessage(CannotDropHere);
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -6475,325 +6475,325 @@ function DropDecoration()
 
 exec function bool DropItem(optional Inventory inv, optional bool bDrop)
 {
-	local Inventory item;
-	local Inventory previousItemInHand;
-	local Vector X, Y, Z, dropVect;
-	local float size, mult;
-	local DeusExCarcass carc;
-	local class<DeusExCarcass> carcClass;
-	local bool bDropped;
-	local bool bRemovedFromSlots;
-	local int  itemPosX, itemPosY;
+    local Inventory item;
+    local Inventory previousItemInHand;
+    local Vector X, Y, Z, dropVect;
+    local float size, mult;
+    local DeusExCarcass carc;
+    local class<DeusExCarcass> carcClass;
+    local bool bDropped;
+    local bool bRemovedFromSlots;
+    local int  itemPosX, itemPosY;
 
-	bDropped = True;
+    bDropped = True;
 
-	if (RestrictInput())
-		return False;
+    if (RestrictInput())
+        return False;
 
-	if (inv == None)
-	{
-		previousItemInHand = inHand;
-		item = inHand;
-	}
-	else
-	{
-		item = inv;
-	}
+    if (inv == None)
+    {
+        previousItemInHand = inHand;
+        item = inHand;
+    }
+    else
+    {
+        item = inv;
+    }
 
-	//Since we have a new invo system for MP let's not let people screw
-	// themselves by dropping grenades.
-	if(DeusExWeapon(item) != None)
-	{
-		if(Level.NetMode != NM_Standalone && DeusExWeapon(item).IsA('WeaponGrenade') && DeusExWeapon(item).TestCycleable())
-		{
-			ClientMessage("You cannot drop grenades in Shifter MP.  Use the Change Ammo button to switch grenades");
-			return False;
-		}
-	}
+    //Since we have a new invo system for MP let's not let people screw
+    // themselves by dropping grenades.
+    if(DeusExWeapon(item) != None)
+    {
+        if(Level.NetMode != NM_Standalone && DeusExWeapon(item).IsA('WeaponGrenade') && DeusExWeapon(item).TestCycleable())
+        {
+            ClientMessage("You cannot drop grenades in Shifter MP.  Use the Change Ammo button to switch grenades");
+            return False;
+        }
+    }
 
-	if (item != None)
-	{
-		GetAxes(Rotation, X, Y, Z);
-		dropVect = Location + (CollisionRadius + 2*item.CollisionRadius) * X;
-		dropVect.Z += BaseEyeHeight;
+    if (item != None)
+    {
+        GetAxes(Rotation, X, Y, Z);
+        dropVect = Location + (CollisionRadius + 2*item.CollisionRadius) * X;
+        dropVect.Z += BaseEyeHeight;
 
-		// check to see if we're blocked by terrain
-		if (!FastTrace(dropVect))
-		{
-			ClientMessage(CannotDropHere);
-			return False;
-		}
+        // check to see if we're blocked by terrain
+        if (!FastTrace(dropVect))
+        {
+            ClientMessage(CannotDropHere);
+            return False;
+        }
 
-		// don't drop it if it's in a strange state
-		if (item.IsA('DeusExWeapon'))
-		{
-			if (!DeusExWeapon(item).IsInState('Idle') && !DeusExWeapon(item).IsInState('Idle2') &&
-				!DeusExWeapon(item).IsInState('DownWeapon') && !DeusExWeapon(item).IsInState('Reload'))
-			{
-				return False;
-			}
-			else		// make sure the scope/laser are turned off
-			{
-				DeusExWeapon(item).ScopeOff();
-				DeusExWeapon(item).LaserOff();
-			}
-		}
+        // don't drop it if it's in a strange state
+        if (item.IsA('DeusExWeapon'))
+        {
+            if (!DeusExWeapon(item).IsInState('Idle') && !DeusExWeapon(item).IsInState('Idle2') &&
+                !DeusExWeapon(item).IsInState('DownWeapon') && !DeusExWeapon(item).IsInState('Reload'))
+            {
+                return False;
+            }
+            else        // make sure the scope/laser are turned off
+            {
+                DeusExWeapon(item).ScopeOff();
+                DeusExWeapon(item).LaserOff();
+            }
+        }
 
-		// Don't allow active ChargedPickups to be dropped
-		if ((item.IsA('ChargedPickup')) && (ChargedPickup(item).IsActive()))
-        	{
-			return False;
-        	}
+        // Don't allow active ChargedPickups to be dropped
+        if ((item.IsA('ChargedPickup')) && (ChargedPickup(item).IsActive()))
+            {
+            return False;
+            }
 
-		// don't let us throw away the nanokeyring
-		if (item.IsA('NanoKeyRing'))
-        	{
-			return False;
-        	}
+        // don't let us throw away the nanokeyring
+        if (item.IsA('NanoKeyRing'))
+            {
+            return False;
+            }
 
-		// take it out of our hand
-		if (item == inHand)
-			PutInHand(None);
+        // take it out of our hand
+        if (item == inHand)
+            PutInHand(None);
 
-		// handle throwing pickups that stack
-		if (item.IsA('DeusExPickup'))
-		{
-			// turn it off if it is on
-			if (DeusExPickup(item).bActive)
-				DeusExPickup(item).Activate();
+        // handle throwing pickups that stack
+        if (item.IsA('DeusExPickup'))
+        {
+            // turn it off if it is on
+            if (DeusExPickup(item).bActive)
+                DeusExPickup(item).Activate();
 
-			DeusExPickup(item).NumCopies--;
-			UpdateBeltText(item);	
+            DeusExPickup(item).NumCopies--;
+            UpdateBeltText(item);    
 
-			if (DeusExPickup(item).NumCopies > 0)
-			{
-				// put it back in our hand, but only if it was in our
-				// hand originally!!!
-				if (previousItemInHand == item)
-					PutInHand(previousItemInHand);
+            if (DeusExPickup(item).NumCopies > 0)
+            {
+                // put it back in our hand, but only if it was in our
+                // hand originally!!!
+                if (previousItemInHand == item)
+                    PutInHand(previousItemInHand);
 
-				inv = item;
-				item = Spawn(item.Class, Owner);
-				DeusExPickup(item).TransferSkin(inv);
-			}
-			else
-			{
-				// Keep track of this so we can undo it 
-				// if necessary
-				bRemovedFromSlots = True;
-				itemPosX = item.invPosX;
-				itemPosY = item.invPosY;
+                inv = item;
+                item = Spawn(item.Class, Owner);
+                DeusExPickup(item).TransferSkin(inv);
+            }
+            else
+            {
+                // Keep track of this so we can undo it 
+                // if necessary
+                bRemovedFromSlots = True;
+                itemPosX = item.invPosX;
+                itemPosY = item.invPosY;
 
-				// Remove it from the inventory slot grid
-				RemoveItemFromSlot(item);
+                // Remove it from the inventory slot grid
+                RemoveItemFromSlot(item);
 
-				// make sure we have one copy to throw!
-				DeusExPickup(item).NumCopies = 1;
-			}
-		}
-		else
-		{
-			// Keep track of this so we can undo it 
-			// if necessary
-			bRemovedFromSlots = True;
-			itemPosX = item.invPosX;
-			itemPosY = item.invPosY;
+                // make sure we have one copy to throw!
+                DeusExPickup(item).NumCopies = 1;
+            }
+        }
+        else
+        {
+            // Keep track of this so we can undo it 
+            // if necessary
+            bRemovedFromSlots = True;
+            itemPosX = item.invPosX;
+            itemPosY = item.invPosY;
 
-			// Remove it from the inventory slot grid
-			RemoveItemFromSlot(item);
-		}
+            // Remove it from the inventory slot grid
+            RemoveItemFromSlot(item);
+        }
 
-		// if we are highlighting something, try to place the object on the target
-		if ((FrobTarget != None) && !item.IsA('POVCorpse'))
-		{
-			if(ScriptedPawn(FrobTarget) != None && DeusExWeapon(item) != None)
-			{
-				//== See if we can give this weapon to the NPC
-				if(ScriptedPawn(FrobTarget).bCanGiveWeapon && VSize(FrobTarget.Location - Location) <= 64 && ScriptedPawn(FrobTarget).CheckPawnAllianceType(Self) != ALLIANCE_Hostile)
-				{
-					//== Since we're actually paying attention to what the NPC has, it'd be a bit weird if NPC Random Inventory suddenly went off.
-					ScriptedPawn(FrobTarget).bNPCRandomGiven = True;
+        // if we are highlighting something, try to place the object on the target
+        if ((FrobTarget != None) && !item.IsA('POVCorpse'))
+        {
+            if(ScriptedPawn(FrobTarget) != None && DeusExWeapon(item) != None)
+            {
+                //== See if we can give this weapon to the NPC
+                if(ScriptedPawn(FrobTarget).bCanGiveWeapon && VSize(FrobTarget.Location - Location) <= 64 && ScriptedPawn(FrobTarget).CheckPawnAllianceType(Self) != ALLIANCE_Hostile)
+                {
+                    //== Since we're actually paying attention to what the NPC has, it'd be a bit weird if NPC Random Inventory suddenly went off.
+                    ScriptedPawn(FrobTarget).bNPCRandomGiven = True;
 
-					//== Give them the weapon
-					DeleteInventory(item);
+                    //== Give them the weapon
+                    DeleteInventory(item);
 
-					item.InitialState='Idle2';
-					item.GiveTo(ScriptedPawn(FrobTarget));
-					item.SetBase(FrobTarget);
-					//== Give them ammo for the weapon if they don't have it
-					if(DeusExWeapon(item).AmmoType != None)
-					{
-			     			if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
-			     			{
-			     				Weapon(item).AmmoType = Ammo(ScriptedPawn(FrobTarget).FindInventoryType(Weapon(item).AmmoName));
-			      				if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
-			      				{
-			      					Weapon(item).AmmoType = Ammo(ScriptedPawn(FrobTarget).FindInventoryType(Weapon(item).AmmoName));
-			      					if (Weapon(item).AmmoType == None)
-			      					{
-									Weapon(item).AmmoType = spawn(Weapon(item).AmmoName,FrobTarget);
-			      					}
-			      				}
-							if(Weapon(item).AmmoType != None)
-							{
-								//== Just to be sure, make sure the NPC has a little extra ammo
-								Weapon(item).AmmoType.AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
-								Weapon(item).AmmoType.InitialState='Idle2';
-								Weapon(item).AmmoType.GiveTo(ScriptedPawn(FrobTarget));
-								Weapon(item).AmmoType.SetBase(FrobTarget);
-							}
-			     			}
-						else if(Weapon(item).AmmoType != None)
-							Weapon(item).AmmoType.AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
-					}
+                    item.InitialState='Idle2';
+                    item.GiveTo(ScriptedPawn(FrobTarget));
+                    item.SetBase(FrobTarget);
+                    //== Give them ammo for the weapon if they don't have it
+                    if(DeusExWeapon(item).AmmoType != None)
+                    {
+                             if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
+                             {
+                                 Weapon(item).AmmoType = Ammo(ScriptedPawn(FrobTarget).FindInventoryType(Weapon(item).AmmoName));
+                                  if ((Weapon(item).AmmoType == None) && (Weapon(item).AmmoName != None) && (Weapon(item).AmmoName != Class'AmmoNone'))
+                                  {
+                                      Weapon(item).AmmoType = Ammo(ScriptedPawn(FrobTarget).FindInventoryType(Weapon(item).AmmoName));
+                                      if (Weapon(item).AmmoType == None)
+                                      {
+                                    Weapon(item).AmmoType = spawn(Weapon(item).AmmoName,FrobTarget);
+                                      }
+                                  }
+                            if(Weapon(item).AmmoType != None)
+                            {
+                                //== Just to be sure, make sure the NPC has a little extra ammo
+                                Weapon(item).AmmoType.AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
+                                Weapon(item).AmmoType.InitialState='Idle2';
+                                Weapon(item).AmmoType.GiveTo(ScriptedPawn(FrobTarget));
+                                Weapon(item).AmmoType.SetBase(FrobTarget);
+                            }
+                             }
+                        else if(Weapon(item).AmmoType != None)
+                            Weapon(item).AmmoType.AmmoAmount += (DeusExWeapon(item).AmmoName).default.AmmoAmount;
+                    }
 
-					//== Make them use the weapon
-					ScriptedPawn(FrobTarget).SetWeapon(Weapon(item));
+                    //== Make them use the weapon
+                    ScriptedPawn(FrobTarget).SetWeapon(Weapon(item));
 
-					if(ScriptedPawn(FrobTarget).bImportant)
-						flagBase.setBool(DeusExRootWindow(rootWindow).StringToName(FrobTarget.BindName $"_Equipped"),True);
+                    if(ScriptedPawn(FrobTarget).bImportant)
+                        flagBase.setBool(DeusExRootWindow(rootWindow).StringToName(FrobTarget.BindName $"_Equipped"),True);
 
-					ClientMessage("Gave "$ item.ItemName $" to "$ FrobTarget.FamiliarName);
-					return True;
-				}
-			}
+                    ClientMessage("Gave "$ item.ItemName $" to "$ FrobTarget.FamiliarName);
+                    return True;
+                }
+            }
 
-			item.Velocity = vect(0,0,0);
+            item.Velocity = vect(0,0,0);
 
-			// play the correct anim
-			PlayPickupAnim(FrobTarget.Location);
+            // play the correct anim
+            PlayPickupAnim(FrobTarget.Location);
 
-			// try to drop the object about one foot above the target
-			size = FrobTarget.CollisionRadius - item.CollisionRadius * 2;
-			dropVect.X = size/2 - FRand() * size;
-			dropVect.Y = size/2 - FRand() * size;
-			dropVect.Z = FrobTarget.CollisionHeight + item.CollisionHeight + 16;
-			if (FastTrace(dropVect))
-			{
-				item.DropFrom(FrobTarget.Location + dropVect);
-			}
-			else
-			{
-				ClientMessage(CannotDropHere);
-				bDropped = False;
-			}
-		}
-		else
-		{
-			// throw velocity is based on augmentation
-			if (AugmentationSystem != None)
-			{
-				mult = AugmentationSystem.GetAugLevelValue(class'AugMuscle');
-				if (mult == -1.0)
-					mult = 1.0;
-			}
+            // try to drop the object about one foot above the target
+            size = FrobTarget.CollisionRadius - item.CollisionRadius * 2;
+            dropVect.X = size/2 - FRand() * size;
+            dropVect.Y = size/2 - FRand() * size;
+            dropVect.Z = FrobTarget.CollisionHeight + item.CollisionHeight + 16;
+            if (FastTrace(dropVect))
+            {
+                item.DropFrom(FrobTarget.Location + dropVect);
+            }
+            else
+            {
+                ClientMessage(CannotDropHere);
+                bDropped = False;
+            }
+        }
+        else
+        {
+            // throw velocity is based on augmentation
+            if (AugmentationSystem != None)
+            {
+                mult = AugmentationSystem.GetAugLevelValue(class'AugMuscle');
+                if (mult == -1.0)
+                    mult = 1.0;
+            }
 
-			if (bDrop)
-			{
-				item.Velocity = VRand() * 30;
+            if (bDrop)
+            {
+                item.Velocity = VRand() * 30;
 
-				// play the correct anim
-				PlayPickupAnim(item.Location);
-			}
-			else
-			{
-				item.Velocity = Vector(ViewRotation) * mult * 300 + vect(0,0,220) + 40 * VRand();
+                // play the correct anim
+                PlayPickupAnim(item.Location);
+            }
+            else
+            {
+                item.Velocity = Vector(ViewRotation) * mult * 300 + vect(0,0,220) + 40 * VRand();
 
-				// play a throw anim
-				PlayAnim('Attack',,0.1);
-			}
+                // play a throw anim
+                PlayAnim('Attack',,0.1);
+            }
 
-			GetAxes(ViewRotation, X, Y, Z);
-			dropVect = Location + 0.8 * CollisionRadius * X;
-			dropVect.Z += BaseEyeHeight;
+            GetAxes(ViewRotation, X, Y, Z);
+            dropVect = Location + 0.8 * CollisionRadius * X;
+            dropVect.Z += BaseEyeHeight;
 
-			// if we are a corpse, spawn the actual carcass
-			if (item.IsA('POVCorpse'))
-			{
-				if (POVCorpse(item).carcClassString != "")
-				{
-					carcClass = class<DeusExCarcass>(DynamicLoadObject(POVCorpse(item).carcClassString, class'Class'));
-					if (carcClass != None)
-					{
-						carc = Spawn(carcClass);
-						if (carc != None)
-						{
-							carc.Mesh = carc.Mesh2;
-							carc.KillerAlliance = POVCorpse(item).KillerAlliance;
-							carc.KillerBindName = POVCorpse(item).KillerBindName;
-							carc.Alliance = POVCorpse(item).Alliance;
-							carc.bNotDead = POVCorpse(item).bNotDead;
-							carc.bEmitCarcass = POVCorpse(item).bEmitCarcass;
-							carc.CumulativeDamage = POVCorpse(item).CumulativeDamage;
-							carc.MaxDamage = POVCorpse(item).MaxDamage;
-							carc.itemName = POVCorpse(item).CorpseItemName;
-							carc.CarcassName = POVCorpse(item).CarcassName;
-							carc.FamiliarName = POVCorpse(item).FamiliarName; //And track the Familiar Name too
-							carc.Velocity = item.Velocity * 0.5;
-							item.Velocity = vect(0,0,0);
-							carc.bHidden = False;
-							carc.SetPhysics(PHYS_Falling);
-							carc.SetScaleGlow();
-							if (carc.SetLocation(dropVect))
-							{
-								// must circumvent PutInHand() since it won't allow
-								// things in hand when you're carrying a corpse
-								SetInHandPending(None);
-								item.Destroy();
-								item = None;
-							}
-							else
-								carc.bHidden = True;
-						}
-					}
-				}
-			}
-			else
-			{
-				if (FastTrace(dropVect))
-				{
-					item.DropFrom(dropVect);
-					item.bFixedRotationDir = True;
-					item.RotationRate.Pitch = (32768 - Rand(65536)) * 4.0;
-					item.RotationRate.Yaw = (32768 - Rand(65536)) * 4.0;
-				}
-			}
-		}
+            // if we are a corpse, spawn the actual carcass
+            if (item.IsA('POVCorpse'))
+            {
+                if (POVCorpse(item).carcClassString != "")
+                {
+                    carcClass = class<DeusExCarcass>(DynamicLoadObject(POVCorpse(item).carcClassString, class'Class'));
+                    if (carcClass != None)
+                    {
+                        carc = Spawn(carcClass);
+                        if (carc != None)
+                        {
+                            carc.Mesh = carc.Mesh2;
+                            carc.KillerAlliance = POVCorpse(item).KillerAlliance;
+                            carc.KillerBindName = POVCorpse(item).KillerBindName;
+                            carc.Alliance = POVCorpse(item).Alliance;
+                            carc.bNotDead = POVCorpse(item).bNotDead;
+                            carc.bEmitCarcass = POVCorpse(item).bEmitCarcass;
+                            carc.CumulativeDamage = POVCorpse(item).CumulativeDamage;
+                            carc.MaxDamage = POVCorpse(item).MaxDamage;
+                            carc.itemName = POVCorpse(item).CorpseItemName;
+                            carc.CarcassName = POVCorpse(item).CarcassName;
+                            carc.FamiliarName = POVCorpse(item).FamiliarName; //And track the Familiar Name too
+                            carc.Velocity = item.Velocity * 0.5;
+                            item.Velocity = vect(0,0,0);
+                            carc.bHidden = False;
+                            carc.SetPhysics(PHYS_Falling);
+                            carc.SetScaleGlow();
+                            if (carc.SetLocation(dropVect))
+                            {
+                                // must circumvent PutInHand() since it won't allow
+                                // things in hand when you're carrying a corpse
+                                SetInHandPending(None);
+                                item.Destroy();
+                                item = None;
+                            }
+                            else
+                                carc.bHidden = True;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (FastTrace(dropVect))
+                {
+                    item.DropFrom(dropVect);
+                    item.bFixedRotationDir = True;
+                    item.RotationRate.Pitch = (32768 - Rand(65536)) * 4.0;
+                    item.RotationRate.Yaw = (32768 - Rand(65536)) * 4.0;
+                }
+            }
+        }
 
-		// if we failed to drop it, put it back inHand
-		if (item != None)
-		{
-			if (((inHand == None) || (inHandPending == None)) && (item.Physics != PHYS_Falling))
-			{
-				PutInHand(item);
-				ClientMessage(CannotDropHere);
-				bDropped = False;
-			}
-			else
-			{
-				item.Instigator = Self;
-			}
-		}
-	}
-	else if (CarriedDecoration != None)
-	{
-		DropDecoration();
+        // if we failed to drop it, put it back inHand
+        if (item != None)
+        {
+            if (((inHand == None) || (inHandPending == None)) && (item.Physics != PHYS_Falling))
+            {
+                PutInHand(item);
+                ClientMessage(CannotDropHere);
+                bDropped = False;
+            }
+            else
+            {
+                item.Instigator = Self;
+            }
+        }
+    }
+    else if (CarriedDecoration != None)
+    {
+        DropDecoration();
 
-		// play a throw anim
-		PlayAnim('Attack',,0.1);
-	}
+        // play a throw anim
+        PlayAnim('Attack',,0.1);
+    }
 
-	// If the drop failed and we removed the item from the inventory
-	// grid, then we need to stick it back where it came from so
-	// the inventory doesn't get fucked up.
+    // If the drop failed and we removed the item from the inventory
+    // grid, then we need to stick it back where it came from so
+    // the inventory doesn't get fucked up.
 
-	if ((bRemovedFromSlots) && (item != None) && (!bDropped))
-	{
+    if ((bRemovedFromSlots) && (item != None) && (!bDropped))
+    {
         //DEUS_EX AMSD Use the function call for this, helps multiplayer
-	        PlaceItemInSlot(item, itemPosX, itemPosY);
-	}
+            PlaceItemInSlot(item, itemPosX, itemPosY);
+    }
 
-	return bDropped;
+    return bDropped;
 }
 
 // ----------------------------------------------------------------------
@@ -6802,31 +6802,31 @@ exec function bool DropItem(optional Inventory inv, optional bool bDrop)
 
 function RemoveItemDuringConversation(Inventory item)
 {
-	if (item != None)
-	{
-		// take it out of our hand
-		if (item == inHand)
-			PutInHand(None);
+    if (item != None)
+    {
+        // take it out of our hand
+        if (item == inHand)
+            PutInHand(None);
 
-		// Make sure it's removed from the inventory grid
-		RemoveItemFromSlot(item);
+        // Make sure it's removed from the inventory grid
+        RemoveItemFromSlot(item);
 
-		// Make sure the item is deactivated!
-		if (item.IsA('DeusExWeapon'))
-		{
-			DeusExWeapon(item).ScopeOff();
-			DeusExWeapon(item).LaserOff();
-		}
-		else if (item.IsA('DeusExPickup'))
-		{
-			// turn it off if it is on
-			if (DeusExPickup(item).bActive)
-				DeusExPickup(item).Activate();
-		}
-		
-		if (conPlay != None)
-			conPlay.SetInHand(None);
-	}
+        // Make sure the item is deactivated!
+        if (item.IsA('DeusExWeapon'))
+        {
+            DeusExWeapon(item).ScopeOff();
+            DeusExWeapon(item).LaserOff();
+        }
+        else if (item.IsA('DeusExPickup'))
+        {
+            // turn it off if it is on
+            if (DeusExPickup(item).bActive)
+                DeusExPickup(item).Activate();
+        }
+        
+        if (conPlay != None)
+            conPlay.SetInHand(None);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -6835,8 +6835,8 @@ function RemoveItemDuringConversation(Inventory item)
 
 exec function WinStats(bool bStatsOn)
 {
-	if (rootWindow != None)
-		rootWindow.ShowStats(bStatsOn);
+    if (rootWindow != None)
+        rootWindow.ShowStats(bStatsOn);
 }
 
  
@@ -6846,11 +6846,11 @@ exec function WinStats(bool bStatsOn)
 
 exec function ToggleWinStats()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (rootWindow != None)
-		rootWindow.ShowStats(!rootWindow.bShowStats);
+    if (rootWindow != None)
+        rootWindow.ShowStats(!rootWindow.bShowStats);
 }
 
 
@@ -6860,11 +6860,11 @@ exec function ToggleWinStats()
 
 exec function WinFrames(bool bFramesOn)
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (rootWindow != None)
-		rootWindow.ShowFrames(bFramesOn);
+    if (rootWindow != None)
+        rootWindow.ShowFrames(bFramesOn);
 }
 
 
@@ -6874,11 +6874,11 @@ exec function WinFrames(bool bFramesOn)
 
 exec function ToggleWinFrames()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (rootWindow != None)
-		rootWindow.ShowFrames(!rootWindow.bShowFrames);
+    if (rootWindow != None)
+        rootWindow.ShowFrames(!rootWindow.bShowFrames);
 }
 
 
@@ -6888,15 +6888,15 @@ exec function ToggleWinFrames()
 
 exec function ShowClass(Class<Actor> newClass)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.SetViewClass(newClass);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.SetViewClass(newClass);
 }
 
 
@@ -6906,15 +6906,15 @@ exec function ShowClass(Class<Actor> newClass)
 
 exec function ShowEyes(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowEyes(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowEyes(bShow);
 }
 
 
@@ -6924,15 +6924,15 @@ exec function ShowEyes(bool bShow)
 
 exec function ShowArea(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowArea(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowArea(bShow);
 }
 
 
@@ -6942,15 +6942,15 @@ exec function ShowArea(bool bShow)
 
 exec function ShowCylinder(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowCylinder(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowCylinder(bShow);
 }
 
 
@@ -6960,15 +6960,15 @@ exec function ShowCylinder(bool bShow)
 
 exec function ShowMesh(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowMesh(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowMesh(bShow);
 }
 
 
@@ -6978,15 +6978,15 @@ exec function ShowMesh(bool bShow)
 
 exec function ShowZone(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowZone(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowZone(bShow);
 }
 
 
@@ -6996,15 +6996,15 @@ exec function ShowZone(bool bShow)
 
 exec function ShowLOS(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowLOS(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowLOS(bShow);
 }
 
 
@@ -7014,15 +7014,15 @@ exec function ShowLOS(bool bShow)
 
 exec function ShowVisibility(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowVisibility(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowVisibility(bShow);
 }
 
 
@@ -7032,15 +7032,15 @@ exec function ShowVisibility(bool bShow)
 
 exec function ShowData(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowData(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowData(bShow);
 }
 
 
@@ -7050,15 +7050,15 @@ exec function ShowData(bool bShow)
 
 exec function ShowEnemyResponse(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowEnemyResponse(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowEnemyResponse(bShow);
 }
 
 
@@ -7068,8 +7068,8 @@ exec function ShowEnemyResponse(bool bShow)
 
 exec function ShowER(bool bShow)
 {
-	// Convenience form of ShowEnemyResponse()
-	ShowEnemyResponse(bShow);
+    // Convenience form of ShowEnemyResponse()
+    ShowEnemyResponse(bShow);
 }
 
 
@@ -7079,15 +7079,15 @@ exec function ShowER(bool bShow)
 
 exec function ShowState(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowState(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowState(bShow);
 }
 
 
@@ -7097,15 +7097,15 @@ exec function ShowState(bool bShow)
 
 exec function ShowEnemy(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowEnemy(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowEnemy(bShow);
 }
 
 
@@ -7115,15 +7115,15 @@ exec function ShowEnemy(bool bShow)
 
 exec function ShowInstigator(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowInstigator(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowInstigator(bShow);
 }
 
 
@@ -7133,15 +7133,15 @@ exec function ShowInstigator(bool bShow)
 
 exec function ShowBase(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowBase(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowBase(bShow);
 }
 
 
@@ -7151,15 +7151,15 @@ exec function ShowBase(bool bShow)
 
 exec function ShowLight(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowLight(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowLight(bShow);
 }
 
 
@@ -7169,15 +7169,15 @@ exec function ShowLight(bool bShow)
 
 exec function ShowDist(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowDist(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowDist(bShow);
 }
 
 
@@ -7187,15 +7187,15 @@ exec function ShowDist(bool bShow)
 
 exec function ShowBindName(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowBindName(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowBindName(bShow);
 }
 
 
@@ -7205,15 +7205,15 @@ exec function ShowBindName(bool bShow)
 
 exec function ShowPos(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowPos(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowPos(bShow);
 }
 
 
@@ -7223,15 +7223,15 @@ exec function ShowPos(bool bShow)
 
 exec function ShowHealth(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowHealth(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowHealth(bShow);
 }
 
 
@@ -7241,15 +7241,15 @@ exec function ShowHealth(bool bShow)
 
 exec function ShowPhysics(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowPhysics(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowPhysics(bShow);
 }
 
 
@@ -7259,15 +7259,15 @@ exec function ShowPhysics(bool bShow)
 
 exec function ShowMass(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowMass(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowMass(bShow);
 }
 
 
@@ -7277,15 +7277,15 @@ exec function ShowMass(bool bShow)
 
 exec function ShowVelocity(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowVelocity(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowVelocity(bShow);
 }
 
 
@@ -7295,15 +7295,15 @@ exec function ShowVelocity(bool bShow)
 
 exec function ShowAcceleration(bool bShow)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		if (root.actorDisplay != None)
-			root.actorDisplay.ShowAcceleration(bShow);
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        if (root.actorDisplay != None)
+            root.actorDisplay.ShowAcceleration(bShow);
 }
 
 
@@ -7313,10 +7313,10 @@ exec function ShowAcceleration(bool bShow)
 
 exec function ShowHud(bool bShow)
 {
-	local DeusExRootWindow root;
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		root.ShowHud(bShow);
+    local DeusExRootWindow root;
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        root.ShowHud(bShow);
 }
 
 // ----------------------------------------------------------------------
@@ -7325,13 +7325,13 @@ exec function ShowHud(bool bShow)
 
 exec function ToggleObjectBelt()
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	bObjectBeltVisible = !bObjectBeltVisible;
+    bObjectBeltVisible = !bObjectBeltVisible;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		root.UpdateHud();
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        root.UpdateHud();
 }
 
 // ----------------------------------------------------------------------
@@ -7340,13 +7340,13 @@ exec function ToggleObjectBelt()
 
 exec function ToggleHitDisplay()
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	bHitDisplayVisible = !bHitDisplayVisible;
+    bHitDisplayVisible = !bHitDisplayVisible;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		root.UpdateHud();
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        root.UpdateHud();
 }
 
 // ----------------------------------------------------------------------
@@ -7355,13 +7355,13 @@ exec function ToggleHitDisplay()
 
 exec function ToggleAmmoDisplay()
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	bAmmoDisplayVisible = !bAmmoDisplayVisible;
+    bAmmoDisplayVisible = !bAmmoDisplayVisible;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		root.UpdateHud();
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        root.UpdateHud();
 }
 
 // ----------------------------------------------------------------------
@@ -7370,13 +7370,13 @@ exec function ToggleAmmoDisplay()
 
 exec function ToggleAugDisplay()
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	bAugDisplayVisible = !bAugDisplayVisible;
+    bAugDisplayVisible = !bAugDisplayVisible;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		root.UpdateHud();
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        root.UpdateHud();
 }
 
 // ----------------------------------------------------------------------
@@ -7385,13 +7385,13 @@ exec function ToggleAugDisplay()
 
 exec function ToggleCompass()
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	bCompassVisible = !bCompassVisible;
+    bCompassVisible = !bCompassVisible;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		root.UpdateHud();
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        root.UpdateHud();
 }
 
 // ----------------------------------------------------------------------
@@ -7400,13 +7400,13 @@ exec function ToggleCompass()
 
 exec function ToggleCrosshair()
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	bCrosshairVisible = !bCrosshairVisible;
+    bCrosshairVisible = !bCrosshairVisible;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		root.UpdateHud();
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        root.UpdateHud();
 }
 
 // ----------------------------------------------------------------------
@@ -7415,8 +7415,8 @@ exec function ToggleCrosshair()
 
 exec function ShowInventoryWindow()
 {
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
    if ((Level.NetMode != NM_Standalone) && (bBeltIsMPInventory))
    {
@@ -7424,7 +7424,7 @@ exec function ShowInventoryWindow()
       return;
    }
 
-	InvokeUIScreen(Class'PersonaScreenInventory');
+    InvokeUIScreen(Class'PersonaScreenInventory');
 }
 
 // ----------------------------------------------------------------------
@@ -7433,8 +7433,8 @@ exec function ShowInventoryWindow()
 
 exec function ShowSkillsWindow()
 {
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
    if ((Level.NetMode != NM_Standalone) && (bBeltIsMPInventory))
    {
@@ -7451,8 +7451,8 @@ exec function ShowSkillsWindow()
 
 exec function ShowHealthWindow()
 {
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
    if ((Level.NetMode != NM_Standalone) && (bBeltIsMPInventory))
    {
@@ -7469,8 +7469,8 @@ exec function ShowHealthWindow()
 
 exec function ShowImagesWindow()
 {
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
    if ((Level.NetMode != NM_Standalone) && (bBeltIsMPInventory))
    {
@@ -7487,9 +7487,9 @@ exec function ShowImagesWindow()
 
 exec function ShowConversationsWindow()
 {
-	if (RestrictInput())
-		return;
-	   
+    if (RestrictInput())
+        return;
+       
    if ((Level.NetMode != NM_Standalone) && (bBeltIsMPInventory))
    {
       ClientMessage("Conversations screen disabled in multiplayer");
@@ -7505,8 +7505,8 @@ exec function ShowConversationsWindow()
 
 exec function ShowAugmentationsWindow()
 {
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
    if ((Level.NetMode != NM_Standalone) && (bBeltIsMPInventory))
    {
@@ -7523,9 +7523,9 @@ exec function ShowAugmentationsWindow()
 
 exec function ShowGoalsWindow()
 {
-	if (RestrictInput())
-		return;
-	   
+    if (RestrictInput())
+        return;
+       
    if ((Level.NetMode != NM_Standalone) && (bBeltIsMPInventory))
    {
       ClientMessage("Goals screen disabled in multiplayer");
@@ -7541,8 +7541,8 @@ exec function ShowGoalsWindow()
 
 exec function ShowLogsWindow()
 {
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
    if ((Level.NetMode != NM_Standalone) && (bBeltIsMPInventory))
    {
@@ -7559,10 +7559,10 @@ exec function ShowLogsWindow()
 
 exec function ShowAugmentationAddWindow()
 {
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	InvokeUIScreen(Class'HUDMedBotAddAugsScreen');
+    InvokeUIScreen(Class'HUDMedBotAddAugsScreen');
 }
 
 // ----------------------------------------------------------------------
@@ -7571,10 +7571,10 @@ exec function ShowAugmentationAddWindow()
 
 exec function ShowQuotesWindow()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	InvokeUIScreen(Class'QuotesWindow');
+    InvokeUIScreen(Class'QuotesWindow');
 }
 
 // ----------------------------------------------------------------------
@@ -7583,14 +7583,14 @@ exec function ShowQuotesWindow()
 
 exec function ShowRGBDialog()
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		root.PushWindow(Class'MenuScreenRGB');
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        root.PushWindow(Class'MenuScreenRGB');
 }
 
 // ----------------------------------------------------------------------
@@ -7599,27 +7599,27 @@ exec function ShowRGBDialog()
 
 exec function ActivateBelt(int objectNum)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	if ((Level.NetMode != NM_Standalone) && bBuySkills)
-	{
-		root = DeusExRootWindow(rootWindow);
-		if ( root != None )
-		{
-			if ( root.hud.hms.OverrideBelt( Self, objectNum ))
-				return;
-		}
-	}
+    if ((Level.NetMode != NM_Standalone) && bBuySkills)
+    {
+        root = DeusExRootWindow(rootWindow);
+        if ( root != None )
+        {
+            if ( root.hud.hms.OverrideBelt( Self, objectNum ))
+                return;
+        }
+    }
 
-	if (CarriedDecoration == None)
-	{
-		root = DeusExRootWindow(rootWindow);
-		if (root != None)
-			root.ActivateObjectInBelt(objectNum);
-	}
+    if (CarriedDecoration == None)
+    {
+        root = DeusExRootWindow(rootWindow);
+        if (root != None)
+            root.ActivateObjectInBelt(objectNum);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -7628,36 +7628,36 @@ exec function ActivateBelt(int objectNum)
 
 exec function NextBeltItem()
 {
-	local DeusExRootWindow root;
-	local int slot, startSlot;
+    local DeusExRootWindow root;
+    local int slot, startSlot;
 
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	if (CarriedDecoration == None)
-	{
-		slot = 0;
-		root = DeusExRootWindow(rootWindow);
-		if (root != None)
-		{
-			if (ClientInHandPending != None)
-				slot = ClientInHandPending.beltPos;
-			else if (inHandPending != None)
-				slot = inHandPending.beltPos;
-			else if (inHand != None)
-				slot = inHand.beltPos;
+    if (CarriedDecoration == None)
+    {
+        slot = 0;
+        root = DeusExRootWindow(rootWindow);
+        if (root != None)
+        {
+            if (ClientInHandPending != None)
+                slot = ClientInHandPending.beltPos;
+            else if (inHandPending != None)
+                slot = inHandPending.beltPos;
+            else if (inHand != None)
+                slot = inHand.beltPos;
 
-			startSlot = slot;
-			do
-			{
-				if (++slot >= 10)
-					slot = 0;
-			}
-			until ((root.ActivateObjectInBelt(slot)) || (startSlot == slot));
+            startSlot = slot;
+            do
+            {
+                if (++slot >= 10)
+                    slot = 0;
+            }
+            until ((root.ActivateObjectInBelt(slot)) || (startSlot == slot));
 
-			clientInHandPending = root.hud.belt.GetObjectFromBelt(slot);
-		}
-	}
+            clientInHandPending = root.hud.belt.GetObjectFromBelt(slot);
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -7666,36 +7666,36 @@ exec function NextBeltItem()
 
 exec function PrevBeltItem()
 {
-	local DeusExRootWindow root;
-	local int slot, startSlot;
+    local DeusExRootWindow root;
+    local int slot, startSlot;
 
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	if (CarriedDecoration == None)
-	{
-		slot = 1;
-		root = DeusExRootWindow(rootWindow);
-		if (root != None)
-		{
-			if (ClientInHandPending != None)
-				slot = ClientInHandPending.beltPos;
-			else  if (inHandPending != None)
-				slot = inHandPending.beltPos;
-			else if (inHand != None)
-				slot = inHand.beltPos;
+    if (CarriedDecoration == None)
+    {
+        slot = 1;
+        root = DeusExRootWindow(rootWindow);
+        if (root != None)
+        {
+            if (ClientInHandPending != None)
+                slot = ClientInHandPending.beltPos;
+            else  if (inHandPending != None)
+                slot = inHandPending.beltPos;
+            else if (inHand != None)
+                slot = inHand.beltPos;
 
-			startSlot = slot;
-			do
-			{
-				if (--slot <= -1)
-					slot = 9;
-			}
-			until ((root.ActivateObjectInBelt(slot)) || (startSlot == slot));
+            startSlot = slot;
+            do
+            {
+                if (--slot <= -1)
+                    slot = 9;
+            }
+            until ((root.ActivateObjectInBelt(slot)) || (startSlot == slot));
 
-			clientInHandPending = root.hud.belt.GetObjectFromBelt(slot);
-		}
-	}
+            clientInHandPending = root.hud.belt.GetObjectFromBelt(slot);
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -7704,51 +7704,51 @@ exec function PrevBeltItem()
 
 exec function ShowMainMenu()
 {
-	local DeusExRootWindow root;
-	local DeusExLevelInfo info;
-	local MissionEndgame Script;
+    local DeusExRootWindow root;
+    local DeusExLevelInfo info;
+    local MissionEndgame Script;
 
-	if (bIgnoreNextShowMenu)
-	{
-		bIgnoreNextShowMenu = False;
-		return;
-	}
+    if (bIgnoreNextShowMenu)
+    {
+        bIgnoreNextShowMenu = False;
+        return;
+    }
 
-	info = GetLevelInfo();
+    info = GetLevelInfo();
 
-	// Special case baby!
-	// 
-	// If the Intro map is loaded and we get here, that means the player
-	// pressed Escape and we want to either A) start a new game 
-	// or B) return to the dx.dx screen.  Either way we're going to 
-	// abort the Intro by doing this. 
-	//
-	// If this is one of the Endgames (which have a mission # of 99)
-	// then we also want to call the Endgame's "FinishCinematic" 
-	// function
+    // Special case baby!
+    // 
+    // If the Intro map is loaded and we get here, that means the player
+    // pressed Escape and we want to either A) start a new game 
+    // or B) return to the dx.dx screen.  Either way we're going to 
+    // abort the Intro by doing this. 
+    //
+    // If this is one of the Endgames (which have a mission # of 99)
+    // then we also want to call the Endgame's "FinishCinematic" 
+    // function
 
-	// force the texture caches to flush
-	ConsoleCommand("FLUSH");
+    // force the texture caches to flush
+    ConsoleCommand("FLUSH");
 
-	if ((info != None) && (info.MissionNumber == 98)) 
-	{
-		bIgnoreNextShowMenu = True;
-		PostIntro();
-	}
-	else if ((info != None) && (info.MissionNumber == 99))
-	{
-		foreach AllActors(class'MissionEndgame', Script)
-			break;
+    if ((info != None) && (info.MissionNumber == 98)) 
+    {
+        bIgnoreNextShowMenu = True;
+        PostIntro();
+    }
+    else if ((info != None) && (info.MissionNumber == 99))
+    {
+        foreach AllActors(class'MissionEndgame', Script)
+            break;
 
-		if (Script != None)
-			Script.FinishCinematic();
-	}
-	else
-	{
-		root = DeusExRootWindow(rootWindow);
-		if (root != None)
-			root.InvokeMenu(Class'MenuMain');
-	}
+        if (Script != None)
+            Script.FinishCinematic();
+    }
+    else
+    {
+        root = DeusExRootWindow(rootWindow);
+        if (root != None)
+            root.InvokeMenu(Class'MenuMain');
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -7757,16 +7757,16 @@ exec function ShowMainMenu()
 
 function PostIntro()
 {
-	FlagBase.DeleteFlag('ViewIntro', FLAG_Bool);
-	if (bStartNewGameAfterIntro)
-	{
-		bStartNewGameAfterIntro = False;
-		StartNewGame(strStartMap);
-	}
-	else
-	{
-		Level.Game.SendPlayer(Self, "dxonly");
-	}
+    FlagBase.DeleteFlag('ViewIntro', FLAG_Bool);
+    if (bStartNewGameAfterIntro)
+    {
+        bStartNewGameAfterIntro = False;
+        StartNewGame(strStartMap);
+    }
+    else
+    {
+        Level.Game.SendPlayer(Self, "dxonly");
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -7777,10 +7777,10 @@ function PostIntro()
 
 exec function EditFlags()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	InvokeUIScreen(Class'FlagEditWindow');
+    InvokeUIScreen(Class'FlagEditWindow');
 }
 
 // ----------------------------------------------------------------------
@@ -7791,10 +7791,10 @@ exec function EditFlags()
 
 exec function InvokeConWindow()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	InvokeUIScreen(Class'InvokeConWindow');
+    InvokeUIScreen(Class'InvokeConWindow');
 }
 
 // ----------------------------------------------------------------------
@@ -7805,10 +7805,10 @@ exec function InvokeConWindow()
 
 exec function LoadMap()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	InvokeUIScreen(Class'LoadMapWindow');
+    InvokeUIScreen(Class'LoadMapWindow');
 }
 
 // ----------------------------------------------------------------------
@@ -7817,50 +7817,50 @@ exec function LoadMap()
 
 exec function Walk()
 {
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	Super.Walk();
+    Super.Walk();
 }
 
 exec function Fly()
 {
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	Super.Fly();
+    Super.Fly();
 }
 
 exec function Ghost()
 {
-	if (RestrictInput())
-		return;
+    if (RestrictInput())
+        return;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	Super.Ghost();
+    Super.Ghost();
 }
 
 exec function Fire(optional float F)
 {
-	if (RestrictInput())
-	{
-		if (bHidden)
-			ShowMainMenu();
-		return;
-	}
+    if (RestrictInput())
+    {
+        if (bHidden)
+            ShowMainMenu();
+        return;
+    }
 
-	//if(IsA('trestkon') && inHand == None && !bInHandTransition)
-	//	ConsoleCommand("selectfists");
+    //if(IsA('trestkon') && inHand == None && !bInHandTransition)
+    //    ConsoleCommand("selectfists");
 
-	Super.Fire(F);
+    Super.Fire(F);
 }
 
 // ----------------------------------------------------------------------
@@ -7872,69 +7872,69 @@ exec function Fire(optional float F)
 
 exec function Tantalus()
 {
-	local Actor            hitActor;
-	local Vector           hitLocation, hitNormal;
-	local Vector           position, line;
-	local ScriptedPawn     hitPawn;
-	local DeusExMover      hitMover;
-	local DeusExDecoration hitDecoration;
-	local bool             bTakeDamage;
-	local int              damage;
+    local Actor            hitActor;
+    local Vector           hitLocation, hitNormal;
+    local Vector           position, line;
+    local ScriptedPawn     hitPawn;
+    local DeusExMover      hitMover;
+    local DeusExDecoration hitDecoration;
+    local bool             bTakeDamage;
+    local int              damage;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	bTakeDamage = false;
-	damage      = 1;
-	position    = Location;
-	position.Z += BaseEyeHeight;
-	line        = Vector(ViewRotation) * 4000;
+    bTakeDamage = false;
+    damage      = 1;
+    position    = Location;
+    position.Z += BaseEyeHeight;
+    line        = Vector(ViewRotation) * 4000;
 
-	hitActor = Trace(hitLocation, hitNormal, position+line, position, true);
-	if (hitActor != None)
-	{
-		hitMover = DeusExMover(hitActor);
-		hitPawn = ScriptedPawn(hitActor);
-		hitDecoration = DeusExDecoration(hitActor);
-		if (hitMover != None)
-		{
-			if (hitMover.bBreakable)
-			{
-				hitMover.doorStrength = 0;
-				bTakeDamage = true;
-			}
-		}
-		else if (hitPawn != None)
-		{
-			if (!hitPawn.bInvincible)
-			{
-				hitPawn.HealthHead     = 0;
-				hitPawn.HealthTorso    = 0;
-				hitPawn.HealthLegLeft  = 0;
-				hitPawn.HealthLegRight = 0;
-				hitPawn.HealthArmLeft  = 0;
-				hitPawn.HealthArmRight = 0;
-				hitPawn.Health         = 0;
-				bTakeDamage = true;
-			}
-		}
-		else if (hitDecoration != None)
-		{
-			if (!hitDecoration.bInvincible)
-			{
-				hitDecoration.HitPoints = 0;
-				bTakeDamage = true;
-			}
-		}
-		else if (hitActor != Level)
-		{
-			damage = 5000;
-			bTakeDamage = true;
-		}
-	}
+    hitActor = Trace(hitLocation, hitNormal, position+line, position, true);
+    if (hitActor != None)
+    {
+        hitMover = DeusExMover(hitActor);
+        hitPawn = ScriptedPawn(hitActor);
+        hitDecoration = DeusExDecoration(hitActor);
+        if (hitMover != None)
+        {
+            if (hitMover.bBreakable)
+            {
+                hitMover.doorStrength = 0;
+                bTakeDamage = true;
+            }
+        }
+        else if (hitPawn != None)
+        {
+            if (!hitPawn.bInvincible)
+            {
+                hitPawn.HealthHead     = 0;
+                hitPawn.HealthTorso    = 0;
+                hitPawn.HealthLegLeft  = 0;
+                hitPawn.HealthLegRight = 0;
+                hitPawn.HealthArmLeft  = 0;
+                hitPawn.HealthArmRight = 0;
+                hitPawn.Health         = 0;
+                bTakeDamage = true;
+            }
+        }
+        else if (hitDecoration != None)
+        {
+            if (!hitDecoration.bInvincible)
+            {
+                hitDecoration.HitPoints = 0;
+                bTakeDamage = true;
+            }
+        }
+        else if (hitActor != Level)
+        {
+            damage = 5000;
+            bTakeDamage = true;
+        }
+    }
 
-	if (bTakeDamage)
-		hitActor.TakeDamage(damage, self, hitLocation, line, 'Tantalus');
+    if (bTakeDamage)
+        hitActor.TakeDamage(damage, self, hitLocation, line, 'Tantalus');
 }
 
 // ----------------------------------------------------------------------
@@ -7945,50 +7945,50 @@ exec function Tantalus()
 
 exec function OpenSesame()
 {
-	local Actor       hitActor;
-	local Vector      hitLocation, hitNormal;
-	local Vector      position, line;
-	local DeusExMover hitMover;
-	local DeusExMover triggerMover;
-	local HackableDevices device;
+    local Actor       hitActor;
+    local Vector      hitLocation, hitNormal;
+    local Vector      position, line;
+    local DeusExMover hitMover;
+    local DeusExMover triggerMover;
+    local HackableDevices device;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	position    = Location;
-	position.Z += BaseEyeHeight;
-	line        = Vector(ViewRotation) * 4000;
+    position    = Location;
+    position.Z += BaseEyeHeight;
+    line        = Vector(ViewRotation) * 4000;
 
-	hitActor = Trace(hitLocation, hitNormal, position+line, position, true);
-	hitMover = DeusExMover(hitActor);
-	device   = HackableDevices(hitActor);
-	if (hitMover != None)
-	{
-		if ((hitMover.Tag != '') && (hitMover.Tag != 'DeusExMover'))
-		{
-			foreach AllActors(class'DeusExMover', triggerMover, hitMover.Tag)
-			{
-				triggerMover.bLocked = false;
-				triggerMover.Trigger(self, self);
-			}
-		}
-		else
-		{
-			hitMover.bLocked = false;
-			hitMover.Trigger(self, self);
-		}
-	}
-	else if (device != None)
-	{
-		if (device.bHackable)
-		{
-			if (device.hackStrength > 0)
-			{
-				device.hackStrength = 0;
-				device.HackAction(self, true);
-			}
-		}
-	}
+    hitActor = Trace(hitLocation, hitNormal, position+line, position, true);
+    hitMover = DeusExMover(hitActor);
+    device   = HackableDevices(hitActor);
+    if (hitMover != None)
+    {
+        if ((hitMover.Tag != '') && (hitMover.Tag != 'DeusExMover'))
+        {
+            foreach AllActors(class'DeusExMover', triggerMover, hitMover.Tag)
+            {
+                triggerMover.bLocked = false;
+                triggerMover.Trigger(self, self);
+            }
+        }
+        else
+        {
+            hitMover.bLocked = false;
+            hitMover.Trigger(self, self);
+        }
+    }
+    else if (device != None)
+    {
+        if (device.bHackable)
+        {
+            if (device.hackStrength > 0)
+            {
+                device.hackStrength = 0;
+                device.HackAction(self, true);
+            }
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -7999,10 +7999,10 @@ exec function OpenSesame()
 
 exec function Legend()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	InvokeUIScreen(Class'BehindTheCurtain');
+    InvokeUIScreen(Class'BehindTheCurtain');
 }
 
 // ----------------------------------------------------------------------
@@ -8011,32 +8011,32 @@ exec function Legend()
 
 function bool AddInventory(inventory item)
 {
-	local bool retval;
-	local DeusExRootWindow root;
+    local bool retval;
+    local DeusExRootWindow root;
 
-	retval = super.AddInventory(item);
+    retval = super.AddInventory(item);
 
-	// Force the object be added to the object belt
-	// unless it's ammo
-	//
-	// Don't add Ammo and don't add Images!
+    // Force the object be added to the object belt
+    // unless it's ammo
+    //
+    // Don't add Ammo and don't add Images!
 
-	if ((item != None) && !item.IsA('Ammo') && (!item.IsA('DataVaultImage')) && (!item.IsA('Credits')) && item.invPosX != -2 && item.invPosY != -2)
-	{
-		root = DeusExRootWindow(rootWindow);
+    if ((item != None) && !item.IsA('Ammo') && (!item.IsA('DataVaultImage')) && (!item.IsA('Credits')) && item.invPosX != -2 && item.invPosY != -2)
+    {
+        root = DeusExRootWindow(rootWindow);
 
-		if ( item.bInObjectBelt )
-			if (root != None)
-				root.hud.belt.AddObjectToBelt(item, item.beltPos, True);
+        if ( item.bInObjectBelt )
+            if (root != None)
+                root.hud.belt.AddObjectToBelt(item, item.beltPos, True);
 
-		if (retval)
-			if (root != None)
-				root.AddInventory(item);
+        if (retval)
+            if (root != None)
+                root.AddInventory(item);
 
-		//root.hud.receivedItems.AddItem(item, 1);
-	}
+        //root.hud.receivedItems.AddItem(item, 1);
+    }
 
-	return (retval);
+    return (retval);
 }
 
 // ----------------------------------------------------------------------
@@ -8045,41 +8045,41 @@ function bool AddInventory(inventory item)
 
 function bool DeleteInventory(inventory item)
 {
-	local bool retval;
-	local DeusExRootWindow root;
-	local PersonaScreenInventory winInv;
+    local bool retval;
+    local DeusExRootWindow root;
+    local PersonaScreenInventory winInv;
 
-	// If the item was inHand, clear the inHand
-	if (inHand == item)
-	{
-		SetInHand(None);
-		SetInHandPending(None);
-	}
+    // If the item was inHand, clear the inHand
+    if (inHand == item)
+    {
+        SetInHand(None);
+        SetInHandPending(None);
+    }
 
-	// Make sure the item is removed from the inventory grid
-	RemoveItemFromSlot(item);
+    // Make sure the item is removed from the inventory grid
+    RemoveItemFromSlot(item);
 
-	root = DeusExRootWindow(rootWindow);
+    root = DeusExRootWindow(rootWindow);
 
-	if (root != None)
-	{
-		// If the inventory screen is active, we need to send notification
-		// that the item is being removed
-		winInv = PersonaScreenInventory(root.GetTopWindow());
-		if (winInv != None)
-			winInv.InventoryDeleted(item);
+    if (root != None)
+    {
+        // If the inventory screen is active, we need to send notification
+        // that the item is being removed
+        winInv = PersonaScreenInventory(root.GetTopWindow());
+        if (winInv != None)
+            winInv.InventoryDeleted(item);
 
-		// Remove the item from the object belt
-		if (root != None)
-			root.DeleteInventory(item);
+        // Remove the item from the object belt
+        if (root != None)
+            root.DeleteInventory(item);
       else //In multiplayer, we often don't have a root window when creating corpse, so hand delete
       {
          item.bInObjectBelt = false;
          item.beltPos = -1;
       }
-	}
+    }
 
-	return Super.DeleteInventory(item);
+    return Super.DeleteInventory(item);
 }
 
 // ----------------------------------------------------------------------
@@ -8088,8 +8088,8 @@ function bool DeleteInventory(inventory item)
 
 event JoltView(float newJoltMagnitude)
 {
-	if (Abs(JoltMagnitude) < Abs(newJoltMagnitude))
-		JoltMagnitude = newJoltMagnitude;
+    if (Abs(JoltMagnitude) < Abs(newJoltMagnitude))
+        JoltMagnitude = newJoltMagnitude;
 }
 
 // ----------------------------------------------------------------------
@@ -8098,14 +8098,14 @@ event JoltView(float newJoltMagnitude)
 
 event UpdateEyeHeight(float DeltaTime)
 {
-	Super.UpdateEyeHeight(DeltaTime);
+    Super.UpdateEyeHeight(DeltaTime);
 
-	if (JoltMagnitude != 0)
-	{
-		if ((Physics == PHYS_Walking) && (Bob != 0))
-			EyeHeight += (JoltMagnitude * 5);
-		JoltMagnitude = 0;
-	}
+    if (JoltMagnitude != 0)
+    {
+        if ((Physics == PHYS_Walking) && (Bob != 0))
+            EyeHeight += (JoltMagnitude * 5);
+        JoltMagnitude = 0;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -8114,46 +8114,46 @@ event UpdateEyeHeight(float DeltaTime)
 
 event PlayerCalcView( out actor ViewActor, out vector CameraLocation, out rotator CameraRotation )
 {
-	// check for spy drone and freeze player's view
-	if (bSpyDroneActive)
-	{
-		if (aDrone != None)
-		{
-			// First-person view.
-			CameraLocation = Location;
-			CameraLocation.Z += EyeHeight;
-			CameraLocation += WalkBob;
-			return;
-		}
-	}
+    // check for spy drone and freeze player's view
+    if (bSpyDroneActive)
+    {
+        if (aDrone != None)
+        {
+            // First-person view.
+            CameraLocation = Location;
+            CameraLocation.Z += EyeHeight;
+            CameraLocation += WalkBob;
+            return;
+        }
+    }
 
-	// Check if we're in first-person view or third-person.  If we're in first-person then
-	// we'll just render the normal camera view.  Otherwise we want to place the camera
-	// as directed by the conPlay.cameraInfo object.
+    // Check if we're in first-person view or third-person.  If we're in first-person then
+    // we'll just render the normal camera view.  Otherwise we want to place the camera
+    // as directed by the conPlay.cameraInfo object.
 
-	if ( bBehindView && (!InConversation()) )
-	{
-		Super.PlayerCalcView(ViewActor, CameraLocation, CameraRotation);
-		return;
-	}
+    if ( bBehindView && (!InConversation()) )
+    {
+        Super.PlayerCalcView(ViewActor, CameraLocation, CameraRotation);
+        return;
+    }
 
-	if ( (!InConversation()) || ( conPlay.GetDisplayMode() == DM_FirstPerson ) )
-	{
-		// First-person view.
-		ViewActor = Self;
-		CameraRotation = ViewRotation;
-		CameraLocation = Location;
-		CameraLocation.Z += EyeHeight;
-		CameraLocation += WalkBob;
-		return;
-	}
+    if ( (!InConversation()) || ( conPlay.GetDisplayMode() == DM_FirstPerson ) )
+    {
+        // First-person view.
+        ViewActor = Self;
+        CameraRotation = ViewRotation;
+        CameraLocation = Location;
+        CameraLocation.Z += EyeHeight;
+        CameraLocation += WalkBob;
+        return;
+    }
 
-	// Allow the ConCamera object to calculate the camera position and 
-	// rotation for us (in other words, take this sloppy routine and 
-	// hide it elsewhere).
+    // Allow the ConCamera object to calculate the camera position and 
+    // rotation for us (in other words, take this sloppy routine and 
+    // hide it elsewhere).
 
-	if (conPlay.cameraInfo.CalculateCameraPosition(ViewActor, CameraLocation, CameraRotation) == False)
-		Super.PlayerCalcView(ViewActor, CameraLocation, CameraRotation);
+    if (conPlay.cameraInfo.CalculateCameraPosition(ViewActor, CameraLocation, CameraRotation) == False)
+        Super.PlayerCalcView(ViewActor, CameraLocation, CameraRotation);
 }
 
 
@@ -8163,8 +8163,8 @@ event PlayerCalcView( out actor ViewActor, out vector CameraLocation, out rotato
 
 event PlayerInput( float DeltaTime )
 {
-	if (!InConversation())
-		Super.PlayerInput(DeltaTime);
+    if (!InConversation())
+        Super.PlayerInput(DeltaTime);
 }
 
 // ----------------------------------------------------------------------
@@ -8175,110 +8175,110 @@ state Conversation
 {
 ignores SeePlayer, HearNoise, Bump;
 
-	event PlayerTick(float deltaTime)
-	{
-		local rotator tempRot;
-		local float   yawDelta;
+    event PlayerTick(float deltaTime)
+    {
+        local rotator tempRot;
+        local float   yawDelta;
 
-		UpdateInHand();
-		UpdateDynamicMusic(deltaTime);
+        UpdateInHand();
+        UpdateDynamicMusic(deltaTime);
 
-		DrugEffects(deltaTime);
-		Bleed(deltaTime);
-		MaintainEnergy(deltaTime);
+        DrugEffects(deltaTime);
+        Bleed(deltaTime);
+        MaintainEnergy(deltaTime);
 
-		// must update viewflash manually incase a flash happens during a convo
-		ViewFlash(deltaTime);
+        // must update viewflash manually incase a flash happens during a convo
+        ViewFlash(deltaTime);
 
-		// Check if player has walked outside a first-person convo.
-		CheckActiveConversationRadius();
-	
-		// Check if all the people involved in a conversation are 
-		// still within a reasonable radius.
-		CheckActorDistances();
+        // Check if player has walked outside a first-person convo.
+        CheckActiveConversationRadius();
+    
+        // Check if all the people involved in a conversation are 
+        // still within a reasonable radius.
+        CheckActorDistances();
 
-		Super.PlayerTick(deltaTime);
-		LipSynch(deltaTime);
+        Super.PlayerTick(deltaTime);
+        LipSynch(deltaTime);
 
-		// Keep turning towards the person we're speaking to
-		if (ConversationActor != None)
-		{
-			LookAtActor(ConversationActor, true, true, true, 0, 0.5);
+        // Keep turning towards the person we're speaking to
+        if (ConversationActor != None)
+        {
+            LookAtActor(ConversationActor, true, true, true, 0, 0.5);
 
-			// Hacky way to force the player to turn...
-			tempRot = rot(0,0,0);
-			tempRot.Yaw = (DesiredRotation.Yaw - Rotation.Yaw) & 65535;
-			if (tempRot.Yaw > 32767)
-				tempRot.Yaw -= 65536;
-			yawDelta = RotationRate.Yaw * deltaTime;
-			if (tempRot.Yaw > yawDelta)
-				tempRot.Yaw = yawDelta;
-			else if (tempRot.Yaw < -yawDelta)
-				tempRot.Yaw = -yawDelta;
-			SetRotation(Rotation + tempRot);
-		}
+            // Hacky way to force the player to turn...
+            tempRot = rot(0,0,0);
+            tempRot.Yaw = (DesiredRotation.Yaw - Rotation.Yaw) & 65535;
+            if (tempRot.Yaw > 32767)
+                tempRot.Yaw -= 65536;
+            yawDelta = RotationRate.Yaw * deltaTime;
+            if (tempRot.Yaw > yawDelta)
+                tempRot.Yaw = yawDelta;
+            else if (tempRot.Yaw < -yawDelta)
+                tempRot.Yaw = -yawDelta;
+            SetRotation(Rotation + tempRot);
+        }
 
-		// Update Time Played
-		UpdateTimePlayed(deltaTime);
-	}
+        // Update Time Played
+        UpdateTimePlayed(deltaTime);
+    }
 
-	function LoopHeadConvoAnim()
-	{
-	}
+    function LoopHeadConvoAnim()
+    {
+    }
 
-	function EndState()
-	{
-		conPlay = None;
+    function EndState()
+    {
+        conPlay = None;
 
-		// Re-enable the PC's detectability
-		MakePlayerIgnored(false);
+        // Re-enable the PC's detectability
+        MakePlayerIgnored(false);
 
-		MoveTarget = None;
-		bBehindView = false;
-		StopBlendAnims();
-		ConversationActor = None;
-	}
+        MoveTarget = None;
+        bBehindView = false;
+        StopBlendAnims();
+        ConversationActor = None;
+    }
 
 Begin:
-	// Make sure we're stopped
-	Velocity.X = 0;
-	Velocity.Y = 0;
-	Velocity.Z = 0;
+    // Make sure we're stopped
+    Velocity.X = 0;
+    Velocity.Y = 0;
+    Velocity.Z = 0;
 
-	Acceleration = Velocity;
+    Acceleration = Velocity;
 
-	PlayRising();
+    PlayRising();
 
-	// Make sure the player isn't on fire!
-	if (bOnFire)
-		ExtinguishFire();
+    // Make sure the player isn't on fire!
+    if (bOnFire)
+        ExtinguishFire();
 
-	// Make sure the PC can't be attacked while in conversation
-	MakePlayerIgnored(true);
+    // Make sure the PC can't be attacked while in conversation
+    MakePlayerIgnored(true);
 
-	LookAtActor(conPlay.startActor, true, false, true, 0, 0.5);
+    LookAtActor(conPlay.startActor, true, false, true, 0, 0.5);
 
-	SetRotation(DesiredRotation);
+    SetRotation(DesiredRotation);
 
-	PlayTurning();
-//	TurnToward(conPlay.startActor);
-//	TweenToWaiting(0.1);
-//	FinishAnim();
+    PlayTurning();
+//    TurnToward(conPlay.startActor);
+//    TweenToWaiting(0.1);
+//    FinishAnim();
 
-	if (!conPlay.StartConversation(Self))
-	{
-		AbortConversation(True);
-	}
-	else
-	{
-		// Put away whatever the PC may be holding
-		conPlay.SetInHand(InHand);
-		PutInHand(None);
-		UpdateInHand();
+    if (!conPlay.StartConversation(Self))
+    {
+        AbortConversation(True);
+    }
+    else
+    {
+        // Put away whatever the PC may be holding
+        conPlay.SetInHand(InHand);
+        PutInHand(None);
+        UpdateInHand();
 
-		if ( conPlay.GetDisplayMode() == DM_ThirdPerson )
-			bBehindView = true;	
-	}
+        if ( conPlay.GetDisplayMode() == DM_ThirdPerson )
+            bBehindView = true;    
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -8289,17 +8289,17 @@ Begin:
 
 function bool InConversation()
 {
-	if ( conPlay == None )
-	{
-		return False;
-	}
-	else
-	{
-		if (conPlay.con != None)
-			return ((conPlay.con.bFirstPerson == False) && (!conPlay.GetForcePlay()));
-		else
-			return False;
-	}
+    if ( conPlay == None )
+    {
+        return False;
+    }
+    else
+    {
+        if (conPlay.con != None)
+            return ((conPlay.con.bFirstPerson == False) && (!conPlay.GetForcePlay()));
+        else
+            return False;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -8321,18 +8321,18 @@ function bool InConversation()
 
 function bool CanStartConversation()
 {
-	if	(((conPlay != None) && (conPlay.CanInterrupt() == False)) ||
-		((conPlay != None) && (conPlay.con.bFirstPerson != True)) ||
-		 (( bForceDuck == True ) && ((HealthLegLeft > 0) || (HealthLegRight > 0))) ||
-		 ( IsInState('Dying') ) ||
-		 ( IsInState('PlayerSwimming') ) ||  
-		 ( IsInState('CheatFlying') ) ||
-		 ( Physics == PHYS_Falling ) || 
-		 ( Level.bPlayersOnly ) ||
-	     (!DeusExRootWindow(rootWindow).CanStartConversation()))
-		return False;
-	else	
-		return True;
+    if    (((conPlay != None) && (conPlay.CanInterrupt() == False)) ||
+        ((conPlay != None) && (conPlay.con.bFirstPerson != True)) ||
+         (( bForceDuck == True ) && ((HealthLegLeft > 0) || (HealthLegRight > 0))) ||
+         ( IsInState('Dying') ) ||
+         ( IsInState('PlayerSwimming') ) ||  
+         ( IsInState('CheatFlying') ) ||
+         ( Physics == PHYS_Falling ) || 
+         ( Level.bPlayersOnly ) ||
+         (!DeusExRootWindow(rootWindow).CanStartConversation()))
+        return False;
+    else    
+        return True;
 }
 
 // ----------------------------------------------------------------------
@@ -8352,30 +8352,30 @@ function bool CanStartConversation()
 
 function String GetDisplayName(Actor actor, optional Bool bUseFamiliar)
 {
-	local String displayName;
+    local String displayName;
 
-	// Sanity check
-	if ((actor == None) || (player == None) || (rootWindow == None))
-		return "";
+    // Sanity check
+    if ((actor == None) || (player == None) || (rootWindow == None))
+        return "";
 
-	// If we've spoken to this person already, use the 
-	// Familiar Name
-	if ((actor.FamiliarName != "") && ((actor.LastConEndTime > 0) || (bUseFamiliar)))
-		displayName = actor.FamiliarName;
+    // If we've spoken to this person already, use the 
+    // Familiar Name
+    if ((actor.FamiliarName != "") && ((actor.LastConEndTime > 0) || (bUseFamiliar)))
+        displayName = actor.FamiliarName;
 
-	if ((displayName == "") && (actor.UnfamiliarName != ""))
-		displayName = actor.UnfamiliarName;
+    if ((displayName == "") && (actor.UnfamiliarName != ""))
+        displayName = actor.UnfamiliarName;
 
-	if (displayName == "")
-	{
-		//== Modified so we can have dynamic name binds on Decorations
-		if (actor.IsA('DeusExDecoration'))
-			displayName = DeusExDecoration(actor).GetDecoName(); //itemName;
-		else
-			displayName = actor.BindName;
-	}
+    if (displayName == "")
+    {
+        //== Modified so we can have dynamic name binds on Decorations
+        if (actor.IsA('DeusExDecoration'))
+            displayName = DeusExDecoration(actor).GetDecoName(); //itemName;
+        else
+            displayName = actor.BindName;
+    }
 
-	return displayName;
+    return displayName;
 }
 
 // ----------------------------------------------------------------------
@@ -8386,40 +8386,40 @@ function String GetDisplayName(Actor actor, optional Bool bUseFamiliar)
 
 function EndConversation()
 {
-	local DeusExLevelInfo info;
+    local DeusExLevelInfo info;
 
-	Super.EndConversation();
+    Super.EndConversation();
 
-	// If we're in a bForcePlay (cinematic) conversation,
-	// force the CinematicWindow to be displayd
-	if ((conPlay != None) && (conPlay.GetForcePlay()))
-	{
-		if (DeusExRootWindow(rootWindow) != None)
-			DeusExRootWindow(rootWindow).NewChild(class'CinematicWindow');
-	}
+    // If we're in a bForcePlay (cinematic) conversation,
+    // force the CinematicWindow to be displayd
+    if ((conPlay != None) && (conPlay.GetForcePlay()))
+    {
+        if (DeusExRootWindow(rootWindow) != None)
+            DeusExRootWindow(rootWindow).NewChild(class'CinematicWindow');
+    }
 
-	conPlay = None;
+    conPlay = None;
 
-	// Check to see if we need to resume any DataLinks that may have
-	// been aborted when we started this conversation
-	ResumeDataLinks();
+    // Check to see if we need to resume any DataLinks that may have
+    // been aborted when we started this conversation
+    ResumeDataLinks();
 
-	StopBlendAnims();
+    StopBlendAnims();
 
-	// We might already be dead at this point (someone drop a LAM before
-	// entering the conversation?) so we want to make sure the player
-	// doesn't suddenly jump into a non-DEATH state.
-	//
-	// Also make sure the player is actually in the Conversation state
-	// before attempting to kick him out of it.
+    // We might already be dead at this point (someone drop a LAM before
+    // entering the conversation?) so we want to make sure the player
+    // doesn't suddenly jump into a non-DEATH state.
+    //
+    // Also make sure the player is actually in the Conversation state
+    // before attempting to kick him out of it.
 
-	if ((Health > 0) && ((IsInState('Conversation')) || (IsInState('FirstPersonConversation')) || (NextState == 'Interpolating')))
-	{
-		if (NextState == '')
-			GotoState('PlayerWalking');
-		else
-			GotoState(NextState);
-	}
+    if ((Health > 0) && ((IsInState('Conversation')) || (IsInState('FirstPersonConversation')) || (NextState == 'Interpolating')))
+    {
+        if (NextState == '')
+            GotoState('PlayerWalking');
+        else
+            GotoState(NextState);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -8428,8 +8428,8 @@ function EndConversation()
 
 function ResumeDataLinks()
 {
-	if ( dataLinkPlay != None )
-		dataLinkPlay.ResumeDataLinks();
+    if ( dataLinkPlay != None )
+        dataLinkPlay.ResumeDataLinks();
 }
 
 // ----------------------------------------------------------------------
@@ -8438,8 +8438,8 @@ function ResumeDataLinks()
 
 function AbortConversation(optional bool bNoPlayedFlag)
 {
-	if (conPlay != None)
-		conPlay.TerminateConversation(False, bNoPlayedFlag);
+    if (conPlay != None)
+        conPlay.TerminateConversation(False, bNoPlayedFlag);
 }
 
 // ----------------------------------------------------------------------
@@ -8451,51 +8451,51 @@ function AbortConversation(optional bool bNoPlayedFlag)
 // ----------------------------------------------------------------------
 
 function bool StartConversationByName(
-	Name conName, 
-	Actor conOwner, 
-	optional bool bAvoidState, 
-	optional bool bForcePlay,
-	optional string startSection
-	)
+    Name conName, 
+    Actor conOwner, 
+    optional bool bAvoidState, 
+    optional bool bForcePlay,
+    optional string startSection
+    )
 {
-	local ConListItem conListItem;
-	local Conversation con;
-	local Int  dist;
-	local Bool bConversationStarted;
+    local ConListItem conListItem;
+    local Conversation con;
+    local Int  dist;
+    local Bool bConversationStarted;
 
-	bConversationStarted = False;
+    bConversationStarted = False;
 
-	if (conOwner == None)
-		return False;
+    if (conOwner == None)
+        return False;
 
-	conListItem = ConListItem(conOwner.conListItems);
+    conListItem = ConListItem(conOwner.conListItems);
 
-	while( conListItem != None )
-	{
-		if ( conListItem.con.conName == conName )
-		{
-			con = conListItem.con;			
-			break;
-		}
+    while( conListItem != None )
+    {
+        if ( conListItem.con.conName == conName )
+        {
+            con = conListItem.con;            
+            break;
+        }
 
-		conListItem = conListItem.next;
-	}
+        conListItem = conListItem.next;
+    }
 
-	// Now check to see that we're in a respectable radius.
-	if (con != None)
-	{
-		dist = VSize(Location - conOwner.Location);
+    // Now check to see that we're in a respectable radius.
+    if (con != None)
+    {
+        dist = VSize(Location - conOwner.Location);
 
-		// 800 = default sound radius, from unscript.cpp
-		// 
-		// If "bForcePlay" is set, then force the conversation
-		// to play!
+        // 800 = default sound radius, from unscript.cpp
+        // 
+        // If "bForcePlay" is set, then force the conversation
+        // to play!
 
-		if ((dist <= 800) || (bForcePlay))
-			bConversationStarted = StartConversation(conOwner, IM_Named, con, bAvoidState, bForcePlay, startSection);
-	}
+        if ((dist <= 800) || (bForcePlay))
+            bConversationStarted = StartConversation(conOwner, IM_Named, con, bAvoidState, bForcePlay, startSection);
+    }
 
-	return bConversationStarted;
+    return bConversationStarted;
 }
 
 // ----------------------------------------------------------------------
@@ -8506,15 +8506,15 @@ function bool StartConversationByName(
 // ----------------------------------------------------------------------
 
 function bool StartAIBarkConversation(
-	Actor conOwner,
-	EBarkModes barkMode
-	)
+    Actor conOwner,
+    EBarkModes barkMode
+    )
 {
-	if ((conOwner == None) || (conOwner.conListItems == None) || (barkManager == None) ||
-		((conPlay != None) && (conPlay.con.bFirstPerson != True)))
-		return False;
-	else
-		return (barkManager.StartBark(DeusExRootWindow(rootWindow), ScriptedPawn(conOwner), barkMode));
+    if ((conOwner == None) || (conOwner.conListItems == None) || (barkManager == None) ||
+        ((conPlay != None) && (conPlay.con.bFirstPerson != True)))
+        return False;
+    else
+        return (barkManager.StartBark(DeusExRootWindow(rootWindow), ScriptedPawn(conOwner), barkMode));
 }
 
 // ----------------------------------------------------------------------
@@ -8526,164 +8526,164 @@ function bool StartAIBarkConversation(
 // ----------------------------------------------------------------------
 
 function bool StartConversation(
-	Actor invokeActor, 
-	EInvokeMethod invokeMethod, 
-	optional Conversation con,
-	optional bool bAvoidState,
-	optional bool bForcePlay,
-	optional string startSection
-	)
+    Actor invokeActor, 
+    EInvokeMethod invokeMethod, 
+    optional Conversation con,
+    optional bool bAvoidState,
+    optional bool bForcePlay,
+    optional string startSection
+    )
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	root = DeusExRootWindow(rootWindow);
+    root = DeusExRootWindow(rootWindow);
 
-	// First check to see the actor has any conversations or if for some
-	// other reason we're unable to start a conversation (typically if 
-	// we're alread in a conversation or there's a UI screen visible)
+    // First check to see the actor has any conversations or if for some
+    // other reason we're unable to start a conversation (typically if 
+    // we're alread in a conversation or there's a UI screen visible)
 
-	if ((!bForcePlay) && ((invokeActor.conListItems == None) || (!CanStartConversation())))
-		return False;
+    if ((!bForcePlay) && ((invokeActor.conListItems == None) || (!CanStartConversation())))
+        return False;
 
-	// Make sure the other actor can converse
-	if ((!bForcePlay) && ((ScriptedPawn(invokeActor) != None) && (!ScriptedPawn(invokeActor).CanConverse())))
-		return False;
+    // Make sure the other actor can converse
+    if ((!bForcePlay) && ((ScriptedPawn(invokeActor) != None) && (!ScriptedPawn(invokeActor).CanConverse())))
+        return False;
 
-	// If we have a conversation passed in, use it.  Otherwise check to see
-	// if the passed in actor actually has a valid conversation that can be
-	// started.
+    // If we have a conversation passed in, use it.  Otherwise check to see
+    // if the passed in actor actually has a valid conversation that can be
+    // started.
 
-	if ( con == None )
-		con = GetActiveConversation(invokeActor, invokeMethod);
+    if ( con == None )
+        con = GetActiveConversation(invokeActor, invokeMethod);
 
-	// If we have a conversation, put the actor into "Conversation Mode".
-	// Otherwise just return false.
-	//
-	// TODO: Scan through the conversation and put *ALL* actors involved
-	//       in the conversation into the "Conversation" state??
+    // If we have a conversation, put the actor into "Conversation Mode".
+    // Otherwise just return false.
+    //
+    // TODO: Scan through the conversation and put *ALL* actors involved
+    //       in the conversation into the "Conversation" state??
 
-	if ( con != None )
-	{
-		// Check to see if this conversation is already playing.  If so,
-		// then don't start it again.  This prevents a multi-bark conversation
-		// from being abused.
-		if ((conPlay != None) && (conPlay.con == con))
-			return False;
+    if ( con != None )
+    {
+        // Check to see if this conversation is already playing.  If so,
+        // then don't start it again.  This prevents a multi-bark conversation
+        // from being abused.
+        if ((conPlay != None) && (conPlay.con == con))
+            return False;
 
-		// Now check to see if there's a conversation playing that is owned
-		// by the InvokeActor *and* the player has a speaking part *and*
-		// it's a first-person convo, in which case we want to abort here.
-		if (((conPlay != None) && (conPlay.invokeActor == invokeActor)) && 
-		    (conPlay.con.bFirstPerson) &&
-			(conPlay.con.IsSpeakingActor(Self)))
-			return False;
+        // Now check to see if there's a conversation playing that is owned
+        // by the InvokeActor *and* the player has a speaking part *and*
+        // it's a first-person convo, in which case we want to abort here.
+        if (((conPlay != None) && (conPlay.invokeActor == invokeActor)) && 
+            (conPlay.con.bFirstPerson) &&
+            (conPlay.con.IsSpeakingActor(Self)))
+            return False;
 
-		// Check if the person we're trying to start the conversation 
-		// with is a Foe and this is a Third-Person conversation.  
-		// If so, ABORT!
-		if ((!bForcePlay) && ((!con.bFirstPerson) && (ScriptedPawn(invokeActor) != None) && (ScriptedPawn(invokeActor).CheckPawnAllianceType(Self) == ALLIANCE_Hostile)))
-			return False;
+        // Check if the person we're trying to start the conversation 
+        // with is a Foe and this is a Third-Person conversation.  
+        // If so, ABORT!
+        if ((!bForcePlay) && ((!con.bFirstPerson) && (ScriptedPawn(invokeActor) != None) && (ScriptedPawn(invokeActor).CheckPawnAllianceType(Self) == ALLIANCE_Hostile)))
+            return False;
 
-		// If the player is involved in this conversation, make sure the 
-		// scriptedpawn even WANTS to converse with the player.
-		//
-		// I have put a hack in here, if "con.bCanBeInterrupted" 
-		// (which is no longer used as intended) is set, then don't 
-		// call the ScriptedPawn::CanConverseWithPlayer() function
+        // If the player is involved in this conversation, make sure the 
+        // scriptedpawn even WANTS to converse with the player.
+        //
+        // I have put a hack in here, if "con.bCanBeInterrupted" 
+        // (which is no longer used as intended) is set, then don't 
+        // call the ScriptedPawn::CanConverseWithPlayer() function
 
-		if ((!bForcePlay) && ((con.IsSpeakingActor(Self)) && (!con.bCanBeInterrupted) && (ScriptedPawn(invokeActor) != None) && (!ScriptedPawn(invokeActor).CanConverseWithPlayer(Self))))
-			return False;
+        if ((!bForcePlay) && ((con.IsSpeakingActor(Self)) && (!con.bCanBeInterrupted) && (ScriptedPawn(invokeActor) != None) && (!ScriptedPawn(invokeActor).CanConverseWithPlayer(Self))))
+            return False;
 
-		// Hack alert!  If this is a Bark conversation (as denoted by the 
-		// conversation name, since we don't have a field in ConEdit), 
-		// then force this conversation to be first-person
-		if (Left(con.conName, Len(con.conOwnerName) + 5) == (con.conOwnerName $ "_Bark"))
-			con.bFirstPerson = True;
+        // Hack alert!  If this is a Bark conversation (as denoted by the 
+        // conversation name, since we don't have a field in ConEdit), 
+        // then force this conversation to be first-person
+        if (Left(con.conName, Len(con.conOwnerName) + 5) == (con.conOwnerName $ "_Bark"))
+            con.bFirstPerson = True;
 
-		// Make sure the player isn't ducking.  If the player can't rise
-		// to start a third-person conversation (blocked by geometry) then 
-		// immediately abort the conversation, as this can create all 
-		// sorts of complications (such as the player standing through
-		// geometry!!)
+        // Make sure the player isn't ducking.  If the player can't rise
+        // to start a third-person conversation (blocked by geometry) then 
+        // immediately abort the conversation, as this can create all 
+        // sorts of complications (such as the player standing through
+        // geometry!!)
 
-		if ((!con.bFirstPerson) && (ResetBasedPawnSize() == False))
-			return False;
+        if ((!con.bFirstPerson) && (ResetBasedPawnSize() == False))
+            return False;
 
-		// If ConPlay exists, end the current conversation playing
-		if (conPlay != None)
-		{
-			// If we're already playing a third-person conversation, don't interrupt with
-			// another *radius* induced conversation (frobbing is okay, though).
-			if ((conPlay.con != None) && (conPlay.con.bFirstPerson) && (invokeMethod == IM_Radius))
-				return False;
+        // If ConPlay exists, end the current conversation playing
+        if (conPlay != None)
+        {
+            // If we're already playing a third-person conversation, don't interrupt with
+            // another *radius* induced conversation (frobbing is okay, though).
+            if ((conPlay.con != None) && (conPlay.con.bFirstPerson) && (invokeMethod == IM_Radius))
+                return False;
 
-			conPlay.InterruptConversation();
-			conPlay.TerminateConversation();
-		}
+            conPlay.InterruptConversation();
+            conPlay.TerminateConversation();
+        }
 
-		// If this is a first-person conversation _and_ a DataLink is already
-		// playing, then abort.  We don't want to give the user any more 
-		// distractions while a DL is playing, since they're pretty important.
-		if ( dataLinkPlay != None )
-		{
-			if (con.bFirstPerson)
-				return False;
-			else
-				dataLinkPlay.AbortAndSaveHistory();
-		}
+        // If this is a first-person conversation _and_ a DataLink is already
+        // playing, then abort.  We don't want to give the user any more 
+        // distractions while a DL is playing, since they're pretty important.
+        if ( dataLinkPlay != None )
+        {
+            if (con.bFirstPerson)
+                return False;
+            else
+                dataLinkPlay.AbortAndSaveHistory();
+        }
 
-		// Found an active conversation, so start it
-		conPlay = Spawn(class'ConPlay');
-		conPlay.SetStartActor(invokeActor);
-		conPlay.SetConversation(con);
-		conPlay.SetForcePlay(bForcePlay);
-		conPlay.SetStartLabel(startSection);
-		conPlay.SetInitialRadius(VSize(Location - invokeActor.Location));
+        // Found an active conversation, so start it
+        conPlay = Spawn(class'ConPlay');
+        conPlay.SetStartActor(invokeActor);
+        conPlay.SetConversation(con);
+        conPlay.SetForcePlay(bForcePlay);
+        conPlay.SetStartLabel(startSection);
+        conPlay.SetInitialRadius(VSize(Location - invokeActor.Location));
 
-		// If this conversation was invoked with IM_Named, then save away
-		// the current radius so we don't abort until we get outside 
-		// of this radius + 100.
-		if ((invokeMethod == IM_Named) || (invokeMethod == IM_Frob))
-		{
-			conPlay.SetOriginalRadius(con.radiusDistance);
-			con.radiusDistance = VSize(invokeActor.Location - Location);
-		}
+        // If this conversation was invoked with IM_Named, then save away
+        // the current radius so we don't abort until we get outside 
+        // of this radius + 100.
+        if ((invokeMethod == IM_Named) || (invokeMethod == IM_Frob))
+        {
+            conPlay.SetOriginalRadius(con.radiusDistance);
+            con.radiusDistance = VSize(invokeActor.Location - Location);
+        }
 
-		// If the invoking actor is a ScriptedPawn, then force this person 
-		// into the conversation state
-		if ((!bForcePlay) && (ScriptedPawn(invokeActor) != None ))
-			ScriptedPawn(invokeActor).EnterConversationState(con.bFirstPerson, bAvoidState);
+        // If the invoking actor is a ScriptedPawn, then force this person 
+        // into the conversation state
+        if ((!bForcePlay) && (ScriptedPawn(invokeActor) != None ))
+            ScriptedPawn(invokeActor).EnterConversationState(con.bFirstPerson, bAvoidState);
 
-		// Do the same if this is a DeusExDecoration
-		if ((!bForcePlay) && (DeusExDecoration(invokeActor) != None ))
-			DeusExDecoration(invokeActor).EnterConversationState(con.bFirstPerson, bAvoidState);
+        // Do the same if this is a DeusExDecoration
+        if ((!bForcePlay) && (DeusExDecoration(invokeActor) != None ))
+            DeusExDecoration(invokeActor).EnterConversationState(con.bFirstPerson, bAvoidState);
 
-		// If this is a third-person convo, we're pretty much going to 
-		// pause the game.  If this is a first-person convo, then just 
-		// keep on going..
-		//
-		// If this is a third-person convo *AND* 'bForcePlay' == True, 
-		// then use first-person mode, as we're playing an intro/endgame
-		// sequence and we can't have the player in the convo state (bad bad bad!)
+        // If this is a third-person convo, we're pretty much going to 
+        // pause the game.  If this is a first-person convo, then just 
+        // keep on going..
+        //
+        // If this is a third-person convo *AND* 'bForcePlay' == True, 
+        // then use first-person mode, as we're playing an intro/endgame
+        // sequence and we can't have the player in the convo state (bad bad bad!)
 
-		if ((!con.bFirstPerson) && (!bForcePlay))
-		{
-			GotoState('Conversation');
-		}
-		else
-		{
-			if (!conPlay.StartConversation(Self, invokeActor, bForcePlay))
-			{
-				AbortConversation(True);
-			}
-		}
+        if ((!con.bFirstPerson) && (!bForcePlay))
+        {
+            GotoState('Conversation');
+        }
+        else
+        {
+            if (!conPlay.StartConversation(Self, invokeActor, bForcePlay))
+            {
+                AbortConversation(True);
+            }
+        }
 
-		return True;
-	}
-	else
-	{
-		return False;
-	}
+        return True;
+    }
+    else
+    {
+        return False;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -8696,152 +8696,152 @@ function bool StartConversation(
 
 function Conversation GetActiveConversation( Actor invokeActor, EInvokeMethod invokeMethod )
 {
-	local ConListItem conListItem;
-	local Conversation con;
-	local Name flagName;
-	local bool bAbortConversation;
+    local ConListItem conListItem;
+    local Conversation con;
+    local Name flagName;
+    local bool bAbortConversation;
 
-	// If we don't have a valid invokeActor or the flagbase
-	// hasn't yet been initialized, immediately abort.
-	if ((invokeActor == None) || (flagBase == None))
-		return None;
+    // If we don't have a valid invokeActor or the flagbase
+    // hasn't yet been initialized, immediately abort.
+    if ((invokeActor == None) || (flagBase == None))
+        return None;
 
-	bAbortConversation = True;
+    bAbortConversation = True;
 
-	// Force there to be a one second minimum between conversations 
-	// with the same NPC
-	if ((invokeActor.LastConEndTime != 0) && 
-		((Level.TimeSeconds - invokeActor.LastConEndTime) < 1.0))
-		return None;
+    // Force there to be a one second minimum between conversations 
+    // with the same NPC
+    if ((invokeActor.LastConEndTime != 0) && 
+        ((Level.TimeSeconds - invokeActor.LastConEndTime) < 1.0))
+        return None;
 
-	// In a loop, go through the conversations, checking each.
-	conListItem = ConListItem(invokeActor.ConListItems);
+    // In a loop, go through the conversations, checking each.
+    conListItem = ConListItem(invokeActor.ConListItems);
 
-	while ( conListItem != None )
-	{
-		con = conListItem.con;
+    while ( conListItem != None )
+    {
+        con = conListItem.con;
 
-		bAbortConversation = False;
+        bAbortConversation = False;
 
-		// Ignore Bark conversations, as these are started manually
-		// by the AI system.  Do this by checking to see if the first
-		// part of the conversation name is in the form, 
-		//
-		// ConversationOwner_Bark
+        // Ignore Bark conversations, as these are started manually
+        // by the AI system.  Do this by checking to see if the first
+        // part of the conversation name is in the form, 
+        //
+        // ConversationOwner_Bark
 
-		if (Left(con.conName, Len(con.conOwnerName) + 5) == (con.conOwnerName $ "_Bark"))
-			bAbortConversation = True;
+        if (Left(con.conName, Len(con.conOwnerName) + 5) == (con.conOwnerName $ "_Bark"))
+            bAbortConversation = True;
 
-		if (!bAbortConversation)
-		{
-			// Now check the invocation method to make sure
-			// it matches what was passed in
+        if (!bAbortConversation)
+        {
+            // Now check the invocation method to make sure
+            // it matches what was passed in
 
-			switch( invokeMethod )
-			{
-				// Removed Bump conversation starting functionality, all convos
-				// must now be "Frobbed" to start (excepting Radius, of course).
-				case IM_Bump:
-				case IM_Frob:
-					bAbortConversation = !(con.bInvokeFrob || con.bInvokeBump);
-					break;
+            switch( invokeMethod )
+            {
+                // Removed Bump conversation starting functionality, all convos
+                // must now be "Frobbed" to start (excepting Radius, of course).
+                case IM_Bump:
+                case IM_Frob:
+                    bAbortConversation = !(con.bInvokeFrob || con.bInvokeBump);
+                    break;
 
-				case IM_Sight:
-					bAbortConversation = !con.bInvokeSight;
-					break;
+                case IM_Sight:
+                    bAbortConversation = !con.bInvokeSight;
+                    break;
 
-				case IM_Radius:
-					if ( con.bInvokeRadius )
-					{
-						// Calculate the distance between the player and the owner
-						// and if the player is inside that radius, we've passed 
-						// this check.
+                case IM_Radius:
+                    if ( con.bInvokeRadius )
+                    {
+                        // Calculate the distance between the player and the owner
+                        // and if the player is inside that radius, we've passed 
+                        // this check.
 
-						bAbortConversation = !CheckConversationInvokeRadius(invokeActor, con);
+                        bAbortConversation = !CheckConversationInvokeRadius(invokeActor, con);
 
-						// First check to make sure that at least 10 seconds have passed
-						// before playing a radius-induced conversation after a letterbox
-						// conversation with the player
-						//
-						// Check:
-						//  
-						// 1.  Player finished letterbox convo in last 10 seconds
-						// 2.  Conversation was with this NPC
-						// 3.  This new radius conversation is with same NPC.
+                        // First check to make sure that at least 10 seconds have passed
+                        // before playing a radius-induced conversation after a letterbox
+                        // conversation with the player
+                        //
+                        // Check:
+                        //  
+                        // 1.  Player finished letterbox convo in last 10 seconds
+                        // 2.  Conversation was with this NPC
+                        // 3.  This new radius conversation is with same NPC.
 
-						if ((!bAbortConversation) && 
-						    ((Level.TimeSeconds - lastThirdPersonConvoTime) < 10) && 
-						    (lastThirdPersonConvoActor == invokeActor))
-							bAbortConversation = True;
+                        if ((!bAbortConversation) && 
+                            ((Level.TimeSeconds - lastThirdPersonConvoTime) < 10) && 
+                            (lastThirdPersonConvoActor == invokeActor))
+                            bAbortConversation = True;
 
-						// Now check if this conversation ended in the last ten seconds or so
-						// We want to prevent the user from getting trapped inside the same 
-						// radius conversation 
-						
-						if ((!bAbortConversation) && (con.lastPlayedTime > 0))
-							bAbortConversation = ((Level.TimeSeconds - con.lastPlayedTime) < 10);
+                        // Now check if this conversation ended in the last ten seconds or so
+                        // We want to prevent the user from getting trapped inside the same 
+                        // radius conversation 
+                        
+                        if ((!bAbortConversation) && (con.lastPlayedTime > 0))
+                            bAbortConversation = ((Level.TimeSeconds - con.lastPlayedTime) < 10);
 
-						// Now check to see if the player just ended a radius, third-person
-						// conversation with this NPC in the last 5 seconds.  If so, punt, 
-						// because we don't want these to chain together too quickly.
+                        // Now check to see if the player just ended a radius, third-person
+                        // conversation with this NPC in the last 5 seconds.  If so, punt, 
+                        // because we don't want these to chain together too quickly.
 
-						if ((!bAbortConversation) &&
-						    ((Level.TimeSeconds - lastFirstPersonConvoTime) < 5) && 
-							(lastFirstPersonConvoActor == invokeActor))
-							bAbortConversation = True;
-					}
-					else
-					{
-						bAbortConversation = True;
-					}
-					break;
+                        if ((!bAbortConversation) &&
+                            ((Level.TimeSeconds - lastFirstPersonConvoTime) < 5) && 
+                            (lastFirstPersonConvoActor == invokeActor))
+                            bAbortConversation = True;
+                    }
+                    else
+                    {
+                        bAbortConversation = True;
+                    }
+                    break;
 
-				case IM_Other:
-				default:
-					break;
-			}
-		}
+                case IM_Other:
+                default:
+                    break;
+            }
+        }
 
-		// Now check to see if these two actors are too far apart on their Z
-		// axis so we don't get conversations triggered when someone jumps on
-		// someone else, or when actors are on two different levels.
+        // Now check to see if these two actors are too far apart on their Z
+        // axis so we don't get conversations triggered when someone jumps on
+        // someone else, or when actors are on two different levels.
 
-		if (!bAbortConversation)
-		{
-			bAbortConversation = !CheckConversationHeightDifference(invokeActor, 20);
+        if (!bAbortConversation)
+        {
+            bAbortConversation = !CheckConversationHeightDifference(invokeActor, 20);
 
-			// If the height check failed, look to see if the actor has a LOS view
-			// to the player in which case we'll allow the conversation to continue
-			
-			if (bAbortConversation)
-				bAbortConversation = !CanActorSeePlayer(invokeActor);
-		}
+            // If the height check failed, look to see if the actor has a LOS view
+            // to the player in which case we'll allow the conversation to continue
+            
+            if (bAbortConversation)
+                bAbortConversation = !CanActorSeePlayer(invokeActor);
+        }
 
-		// Check if this conversation is only to be played once 
-		if (( !bAbortConversation ) && ( con.bDisplayOnce ))
-		{
-			flagName = rootWindow.StringToName(con.conName $ "_Played");		
-			bAbortConversation = (flagBase.GetBool(flagName) == True);
-		}
+        // Check if this conversation is only to be played once 
+        if (( !bAbortConversation ) && ( con.bDisplayOnce ))
+        {
+            flagName = rootWindow.StringToName(con.conName $ "_Played");        
+            bAbortConversation = (flagBase.GetBool(flagName) == True);
+        }
 
-		if ( !bAbortConversation )
-		{
-			// Then check to make sure all the flags that need to be
-			// set are.
+        if ( !bAbortConversation )
+        {
+            // Then check to make sure all the flags that need to be
+            // set are.
 
-			bAbortConversation = !CheckFlagRefs(con.flagRefList);
-		}
+            bAbortConversation = !CheckFlagRefs(con.flagRefList);
+        }
 
-		if ( !bAbortConversation )
-			break;
-	
-		conListItem = conListItem.next;
-	}
+        if ( !bAbortConversation )
+            break;
+    
+        conListItem = conListItem.next;
+    }
 
-	if (bAbortConversation)
-		return None;
-	else
-		return con;
+    if (bAbortConversation)
+        return None;
+    else
+        return con;
 }
 
 // ----------------------------------------------------------------------
@@ -8853,14 +8853,14 @@ function Conversation GetActiveConversation( Actor invokeActor, EInvokeMethod in
 
 function bool CheckConversationInvokeRadius(Actor invokeActor, Conversation con)
 {
-	local Int  invokeRadius;
-	local Int  dist;
+    local Int  invokeRadius;
+    local Int  dist;
 
-	dist = VSize(Location - invokeActor.Location);
+    dist = VSize(Location - invokeActor.Location);
 
-	invokeRadius = Max(16, con.radiusDistance);
+    invokeRadius = Max(16, con.radiusDistance);
 
-	return (dist <= invokeRadius);
+    return (dist <= invokeRadius);
 }
 
 // ----------------------------------------------------------------------
@@ -8873,23 +8873,23 @@ function bool CheckConversationInvokeRadius(Actor invokeActor, Conversation con)
 
 function bool CheckConversationHeightDifference(Actor invokeActor, int heightOffset)
 {
-	local Int dist;
+    local Int dist;
 
-	dist = Abs(Location.Z - invokeActor.Location.Z) - Abs(Default.CollisionHeight - CollisionHeight);
+    dist = Abs(Location.Z - invokeActor.Location.Z) - Abs(Default.CollisionHeight - CollisionHeight);
 
-	if (dist > (Abs(CollisionHeight - invokeActor.CollisionHeight) + heightOffset))
-		return False;
-	else
-		return True;
+    if (dist > (Abs(CollisionHeight - invokeActor.CollisionHeight) + heightOffset))
+        return False;
+    else
+        return True;
 }
-	
+    
 // ----------------------------------------------------------------------
 // CanActorSeePlayer()
 // ----------------------------------------------------------------------
 
 function bool CanActorSeePlayer(Actor invokeActor)
 {
-	return FastTrace(invokeActor.Location);
+    return FastTrace(invokeActor.Location);
 }
 
 // ----------------------------------------------------------------------
@@ -8902,29 +8902,29 @@ function bool CanActorSeePlayer(Actor invokeActor)
 
 function CheckActiveConversationRadius()
 {
-	local int checkRadius;
+    local int checkRadius;
 
-	// Ignore if conPlay.GetForcePlay() returns True
+    // Ignore if conPlay.GetForcePlay() returns True
 
-	if ((conPlay != None) && (!conPlay.GetForcePlay()) && (conPlay.ConversationStarted()) && (conPlay.displayMode == DM_FirstPerson) && (conPlay.StartActor != None))
-	{
-		// If this was invoked via a radius, then check to make sure the player doesn't 
-		// exceed that radius plus 
+    if ((conPlay != None) && (!conPlay.GetForcePlay()) && (conPlay.ConversationStarted()) && (conPlay.displayMode == DM_FirstPerson) && (conPlay.StartActor != None))
+    {
+        // If this was invoked via a radius, then check to make sure the player doesn't 
+        // exceed that radius plus 
 
-		if (conPlay.con.bInvokeRadius) 
-			checkRadius = conPlay.con.radiusDistance + 100;
-		else
-			checkRadius = 300;
+        if (conPlay.con.bInvokeRadius) 
+            checkRadius = conPlay.con.radiusDistance + 100;
+        else
+            checkRadius = 300;
 
-		// Add the collisioncylinder since some objects are wider than others
-		checkRadius += conPlay.StartActor.CollisionRadius;
+        // Add the collisioncylinder since some objects are wider than others
+        checkRadius += conPlay.StartActor.CollisionRadius;
 
-		if (VSize(conPlay.startActor.Location - Location) > checkRadius)
-		{
-			// Abort the conversation
-			conPlay.TerminateConversation(True);
-		}
-	}
+        if (VSize(conPlay.startActor.Location - Location) > checkRadius)
+        {
+            // Abort the conversation
+            conPlay.TerminateConversation(True);
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -8936,11 +8936,11 @@ function CheckActiveConversationRadius()
 
 function bool CheckActorDistances()
 {
-	if ((conPlay != None) && (!conPlay.GetForcePlay()) && (conPlay.ConversationStarted()) && (conPlay.displayMode == DM_ThirdPerson))
-	{
-		if (!conPlay.con.CheckActorDistances(Self))
-			conPlay.TerminateConversation(True);
-	}
+    if ((conPlay != None) && (!conPlay.GetForcePlay()) && (conPlay.ConversationStarted()) && (conPlay.displayMode == DM_ThirdPerson))
+    {
+        if (!conPlay.con.CheckActorDistances(Self))
+            conPlay.TerminateConversation(True);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -8953,24 +8953,24 @@ function bool CheckActorDistances()
 
 function bool CheckFlagRefs( ConFlagRef flagRef )
 {
-	local ConFlagRef currentRef;
+    local ConFlagRef currentRef;
 
-	// Loop through our list of FlagRef's, checking the value of each.
-	// If we hit a bad match, then we'll stop right away since there's
-	// no point of continuing.
+    // Loop through our list of FlagRef's, checking the value of each.
+    // If we hit a bad match, then we'll stop right away since there's
+    // no point of continuing.
 
-	currentRef = flagRef;
+    currentRef = flagRef;
 
-	while( currentRef != None )
-	{
-		if ( flagBase.GetBool(currentRef.flagName) != currentRef.value )
-			return False;
+    while( currentRef != None )
+    {
+        if ( flagBase.GetBool(currentRef.flagName) != currentRef.value )
+            return False;
 
-		currentRef = currentRef.nextFlagRef;
-	}
-	
-	// If we made it this far, then the flags check out.
-	return True;
+        currentRef = currentRef.nextFlagRef;
+    }
+    
+    // If we made it this far, then the flags check out.
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -8980,65 +8980,65 @@ function bool CheckFlagRefs( ConFlagRef flagRef )
 // ----------------------------------------------------------------------
 
 function Bool StartDataLinkTransmission(
-	String datalinkName, 
-	Optional DataLinkTrigger datalinkTrigger)
+    String datalinkName, 
+    Optional DataLinkTrigger datalinkTrigger)
 {
-	local Conversation activeDataLink;
-	local bool bDataLinkPlaySpawned;
+    local Conversation activeDataLink;
+    local bool bDataLinkPlaySpawned;
 
-	// Don't allow DataLinks to start if we're in PlayersOnly mode
-	if ( Level.bPlayersOnly )
-		return False;
+    // Don't allow DataLinks to start if we're in PlayersOnly mode
+    if ( Level.bPlayersOnly )
+        return False;
 
-	activeDataLink = GetActiveDataLink(datalinkName);
+    activeDataLink = GetActiveDataLink(datalinkName);
 
-	if ( activeDataLink != None )
-	{
-		// Search to see if there's an active DataLinkPlay object 
-		// before creating one
+    if ( activeDataLink != None )
+    {
+        // Search to see if there's an active DataLinkPlay object 
+        // before creating one
 
-		if ( dataLinkPlay == None )
-		{
-			datalinkPlay = Spawn(class'DataLinkPlay');
-			bDataLinkPlaySpawned = True;
-		}
+        if ( dataLinkPlay == None )
+        {
+            datalinkPlay = Spawn(class'DataLinkPlay');
+            bDataLinkPlaySpawned = True;
+        }
 
-		// Call SetConversation(), which returns 
-		if (datalinkPlay.SetConversation(activeDataLink))
-		{
-			datalinkPlay.SetTrigger(datalinkTrigger);
+        // Call SetConversation(), which returns 
+        if (datalinkPlay.SetConversation(activeDataLink))
+        {
+            datalinkPlay.SetTrigger(datalinkTrigger);
 
-			if (datalinkPlay.StartConversation(Self))
-			{
-				return True;
-			}
-			else
-			{
-				// Datalink must already be playing, or in queue
-				if (bDataLinkPlaySpawned)
-				{
-					datalinkPlay.Destroy();
-					datalinkPlay = None;
-				}
-				
-				return False;
-			}
-		}
-		else
-		{
-			// Datalink must already be playing, or in queue
-			if (bDataLinkPlaySpawned)
-			{
-				datalinkPlay.Destroy();
-				datalinkPlay = None;
-			}
-			return False;
-		}
-	}
-	else
-	{
-		return False;
-	}
+            if (datalinkPlay.StartConversation(Self))
+            {
+                return True;
+            }
+            else
+            {
+                // Datalink must already be playing, or in queue
+                if (bDataLinkPlaySpawned)
+                {
+                    datalinkPlay.Destroy();
+                    datalinkPlay = None;
+                }
+                
+                return False;
+            }
+        }
+        else
+        {
+            // Datalink must already be playing, or in queue
+            if (bDataLinkPlaySpawned)
+            {
+                datalinkPlay.Destroy();
+                datalinkPlay = None;
+            }
+            return False;
+        }
+    }
+    else
+    {
+        return False;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -9052,62 +9052,62 @@ function Bool StartDataLinkTransmission(
 
 function Conversation GetActiveDataLink(String datalinkName)
 {
-	local Name flagName;
-	local ConListItem conListItem;
-	local Conversation con;
-	local bool bAbortDataLink;
-	local bool bDatalinkFound;
-	local bool bDataLinkNameFound;
+    local Name flagName;
+    local ConListItem conListItem;
+    local Conversation con;
+    local bool bAbortDataLink;
+    local bool bDatalinkFound;
+    local bool bDataLinkNameFound;
 
-	// Abort immediately if the flagbase isn't yet initialized
-	if ((flagBase == None) || (rootWindow == None))
-		return None;
+    // Abort immediately if the flagbase isn't yet initialized
+    if ((flagBase == None) || (rootWindow == None))
+        return None;
 
-	conListItem = ConListItem(conListItems);
+    conListItem = ConListItem(conListItems);
 
-	// In a loop, go through the conversations, checking each.
-	while ( conListItem != None )
-	{
-		con = conListItem.con;
+    // In a loop, go through the conversations, checking each.
+    while ( conListItem != None )
+    {
+        con = conListItem.con;
 
-		if ( Caps(datalinkName) == Caps(con.conName) )
-		{
-			// Now check if this DataLink is only to be played
-			// once 
+        if ( Caps(datalinkName) == Caps(con.conName) )
+        {
+            // Now check if this DataLink is only to be played
+            // once 
 
-			bDataLinkNameFound = True;
-			bAbortDataLink = False;
+            bDataLinkNameFound = True;
+            bAbortDataLink = False;
 
-			if ( con.bDisplayOnce )
-			{
-				flagName = rootWindow.StringToName(con.conName $ "_Played");		
-				bAbortDataLink = (flagBase.GetBool(flagName) == True);
-			}
+            if ( con.bDisplayOnce )
+            {
+                flagName = rootWindow.StringToName(con.conName $ "_Played");        
+                bAbortDataLink = (flagBase.GetBool(flagName) == True);
+            }
 
-			// Check the flags for this DataLink
-			if (( !bAbortDataLink ) && ( CheckFlagRefs( con.flagRefList ) == True ))
-			{
-				bDatalinkFound = True;
-				break;
-			}
-		}
-		conListItem = conListItem.next;
-	}
+            // Check the flags for this DataLink
+            if (( !bAbortDataLink ) && ( CheckFlagRefs( con.flagRefList ) == True ))
+            {
+                bDatalinkFound = True;
+                break;
+            }
+        }
+        conListItem = conListItem.next;
+    }
 
-	if (bDatalinkFound)
-	{
-		return con;
-	}
-	else
-	{
-		// Print a warning if this DL couldn't be found based on its name
-		if (bDataLinkNameFound == False)
-		{
-			log("WARNING! INFOLINK NOT FOUND!! Name = " $ datalinkName);
-			ClientMessage("WARNING! INFOLINK NOT FOUND!! Name = " $ datalinkName);
-		}
-		return None;
-	}
+    if (bDatalinkFound)
+    {
+        return con;
+    }
+    else
+    {
+        // Print a warning if this DL couldn't be found based on its name
+        if (bDataLinkNameFound == False)
+        {
+            log("WARNING! INFOLINK NOT FOUND!! Name = " $ datalinkName);
+            ClientMessage("WARNING! INFOLINK NOT FOUND!! Name = " $ datalinkName);
+        }
+        return None;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -9118,29 +9118,29 @@ function Conversation GetActiveDataLink(String datalinkName)
 
 function DeusExNote AddNote( optional String strNote, optional Bool bUserNote, optional bool bShowInLog )
 {
-	local DeusExNote newNote;
+    local DeusExNote newNote;
 
-	newNote = new(Self) Class'DeusExNote';
+    newNote = new(Self) Class'DeusExNote';
 
-	newNote.text = strNote;
-	newNote.SetUserNote( bUserNote );
+    newNote.text = strNote;
+    newNote.SetUserNote( bUserNote );
 
-	// Insert this new note at the top of the notes list
-	if (FirstNote == None)
-		LastNote  = newNote;
-	else
-		newNote.next = FirstNote;
+    // Insert this new note at the top of the notes list
+    if (FirstNote == None)
+        LastNote  = newNote;
+    else
+        newNote.next = FirstNote;
 
-	FirstNote = newNote;
+    FirstNote = newNote;
 
-	// Optionally show the note in the log
-	if ( bShowInLog )
-	{
-		ClientMessage(NoteAdded);
-		DeusExRootWindow(rootWindow).hud.msgLog.PlayLogSound(Sound'LogNoteAdded');
-	}
+    // Optionally show the note in the log
+    if ( bShowInLog )
+    {
+        ClientMessage(NoteAdded);
+        DeusExRootWindow(rootWindow).hud.msgLog.PlayLogSound(Sound'LogNoteAdded');
+    }
 
-	return newNote;
+    return newNote;
 }
 
 // ----------------------------------------------------------------------
@@ -9151,19 +9151,19 @@ function DeusExNote AddNote( optional String strNote, optional Bool bUserNote, o
 
 function DeusExNote GetNote(Name textTag)
 {
-	local DeusExNote note;
+    local DeusExNote note;
 
-	note = FirstNote;
-		
-	while( note != None )
-	{
-		if (note.textTag == textTag)
-			break;
+    note = FirstNote;
+        
+    while( note != None )
+    {
+        if (note.textTag == textTag)
+            break;
 
-		note = note.next;
-	}
+        note = note.next;
+    }
 
-	return note;
+    return note;
 }
 
 // ----------------------------------------------------------------------
@@ -9175,37 +9175,37 @@ function DeusExNote GetNote(Name textTag)
 
 function Bool DeleteNote( DeusExNote noteToDelete )
 {
-	local DeusExNote note;
-	local DeusExNote previousNote;
-	local Bool bNoteDeleted;
+    local DeusExNote note;
+    local DeusExNote previousNote;
+    local Bool bNoteDeleted;
 
-	bNoteDeleted = False;
-	note = FirstNote;
-	previousNote = None;
+    bNoteDeleted = False;
+    note = FirstNote;
+    previousNote = None;
 
-	while( note != None )
-	{
-		if ( note == noteToDelete )
-		{
-			if ( note == FirstNote )
-				FirstNote = note.next;
+    while( note != None )
+    {
+        if ( note == noteToDelete )
+        {
+            if ( note == FirstNote )
+                FirstNote = note.next;
 
-			if ( note == LastNote )
-				LastNote = previousNote;
+            if ( note == LastNote )
+                LastNote = previousNote;
 
-			if ( previousNote != None )
-				previousNote.next = note.next;
+            if ( previousNote != None )
+                previousNote.next = note.next;
 
-			note = None;
-						
-			bNoteDeleted = True;	
-			break;
-		}
-		previousNote = note;
-		note = note.next;
-	}
+            note = None;
+                        
+            bNoteDeleted = True;    
+            break;
+        }
+        previousNote = note;
+        note = note.next;
+    }
 
-	return bNoteDeleted;
+    return bNoteDeleted;
 }
 
 // ----------------------------------------------------------------------
@@ -9216,20 +9216,20 @@ function Bool DeleteNote( DeusExNote noteToDelete )
 
 function DeleteAllNotes()
 {
-	local DeusExNote note;
-	local DeusExNote noteNext;
+    local DeusExNote note;
+    local DeusExNote noteNext;
 
-	note = FirstNote;
+    note = FirstNote;
 
-	while( note != None )
-	{
-		noteNext = note.next;
-		DeleteNote(note);
-		note = noteNext;
-	}
+    while( note != None )
+    {
+        noteNext = note.next;
+        DeleteNote(note);
+        note = noteNext;
+    }
 
-	FirstNote = None;
-	LastNote = None;
+    FirstNote = None;
+    LastNote = None;
 }
 
 // ----------------------------------------------------------------------
@@ -9238,10 +9238,10 @@ function DeleteAllNotes()
 
 exec function NoteAdd( String noteText, optional bool bUserNote )
 {
-	local DeusExNote newNote;
+    local DeusExNote newNote;
 
-	newNote = AddNote( noteText );
-	newNote.SetUserNote( bUserNote );
+    newNote = AddNote( noteText );
+    newNote.SetUserNote( bUserNote );
 }
 
 // ----------------------------------------------------------------------
@@ -9251,35 +9251,35 @@ exec function NoteAdd( String noteText, optional bool bUserNote )
 // ----------------------------------------------------------------------
 
 function DeusExGoal AddGoal( Name goalName, bool bPrimaryGoal )
-{	
-	local DeusExGoal newGoal;
+{    
+    local DeusExGoal newGoal;
 
-	// First check to see if this goal already exists.  If so, we'll just
-	// return it.  Otherwise create a new goal
+    // First check to see if this goal already exists.  If so, we'll just
+    // return it.  Otherwise create a new goal
 
-	newGoal = FindGoal( goalName );
+    newGoal = FindGoal( goalName );
 
-	if ( newGoal == None )
-	{
-		newGoal = new(Self) Class'DeusExGoal';
-		newGoal.SetName( goalName );
+    if ( newGoal == None )
+    {
+        newGoal = new(Self) Class'DeusExGoal';
+        newGoal.SetName( goalName );
 
-		// Insert goal at the Top so goals are displayed in 
-		// Newest order first.
-		if (FirstGoal == None)
-			LastGoal  = newGoal;
-		else
-			newGoal.next = FirstGoal;
+        // Insert goal at the Top so goals are displayed in 
+        // Newest order first.
+        if (FirstGoal == None)
+            LastGoal  = newGoal;
+        else
+            newGoal.next = FirstGoal;
 
-		FirstGoal    = newGoal;
+        FirstGoal    = newGoal;
 
-		newGoal.SetPrimaryGoal( bPrimaryGoal );
+        newGoal.SetPrimaryGoal( bPrimaryGoal );
 
-		ClientMessage(GoalAdded);
-		DeusExRootWindow(rootWindow).hud.msgLog.PlayLogSound(Sound'LogGoalAdded');
-	}
+        ClientMessage(GoalAdded);
+        DeusExRootWindow(rootWindow).hud.msgLog.PlayLogSound(Sound'LogGoalAdded');
+    }
 
-	return newGoal;	
+    return newGoal;    
 }
 
 // ----------------------------------------------------------------------
@@ -9288,19 +9288,19 @@ function DeusExGoal AddGoal( Name goalName, bool bPrimaryGoal )
 
 function DeusExGoal FindGoal( Name goalName )
 {
-	local DeusExGoal goal;
+    local DeusExGoal goal;
 
-	goal = FirstGoal;
+    goal = FirstGoal;
 
-	while( goal != None )
-	{
-		if ( goalName == goal.goalName )
-			break;
+    while( goal != None )
+    {
+        if ( goalName == goal.goalName )
+            break;
 
-		goal = goal.next;
-	}
+        goal = goal.next;
+    }
 
-	return goal;
+    return goal;
 }
 
 // ----------------------------------------------------------------------
@@ -9311,13 +9311,13 @@ function DeusExGoal FindGoal( Name goalName )
 
 exec function GoalAdd( Name goalName, String goalText, optional bool bPrimaryGoal )
 {
-	local DeusExGoal newGoal;
+    local DeusExGoal newGoal;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	newGoal = AddGoal( goalName, bPrimaryGoal );
-	newGoal.SetText( goalText );
+    newGoal = AddGoal( goalName, bPrimaryGoal );
+    newGoal.SetText( goalText );
 }
 
 // ----------------------------------------------------------------------
@@ -9328,15 +9328,15 @@ exec function GoalAdd( Name goalName, String goalText, optional bool bPrimaryGoa
 
 exec function GoalSetPrimary( Name goalName, bool bPrimaryGoal )
 {
-	local DeusExGoal goal;
+    local DeusExGoal goal;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	goal = FindGoal( goalName );
+    goal = FindGoal( goalName );
 
-	if ( goal != None )
-		goal.SetPrimaryGoal( bPrimaryGoal );
+    if ( goal != None )
+        goal.SetPrimaryGoal( bPrimaryGoal );
 }
 
 // ----------------------------------------------------------------------
@@ -9347,27 +9347,27 @@ exec function GoalSetPrimary( Name goalName, bool bPrimaryGoal )
 
 function GoalCompleted( Name goalName )
 {
-	local DeusExGoal goal;
+    local DeusExGoal goal;
 
-	// Loop through all the goals until we hit the one we're 
-	// looking for.
-	goal = FindGoal( goalName );
+    // Loop through all the goals until we hit the one we're 
+    // looking for.
+    goal = FindGoal( goalName );
 
-	if ( goal != None )
-	{
-		// Only mark a goal as completed once!
-		if (!goal.IsCompleted())
-		{
-			goal.SetCompleted();
-			DeusExRootWindow(rootWindow).hud.msgLog.PlayLogSound(Sound'LogGoalCompleted');
+    if ( goal != None )
+    {
+        // Only mark a goal as completed once!
+        if (!goal.IsCompleted())
+        {
+            goal.SetCompleted();
+            DeusExRootWindow(rootWindow).hud.msgLog.PlayLogSound(Sound'LogGoalCompleted');
 
-			// Let the player know
-			if ( goal.bPrimaryGoal )
-				ClientMessage(PrimaryGoalCompleted);
-			else
-				ClientMessage(SecondaryGoalCompleted);
-		}
-	}
+            // Let the player know
+            if ( goal.bPrimaryGoal )
+                ClientMessage(PrimaryGoalCompleted);
+            else
+                ClientMessage(SecondaryGoalCompleted);
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -9379,37 +9379,37 @@ function GoalCompleted( Name goalName )
 
 function Bool DeleteGoal( DeusExGoal goalToDelete )
 {
-	local DeusExGoal goal;
-	local DeusExGoal previousGoal;
-	local Bool bGoalDeleted;
+    local DeusExGoal goal;
+    local DeusExGoal previousGoal;
+    local Bool bGoalDeleted;
 
-	bGoalDeleted = False;
-	goal = FirstGoal;
-	previousGoal = None;
+    bGoalDeleted = False;
+    goal = FirstGoal;
+    previousGoal = None;
 
-	while( goal != None )
-	{
-		if ( goal == goalToDelete )
-		{
-			if ( goal == FirstGoal )
-				FirstGoal = goal.next;
+    while( goal != None )
+    {
+        if ( goal == goalToDelete )
+        {
+            if ( goal == FirstGoal )
+                FirstGoal = goal.next;
 
-			if ( goal == LastGoal )
-				LastGoal = previousGoal;
+            if ( goal == LastGoal )
+                LastGoal = previousGoal;
 
-			if ( previousGoal != None )
-				previousGoal.next = goal.next;
+            if ( previousGoal != None )
+                previousGoal.next = goal.next;
 
-			goal = None;
-						
-			bGoalDeleted = True;	
-			break;
-		}
-		previousGoal = goal;
-		goal = goal.next;
-	}
+            goal = None;
+                        
+            bGoalDeleted = True;    
+            break;
+        }
+        previousGoal = goal;
+        goal = goal.next;
+    }
 
-	return bGoalDeleted;
+    return bGoalDeleted;
 }
 
 // ----------------------------------------------------------------------
@@ -9420,20 +9420,20 @@ function Bool DeleteGoal( DeusExGoal goalToDelete )
 
 function DeleteAllGoals()
 {
-	local DeusExGoal goal;
-	local DeusExGoal goalNext;
+    local DeusExGoal goal;
+    local DeusExGoal goalNext;
 
-	goal = FirstGoal;
+    goal = FirstGoal;
 
-	while( goal != None )
-	{
-		goalNext = goal.next;
-		DeleteGoal(goal);
-		goal = goalNext;
-	}
+    while( goal != None )
+    {
+        goalNext = goal.next;
+        DeleteGoal(goal);
+        goal = goalNext;
+    }
 
-	FirstGoal = None;
-	LastGoal = None;
+    FirstGoal = None;
+    LastGoal = None;
 }
 
 // ----------------------------------------------------------------------
@@ -9446,24 +9446,24 @@ function DeleteAllGoals()
 
 function ResetGoals()
 {
-	local DeusExGoal goal;
-	local DeusExGoal goalNext;
+    local DeusExGoal goal;
+    local DeusExGoal goalNext;
 
-	goal = FirstGoal;
+    goal = FirstGoal;
 
-	while( goal != None )
-	{
-		goalNext = goal.next;
+    while( goal != None )
+    {
+        goalNext = goal.next;
 
-		// Delete:
-		// 1) Completed Primary Goals
-		// 2) ALL Secondary Goals
+        // Delete:
+        // 1) Completed Primary Goals
+        // 2) ALL Secondary Goals
 
-		if ((!goal.IsPrimaryGoal()) || (goal.IsPrimaryGoal() && goal.IsCompleted()))
-			DeleteGoal(goal);
+        if ((!goal.IsPrimaryGoal()) || (goal.IsPrimaryGoal() && goal.IsCompleted()))
+            DeleteGoal(goal);
 
-		goal = goalNext;
-	}
+        goal = goalNext;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -9476,32 +9476,32 @@ function ResetGoals()
 
 function bool AddImage(DataVaultImage newImage)
 {
-	local DataVaultImage image;
+    local DataVaultImage image;
 
-	if (newImage == None)
-		return False;
+    if (newImage == None)
+        return False;
 
-	// First make sure the player doesn't already have this image!!
-	image = FirstImage;
-	while(image != None)
-	{
-		if (newImage.imageDescription == image.imageDescription)
-			return False;
+    // First make sure the player doesn't already have this image!!
+    image = FirstImage;
+    while(image != None)
+    {
+        if (newImage.imageDescription == image.imageDescription)
+            return False;
 
-		image = image.NextImage;
-	}
+        image = image.NextImage;
+    }
 
-	// If the player doesn't yet have an image, make this his
-	// first image.  
-	newImage.nextImage = FirstImage;
-	newImage.prevImage = None;
+    // If the player doesn't yet have an image, make this his
+    // first image.  
+    newImage.nextImage = FirstImage;
+    newImage.prevImage = None;
 
-	if (FirstImage != None)
-		FirstImage.prevImage = newImage;
+    if (FirstImage != None)
+        FirstImage.prevImage = newImage;
 
-	FirstImage = newImage;
+    FirstImage = newImage;
 
-	return True;
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -9512,20 +9512,20 @@ function bool AddImage(DataVaultImage newImage)
 
 function DeusExLog AddLog(String logText)
 {
-	local DeusExLog newLog;
+    local DeusExLog newLog;
 
-	newLog = CreateLogObject();
-	newLog.SetLogText(logText);
+    newLog = CreateLogObject();
+    newLog.SetLogText(logText);
 
-	// Add this Note to the list of player Notes
-	if ( FirstLog != None )
-		LastLog.next = newLog;
-	else
-		FirstLog = newLog;
+    // Add this Note to the list of player Notes
+    if ( FirstLog != None )
+        LastLog.next = newLog;
+    else
+        FirstLog = newLog;
 
-	LastLog = newLog;
+    LastLog = newLog;
 
-	return newLog;
+    return newLog;
 }
 
 // ----------------------------------------------------------------------
@@ -9536,20 +9536,20 @@ function DeusExLog AddLog(String logText)
 
 function ClearLog()
 {
-	local DeusExLog log;
-	local DeusExLog nextLog;
+    local DeusExLog log;
+    local DeusExLog nextLog;
 
-	log = FirstLog;
+    log = FirstLog;
 
-	while( log != None )
-	{
-		nextLog = log.next;
-		CriticalDelete(log);
-		log = nextLog;
-	}
+    while( log != None )
+    {
+        nextLog = log.next;
+        CriticalDelete(log);
+        log = nextLog;
+    }
 
-	FirstLog = None;
-	LastLog  = None;
+    FirstLog = None;
+    LastLog  = None;
 }
 
 // ----------------------------------------------------------------------
@@ -9558,11 +9558,11 @@ function ClearLog()
 
 function SetLogTimeout(Float newLogTimeout)
 {
-	logTimeout = newLogTimeout;
+    logTimeout = newLogTimeout;
 
-	// Update the HUD Log Display
-	if (DeusExRootWindow(rootWindow).hud != None)
-		DeusExRootWindow(rootWindow).hud.msgLog.SetLogTimeout(newLogTimeout);
+    // Update the HUD Log Display
+    if (DeusExRootWindow(rootWindow).hud != None)
+        DeusExRootWindow(rootWindow).hud.msgLog.SetLogTimeout(newLogTimeout);
 }
 
 // ----------------------------------------------------------------------
@@ -9571,7 +9571,7 @@ function SetLogTimeout(Float newLogTimeout)
 
 function Float GetLogTimeout()
 {
-   if (Level.NetMode == NM_Standalone)	
+   if (Level.NetMode == NM_Standalone)    
       return logTimeout;
    else
       return (FMax(5.0,logTimeout));
@@ -9583,11 +9583,11 @@ function Float GetLogTimeout()
 
 function SetMaxLogLines(Byte newLogLines)
 {
-	maxLogLines = newLogLines;
+    maxLogLines = newLogLines;
 
-	// Update the HUD Log Display
-	if (DeusExRootWindow(rootWindow).hud != None)
-		DeusExRootWindow(rootWindow).hud.msgLog.SetMaxLogLines(newLogLines);
+    // Update the HUD Log Display
+    if (DeusExRootWindow(rootWindow).hud != None)
+        DeusExRootWindow(rootWindow).hud.msgLog.SetMaxLogLines(newLogLines);
 }
 
 // ----------------------------------------------------------------------
@@ -9596,7 +9596,7 @@ function SetMaxLogLines(Byte newLogLines)
 
 function Byte GetMaxLogLines()
 {
-	return maxLogLines;
+    return maxLogLines;
 }
 
 // ----------------------------------------------------------------------
@@ -9605,12 +9605,12 @@ function Byte GetMaxLogLines()
 
 function PopHealth( float health0, float health1, float health2, float health3, float health4, float health5 )
 {
-	HealthHead     = health0;
-	HealthTorso    = health1;
-	HealthArmRight = health2;
-	HealthArmLeft  = health3;
-	HealthLegRight = health4;
-	HealthLegLeft  = health5;
+    HealthHead     = health0;
+    HealthTorso    = health1;
+    HealthArmRight = health2;
+    HealthArmLeft  = health3;
+    HealthLegRight = health4;
+    HealthLegLeft  = health5;
 }
 
 // ----------------------------------------------------------------------
@@ -9623,19 +9623,19 @@ function PopHealth( float health0, float health1, float health2, float health3, 
 
 function GenerateTotalHealth()
 {
-	local float ave, avecrit;
+    local float ave, avecrit;
 
-	ave = (HealthLegLeft + HealthLegRight + HealthArmLeft + HealthArmRight) / 4.0;
+    ave = (HealthLegLeft + HealthLegRight + HealthArmLeft + HealthArmRight) / 4.0;
 
-	if ((HealthHead <= 0) || (HealthTorso <= 0))
-		avecrit = 0;
-	else
-		avecrit = (HealthHead + HealthTorso) / 2.0;
+    if ((HealthHead <= 0) || (HealthTorso <= 0))
+        avecrit = 0;
+    else
+        avecrit = (HealthHead + HealthTorso) / 2.0;
 
-	if (avecrit == 0)
-		Health = 0;
-	else
-		Health = (ave + avecrit) / 2.0;
+    if (avecrit == 0)
+        Health = 0;
+    else
+        Health = (ave + avecrit) / 2.0;
 }
 
 
@@ -9644,38 +9644,38 @@ function GenerateTotalHealth()
 // ----------------------------------------------------------------------
 function MultiplayerDeathMsg( Pawn killer, bool killedSelf, bool valid, String killerName, String killerMethod )
 {
-	local MultiplayerMessageWin	mmw;
-	local DeusExRootWindow			root;
+    local MultiplayerMessageWin    mmw;
+    local DeusExRootWindow            root;
 
-	myKiller = killer;
-	if ( killProfile != None )
-	{
-		killProfile.bKilledSelf = killedSelf;
-		killProfile.bValid = valid;
-	}
-	root = DeusExRootWindow(rootWindow);
-	if ( root != None )
-	{
-		mmw = MultiplayerMessageWin(root.InvokeUIScreen(Class'MultiplayerMessageWin', True));
-		if ( mmw != None )
-		{
-			mmw.bKilled = true;
-			mmw.killerName = killerName;
-			mmw.killerMethod = killerMethod;
-			mmw.bKilledSelf = killedSelf;
-			mmw.bValidMethod = valid;
-		}
-	}
+    myKiller = killer;
+    if ( killProfile != None )
+    {
+        killProfile.bKilledSelf = killedSelf;
+        killProfile.bValid = valid;
+    }
+    root = DeusExRootWindow(rootWindow);
+    if ( root != None )
+    {
+        mmw = MultiplayerMessageWin(root.InvokeUIScreen(Class'MultiplayerMessageWin', True));
+        if ( mmw != None )
+        {
+            mmw.bKilled = true;
+            mmw.killerName = killerName;
+            mmw.killerMethod = killerMethod;
+            mmw.bKilledSelf = killedSelf;
+            mmw.bValidMethod = valid;
+        }
+    }
 }
 
 function ShowProgress()
 {
-	local MultiplayerMessageWin	mmw;
-	local DeusExRootWindow			root;
+    local MultiplayerMessageWin    mmw;
+    local DeusExRootWindow            root;
 
-	root = DeusExRootWindow(rootWindow);
+    root = DeusExRootWindow(rootWindow);
    if (root != None)
-	{
+    {
       if (root.GetTopWindow() != None)
          mmw = MultiplayerMessageWin(root.GetTopWindow());
 
@@ -9703,53 +9703,53 @@ function ShowProgress()
 
 function ServerConditionalNotifyMsg( int code, optional int param, optional string str )
 {
-	switch( code )
-	{
-		case MPMSG_FirstPoison:
-			if ( (mpMsgServerFlags & MPSERVERFLAG_FirstPoison) == MPSERVERFLAG_FirstPoison )
-				return;
-			else
-				mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_FirstPoison;
-			break;
-		case MPMSG_FirstBurn:
-			if ( (mpMsgServerFlags & MPSERVERFLAG_FirstBurn) == MPSERVERFLAG_FirstBurn )
-				return;
-			else
-				mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_FirstBurn;
-			break;
-		case MPMSG_TurretInv:
-			if ( ( mpMsgServerFlags & MPSERVERFLAG_TurretInv ) == MPSERVERFLAG_TurretInv )
-				return;
-			else
-				mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_TurretInv;
-			break;
-		case MPMSG_CameraInv:
-			if ( ( mpMsgServerFlags & MPSERVERFLAG_CameraInv ) == MPSERVERFLAG_CameraInv )
-				return;
-			else
-				mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_CameraInv;
-			break;
-		case MPMSG_LostLegs:
-			if ( ( mpMsgServerFlags & MPSERVERFLAG_LostLegs) == MPSERVERFLAG_LostLegs )
-				return;
-			else
-				mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_LostLegs;
-			break;
-		case MPMSG_DropItem:
-			if ( ( mpMsgServerFlags & MPSERVERFLAG_DropItem) == MPSERVERFLAG_DropItem )
-				return;
-			else
-				mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_DropItem;
-			break;
-		case MPMSG_NoCloakWeapon:
-			if ( ( mpMsgServerFlags & MPSERVERFLAG_NoCloakWeapon) == MPSERVERFLAG_NoCloakWeapon )
-				return;
-			else
-				mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_NoCloakWeapon;
-			break;
-	}
-	// If we made it here we need to notify
-	MultiplayerNotifyMsg( code, param, str );
+    switch( code )
+    {
+        case MPMSG_FirstPoison:
+            if ( (mpMsgServerFlags & MPSERVERFLAG_FirstPoison) == MPSERVERFLAG_FirstPoison )
+                return;
+            else
+                mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_FirstPoison;
+            break;
+        case MPMSG_FirstBurn:
+            if ( (mpMsgServerFlags & MPSERVERFLAG_FirstBurn) == MPSERVERFLAG_FirstBurn )
+                return;
+            else
+                mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_FirstBurn;
+            break;
+        case MPMSG_TurretInv:
+            if ( ( mpMsgServerFlags & MPSERVERFLAG_TurretInv ) == MPSERVERFLAG_TurretInv )
+                return;
+            else
+                mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_TurretInv;
+            break;
+        case MPMSG_CameraInv:
+            if ( ( mpMsgServerFlags & MPSERVERFLAG_CameraInv ) == MPSERVERFLAG_CameraInv )
+                return;
+            else
+                mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_CameraInv;
+            break;
+        case MPMSG_LostLegs:
+            if ( ( mpMsgServerFlags & MPSERVERFLAG_LostLegs) == MPSERVERFLAG_LostLegs )
+                return;
+            else
+                mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_LostLegs;
+            break;
+        case MPMSG_DropItem:
+            if ( ( mpMsgServerFlags & MPSERVERFLAG_DropItem) == MPSERVERFLAG_DropItem )
+                return;
+            else
+                mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_DropItem;
+            break;
+        case MPMSG_NoCloakWeapon:
+            if ( ( mpMsgServerFlags & MPSERVERFLAG_NoCloakWeapon) == MPSERVERFLAG_NoCloakWeapon )
+                return;
+            else
+                mpMsgServerFlags = mpMsgServerFlags | MPSERVERFLAG_NoCloakWeapon;
+            break;
+    }
+    // If we made it here we need to notify
+    MultiplayerNotifyMsg( code, param, str );
 }
 
 // ----------------------------------------------------------------------
@@ -9757,69 +9757,69 @@ function ServerConditionalNotifyMsg( int code, optional int param, optional stri
 // ----------------------------------------------------------------------
 function MultiplayerNotifyMsg( int code, optional int param, optional string str )
 {
-	if ( !bHelpMessages )
-	{
-		switch( code )
-		{
-			case MPMSG_TeamUnatco:
-			case MPMSG_TeamNsf:
-			case MPMSG_TeamHit:
-			case MPMSG_TeamSpot:
-			case MPMSG_FirstPoison:
-			case MPMSG_FirstBurn:
-			case MPMSG_TurretInv:
-			case MPMSG_CameraInv:
-			case MPMSG_LostLegs:
-			case MPMSG_DropItem:
-			case MPMSG_KilledTeammate:
-			case MPMSG_TeamLAM:
-			case MPMSG_TeamComputer:
-			case MPMSG_NoCloakWeapon:
-			case MPMSG_TeamHackTurret:
-				return;		// Pass on these
-			case MPMSG_CloseKills:
-			case MPMSG_TimeNearEnd:
-				break;		// Go ahead with these
-		}
-	}
+    if ( !bHelpMessages )
+    {
+        switch( code )
+        {
+            case MPMSG_TeamUnatco:
+            case MPMSG_TeamNsf:
+            case MPMSG_TeamHit:
+            case MPMSG_TeamSpot:
+            case MPMSG_FirstPoison:
+            case MPMSG_FirstBurn:
+            case MPMSG_TurretInv:
+            case MPMSG_CameraInv:
+            case MPMSG_LostLegs:
+            case MPMSG_DropItem:
+            case MPMSG_KilledTeammate:
+            case MPMSG_TeamLAM:
+            case MPMSG_TeamComputer:
+            case MPMSG_NoCloakWeapon:
+            case MPMSG_TeamHackTurret:
+                return;        // Pass on these
+            case MPMSG_CloseKills:
+            case MPMSG_TimeNearEnd:
+                break;        // Go ahead with these
+        }
+    }
 
-	switch( code )
-	{
-		case MPMSG_TeamSpot:
-			if ( (mpMsgFlags & MPFLAG_FirstSpot) == MPFLAG_FirstSpot )
-				return;
-			else
-				mpMsgFlags = mpMsgFlags | MPFLAG_FirstSpot;
-			break;
-		case MPMSG_CloseKills:
-			if ((param == 0) || (str ~= ""))
-			{
-				log("Warning: Passed bad params to multiplayer notify msg." );
-				return;
-			}
-			mpMsgOptionalParam = param;
-			mpMsgOptionalString = str;
-			break;
-		case MPMSG_TimeNearEnd:
-			if ((param == 0) || (str ~= ""))
-			{
-				log("Warning: Passed bad params to multiplayer notify msg." );
-				return;
-			}
-			mpMsgOptionalParam = param;
-			mpMsgOptionalString = str;		
-			break;
-		case MPMSG_DropItem:
-		case MPMSG_TeamUnatco:
-		case MPMSG_TeamNsf:
-			if (( DeusExRootWindow(rootWindow) != None ) && ( DeusExRootWindow(rootWindow).hud != None ) && (DeusExRootWindow(rootWindow).hud.augDisplay != None ))
-				DeusExRootWindow(rootWindow).hud.augDisplay.RefreshMultiplayerKeys();
-			break;
-	}
-	mpMsgCode = code;
-  	mpMsgTime = Level.Timeseconds + mpMsgDelay;
-	if (( code == MPMSG_TeamUnatco ) || ( code == MPMSG_TeamNsf ))
-		mpMsgTime += 2.0;
+    switch( code )
+    {
+        case MPMSG_TeamSpot:
+            if ( (mpMsgFlags & MPFLAG_FirstSpot) == MPFLAG_FirstSpot )
+                return;
+            else
+                mpMsgFlags = mpMsgFlags | MPFLAG_FirstSpot;
+            break;
+        case MPMSG_CloseKills:
+            if ((param == 0) || (str ~= ""))
+            {
+                log("Warning: Passed bad params to multiplayer notify msg." );
+                return;
+            }
+            mpMsgOptionalParam = param;
+            mpMsgOptionalString = str;
+            break;
+        case MPMSG_TimeNearEnd:
+            if ((param == 0) || (str ~= ""))
+            {
+                log("Warning: Passed bad params to multiplayer notify msg." );
+                return;
+            }
+            mpMsgOptionalParam = param;
+            mpMsgOptionalString = str;        
+            break;
+        case MPMSG_DropItem:
+        case MPMSG_TeamUnatco:
+        case MPMSG_TeamNsf:
+            if (( DeusExRootWindow(rootWindow) != None ) && ( DeusExRootWindow(rootWindow).hud != None ) && (DeusExRootWindow(rootWindow).hud.augDisplay != None ))
+                DeusExRootWindow(rootWindow).hud.augDisplay.RefreshMultiplayerKeys();
+            break;
+    }
+    mpMsgCode = code;
+      mpMsgTime = Level.Timeseconds + mpMsgDelay;
+    if (( code == MPMSG_TeamUnatco ) || ( code == MPMSG_TeamNsf ))
+        mpMsgTime += 2.0;
 }
 
 
@@ -9828,42 +9828,42 @@ function MultiplayerNotifyMsg( int code, optional int param, optional string str
 //
 function GetSkillInfoFromProj( DeusExPlayer killer, Actor proj )
 {
-	local class<Skill> skillClass;
+    local class<Skill> skillClass;
 
-	if ( proj.IsA('GasGrenade') || proj.IsA('LAM') || proj.IsA('EMPGrenade') || proj.IsA('TearGas'))
-		skillClass = class'SkillDemolition';
-	else if ( proj.IsA('Rocket') || proj.IsA('RocketLAW') || proj.IsA('RocketWP') || proj.IsA('Fireball') || proj.IsA('PlasmaBolt'))
-		skillClass = class'SkillWeaponHeavy';
-	else if ( proj.IsA('Dart') || proj.IsA('DartFlare') || proj.IsA('DartPoison') || proj.IsA('Shuriken'))
-		skillClass = class'SkillWeaponLowTech';
-	else if ( proj.IsA('HECannister20mm') )
-		skillClass = class'SkillWeaponRifle';
-	else if ( proj.IsA('DeusExDecoration') )
-	{
-		killProfile.activeSkill = NoneString;
-		killProfile.activeSkillLevel = 0;
-		return;
-	}
-	if ( killer.SkillSystem != None )
-	{
-		killProfile.activeSkill = skillClass.Default.skillName;
-		killProfile.activeSkillLevel = killer.SkillSystem.GetSkillLevel(skillClass);
-	}
+    if ( proj.IsA('GasGrenade') || proj.IsA('LAM') || proj.IsA('EMPGrenade') || proj.IsA('TearGas'))
+        skillClass = class'SkillDemolition';
+    else if ( proj.IsA('Rocket') || proj.IsA('RocketLAW') || proj.IsA('RocketWP') || proj.IsA('Fireball') || proj.IsA('PlasmaBolt'))
+        skillClass = class'SkillWeaponHeavy';
+    else if ( proj.IsA('Dart') || proj.IsA('DartFlare') || proj.IsA('DartPoison') || proj.IsA('Shuriken'))
+        skillClass = class'SkillWeaponLowTech';
+    else if ( proj.IsA('HECannister20mm') )
+        skillClass = class'SkillWeaponRifle';
+    else if ( proj.IsA('DeusExDecoration') )
+    {
+        killProfile.activeSkill = NoneString;
+        killProfile.activeSkillLevel = 0;
+        return;
+    }
+    if ( killer.SkillSystem != None )
+    {
+        killProfile.activeSkill = skillClass.Default.skillName;
+        killProfile.activeSkillLevel = killer.SkillSystem.GetSkillLevel(skillClass);
+    }
 }
 
 function GetWeaponName( DeusExWeapon w, out String name )
 {
-	if ( w != None )
-	{
-		if ( WeaponGEPGun(w) != None )
-			name = WeaponGEPGun(w).shortName;
-		else if ( WeaponLAM(w) != None )
-			name = WeaponLAM(w).shortName;
-		else
-			name = w.itemName;
-	}
-	else
-		name = NoneString;
+    if ( w != None )
+    {
+        if ( WeaponGEPGun(w) != None )
+            name = WeaponGEPGun(w).shortName;
+        else if ( WeaponLAM(w) != None )
+            name = WeaponLAM(w).shortName;
+        else
+            name = w.itemName;
+    }
+    else
+        name = NoneString;
 }
 
 //
@@ -9871,180 +9871,180 @@ function GetWeaponName( DeusExWeapon w, out String name )
 //
 function CreateKillerProfile( Pawn killer, int damage, name damageType, String bodyPart )
 {
-	local DeusExPlayer pkiller;
-	local DeusExProjectile proj;
-	local DeusExDecoration decProj;
-	local Augmentation anAug;
-	local int augCnt;
-	local DeusExWeapon w;
-	local Skill askill;
-	local String wShortString;
+    local DeusExPlayer pkiller;
+    local DeusExProjectile proj;
+    local DeusExDecoration decProj;
+    local Augmentation anAug;
+    local int augCnt;
+    local DeusExWeapon w;
+    local Skill askill;
+    local String wShortString;
 
-	if ( killProfile == None )
-	{
-		log("Warning:"$Self$" has a killProfile that is None!" );
-		return;
-	}
-	else
-		killProfile.Reset();
+    if ( killProfile == None )
+    {
+        log("Warning:"$Self$" has a killProfile that is None!" );
+        return;
+    }
+    else
+        killProfile.Reset();
 
-	pkiller = DeusExPlayer(killer);
-	
-	if ( pkiller != None )
-	{
-		killProfile.bValid = True;
-		killProfile.name = pkiller.PlayerReplicationInfo.PlayerName;
-		w = DeusExWeapon(pkiller.inHand);
-		GetWeaponName( w, killProfile.activeWeapon );
+    pkiller = DeusExPlayer(killer);
+    
+    if ( pkiller != None )
+    {
+        killProfile.bValid = True;
+        killProfile.name = pkiller.PlayerReplicationInfo.PlayerName;
+        w = DeusExWeapon(pkiller.inHand);
+        GetWeaponName( w, killProfile.activeWeapon );
 
-		// What augs the killer was using
-		if ( pkiller.AugmentationSystem != None )
-		{
-			killProfile.numActiveAugs = pkiller.AugmentationSystem.NumAugsActive();
-			augCnt = 0;
-			anAug = pkiller.AugmentationSystem.FirstAug;
-			while ( anAug != None )
-			{
-				if ( anAug.bHasIt && anAug.bIsActive && !anAug.bAlwaysActive && (augCnt < ArrayCount(killProfile.activeAugs)))
-				{
-					killProfile.activeAugs[augCnt] = anAug.augmentationName;
-					augCnt += 1;
-				}
-				anAug = anAug.next;
-			}
-		}
-		else
-			killProfile.numActiveAugs = 0;
+        // What augs the killer was using
+        if ( pkiller.AugmentationSystem != None )
+        {
+            killProfile.numActiveAugs = pkiller.AugmentationSystem.NumAugsActive();
+            augCnt = 0;
+            anAug = pkiller.AugmentationSystem.FirstAug;
+            while ( anAug != None )
+            {
+                if ( anAug.bHasIt && anAug.bIsActive && !anAug.bAlwaysActive && (augCnt < ArrayCount(killProfile.activeAugs)))
+                {
+                    killProfile.activeAugs[augCnt] = anAug.augmentationName;
+                    augCnt += 1;
+                }
+                anAug = anAug.next;
+            }
+        }
+        else
+            killProfile.numActiveAugs = 0;
 
-		// My weapon and skill
-		GetWeaponName( DeusExWeapon(inHand), killProfile.myActiveWeapon );
-		if ( DeusExWeapon(inHand) != None )
-		{
-			if ( SkillSystem != None )
-			{
-				askill = SkillSystem.GetSkillFromClass(DeusExWeapon(inHand).GoverningSkill);
-				killProfile.myActiveSkill = askill.skillName;
-				killProfile.myActiveSkillLevel = askill.CurrentLevel;
-			}
-		}
-		else
-		{
-			killProfile.myActiveWeapon = NoneString;
-			killProfile.myActiveSkill = NoneString;
-			killProfile.myActiveSkillLevel = 0;
-		}
-		// Fill in my own active augs
-		if ( AugmentationSystem != None )
-		{
-			killProfile.myNumActiveAugs = AugmentationSystem.NumAugsActive();
-			augCnt = 0;
-			anAug = AugmentationSystem.FirstAug;
-			while ( anAug != None )
-			{
-				if ( anAug.bHasIt && anAug.bIsActive && !anAug.bAlwaysActive && (augCnt < ArrayCount(killProfile.myActiveAugs)))
-				{
-					killProfile.myActiveAugs[augCnt] = anAug.augmentationName;
-					augCnt += 1;
-				}
-				anAug = anAug.next;
-			}
-		}
-		killProfile.streak = (pkiller.PlayerReplicationInfo.Streak + 1);
-		killProfile.healthLow = pkiller.HealthLegLeft;
-		killProfile.healthMid =  pkiller.HealthTorso;
-		killProfile.healthHigh = pkiller.HealthHead;
-		killProfile.remainingBio = pkiller.Energy;
-		killProfile.damage = damage;
-		killProfile.bodyLoc = bodyPart;
-		killProfile.killerLoc = pkiller.Location;
-	}
-	else
-	{
-		killProfile.bValid = False;
-		return;
-	}
+        // My weapon and skill
+        GetWeaponName( DeusExWeapon(inHand), killProfile.myActiveWeapon );
+        if ( DeusExWeapon(inHand) != None )
+        {
+            if ( SkillSystem != None )
+            {
+                askill = SkillSystem.GetSkillFromClass(DeusExWeapon(inHand).GoverningSkill);
+                killProfile.myActiveSkill = askill.skillName;
+                killProfile.myActiveSkillLevel = askill.CurrentLevel;
+            }
+        }
+        else
+        {
+            killProfile.myActiveWeapon = NoneString;
+            killProfile.myActiveSkill = NoneString;
+            killProfile.myActiveSkillLevel = 0;
+        }
+        // Fill in my own active augs
+        if ( AugmentationSystem != None )
+        {
+            killProfile.myNumActiveAugs = AugmentationSystem.NumAugsActive();
+            augCnt = 0;
+            anAug = AugmentationSystem.FirstAug;
+            while ( anAug != None )
+            {
+                if ( anAug.bHasIt && anAug.bIsActive && !anAug.bAlwaysActive && (augCnt < ArrayCount(killProfile.myActiveAugs)))
+                {
+                    killProfile.myActiveAugs[augCnt] = anAug.augmentationName;
+                    augCnt += 1;
+                }
+                anAug = anAug.next;
+            }
+        }
+        killProfile.streak = (pkiller.PlayerReplicationInfo.Streak + 1);
+        killProfile.healthLow = pkiller.HealthLegLeft;
+        killProfile.healthMid =  pkiller.HealthTorso;
+        killProfile.healthHigh = pkiller.HealthHead;
+        killProfile.remainingBio = pkiller.Energy;
+        killProfile.damage = damage;
+        killProfile.bodyLoc = bodyPart;
+        killProfile.killerLoc = pkiller.Location;
+    }
+    else
+    {
+        killProfile.bValid = False;
+        return;
+    }
 
-	killProfile.methodStr = NoneString;
+    killProfile.methodStr = NoneString;
 
-	switch( damageType )
-	{
-		case 'AutoShot':
-			killProfile.methodStr = WithTheString $ AutoTurret(myTurretKiller).titleString  $ "!";
-			killProfile.bTurretKilled = True;
-			killProfile.killerLoc = AutoTurret(myTurretKiller).Location;
-			if ( pkiller.SkillSystem != None )
-			{
-				killProfile.activeSkill = class'SkillComputer'.Default.skillName;
-				killProfile.activeSkillLevel = pkiller.SkillSystem.GetSkillLevel(class'SkillComputer');
-			}
-			break;
-		case 'PoisonEffect':
-			killProfile.methodStr = PoisonString $ "!";
-			killProfile.bPoisonKilled = True;
-			killProfile.activeSkill = NoneString;
-			killProfile.activeSkillLevel = 0;
-			break;
-		case 'Burned':
-		case 'Flared':
-		case 'Flamed':
-			if (( WeaponPlasmaRifle(w) != None ) || ( WeaponFlamethrower(w) != None ))
-			{
-				// Use the weapon if it's still in hand
-			}
-			else
-			{
-				killProfile.methodStr = BurnString $ "!";
-				killProfile.bBurnKilled = True;
-				killProfile.activeSkill = NoneString;
-				killProfile.activeSkillLevel = 0;
-			}
-			break;
-	}
-	if ( killProfile.methodStr ~= NoneString )
-	{
-		proj = DeusExProjectile(myProjKiller);
-		decProj = DeusExDecoration(myProjKiller);
+    switch( damageType )
+    {
+        case 'AutoShot':
+            killProfile.methodStr = WithTheString $ AutoTurret(myTurretKiller).titleString  $ "!";
+            killProfile.bTurretKilled = True;
+            killProfile.killerLoc = AutoTurret(myTurretKiller).Location;
+            if ( pkiller.SkillSystem != None )
+            {
+                killProfile.activeSkill = class'SkillComputer'.Default.skillName;
+                killProfile.activeSkillLevel = pkiller.SkillSystem.GetSkillLevel(class'SkillComputer');
+            }
+            break;
+        case 'PoisonEffect':
+            killProfile.methodStr = PoisonString $ "!";
+            killProfile.bPoisonKilled = True;
+            killProfile.activeSkill = NoneString;
+            killProfile.activeSkillLevel = 0;
+            break;
+        case 'Burned':
+        case 'Flared':
+        case 'Flamed':
+            if (( WeaponPlasmaRifle(w) != None ) || ( WeaponFlamethrower(w) != None ))
+            {
+                // Use the weapon if it's still in hand
+            }
+            else
+            {
+                killProfile.methodStr = BurnString $ "!";
+                killProfile.bBurnKilled = True;
+                killProfile.activeSkill = NoneString;
+                killProfile.activeSkillLevel = 0;
+            }
+            break;
+    }
+    if ( killProfile.methodStr ~= NoneString )
+    {
+        proj = DeusExProjectile(myProjKiller);
+        decProj = DeusExDecoration(myProjKiller);
 
-		if (( killer != None ) && (proj != None) && (!(proj.itemName ~= "")) )
-		{
-			if ( (LAM(myProjKiller) != None) && (LAM(myProjKiller).bProximityTriggered) )
-			{
-				killProfile.bProximityKilled = True;
-				killProfile.killerLoc = LAM(myProjKiller).Location;
-				killProfile.myActiveSkill = class'SkillDemolition'.Default.skillName;
-				if ( SkillSystem != None )
-					killProfile.myActiveSkillLevel = SkillSystem.GetSkillLevel(class'SkillDemolition');
-				else
-					killProfile.myActiveSkillLevel = 0;
-			}
-			else
-				killProfile.bProjKilled = True;
-			killProfile.methodStr = WithString $ proj.itemArticle $ " " $ proj.itemName $ "!";
-			GetSkillInfoFromProj( pkiller, myProjKiller );
-		}
-		else if (( killer != None ) && ( decProj != None ) && (!(decProj.itemName ~= "" )) )
-		{
-			killProfile.methodStr = WithString $ decProj.itemArticle $ " " $ decProj.itemName $ "!";
-			killProfile.bProjKilled = True;
-			GetSkillInfoFromProj( pkiller, myProjKiller );
-		}
-		else if ((killer != None) && (w != None))
-		{
-			GetWeaponName( w, wShortString );
-			killProfile.methodStr = WithString $ w.itemArticle $ " " $ wShortString $ "!";
-			askill = pkiller.SkillSystem.GetSkillFromClass(w.GoverningSkill);
-			killProfile.activeSkill = askill.skillName;
-			killProfile.activeSkillLevel = askill.CurrentLevel;
-		}
-		else
-			log("Warning: Failed to determine killer method killer:"$killer$" damage:"$damage$" damageType:"$damageType$" " );
-	}
-	// If we still failed dump this to log, and I'll see if there's a condition slipping through...
-	if ( killProfile.methodStr ~= NoneString )
-	{
-		log("===>Warning: Failed to get killer method:"$Self$" damageType:"$damageType$" " );
-		killProfile.bValid = False;
-	}
+        if (( killer != None ) && (proj != None) && (!(proj.itemName ~= "")) )
+        {
+            if ( (LAM(myProjKiller) != None) && (LAM(myProjKiller).bProximityTriggered) )
+            {
+                killProfile.bProximityKilled = True;
+                killProfile.killerLoc = LAM(myProjKiller).Location;
+                killProfile.myActiveSkill = class'SkillDemolition'.Default.skillName;
+                if ( SkillSystem != None )
+                    killProfile.myActiveSkillLevel = SkillSystem.GetSkillLevel(class'SkillDemolition');
+                else
+                    killProfile.myActiveSkillLevel = 0;
+            }
+            else
+                killProfile.bProjKilled = True;
+            killProfile.methodStr = WithString $ proj.itemArticle $ " " $ proj.itemName $ "!";
+            GetSkillInfoFromProj( pkiller, myProjKiller );
+        }
+        else if (( killer != None ) && ( decProj != None ) && (!(decProj.itemName ~= "" )) )
+        {
+            killProfile.methodStr = WithString $ decProj.itemArticle $ " " $ decProj.itemName $ "!";
+            killProfile.bProjKilled = True;
+            GetSkillInfoFromProj( pkiller, myProjKiller );
+        }
+        else if ((killer != None) && (w != None))
+        {
+            GetWeaponName( w, wShortString );
+            killProfile.methodStr = WithString $ w.itemArticle $ " " $ wShortString $ "!";
+            askill = pkiller.SkillSystem.GetSkillFromClass(w.GoverningSkill);
+            killProfile.activeSkill = askill.skillName;
+            killProfile.activeSkillLevel = askill.CurrentLevel;
+        }
+        else
+            log("Warning: Failed to determine killer method killer:"$killer$" damage:"$damage$" damageType:"$damageType$" " );
+    }
+    // If we still failed dump this to log, and I'll see if there's a condition slipping through...
+    if ( killProfile.methodStr ~= NoneString )
+    {
+        log("===>Warning: Failed to get killer method:"$Self$" damageType:"$damageType$" " );
+        killProfile.bValid = False;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -10053,65 +10053,65 @@ function CreateKillerProfile( Pawn killer, int damage, name damageType, String b
 
 function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector momentum, name damageType)
 {
-	local int actualDamage;
-	local bool bAlreadyDead, bPlayAnim, bDamageGotReduced;
-	local Vector offset, dst;
-	local float headOffsetZ, headOffsetY, armOffset;
-	local float origHealth, fdst;
-	local DeusExLevelInfo info;
-	local DeusExWeapon dxw;
-	local String bodyString;
-	local int MPHitLoc;
+    local int actualDamage;
+    local bool bAlreadyDead, bPlayAnim, bDamageGotReduced;
+    local Vector offset, dst;
+    local float headOffsetZ, headOffsetY, armOffset;
+    local float origHealth, fdst;
+    local DeusExLevelInfo info;
+    local DeusExWeapon dxw;
+    local String bodyString;
+    local int MPHitLoc;
 
-	if ( bNintendoImmunity )
-		return;
+    if ( bNintendoImmunity )
+        return;
 
-	bodyString = "";
-	origHealth = Health;
+    bodyString = "";
+    origHealth = Health;
 
    if (Level.NetMode != NM_Standalone)
       Damage *= MPDamageMult;
 
-	// use the hitlocation to determine where the pawn is hit
-	// transform the worldspace hitlocation into objectspace
-	// in objectspace, remember X is front to back
-	// Y is side to side, and Z is top to bottom
-	offset = (hitLocation - Location) << Rotation;
+    // use the hitlocation to determine where the pawn is hit
+    // transform the worldspace hitlocation into objectspace
+    // in objectspace, remember X is front to back
+    // Y is side to side, and Z is top to bottom
+    offset = (hitLocation - Location) << Rotation;
 
-	if(damageType == 'Flared')
-		damageType = 'Flamed';
+    if(damageType == 'Flared')
+        damageType = 'Flamed';
 
-	// add a HUD icon for this damage type
-	if ((damageType == 'Poison') || (damageType == 'PoisonEffect'))  // hack
-		AddDamageDisplay('PoisonGas', offset);
-	else if (damageType == 'ExplodeShot') //hackish
-		AddDamageDisplay('Exploded', offset);
-	else
-		AddDamageDisplay(damageType, offset);
+    // add a HUD icon for this damage type
+    if ((damageType == 'Poison') || (damageType == 'PoisonEffect'))  // hack
+        AddDamageDisplay('PoisonGas', offset);
+    else if (damageType == 'ExplodeShot') //hackish
+        AddDamageDisplay('Exploded', offset);
+    else
+        AddDamageDisplay(damageType, offset);
 
-	// nanovirus damage doesn't affect us
-	if (damageType == 'NanoVirus')
-		return;
+    // nanovirus damage doesn't affect us
+    if (damageType == 'NanoVirus')
+        return;
 
-	// handle poison
-	if ((damageType == 'Poison') || ((Level.NetMode != NM_Standalone) && (damageType=='TearGas')) )
-	{
-		// Notify player if they're getting burned for the first time
-		if ( Level.NetMode != NM_Standalone )
-			ServerConditionalNotifyMsg( MPMSG_FirstPoison );
+    // handle poison
+    if ((damageType == 'Poison') || ((Level.NetMode != NM_Standalone) && (damageType=='TearGas')) )
+    {
+        // Notify player if they're getting burned for the first time
+        if ( Level.NetMode != NM_Standalone )
+            ServerConditionalNotifyMsg( MPMSG_FirstPoison );
 
-		StartPoison( instigatedBy, Damage );
-	}
+        StartPoison( instigatedBy, Damage );
+    }
 
-	// reduce our damage correctly
-	if (ReducedDamageType == damageType)
-		actualDamage = float(actualDamage) * (1.0 - ReducedDamagePct);
+    // reduce our damage correctly
+    if (ReducedDamageType == damageType)
+        actualDamage = float(actualDamage) * (1.0 - ReducedDamagePct);
 
-	// check for augs or inventory items
-	bDamageGotReduced = DXReduceDamage(Damage, damageType, hitLocation, actualDamage, False);
+    // check for augs or inventory items
+    bDamageGotReduced = DXReduceDamage(Damage, damageType, hitLocation, actualDamage, False);
 
-	if(damageType == 'ExplodeShot')
-		damageType = 'Exploded';
+    if(damageType == 'ExplodeShot')
+        damageType = 'Exploded';
 
    // DEUS_EX AMSD Multiplayer shield
    if (Level.NetMode != NM_Standalone)
@@ -10121,294 +10121,294 @@ function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector mo
          ShieldTimer = 1.0;
       }
 
-	if (ReducedDamageType == 'All') //God mode
-		actualDamage = 0;
+    if (ReducedDamageType == 'All') //God mode
+        actualDamage = 0;
 
-	// Multiplayer only code
-	if ( Level.NetMode != NM_Standalone )
-	{
-		if ( ( instigatedBy != None ) && (instigatedBy.IsA('DeusExPlayer')) )
-		{
-			// Special case the sniper rifle
-			if ((DeusExPlayer(instigatedBy).Weapon != None) && ( DeusExPlayer(instigatedBy).Weapon.class == class'WeaponRifle' ))
-			{
-				dxw = DeusExWeapon(DeusExPlayer(instigatedBy).Weapon);
-				if ( (dxw != None ) && ( !dxw.bZoomed ))
-					actualDamage *= WeaponRifle(dxw).mpNoScopeMult; // Reduce damage if we're not using the scope
-			}
-			if ( (TeamDMGame(DXGame) != None) && (TeamDMGame(DXGame).ArePlayersAllied(DeusExPlayer(instigatedBy),Self)) )
-			{
-				// Don't notify if the player hurts themselves
-				if ( DeusExPlayer(instigatedBy) != Self )
-				{
-					actualDamage *= TeamDMGame(DXGame).fFriendlyFireMult;
-					if (( damageType != 'TearGas' ) && ( damageType != 'PoisonEffect' ))
-						DeusExPlayer(instigatedBy).MultiplayerNotifyMsg( MPMSG_TeamHit );
-				}
-			}
+    // Multiplayer only code
+    if ( Level.NetMode != NM_Standalone )
+    {
+        if ( ( instigatedBy != None ) && (instigatedBy.IsA('DeusExPlayer')) )
+        {
+            // Special case the sniper rifle
+            if ((DeusExPlayer(instigatedBy).Weapon != None) && ( DeusExPlayer(instigatedBy).Weapon.class == class'WeaponRifle' ))
+            {
+                dxw = DeusExWeapon(DeusExPlayer(instigatedBy).Weapon);
+                if ( (dxw != None ) && ( !dxw.bZoomed ))
+                    actualDamage *= WeaponRifle(dxw).mpNoScopeMult; // Reduce damage if we're not using the scope
+            }
+            if ( (TeamDMGame(DXGame) != None) && (TeamDMGame(DXGame).ArePlayersAllied(DeusExPlayer(instigatedBy),Self)) )
+            {
+                // Don't notify if the player hurts themselves
+                if ( DeusExPlayer(instigatedBy) != Self )
+                {
+                    actualDamage *= TeamDMGame(DXGame).fFriendlyFireMult;
+                    if (( damageType != 'TearGas' ) && ( damageType != 'PoisonEffect' ))
+                        DeusExPlayer(instigatedBy).MultiplayerNotifyMsg( MPMSG_TeamHit );
+                }
+            }
 
-		}
-	}
+        }
+    }
 
-	// EMP attacks drain BE energy
-	if (damageType == 'EMP')
-	{
-		EnergyDrain += actualDamage;
-		EnergyDrainTotal += actualDamage;
-		PlayTakeHitSound(actualDamage, damageType, 1);
-		return;
-	}
+    // EMP attacks drain BE energy
+    if (damageType == 'EMP')
+    {
+        EnergyDrain += actualDamage;
+        EnergyDrainTotal += actualDamage;
+        PlayTakeHitSound(actualDamage, damageType, 1);
+        return;
+    }
 
-	bPlayAnim = True;
+    bPlayAnim = True;
 
-	// if we're burning, don't play a hit anim when taking burning damage
-	if (damageType == 'Burned')
-		bPlayAnim = False;
+    // if we're burning, don't play a hit anim when taking burning damage
+    if (damageType == 'Burned')
+        bPlayAnim = False;
 
-	if (Physics == PHYS_None)
-		SetMovementPhysics();
-	if (Physics == PHYS_Walking)
-		momentum.Z = 0.4 * VSize(momentum);
-	if ( instigatedBy == self )
-		momentum *= 0.6;
-	momentum = momentum/Mass;
-	//	AddVelocity( momentum ); 	// doesn't do anything anyway
+    if (Physics == PHYS_None)
+        SetMovementPhysics();
+    if (Physics == PHYS_Walking)
+        momentum.Z = 0.4 * VSize(momentum);
+    if ( instigatedBy == self )
+        momentum *= 0.6;
+    momentum = momentum/Mass;
+    //    AddVelocity( momentum );     // doesn't do anything anyway
 
-	// calculate our hit extents
-	headOffsetZ = CollisionHeight * 0.78;
-	headOffsetY = CollisionRadius * 0.35;
-	armOffset = CollisionRadius * 0.35;
+    // calculate our hit extents
+    headOffsetZ = CollisionHeight * 0.78;
+    headOffsetY = CollisionRadius * 0.35;
+    armOffset = CollisionRadius * 0.35;
 
-	// We decided to just have 3 hit locations in multiplayer MBCODE
-	if (( Level.NetMode == NM_DedicatedServer ) || ( Level.NetMode == NM_ListenServer ))
-	{
-		MPHitLoc = GetMPHitLocation(HitLocation);
+    // We decided to just have 3 hit locations in multiplayer MBCODE
+    if (( Level.NetMode == NM_DedicatedServer ) || ( Level.NetMode == NM_ListenServer ))
+    {
+        MPHitLoc = GetMPHitLocation(HitLocation);
 
-		if (MPHitLoc == 0)
-			return;
-		else if (MPHitLoc == 1 )
-		{
-			// MP Headshot is 2x damage
-			// narrow the head region
-			actualDamage *= 2;
-			HealthHead -= actualDamage;
-			bodyString = HeadString;
-			if (bPlayAnim)
-				PlayAnim('HitHead', , 0.1);
-		}
-		else if ((MPHitLoc == 3) || (MPHitLoc == 4))	// Leg region
-		{
-			HealthLegRight -= actualDamage;
-			HealthLegLeft -= actualDamage;
+        if (MPHitLoc == 0)
+            return;
+        else if (MPHitLoc == 1 )
+        {
+            // MP Headshot is 2x damage
+            // narrow the head region
+            actualDamage *= 2;
+            HealthHead -= actualDamage;
+            bodyString = HeadString;
+            if (bPlayAnim)
+                PlayAnim('HitHead', , 0.1);
+        }
+        else if ((MPHitLoc == 3) || (MPHitLoc == 4))    // Leg region
+        {
+            HealthLegRight -= actualDamage;
+            HealthLegLeft -= actualDamage;
 
-			if (MPHitLoc == 4)
-			{
-				if (bPlayAnim)
-					PlayAnim('HitLegRight', , 0.1);
-			}
-			else if (MPHitLoc == 3)
-			{
-				if (bPlayAnim)
-					PlayAnim('HitLegLeft', , 0.1);
-			}
-			// Since the legs are in sync only bleed up damage from one leg (otherwise it's double damage)
-			if (HealthLegLeft < 0)
-			{
-				HealthArmRight += HealthLegLeft;
-				HealthTorso += HealthLegLeft;
-				HealthArmLeft += HealthLegLeft;
-				bodyString = TorsoString;
-				HealthLegLeft = 0;
-				HealthLegRight = 0;
-			}
-		}
-		else // arms and torso now one region
-		{
-			HealthArmLeft -= actualDamage;
-			HealthTorso -= actualDamage;
-			HealthArmRight -= actualDamage;
+            if (MPHitLoc == 4)
+            {
+                if (bPlayAnim)
+                    PlayAnim('HitLegRight', , 0.1);
+            }
+            else if (MPHitLoc == 3)
+            {
+                if (bPlayAnim)
+                    PlayAnim('HitLegLeft', , 0.1);
+            }
+            // Since the legs are in sync only bleed up damage from one leg (otherwise it's double damage)
+            if (HealthLegLeft < 0)
+            {
+                HealthArmRight += HealthLegLeft;
+                HealthTorso += HealthLegLeft;
+                HealthArmLeft += HealthLegLeft;
+                bodyString = TorsoString;
+                HealthLegLeft = 0;
+                HealthLegRight = 0;
+            }
+        }
+        else // arms and torso now one region
+        {
+            HealthArmLeft -= actualDamage;
+            HealthTorso -= actualDamage;
+            HealthArmRight -= actualDamage;
 
-			bodyString = TorsoString;
+            bodyString = TorsoString;
 
-			if (MPHitLoc == 6)
-			{
-				if (bPlayAnim)
-					PlayAnim('HitArmRight', , 0.1);
-			}
-			else if (MPHitLoc == 5)
-			{
-				if (bPlayAnim)
-					PlayAnim('HitArmLeft', , 0.1);
-			}
-			else
-			{
-				if (bPlayAnim)
-					PlayAnim('HitTorso', , 0.1);
-			}
-		}
-	}
-	else // Normal damage code path for single player
-	{
-		if (offset.z > headOffsetZ)		// head
-		{
-			// narrow the head region
-			if ((Abs(offset.x) < headOffsetY) || (Abs(offset.y) < headOffsetY))
-			{
-				HealthHead -= actualDamage * 2;
-				if (bPlayAnim)
-					PlayAnim('HitHead', , 0.1);
-			}
-		}
-		else if (offset.z < 0.0)	// legs
-		{
-			if (offset.y > 0.0)
-			{
-				HealthLegRight -= actualDamage;
-				if (bPlayAnim)
-					PlayAnim('HitLegRight', , 0.1);
-			}
-			else
-			{
-				HealthLegLeft -= actualDamage;
-				if (bPlayAnim)
-					PlayAnim('HitLegLeft', , 0.1);
-			}
+            if (MPHitLoc == 6)
+            {
+                if (bPlayAnim)
+                    PlayAnim('HitArmRight', , 0.1);
+            }
+            else if (MPHitLoc == 5)
+            {
+                if (bPlayAnim)
+                    PlayAnim('HitArmLeft', , 0.1);
+            }
+            else
+            {
+                if (bPlayAnim)
+                    PlayAnim('HitTorso', , 0.1);
+            }
+        }
+    }
+    else // Normal damage code path for single player
+    {
+        if (offset.z > headOffsetZ)        // head
+        {
+            // narrow the head region
+            if ((Abs(offset.x) < headOffsetY) || (Abs(offset.y) < headOffsetY))
+            {
+                HealthHead -= actualDamage * 2;
+                if (bPlayAnim)
+                    PlayAnim('HitHead', , 0.1);
+            }
+        }
+        else if (offset.z < 0.0)    // legs
+        {
+            if (offset.y > 0.0)
+            {
+                HealthLegRight -= actualDamage;
+                if (bPlayAnim)
+                    PlayAnim('HitLegRight', , 0.1);
+            }
+            else
+            {
+                HealthLegLeft -= actualDamage;
+                if (bPlayAnim)
+                    PlayAnim('HitLegLeft', , 0.1);
+            }
 
- 			// if this part is already dead, damage the adjacent part
-			if ((HealthLegRight < 0) && (HealthLegLeft > 0))
-			{
-				HealthLegLeft += HealthLegRight;
-				HealthLegRight = 0;
-			}
-			else if ((HealthLegLeft < 0) && (HealthLegRight > 0))
-			{
-				HealthLegRight += HealthLegLeft;
-				HealthLegLeft = 0;
-			}
+             // if this part is already dead, damage the adjacent part
+            if ((HealthLegRight < 0) && (HealthLegLeft > 0))
+            {
+                HealthLegLeft += HealthLegRight;
+                HealthLegRight = 0;
+            }
+            else if ((HealthLegLeft < 0) && (HealthLegRight > 0))
+            {
+                HealthLegRight += HealthLegLeft;
+                HealthLegLeft = 0;
+            }
 
-			if (HealthLegLeft < 0)
-			{
-				HealthTorso += HealthLegLeft;
-				HealthLegLeft = 0;
-			}
-			if (HealthLegRight < 0)
-			{
-				HealthTorso += HealthLegRight;
-				HealthLegRight = 0;
-			}
-		}
-		else						// arms and torso
-		{
-			if (offset.y > armOffset)
-			{
-				HealthArmRight -= actualDamage;
-				if (bPlayAnim)
-					PlayAnim('HitArmRight', , 0.1);
-			}
-			else if (offset.y < -armOffset)
-			{
-				HealthArmLeft -= actualDamage;
-				if (bPlayAnim)
-					PlayAnim('HitArmLeft', , 0.1);
-			}
-			else
-			{
-				HealthTorso -= actualDamage * 2;
-				if (bPlayAnim)
-					PlayAnim('HitTorso', , 0.1);
-			}
+            if (HealthLegLeft < 0)
+            {
+                HealthTorso += HealthLegLeft;
+                HealthLegLeft = 0;
+            }
+            if (HealthLegRight < 0)
+            {
+                HealthTorso += HealthLegRight;
+                HealthLegRight = 0;
+            }
+        }
+        else                        // arms and torso
+        {
+            if (offset.y > armOffset)
+            {
+                HealthArmRight -= actualDamage;
+                if (bPlayAnim)
+                    PlayAnim('HitArmRight', , 0.1);
+            }
+            else if (offset.y < -armOffset)
+            {
+                HealthArmLeft -= actualDamage;
+                if (bPlayAnim)
+                    PlayAnim('HitArmLeft', , 0.1);
+            }
+            else
+            {
+                HealthTorso -= actualDamage * 2;
+                if (bPlayAnim)
+                    PlayAnim('HitTorso', , 0.1);
+            }
 
-			// if this part is already dead, damage the adjacent part
-			if (HealthArmLeft < 0)
-			{
-				HealthTorso += HealthArmLeft;
-				HealthArmLeft = 0;
-			}
-			if (HealthArmRight < 0)
-			{
-				HealthTorso += HealthArmRight;
-				HealthArmRight = 0;
-			}
-		}
-	}
+            // if this part is already dead, damage the adjacent part
+            if (HealthArmLeft < 0)
+            {
+                HealthTorso += HealthArmLeft;
+                HealthArmLeft = 0;
+            }
+            if (HealthArmRight < 0)
+            {
+                HealthTorso += HealthArmRight;
+                HealthArmRight = 0;
+            }
+        }
+    }
 
-	// check for a back hit and play the correct anim
-	if ((offset.x < 0.0) && bPlayAnim)
-	{
-		if (offset.z > headOffsetZ)		// head from the back
-		{
-			// narrow the head region
-			if ((Abs(offset.x) < headOffsetY) || (Abs(offset.y) < headOffsetY))
-				PlayAnim('HitHeadBack', , 0.1);
-		}
-		else
-			PlayAnim('HitTorsoBack', , 0.1);
-	}
+    // check for a back hit and play the correct anim
+    if ((offset.x < 0.0) && bPlayAnim)
+    {
+        if (offset.z > headOffsetZ)        // head from the back
+        {
+            // narrow the head region
+            if ((Abs(offset.x) < headOffsetY) || (Abs(offset.y) < headOffsetY))
+                PlayAnim('HitHeadBack', , 0.1);
+        }
+        else
+            PlayAnim('HitTorsoBack', , 0.1);
+    }
 
-	// check for a water hit
-	if (Region.Zone.bWaterZone)
-	{
-		if ((offset.x < 0.0) && bPlayAnim)
-			PlayAnim('WaterHitTorsoBack',,0.1);
-		else
-			PlayAnim('WaterHitTorso',,0.1);
-	}
+    // check for a water hit
+    if (Region.Zone.bWaterZone)
+    {
+        if ((offset.x < 0.0) && bPlayAnim)
+            PlayAnim('WaterHitTorsoBack',,0.1);
+        else
+            PlayAnim('WaterHitTorso',,0.1);
+    }
 
-	GenerateTotalHealth();
+    GenerateTotalHealth();
 
-	if ((damageType != 'Stunned') && (damageType != 'TearGas') && (damageType != 'HalonGas') &&
-	    (damageType != 'PoisonGas') && (damageType != 'Radiation') && (damageType != 'EMP') &&
-	    (damageType != 'NanoVirus') && (damageType != 'Drowned') && (damageType != 'KnockedOut'))
-		bleedRate += (origHealth-Health)/30.0;  // 30 points of damage = bleed profusely
+    if ((damageType != 'Stunned') && (damageType != 'TearGas') && (damageType != 'HalonGas') &&
+        (damageType != 'PoisonGas') && (damageType != 'Radiation') && (damageType != 'EMP') &&
+        (damageType != 'NanoVirus') && (damageType != 'Drowned') && (damageType != 'KnockedOut'))
+        bleedRate += (origHealth-Health)/30.0;  // 30 points of damage = bleed profusely
 
-	if (CarriedDecoration != None)
-		DropDecoration();
+    if (CarriedDecoration != None)
+        DropDecoration();
 
-	// don't let the player die in the training mission
-	info = GetLevelInfo();
-	if ((info != None) && (info.MissionNumber == 0))
-	{
-		if (Health <= 0)
-		{
-			HealthTorso = FMax(HealthTorso, 10);
-			HealthHead = FMax(HealthHead, 10);
-			GenerateTotalHealth();
-		}
-	}
+    // don't let the player die in the training mission
+    info = GetLevelInfo();
+    if ((info != None) && (info.MissionNumber == 0))
+    {
+        if (Health <= 0)
+        {
+            HealthTorso = FMax(HealthTorso, 10);
+            HealthHead = FMax(HealthHead, 10);
+            GenerateTotalHealth();
+        }
+    }
 
-	if (Health > 0)
-	{
-		if ((Level.NetMode != NM_Standalone) && (HealthLegLeft==0) && (HealthLegRight==0))
-			ServerConditionalNotifyMsg( MPMSG_LostLegs );
+    if (Health > 0)
+    {
+        if ((Level.NetMode != NM_Standalone) && (HealthLegLeft==0) && (HealthLegRight==0))
+            ServerConditionalNotifyMsg( MPMSG_LostLegs );
 
-		if (instigatedBy != None)
-			damageAttitudeTo(instigatedBy);
-		PlayDXTakeDamageHit(actualDamage, hitLocation, damageType, momentum, bDamageGotReduced);
-		AISendEvent('Distress', EAITYPE_Visual);
-	}
-	else
-	{
-		NextState = '';
-		PlayDeathHit(actualDamage, hitLocation, damageType, momentum);
-		if ( Level.NetMode != NM_Standalone )
-			CreateKillerProfile( instigatedBy, actualDamage, damageType, bodyString );
-		if ( actualDamage > mass )
-			Health = -1 * actualDamage;
-		Enemy = instigatedBy;
-		Died(instigatedBy, damageType, HitLocation);
-		return;
-	}
-	MakeNoise(1.0); 
+        if (instigatedBy != None)
+            damageAttitudeTo(instigatedBy);
+        PlayDXTakeDamageHit(actualDamage, hitLocation, damageType, momentum, bDamageGotReduced);
+        AISendEvent('Distress', EAITYPE_Visual);
+    }
+    else
+    {
+        NextState = '';
+        PlayDeathHit(actualDamage, hitLocation, damageType, momentum);
+        if ( Level.NetMode != NM_Standalone )
+            CreateKillerProfile( instigatedBy, actualDamage, damageType, bodyString );
+        if ( actualDamage > mass )
+            Health = -1 * actualDamage;
+        Enemy = instigatedBy;
+        Died(instigatedBy, damageType, HitLocation);
+        return;
+    }
+    MakeNoise(1.0); 
 
-	if ((DamageType == 'Flamed') && !bOnFire)
-	{
-		// Notify player if they're getting burned for the first time
-		if ( Level.NetMode != NM_Standalone )
-			ServerConditionalNotifyMsg( MPMSG_FirstBurn );
+    if ((DamageType == 'Flamed') && !bOnFire)
+    {
+        // Notify player if they're getting burned for the first time
+        if ( Level.NetMode != NM_Standalone )
+            ServerConditionalNotifyMsg( MPMSG_FirstBurn );
 
-		CatchFire( instigatedBy );
-	}
-	myProjKiller = None;
+        CatchFire( instigatedBy );
+    }
+    myProjKiller = None;
 }
 
 // ----------------------------------------------------------------------
@@ -10418,60 +10418,60 @@ function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector mo
 // ----------------------------------------------------------------------
 simulated function int GetMPHitLocation(Vector HitLocation)
 {
-	local float HeadOffsetZ;
-	local float HeadOffsetY;
-	local float ArmOffset;
-	local vector Offset;
+    local float HeadOffsetZ;
+    local float HeadOffsetY;
+    local float ArmOffset;
+    local vector Offset;
 
-	offset = (hitLocation - Location) << Rotation;
+    offset = (hitLocation - Location) << Rotation;
 
-	// calculate our hit extents
-	headOffsetZ = CollisionHeight * 0.78;
-	headOffsetY = CollisionRadius * 0.35;
-	armOffset = CollisionRadius * 0.35;
-	
-	if (offset.z > headOffsetZ )
-	{
-		// narrow the head region
-		if ((Abs(offset.x) < headOffsetY) || (Abs(offset.y) < headOffsetY))
-		{
-			// Headshot, return 1;
-			return 1;
-		}
-		else
-		{
-			return 0;
-		}
-	}
-	else if (offset.z < 0.0)	// Leg region
-	{		
-		if (offset.y > 0.0)
-		{
-			//right leg
-			return 4;
-		}
-		else
-		{
-			//left leg
-			return 3;
-		}
-	}
-	else // arms and torso now one region
-	{
-		if (offset.y > armOffset)
-		{
-			return 6;
-		}
-		else if (offset.y < -armOffset)
-		{
-			return 5;
-		}
-		else
-		{
-			return 2;
-		}
-	}
-	return 0;
+    // calculate our hit extents
+    headOffsetZ = CollisionHeight * 0.78;
+    headOffsetY = CollisionRadius * 0.35;
+    armOffset = CollisionRadius * 0.35;
+    
+    if (offset.z > headOffsetZ )
+    {
+        // narrow the head region
+        if ((Abs(offset.x) < headOffsetY) || (Abs(offset.y) < headOffsetY))
+        {
+            // Headshot, return 1;
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else if (offset.z < 0.0)    // Leg region
+    {        
+        if (offset.y > 0.0)
+        {
+            //right leg
+            return 4;
+        }
+        else
+        {
+            //left leg
+            return 3;
+        }
+    }
+    else // arms and torso now one region
+    {
+        if (offset.y > armOffset)
+        {
+            return 6;
+        }
+        else if (offset.y < -armOffset)
+        {
+            return 5;
+        }
+        else
+        {
+            return 2;
+        }
+    }
+    return 0;
 }
 
 // ----------------------------------------------------------------------
@@ -10482,138 +10482,138 @@ simulated function int GetMPHitLocation(Vector HitLocation)
 // ----------------------------------------------------------------------
 function bool DXReduceDamage(int Damage, name damageType, vector hitLocation, out int adjustedDamage, bool bCheckOnly)
 {
-	local float newDamage;
-	local float augLevel, skillLevel;
-	local float pct;
-	local HazMatSuit suit;
-	local BallisticArmor armor;
-	local bool bReduced;
+    local float newDamage;
+    local float augLevel, skillLevel;
+    local float pct;
+    local HazMatSuit suit;
+    local BallisticArmor armor;
+    local bool bReduced;
 
-	bReduced = False;
-	newDamage = Float(Damage);
+    bReduced = False;
+    newDamage = Float(Damage);
 
-	if(damageType == 'Flared')
-		damageType = 'Flamed';
+    if(damageType == 'Flared')
+        damageType = 'Flamed';
 
-	if ((damageType == 'TearGas') || (damageType == 'PoisonGas') || (damageType == 'Radiation') ||
-		(damageType == 'HalonGas')  || (damageType == 'PoisonEffect') || (damageType == 'Poison'))
-	{
-		if (AugmentationSystem != None)
-			augLevel = AugmentationSystem.GetAugLevelValue(class'AugEnviro');
+    if ((damageType == 'TearGas') || (damageType == 'PoisonGas') || (damageType == 'Radiation') ||
+        (damageType == 'HalonGas')  || (damageType == 'PoisonEffect') || (damageType == 'Poison'))
+    {
+        if (AugmentationSystem != None)
+            augLevel = AugmentationSystem.GetAugLevelValue(class'AugEnviro');
 
-		if (augLevel >= 0.0)
-			newDamage *= augLevel;
+        if (augLevel >= 0.0)
+            newDamage *= augLevel;
 
-		// get rid of poison if we're maxed out
-		if (newDamage ~= 0.0)
-		{
-			StopPoison();
-			drugEffectTimer -= 4;	// stop the drunk effect
-			if (drugEffectTimer < 0)
-				drugEffectTimer = 0;
-		}
+        // get rid of poison if we're maxed out
+        if (newDamage ~= 0.0)
+        {
+            StopPoison();
+            drugEffectTimer -= 4;    // stop the drunk effect
+            if (drugEffectTimer < 0)
+                drugEffectTimer = 0;
+        }
 
-		// go through the actor list looking for owned HazMatSuits
-		// since they aren't in the inventory anymore after they are used
+        // go through the actor list looking for owned HazMatSuits
+        // since they aren't in the inventory anymore after they are used
 
-		if (UsingChargedPickup(class'HazMatSuit'))
-		{
-			skillLevel = SkillSystem.GetSkillLevelValue(class'SkillEnviro');
-			newDamage *= 0.75 * skillLevel;
-		}
-	}
+        if (UsingChargedPickup(class'HazMatSuit'))
+        {
+            skillLevel = SkillSystem.GetSkillLevelValue(class'SkillEnviro');
+            newDamage *= 0.75 * skillLevel;
+        }
+    }
 
-	if ((damageType == 'Shot') || (damageType == 'Sabot') || (damageType == 'Exploded') || (damageType == 'AutoShot') || (damageType == 'Shell') || (damageType == 'ExplodeShot'))
-	{
-		// go through the actor list looking for owned BallisticArmor
-		// since they aren't in the inventory anymore after they are used
-			if (UsingChargedPickup(class'BallisticArmor'))
-			{
-				skillLevel = SkillSystem.GetSkillLevelValue(class'SkillEnviro');
-				newDamage *= 0.5 * skillLevel;
-			}
-	}
+    if ((damageType == 'Shot') || (damageType == 'Sabot') || (damageType == 'Exploded') || (damageType == 'AutoShot') || (damageType == 'Shell') || (damageType == 'ExplodeShot'))
+    {
+        // go through the actor list looking for owned BallisticArmor
+        // since they aren't in the inventory anymore after they are used
+            if (UsingChargedPickup(class'BallisticArmor'))
+            {
+                skillLevel = SkillSystem.GetSkillLevelValue(class'SkillEnviro');
+                newDamage *= 0.5 * skillLevel;
+            }
+    }
 
-	if (damageType == 'HalonGas')
-	{
-		if (bOnFire && !bCheckOnly)
-			ExtinguishFire();
-	}
+    if (damageType == 'HalonGas')
+    {
+        if (bOnFire && !bCheckOnly)
+            ExtinguishFire();
+    }
 
-	if ((damageType == 'Shot') || (damageType == 'AutoShot') || (damageType == 'Shell') || (damageType == 'ExplodeShot'))
-	{
-		if (AugmentationSystem != None)
-			augLevel = AugmentationSystem.GetAugLevelValue(class'AugBallistic');
+    if ((damageType == 'Shot') || (damageType == 'AutoShot') || (damageType == 'Shell') || (damageType == 'ExplodeShot'))
+    {
+        if (AugmentationSystem != None)
+            augLevel = AugmentationSystem.GetAugLevelValue(class'AugBallistic');
 
-		if (augLevel >= 0.0)
-			newDamage *= augLevel;
-	}
+        if (augLevel >= 0.0)
+            newDamage *= augLevel;
+    }
 
-	if (damageType == 'EMP')
-	{
-		if (AugmentationSystem != None)
-			augLevel = AugmentationSystem.GetAugLevelValue(class'AugEMP');
+    if (damageType == 'EMP')
+    {
+        if (AugmentationSystem != None)
+            augLevel = AugmentationSystem.GetAugLevelValue(class'AugEMP');
 
-		if (augLevel >= 0.0)
-			newDamage *= augLevel;
+        if (augLevel >= 0.0)
+            newDamage *= augLevel;
 
-		//== New stuff.  HazMat suit also resists EMP
-		if (UsingChargedPickup(class'HazMatSuit'))
-		{
-			skillLevel = SkillSystem.GetSkillLevelValue(class'SkillEnviro');
-			newDamage *= 0.75 * skillLevel;
-		}
-	}
+        //== New stuff.  HazMat suit also resists EMP
+        if (UsingChargedPickup(class'HazMatSuit'))
+        {
+            skillLevel = SkillSystem.GetSkillLevelValue(class'SkillEnviro');
+            newDamage *= 0.75 * skillLevel;
+        }
+    }
 
-	if ((damageType == 'Burned') || (damageType == 'Flamed') ||
-		(damageType == 'Exploded') || (damageType == 'Shocked'))
-	{
-		if (AugmentationSystem != None)
-			augLevel = AugmentationSystem.GetAugLevelValue(class'AugShield');
+    if ((damageType == 'Burned') || (damageType == 'Flamed') ||
+        (damageType == 'Exploded') || (damageType == 'Shocked'))
+    {
+        if (AugmentationSystem != None)
+            augLevel = AugmentationSystem.GetAugLevelValue(class'AugShield');
 
-		if (augLevel >= 0.0)
-			newDamage *= augLevel;
+        if (augLevel >= 0.0)
+            newDamage *= augLevel;
 
-		//== New stuff.  Make the HazMat Suit actually resist Fire/Shock damage like it says it does
-		if (UsingChargedPickup(class'HazMatSuit'))
-		{
-			skillLevel = SkillSystem.GetSkillLevelValue(class'SkillEnviro');
-			newDamage *= 0.75 * skillLevel;
-		}
-	}
+        //== New stuff.  Make the HazMat Suit actually resist Fire/Shock damage like it says it does
+        if (UsingChargedPickup(class'HazMatSuit'))
+        {
+            skillLevel = SkillSystem.GetSkillLevelValue(class'SkillEnviro');
+            newDamage *= 0.75 * skillLevel;
+        }
+    }
 
-	if (newDamage < Damage)
-	{
-		if (!bCheckOnly)
-		{
-			pct = 1.0 - (newDamage / Float(Damage));
-			SetDamagePercent(pct);
-			ClientFlash(0.01, vect(0, 0, 50));
-		}
-		bReduced = True;
-	}
-	else
-	{
-		if (!bCheckOnly)
-			SetDamagePercent(0.0);
-	}
+    if (newDamage < Damage)
+    {
+        if (!bCheckOnly)
+        {
+            pct = 1.0 - (newDamage / Float(Damage));
+            SetDamagePercent(pct);
+            ClientFlash(0.01, vect(0, 0, 50));
+        }
+        bReduced = True;
+    }
+    else
+    {
+        if (!bCheckOnly)
+            SetDamagePercent(0.0);
+    }
 
 
-	//
-	// Reduce or increase the damage based on the combat difficulty setting
-	//
-	if ((damageType == 'Shot') || (damageType == 'AutoShot') || (damageType == 'Shell'))
-	{
-		newDamage *= CombatDifficulty;
+    //
+    // Reduce or increase the damage based on the combat difficulty setting
+    //
+    if ((damageType == 'Shot') || (damageType == 'AutoShot') || (damageType == 'Shell'))
+    {
+        newDamage *= CombatDifficulty;
 
-		// always take at least one point of damage
-		if ((newDamage <= 1) && (Damage > 0))
-			newDamage = 1;
-	}
+        // always take at least one point of damage
+        if ((newDamage <= 1) && (Damage > 0))
+            newDamage = 1;
+    }
 
-	adjustedDamage = Int(newDamage);
+    adjustedDamage = Int(newDamage);
 
-	return bReduced;
+    return bReduced;
 }
 
 // ----------------------------------------------------------------------
@@ -10625,19 +10625,19 @@ function bool DXReduceDamage(int Damage, name damageType, vector hitLocation, ou
 
 function Died(pawn Killer, name damageType, vector HitLocation)
 {
-	if (conPlay != None)
-		conPlay.TerminateConversation();
+    if (conPlay != None)
+        conPlay.TerminateConversation();
 
-	if (bOnFire)
-		ExtinguishFire();
+    if (bOnFire)
+        ExtinguishFire();
 
-	if (AugmentationSystem != None)
-		AugmentationSystem.DeactivateAll();
+    if (AugmentationSystem != None)
+        AugmentationSystem.DeactivateAll();
 
    if ((Level.NetMode == NM_DedicatedServer) || (Level.NetMode == NM_ListenServer))
       ClientDeath();
 
-	Super.Died(Killer, damageType, HitLocation);
+    Super.Died(Killer, damageType, HitLocation);
 }
 
 // ----------------------------------------------------------------------
@@ -10653,41 +10653,41 @@ function ClientDeath()
 
    FlashTimer = 0;
 
-	// Reset skill notification
-	DeusExRootWindow(rootWindow).hud.hms.bNotifySkills = False;
+    // Reset skill notification
+    DeusExRootWindow(rootWindow).hud.hms.bNotifySkills = False;
 
    DeusExRootWindow(rootWindow).hud.activeItems.winItemsContainer.RemoveAllIcons();
    DeusExRootWindow(rootWindow).hud.belt.ClearBelt();
 
-	// This should get rid of the scope death problem in multiplayer
-	if (( DeusExRootWindow(rootWindow).scopeView != None ) && DeusExRootWindow(rootWindow).scopeView.bViewVisible )
-	   DeusExRootWindow(rootWindow).scopeView.DeactivateView();
+    // This should get rid of the scope death problem in multiplayer
+    if (( DeusExRootWindow(rootWindow).scopeView != None ) && DeusExRootWindow(rootWindow).scopeView.bViewVisible )
+       DeusExRootWindow(rootWindow).scopeView.DeactivateView();
 
-	if ( DeusExRootWindow(rootWindow).hud.augDisplay != None )
-	{
-		DeusExRootWindow(rootWindow).hud.augDisplay.bVisionActive = False;
-		DeusExRootWindow(rootWindow).hud.augDisplay.activeCount = 0;
-	}
+    if ( DeusExRootWindow(rootWindow).hud.augDisplay != None )
+    {
+        DeusExRootWindow(rootWindow).hud.augDisplay.bVisionActive = False;
+        DeusExRootWindow(rootWindow).hud.augDisplay.activeCount = 0;
+    }
 
-	if ( bOnFire )
-		ExtinguishFire();
+    if ( bOnFire )
+        ExtinguishFire();
 
-	// Don't come back to life drugged or posioned
-	poisonCounter		= 0;
-	poisonTimer			= 0;
-	drugEffectTimer	= 0;
+    // Don't come back to life drugged or posioned
+    poisonCounter        = 0;
+    poisonTimer            = 0;
+    drugEffectTimer    = 0;
 
-	// Don't come back to life crouched
-	bCrouchOn			= False;
-	bWasCrouchOn		= False;
-	bIsCrouching		= False;
-	bForceDuck			= False;
-	lastbDuck			= 0;
-	bDuck					= 0;
+    // Don't come back to life crouched
+    bCrouchOn            = False;
+    bWasCrouchOn        = False;
+    bIsCrouching        = False;
+    bForceDuck            = False;
+    lastbDuck            = 0;
+    bDuck                    = 0;
 
-	// No messages carry over
-	mpMsgCode = 0;
-	mpMsgTime = 0;
+    // No messages carry over
+    mpMsgCode = 0;
+    mpMsgTime = 0;
 
    bleedrate = 0;
    dropCounter = 0;
@@ -10702,22 +10702,22 @@ function ClientDeath()
 
 function Timer()
 {
-	local int damage;
+    local int damage;
 
-	if (!InConversation() && bOnFire)
-	{
-		if ( Level.NetMode != NM_Standalone )
-			damage = Class'WeaponFlamethrower'.Default.mpBurnDamage;
-		else
-			damage = Class'WeaponFlamethrower'.Default.BurnDamage;
-		TakeDamage(damage, myBurner, Location, vect(0,0,0), 'Burned');
+    if (!InConversation() && bOnFire)
+    {
+        if ( Level.NetMode != NM_Standalone )
+            damage = Class'WeaponFlamethrower'.Default.mpBurnDamage;
+        else
+            damage = Class'WeaponFlamethrower'.Default.BurnDamage;
+        TakeDamage(damage, myBurner, Location, vect(0,0,0), 'Burned');
 
-		if (HealthTorso <= 0)
-		{
-			TakeDamage(10, myBurner, Location, vect(0,0,0), 'Burned');
-			ExtinguishFire();
-		}
-	}
+        if (HealthTorso <= 0)
+        {
+            TakeDamage(10, myBurner, Location, vect(0,0,0), 'Burned');
+            ExtinguishFire();
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -10726,60 +10726,60 @@ function Timer()
 
 function CatchFire( Pawn burner )
 {
-	local Fire f;
-	local int i;
-	local vector loc;
+    local Fire f;
+    local int i;
+    local vector loc;
 
-	myBurner = burner;
+    myBurner = burner;
 
-	burnTimer = 0;
+    burnTimer = 0;
 
    if (bOnFire || Region.Zone.bWaterZone)
-		return;
+        return;
 
-	bOnFire = True;
-	burnTimer = 0;
+    bOnFire = True;
+    burnTimer = 0;
 
-	for (i=0; i<8; i++)
-	{
-		loc.X = 0.5*CollisionRadius * (1.0-2.0*FRand());
-		loc.Y = 0.5*CollisionRadius * (1.0-2.0*FRand());
-		loc.Z = 0.6*CollisionHeight * (1.0-2.0*FRand());
-		loc += Location;
+    for (i=0; i<8; i++)
+    {
+        loc.X = 0.5*CollisionRadius * (1.0-2.0*FRand());
+        loc.Y = 0.5*CollisionRadius * (1.0-2.0*FRand());
+        loc.Z = 0.6*CollisionHeight * (1.0-2.0*FRand());
+        loc += Location;
 
       // DEUS_EX AMSD reduce the number of smoke particles in multiplayer
       // by creating smokeless fire (better for server propagation).
-      if ((Level.NetMode == NM_Standalone) || (i <= 0))		
+      if ((Level.NetMode == NM_Standalone) || (i <= 0))        
          f = Spawn(class'Fire', Self,, loc);
       else
          f = Spawn(class'SmokelessFire', Self,, loc);
 
-		if (f != None)
-		{
-			f.DrawScale = 0.5*FRand() + 1.0;
+        if (f != None)
+        {
+            f.DrawScale = 0.5*FRand() + 1.0;
 
          //DEUS_EX AMSD Reduce the penalty in multiplayer
          if (Level.NetMode != NM_Standalone)
             f.DrawScale = f.DrawScale * 0.5;
 
-			// turn off the sound and lights for all but the first one
-			if (i > 0)
-			{
-				f.AmbientSound = None;
-				f.LightType = LT_None;
-			}
+            // turn off the sound and lights for all but the first one
+            if (i > 0)
+            {
+                f.AmbientSound = None;
+                f.LightType = LT_None;
+            }
 
-			// turn on/off extra fire and smoke
+            // turn on/off extra fire and smoke
          // MP already only generates a little.
-			if ((FRand() < 0.5) && (Level.NetMode == NM_Standalone))
-				f.smokeGen.Destroy();
-			if ((FRand() < 0.5) && (Level.NetMode == NM_Standalone))
-				f.AddFire();
-		}
-	}
+            if ((FRand() < 0.5) && (Level.NetMode == NM_Standalone))
+                f.smokeGen.Destroy();
+            if ((FRand() < 0.5) && (Level.NetMode == NM_Standalone))
+                f.AddFire();
+        }
+    }
 
-	// set the burn timer
-	SetTimer(1.0, True);
+    // set the burn timer
+    SetTimer(1.0, True);
 }
 
 // ----------------------------------------------------------------------
@@ -10788,14 +10788,14 @@ function CatchFire( Pawn burner )
 
 function ExtinguishFire()
 {
-	local Fire f;
+    local Fire f;
 
-	bOnFire = False;
-	burnTimer = 0;
-	SetTimer(0, False);
+    bOnFire = False;
+    burnTimer = 0;
+    SetTimer(0, False);
 
-	foreach BasedActors(class'Fire', f)
-		f.Destroy();
+    foreach BasedActors(class'Fire', f)
+        f.Destroy();
 }
 
 // ----------------------------------------------------------------------
@@ -10804,17 +10804,17 @@ function ExtinguishFire()
 
 function SpawnBlood(Vector HitLocation, float Damage)
 {
-	local int i;
+    local int i;
 
    if ((DeusExMPGame(Level.Game) != None) && (!DeusExMPGame(Level.Game).bSpawnEffects))
    {
       return;
    }
 
-	spawn(class'BloodSpurt',,,HitLocation);
-	spawn(class'BloodDrop',,,HitLocation);
-	for (i=0; i<int(Damage); i+=10)
-		spawn(class'BloodDrop',,,HitLocation);
+    spawn(class'BloodSpurt',,,HitLocation);
+    spawn(class'BloodDrop',,,HitLocation);
+    for (i=0; i<int(Damage); i+=10)
+        spawn(class'BloodDrop',,,HitLocation);
 }
 
 // ----------------------------------------------------------------------
@@ -10824,43 +10824,43 @@ function SpawnBlood(Vector HitLocation, float Damage)
 // ----------------------------------------------------------------------
 function PlayDXTakeDamageHit(float Damage, vector HitLocation, name damageType, vector Momentum, bool DamageReduced)
 {
-	local float rnd;
+    local float rnd;
 
    PlayHit(Damage,HitLocation,damageType,Momentum);
 
-	// if we actually took the full damage, flash the screen and play the sound
+    // if we actually took the full damage, flash the screen and play the sound
    // DEUS_EX AMSD DXReduceDamage is slow.  Pass in the result from earlier.
-	if (!DamageReduced) 
-	{
-		if ( (damage > 0) || (ReducedDamageType == 'All') )
-		{
-			// No client flash on plasma bolts in multiplayer
-			if (( Level.NetMode != NM_Standalone ) && ( myProjKiller != None ) && (PlasmaBolt(myProjKiller)!=None) )
-			{
-			}
-			else
-			{
-				rnd = FClamp(Damage, 20, 100);
-				if (damageType == 'Burned')
-					ClientFlash(rnd * 0.002, vect(200,100,100));
-				else if (damageType == 'Flamed')
-					ClientFlash(rnd * 0.002, vect(200,100,100));
-				else if (damageType == 'Radiation')
-					ClientFlash(rnd * 0.002, vect(100,100,0));
-				else if (damageType == 'PoisonGas')
-					ClientFlash(rnd * 0.002, vect(50,150,0));
-				else if (damageType == 'TearGas')
-					ClientFlash(rnd * 0.002, vect(150,150,0));
-				else if (damageType == 'Drowned')
-					ClientFlash(rnd * 0.002, vect(0,100,200));
-				else if (damageType == 'EMP')
-					ClientFlash(rnd * 0.002, vect(0,200,200));
-				else 
-					ClientFlash(rnd * 0.002, vect(50,0,0));
-			}
-			ShakeView(0.15 + 0.002 * Damage, Damage * 30, 0.3 * Damage); 
-		}
-	}
+    if (!DamageReduced) 
+    {
+        if ( (damage > 0) || (ReducedDamageType == 'All') )
+        {
+            // No client flash on plasma bolts in multiplayer
+            if (( Level.NetMode != NM_Standalone ) && ( myProjKiller != None ) && (PlasmaBolt(myProjKiller)!=None) )
+            {
+            }
+            else
+            {
+                rnd = FClamp(Damage, 20, 100);
+                if (damageType == 'Burned')
+                    ClientFlash(rnd * 0.002, vect(200,100,100));
+                else if (damageType == 'Flamed')
+                    ClientFlash(rnd * 0.002, vect(200,100,100));
+                else if (damageType == 'Radiation')
+                    ClientFlash(rnd * 0.002, vect(100,100,0));
+                else if (damageType == 'PoisonGas')
+                    ClientFlash(rnd * 0.002, vect(50,150,0));
+                else if (damageType == 'TearGas')
+                    ClientFlash(rnd * 0.002, vect(150,150,0));
+                else if (damageType == 'Drowned')
+                    ClientFlash(rnd * 0.002, vect(0,100,200));
+                else if (damageType == 'EMP')
+                    ClientFlash(rnd * 0.002, vect(0,200,200));
+                else 
+                    ClientFlash(rnd * 0.002, vect(50,0,0));
+            }
+            ShakeView(0.15 + 0.002 * Damage, Damage * 30, 0.3 * Damage); 
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -10869,10 +10869,10 @@ function PlayDXTakeDamageHit(float Damage, vector HitLocation, name damageType, 
 
 function PlayHit(float Damage, vector HitLocation, name damageType, vector Momentum)
 {
-	if ((Damage > 0) && (damageType == 'Shot') || (damageType == 'Exploded') || (damageType == 'AutoShot') || (damageType == 'Shell'))
-		SpawnBlood(HitLocation, Damage);
+    if ((Damage > 0) && (damageType == 'Shot') || (damageType == 'Exploded') || (damageType == 'AutoShot') || (damageType == 'Shell'))
+        SpawnBlood(HitLocation, Damage);
 
-	PlayTakeHitSound(Damage, damageType, 1);
+    PlayTakeHitSound(Damage, damageType, 1);
 }
 
 // ----------------------------------------------------------------------
@@ -10881,15 +10881,15 @@ function PlayHit(float Damage, vector HitLocation, name damageType, vector Momen
 
 function PlayDeathHit(float Damage, vector HitLocation, name damageType, vector Momentum)
 {
-	PlayDying(damageType, HitLocation);
+    PlayDying(damageType, HitLocation);
 }
 
 function Bool HasTwoHandedWeapon()
 {
-	if ((Weapon != None) && (Weapon.Mass >= 30))
-		return True;
-	else
-		return False;
+    if ((Weapon != None) && (Weapon.Mass >= 30))
+        return True;
+    else
+        return False;
 }
 
 // ----------------------------------------------------------------------
@@ -10899,24 +10899,24 @@ function Bool HasTwoHandedWeapon()
 
 function PlayDodge(eDodgeDir DodgeMove)
 {
-	//== Slow animations make it look like they're waiting to land
-	switch(DodgeMove)
-	{
-		case DODGE_Left:
-		case DODGE_Right:
-				if (HasTwoHandedWeapon())
-					LoopAnim('Strafe2H',0.1,0.1);
-				else
-					LoopAnim('Strafe',0.1,0.1);
-				break;
-		case DODGE_Back:
-		case DODGE_Forward:
-				if (HasTwoHandedWeapon())
-					LoopAnim('RunShoot2H',0.1,0.1);
-				else
-					LoopAnim('Run',0.1,0.1);
-				break;
-	}
+    //== Slow animations make it look like they're waiting to land
+    switch(DodgeMove)
+    {
+        case DODGE_Left:
+        case DODGE_Right:
+                if (HasTwoHandedWeapon())
+                    LoopAnim('Strafe2H',0.1,0.1);
+                else
+                    LoopAnim('Strafe',0.1,0.1);
+                break;
+        case DODGE_Back:
+        case DODGE_Forward:
+                if (HasTwoHandedWeapon())
+                    LoopAnim('RunShoot2H',0.1,0.1);
+                else
+                    LoopAnim('Run',0.1,0.1);
+                break;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -10925,36 +10925,36 @@ function PlayDodge(eDodgeDir DodgeMove)
 
 function SkillPointsAdd(int numPoints)
 {
-	//Modified so it can take away points as well -- Y|yukichigai
-	if (numPoints != 0) //Was > 0
-	{
-		SkillPointsAvail += numPoints;
-		SkillPointsTotal += numPoints;
+    //Modified so it can take away points as well -- Y|yukichigai
+    if (numPoints != 0) //Was > 0
+    {
+        SkillPointsAvail += numPoints;
+        SkillPointsTotal += numPoints;
 
-		if ((DeusExRootWindow(rootWindow) != None) &&
-		    (DeusExRootWindow(rootWindow).hud != None) && 
-			(DeusExRootWindow(rootWindow).hud.msgLog != None))
-		{
-			//You were given skill points, hooray!
-			if(numPoints > 0)
-			{
-				ClientMessage(Sprintf(SkillPointsAward, numPoints));
-				DeusExRootWindow(rootWindow).hud.msgLog.PlayLogSound(Sound'LogSkillPoints');
-			}
-			//You lost skill points.  You must have screwed up.  Boo!
-			else
-			{
-				ClientMessage(Sprintf("%d skill points deducted!", -1*(numPoints)));
-				DeusExRootWindow(rootWindow).hud.msgLog.PlayLogSound(Sound'TurretSwitch');
-			}
-		}
+        if ((DeusExRootWindow(rootWindow) != None) &&
+            (DeusExRootWindow(rootWindow).hud != None) && 
+            (DeusExRootWindow(rootWindow).hud.msgLog != None))
+        {
+            //You were given skill points, hooray!
+            if(numPoints > 0)
+            {
+                ClientMessage(Sprintf(SkillPointsAward, numPoints));
+                DeusExRootWindow(rootWindow).hud.msgLog.PlayLogSound(Sound'LogSkillPoints');
+            }
+            //You lost skill points.  You must have screwed up.  Boo!
+            else
+            {
+                ClientMessage(Sprintf("%d skill points deducted!", -1*(numPoints)));
+                DeusExRootWindow(rootWindow).hud.msgLog.PlayLogSound(Sound'TurretSwitch');
+            }
+        }
 
-		//== Prevent any potential crashes due to skillpoint awards
-		if(SkillPointsAvail > 115900)
-			SkillPointsAvail = 115900;
-		if(SkillPointsTotal > 115900)
-			SkillPointsTotal = 115900;
-	}
+        //== Prevent any potential crashes due to skillpoint awards
+        if(SkillPointsAvail > 115900)
+            SkillPointsAvail = 115900;
+        if(SkillPointsTotal > 115900)
+            SkillPointsTotal = 115900;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -10963,9 +10963,9 @@ function SkillPointsAdd(int numPoints)
 
 function MakePlayerIgnored(bool bNewIgnore)
 {
-	bIgnore = bNewIgnore;
-	// to restore original behavior, uncomment the next line
-	//bDetectable = !bNewIgnore;
+    bIgnore = bNewIgnore;
+    // to restore original behavior, uncomment the next line
+    //bDetectable = !bNewIgnore;
 }
 
 // ----------------------------------------------------------------------
@@ -10974,58 +10974,58 @@ function MakePlayerIgnored(bool bNewIgnore)
 
 function float CalculatePlayerVisibility(ScriptedPawn P)
 {
-	local float vis;
-	local AdaptiveArmor armor;
+    local float vis;
+    local AdaptiveArmor armor;
 
-	vis = 1.0;
-	if ((P != None) && (AugmentationSystem != None))
-	{
-		// go through the actor list looking for owned AdaptiveArmor
-		// since they aren't in the inventory anymore after they are used
+    vis = 1.0;
+    if ((P != None) && (AugmentationSystem != None))
+    {
+        // go through the actor list looking for owned AdaptiveArmor
+        // since they aren't in the inventory anymore after they are used
 
-        	if (UsingChargedPickup(class'AdaptiveArmor'))
-			vis = 0.0;
+            if (UsingChargedPickup(class'AdaptiveArmor'))
+            vis = 0.0;
 
-		else if (P.IsA('Robot'))
-		{
-			// if the aug is on, give the player full invisibility
-			if (AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') != -1.0)
-				vis = 0.0;
-		}
-		else
-		{
-			// if the aug is on, give the player full invisibility
-			if (AugmentationSystem.GetAugLevelValue(class'AugCloak') != -1.0)
-				vis = 0.0;
-		}
-	}
+        else if (P.IsA('Robot'))
+        {
+            // if the aug is on, give the player full invisibility
+            if (AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') != -1.0)
+                vis = 0.0;
+        }
+        else
+        {
+            // if the aug is on, give the player full invisibility
+            if (AugmentationSystem.GetAugLevelValue(class'AugCloak') != -1.0)
+                vis = 0.0;
+        }
+    }
 
-	//== If you're on fire, sorry buddy, they can see you
-	if(bOnFire && vis <= 0.5)
-		vis += 0.5;
+    //== If you're on fire, sorry buddy, they can see you
+    if(bOnFire && vis <= 0.5)
+        vis += 0.5;
 
-	return vis;
+    return vis;
 }
 
 //== Calculates the player's visibility using a type indicated by variable; 0 = person, 1 = robot
 function float CalculatePlayerVisibilityType(int type)
 {
-	local float vis;
+    local float vis;
 
-	vis = 1.0;
+    vis = 1.0;
 
-	if(type == 1 && AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') != -1.0)
-		vis = 0.0;
-	else if(type == 0 && AugmentationSystem.GetAugLevelValue(class'AugCloak') != -1.0)
-		vis = 0.0;
-	else if (UsingChargedPickup(class'AdaptiveArmor'))
-		vis = 0.0;
+    if(type == 1 && AugmentationSystem.GetAugLevelValue(class'AugRadarTrans') != -1.0)
+        vis = 0.0;
+    else if(type == 0 && AugmentationSystem.GetAugLevelValue(class'AugCloak') != -1.0)
+        vis = 0.0;
+    else if (UsingChargedPickup(class'AdaptiveArmor'))
+        vis = 0.0;
 
-	//== If you're on fire, sorry buddy, they can see you
-	if(bOnFire && vis <= 0.5)
-		vis += 0.5;
+    //== If you're on fire, sorry buddy, they can see you
+    if(bOnFire && vis <= 0.5)
+        vis += 0.5;
 
-	return vis;
+    return vis;
 }
 
 // ----------------------------------------------------------------------
@@ -11038,8 +11038,8 @@ function float CalculatePlayerVisibilityType(int type)
 // DEUS_EX AMSD: Added so we can change the flash time duration.
 simulated function ClientFlash( float scale, vector fog)
 {
-	DesiredFlashScale += scale;
-	DesiredFlashFog += 0.001 * fog;
+    DesiredFlashScale += scale;
+    DesiredFlashFog += 0.001 * fog;
 }
 
 function IncreaseClientFlashLength(float NewFlashTime)
@@ -11053,9 +11053,9 @@ function IncreaseClientFlashLength(float NewFlashTime)
 // ---------------------------------------------------------------------
 function ViewFlash(float DeltaTime)
 {
-	local float delta;
-	local vector goalFog;
-	local float goalscale, ReductionFactor;
+    local float delta;
+    local vector goalFog;
+    local float goalscale, ReductionFactor;
 
    ReductionFactor = 2;
 
@@ -11073,31 +11073,31 @@ function ViewFlash(float DeltaTime)
    }
 
    if ( bNoFlash )
-	{
-		InstantFlash = 0;
-		InstantFog = vect(0,0,0);
-	}
+    {
+        InstantFlash = 0;
+        InstantFog = vect(0,0,0);
+    }
 
-	delta = FMin(0.1, DeltaTime);
-	goalScale = 1 + DesiredFlashScale + ConstantGlowScale + HeadRegion.Zone.ViewFlash.X; 
-	goalFog = DesiredFlashFog + ConstantGlowFog + HeadRegion.Zone.ViewFog;
-	DesiredFlashScale -= DesiredFlashScale * ReductionFactor * delta;  
-	DesiredFlashFog -= DesiredFlashFog * ReductionFactor * delta;
-	FlashScale.X += (goalScale - FlashScale.X + InstantFlash) * 10 * delta;
-	FlashFog += (goalFog - FlashFog + InstantFog) * 10 * delta;
-	InstantFlash = 0;
-	InstantFog = vect(0,0,0);
+    delta = FMin(0.1, DeltaTime);
+    goalScale = 1 + DesiredFlashScale + ConstantGlowScale + HeadRegion.Zone.ViewFlash.X; 
+    goalFog = DesiredFlashFog + ConstantGlowFog + HeadRegion.Zone.ViewFog;
+    DesiredFlashScale -= DesiredFlashScale * ReductionFactor * delta;  
+    DesiredFlashFog -= DesiredFlashFog * ReductionFactor * delta;
+    FlashScale.X += (goalScale - FlashScale.X + InstantFlash) * 10 * delta;
+    FlashFog += (goalFog - FlashFog + InstantFog) * 10 * delta;
+    InstantFlash = 0;
+    InstantFog = vect(0,0,0);
 
-	if ( FlashScale.X > 0.981 )
-		FlashScale.X = 1;
-	FlashScale = FlashScale.X * vect(1,1,1);
+    if ( FlashScale.X > 0.981 )
+        FlashScale.X = 1;
+    FlashScale = FlashScale.X * vect(1,1,1);
 
-	if ( FlashFog.X < 0.019 )
-		FlashFog.X = 0;
-	if ( FlashFog.Y < 0.019 )
-		FlashFog.Y = 0;
-	if ( FlashFog.Z < 0.019 )
-		FlashFog.Z = 0;
+    if ( FlashFog.X < 0.019 )
+        FlashFog.X = 0;
+    if ( FlashFog.Y < 0.019 )
+        FlashFog.Y = 0;
+    if ( FlashFog.Z < 0.019 )
+        FlashFog.Z = 0;
 }
 // ----------------------------------------------------------------------
 // ViewModelAdd()
@@ -11108,41 +11108,41 @@ function ViewFlash(float DeltaTime)
 
 exec function ViewModelAdd(int num, string ClassName)
 {
-	local class<actor> ViewModelClass;
-	local rotator newrot;
-	local vector loc;
+    local class<actor> ViewModelClass;
+    local rotator newrot;
+    local vector loc;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if(instr(ClassName, ".") == -1)
-		ClassName = "DeusEx." $ ClassName;
+    if(instr(ClassName, ".") == -1)
+        ClassName = "DeusEx." $ ClassName;
 
-	if ((num >= 0) && (num <= 8))
-	{
-		if (num > 0)
-			num--;
+    if ((num >= 0) && (num <= 8))
+    {
+        if (num > 0)
+            num--;
 
-		if (ViewModelActor[num] == None)
-		{
-			ViewModelClass = class<actor>(DynamicLoadObject(ClassName, class'Class'));
-			if (ViewModelClass != None)
-			{
-				newrot = Rotation;
-				newrot.Roll = 0;
-				newrot.Pitch = 0;
-				loc = Location + (ViewModelClass.Default.CollisionRadius + CollisionRadius + 32) * Vector(newrot);
-				loc.Z += ViewModelClass.Default.CollisionHeight;
-				ViewModelActor[num] = Spawn(ViewModelClass,,, loc, newrot);
-				if (ViewModelActor[num] != None)
-					ViewModelActor[num].SetPhysics(PHYS_None);
-				if (ScriptedPawn(ViewModelActor[num]) != None)
-					ViewModelActor[num].GotoState('Paralyzed');
-			}
-		}
-		else
-			ClientMessage("There is already a ViewModel in that slot!");
-	}
+        if (ViewModelActor[num] == None)
+        {
+            ViewModelClass = class<actor>(DynamicLoadObject(ClassName, class'Class'));
+            if (ViewModelClass != None)
+            {
+                newrot = Rotation;
+                newrot.Roll = 0;
+                newrot.Pitch = 0;
+                loc = Location + (ViewModelClass.Default.CollisionRadius + CollisionRadius + 32) * Vector(newrot);
+                loc.Z += ViewModelClass.Default.CollisionHeight;
+                ViewModelActor[num] = Spawn(ViewModelClass,,, loc, newrot);
+                if (ViewModelActor[num] != None)
+                    ViewModelActor[num].SetPhysics(PHYS_None);
+                if (ScriptedPawn(ViewModelActor[num]) != None)
+                    ViewModelActor[num].GotoState('Paralyzed');
+            }
+        }
+        else
+            ClientMessage("There is already a ViewModel in that slot!");
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -11153,32 +11153,32 @@ exec function ViewModelAdd(int num, string ClassName)
 
 exec function ViewModelDestroy(int num)
 {
-	local int i;
+    local int i;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if ((num >= 0) && (num <= 8))
-	{
-		if (num == 0)
-		{
-			for (i=0; i<8; i++)
-				if (ViewModelActor[i] != None)
-				{
-					ViewModelActor[i].Destroy();
-					ViewModelActor[i] = None;
-				}
-		}
-		else
-		{
-			i = num - 1;
-			if (ViewModelActor[i] != None)
-			{
-				ViewModelActor[i].Destroy();
-				ViewModelActor[i] = None;
-			}
-		}
-	}
+    if ((num >= 0) && (num <= 8))
+    {
+        if (num == 0)
+        {
+            for (i=0; i<8; i++)
+                if (ViewModelActor[i] != None)
+                {
+                    ViewModelActor[i].Destroy();
+                    ViewModelActor[i] = None;
+                }
+        }
+        else
+        {
+            i = num - 1;
+            if (ViewModelActor[i] != None)
+            {
+                ViewModelActor[i].Destroy();
+                ViewModelActor[i] = None;
+            }
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -11189,34 +11189,34 @@ exec function ViewModelDestroy(int num)
 
 exec function ViewModelPlay(int num, name anim, optional float fps)
 {
-	local int i;
+    local int i;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if ((num >= 0) && (num <= 8))
-	{
-		if (num == 0)
-		{
-			for (i=0; i<8; i++)
-				if (ViewModelActor[i] != None)
-				{
-					if (fps == 0)
-						fps = 1.0;
-					ViewModelActor[i].PlayAnim(anim, fps);
-				}
-		}
-		else
-		{
-			i = num - 1;
-			if (ViewModelActor[i] != None)
-			{
-				if (fps == 0)
-					fps = 1.0;
-				ViewModelActor[i].PlayAnim(anim, fps);
-			}
-		}
-	}
+    if ((num >= 0) && (num <= 8))
+    {
+        if (num == 0)
+        {
+            for (i=0; i<8; i++)
+                if (ViewModelActor[i] != None)
+                {
+                    if (fps == 0)
+                        fps = 1.0;
+                    ViewModelActor[i].PlayAnim(anim, fps);
+                }
+        }
+        else
+        {
+            i = num - 1;
+            if (ViewModelActor[i] != None)
+            {
+                if (fps == 0)
+                    fps = 1.0;
+                ViewModelActor[i].PlayAnim(anim, fps);
+            }
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -11227,34 +11227,34 @@ exec function ViewModelPlay(int num, name anim, optional float fps)
 
 exec function ViewModelLoop(int num, name anim, optional float fps)
 {
-	local int i;
+    local int i;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if ((num >= 0) && (num <= 8))
-	{
-		if (num == 0)
-		{
-			for (i=0; i<8; i++)
-				if (ViewModelActor[i] != None)
-				{
-					if (fps == 0)
-						fps = 1.0;
-					ViewModelActor[i].LoopAnim(anim, fps);
-				}
-		}
-		else
-		{
-			i = num - 1;
-			if (ViewModelActor[i] != None)
-			{
-				if (fps == 0)
-					fps = 1.0;
-				ViewModelActor[i].LoopAnim(anim, fps);
-			}
-		}
-	}
+    if ((num >= 0) && (num <= 8))
+    {
+        if (num == 0)
+        {
+            for (i=0; i<8; i++)
+                if (ViewModelActor[i] != None)
+                {
+                    if (fps == 0)
+                        fps = 1.0;
+                    ViewModelActor[i].LoopAnim(anim, fps);
+                }
+        }
+        else
+        {
+            i = num - 1;
+            if (ViewModelActor[i] != None)
+            {
+                if (fps == 0)
+                    fps = 1.0;
+                ViewModelActor[i].LoopAnim(anim, fps);
+            }
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -11265,34 +11265,34 @@ exec function ViewModelLoop(int num, name anim, optional float fps)
 
 exec function ViewModelBlendPlay(int num, name anim, optional float fps, optional int slot)
 {
-	local int i;
+    local int i;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if ((num >= 0) && (num <= 8))
-	{
-		if (num == 0)
-		{
-			for (i=0; i<8; i++)
-				if (ViewModelActor[i] != None)
-				{
-					if (fps == 0)
-						fps = 1.0;
-					ViewModelActor[i].PlayBlendAnim(anim, fps, , slot);
-				}
-		}
-		else
-		{
-			i = num - 1;
-			if (ViewModelActor[i] != None)
-			{
-				if (fps == 0)
-					fps = 1.0;
-				ViewModelActor[i].PlayBlendAnim(anim, fps, , slot);
-			}
-		}
-	}
+    if ((num >= 0) && (num <= 8))
+    {
+        if (num == 0)
+        {
+            for (i=0; i<8; i++)
+                if (ViewModelActor[i] != None)
+                {
+                    if (fps == 0)
+                        fps = 1.0;
+                    ViewModelActor[i].PlayBlendAnim(anim, fps, , slot);
+                }
+        }
+        else
+        {
+            i = num - 1;
+            if (ViewModelActor[i] != None)
+            {
+                if (fps == 0)
+                    fps = 1.0;
+                ViewModelActor[i].PlayBlendAnim(anim, fps, , slot);
+            }
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -11303,84 +11303,84 @@ exec function ViewModelBlendPlay(int num, name anim, optional float fps, optiona
 
 exec function ViewModelBlendStop(int num)
 {
-	local int i;
+    local int i;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if ((num >= 0) && (num <= 8))
-	{
-		if (num == 0)
-		{
-			for (i=0; i<8; i++)
-				if (ViewModelActor[i] != None)
-					ViewModelActor[i].StopBlendAnims();
-		}
-		else
-		{
-			i = num - 1;
-			if (ViewModelActor[i] != None)
-				ViewModelActor[i].StopBlendAnims();
-		}
-	}
+    if ((num >= 0) && (num <= 8))
+    {
+        if (num == 0)
+        {
+            for (i=0; i<8; i++)
+                if (ViewModelActor[i] != None)
+                    ViewModelActor[i].StopBlendAnims();
+        }
+        else
+        {
+            i = num - 1;
+            if (ViewModelActor[i] != None)
+                ViewModelActor[i].StopBlendAnims();
+        }
+    }
 }
 
 exec function ViewModelGiveWeapon(int num, string weaponClass)
 {
-	local class<Actor> NewClass;
-	local Actor obj;
-	local int i;
-	local ScriptedPawn pawn;
+    local class<Actor> NewClass;
+    local Actor obj;
+    local int i;
+    local ScriptedPawn pawn;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (instr(weaponClass, ".") == -1)
-		weaponClass = "DeusEx." $ weaponClass;
+    if (instr(weaponClass, ".") == -1)
+        weaponClass = "DeusEx." $ weaponClass;
 
-	if ((num >= 0) && (num <= 8))
-	{
-		NewClass = class<Actor>(DynamicLoadObject(weaponClass, class'Class'));
+    if ((num >= 0) && (num <= 8))
+    {
+        NewClass = class<Actor>(DynamicLoadObject(weaponClass, class'Class'));
 
-		if (NewClass != None)
-		{
-			obj = Spawn(NewClass,,, Location + (CollisionRadius+NewClass.Default.CollisionRadius+30) * Vector(Rotation) + vect(0,0,1) * 15);
-			if ((obj != None) && obj.IsA('DeusExWeapon'))
-			{
-				if (num == 0)
-				{
-					for (i=0; i<8; i++)
-					{
-						pawn = ScriptedPawn(ViewModelActor[i]);
-						if (pawn != None)
-						{
-							DeusExWeapon(obj).GiveTo(pawn);
-							obj.SetBase(pawn);
-							pawn.Weapon = DeusExWeapon(obj);
-							pawn.PendingWeapon = DeusExWeapon(obj);
-						}
-					}
-				}
-				else
-				{
-					i = num - 1;
-					pawn = ScriptedPawn(ViewModelActor[i]);
-					if (pawn != None)
-					{
-						DeusExWeapon(obj).GiveTo(pawn);
-						obj.SetBase(pawn);
-						pawn.Weapon = DeusExWeapon(obj);
-						pawn.PendingWeapon = DeusExWeapon(obj);
-					}
-				}
-			}
-			else
-			{
-				if (obj != None)
-					obj.Destroy();
-			}
-		}
-	}
+        if (NewClass != None)
+        {
+            obj = Spawn(NewClass,,, Location + (CollisionRadius+NewClass.Default.CollisionRadius+30) * Vector(Rotation) + vect(0,0,1) * 15);
+            if ((obj != None) && obj.IsA('DeusExWeapon'))
+            {
+                if (num == 0)
+                {
+                    for (i=0; i<8; i++)
+                    {
+                        pawn = ScriptedPawn(ViewModelActor[i]);
+                        if (pawn != None)
+                        {
+                            DeusExWeapon(obj).GiveTo(pawn);
+                            obj.SetBase(pawn);
+                            pawn.Weapon = DeusExWeapon(obj);
+                            pawn.PendingWeapon = DeusExWeapon(obj);
+                        }
+                    }
+                }
+                else
+                {
+                    i = num - 1;
+                    pawn = ScriptedPawn(ViewModelActor[i]);
+                    if (pawn != None)
+                    {
+                        DeusExWeapon(obj).GiveTo(pawn);
+                        obj.SetBase(pawn);
+                        pawn.Weapon = DeusExWeapon(obj);
+                        pawn.PendingWeapon = DeusExWeapon(obj);
+                    }
+                }
+            }
+            else
+            {
+                if (obj != None)
+                    obj.Destroy();
+            }
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -11389,37 +11389,37 @@ exec function ViewModelGiveWeapon(int num, string weaponClass)
 
 exec function VMA(int num, string ClassName)
 {
-	ViewModelAdd(num, ClassName);
+    ViewModelAdd(num, ClassName);
 }
 
 exec function VMD(int num)
 {
-	ViewModelDestroy(num);
+    ViewModelDestroy(num);
 }
 
 exec function VMP(int num, name anim, optional float fps)
 {
-	ViewModelPlay(num, anim, fps);
+    ViewModelPlay(num, anim, fps);
 }
 
 exec function VML(int num, name anim, optional float fps)
 {
-	ViewModelLoop(num, anim, fps);
+    ViewModelLoop(num, anim, fps);
 }
 
 exec function VMBP(int num, name anim, optional float fps, optional int slot)
 {
-	ViewModelBlendPlay(num, anim, fps, slot);
+    ViewModelBlendPlay(num, anim, fps, slot);
 }
 
 exec function VMBS(int num)
 {
-	ViewModelBlendStop(num);
+    ViewModelBlendStop(num);
 }
 
 exec function VMGW(int num, string weaponClass)
 {
-	ViewModelGiveWeapon(num, weaponClass);
+    ViewModelGiveWeapon(num, weaponClass);
 }
 
 // ----------------------------------------------------------------------
@@ -11431,10 +11431,10 @@ exec function VMGW(int num, string weaponClass)
 
 exec function AllHealth()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	RestoreAllHealth();
+    RestoreAllHealth();
 }
 
 // ----------------------------------------------------------------------
@@ -11443,13 +11443,13 @@ exec function AllHealth()
 
 function RestoreAllHealth()
 {
-	HealthHead = default.HealthHead;
-	HealthTorso = default.HealthTorso;
-	HealthLegLeft = default.HealthLegLeft;
-	HealthLegRight = default.HealthLegRight;
-	HealthArmLeft = default.HealthArmLeft;
-	HealthArmRight = default.HealthArmRight;
-	Health = default.Health;
+    HealthHead = default.HealthHead;
+    HealthTorso = default.HealthTorso;
+    HealthLegLeft = default.HealthLegLeft;
+    HealthLegRight = default.HealthLegRight;
+    HealthArmLeft = default.HealthArmLeft;
+    HealthArmRight = default.HealthArmRight;
+    Health = default.Health;
 }
 
 // ----------------------------------------------------------------------
@@ -11458,38 +11458,38 @@ function RestoreAllHealth()
 
 exec function DamagePart(int partIndex, optional int amount)
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (amount == 0)
-		amount = 1000;
+    if (amount == 0)
+        amount = 1000;
 
-	switch(partIndex)
-	{
-		case 0:		// head
-			HealthHead -= Min(HealthHead, amount);
-			break;
+    switch(partIndex)
+    {
+        case 0:        // head
+            HealthHead -= Min(HealthHead, amount);
+            break;
 
-		case 1:		// torso
-			HealthTorso -= Min(HealthTorso, amount);
-			break;
+        case 1:        // torso
+            HealthTorso -= Min(HealthTorso, amount);
+            break;
 
-		case 2:		// left arm
-			HealthArmLeft -= Min(HealthArmLeft, amount);
-			break;
+        case 2:        // left arm
+            HealthArmLeft -= Min(HealthArmLeft, amount);
+            break;
 
-		case 3:		// right arm
-			HealthArmRight -= Min(HealthArmRight, amount);
-			break;
+        case 3:        // right arm
+            HealthArmRight -= Min(HealthArmRight, amount);
+            break;
 
-		case 4:		// left leg
-			HealthLegLeft -= Min(HealthLegLeft, amount);
-			break;
+        case 4:        // left leg
+            HealthLegLeft -= Min(HealthLegLeft, amount);
+            break;
 
-		case 5:		// right leg
-			HealthLegRight -= Min(HealthLegRight, amount);
-			break;
-	}
+        case 5:        // right leg
+            HealthLegRight -= Min(HealthLegRight, amount);
+            break;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -11498,18 +11498,18 @@ exec function DamagePart(int partIndex, optional int amount)
 
 exec function DamageAll(optional int amount)
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (amount == 0)
-		amount = 1000;
+    if (amount == 0)
+        amount = 1000;
 
-	HealthHead     -= Min(HealthHead, amount);
-	HealthTorso    -= Min(HealthTorso, amount);
-	HealthArmLeft  -= Min(HealthArmLeft, amount);
-	HealthArmRight -= Min(HealthArmRight, amount);
-	HealthLegLeft  -= Min(HealthLegLeft, amount);
-	HealthLegRight -= Min(HealthLegRight, amount);
+    HealthHead     -= Min(HealthHead, amount);
+    HealthTorso    -= Min(HealthTorso, amount);
+    HealthArmLeft  -= Min(HealthArmLeft, amount);
+    HealthArmRight -= Min(HealthArmRight, amount);
+    HealthLegLeft  -= Min(HealthLegLeft, amount);
+    HealthLegRight -= Min(HealthLegRight, amount);
 }
 
 // ----------------------------------------------------------------------
@@ -11518,10 +11518,10 @@ exec function DamageAll(optional int amount)
 
 exec function AllEnergy()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	Energy = default.Energy;
+    Energy = default.Energy;
 }
 
 // ----------------------------------------------------------------------
@@ -11530,10 +11530,10 @@ exec function AllEnergy()
 
 exec function AllCredits()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	Credits = 100000;
+    Credits = 100000;
 }
 
 // ---------------------------------------------------------------------
@@ -11542,11 +11542,11 @@ exec function AllCredits()
 
 exec function AllSkills()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	AllSkillPoints();
-	SkillSystem.AddAllSkills();
+    AllSkillPoints();
+    SkillSystem.AddAllSkills();
 }
 
 // ----------------------------------------------------------------------
@@ -11555,11 +11555,11 @@ exec function AllSkills()
 
 exec function AllSkillPoints()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	SkillPointsTotal = 115900;
-	SkillPointsAvail = 115900;
+    SkillPointsTotal = 115900;
+    SkillPointsAvail = 115900;
 }
 
 // ----------------------------------------------------------------------
@@ -11568,17 +11568,17 @@ exec function AllSkillPoints()
 
 exec function AllAugs()
 {
-	local Augmentation anAug;
-	local int i;
-	
-	if (!bCheatsEnabled)
-		return;
+    local Augmentation anAug;
+    local int i;
+    
+    if (!bCheatsEnabled)
+        return;
 
-	if (AugmentationSystem != None)
-	{
-		AugmentationSystem.AddAllAugs();
-		AugmentationSystem.SetAllAugsToMaxLevel();
-	}
+    if (AugmentationSystem != None)
+    {
+        AugmentationSystem.AddAllAugs();
+        AugmentationSystem.SetAllAugsToMaxLevel();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -11587,37 +11587,37 @@ exec function AllAugs()
 
 exec function AllWeapons()
 {
-	local Vector loc;
+    local Vector loc;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	loc = Location + 2 * CollisionRadius * Vector(ViewRotation);
+    loc = Location + 2 * CollisionRadius * Vector(ViewRotation);
 
-	Spawn(class'WeaponAssaultGun',,, loc);
-	Spawn(class'WeaponAssaultShotgun',,, loc);
-	Spawn(class'WeaponBaton',,, loc);
-	Spawn(class'WeaponCombatKnife',,, loc);
-	Spawn(class'WeaponCrowbar',,, loc);
-	Spawn(class'WeaponEMPGrenade',,, loc);
-	Spawn(class'WeaponFlamethrower',,, loc);
-	Spawn(class'WeaponGasGrenade',,, loc);
-	Spawn(class'WeaponGEPGun',,, loc);
-	Spawn(class'WeaponHideAGun',,, loc);
-	Spawn(class'WeaponLAM',,, loc);
-	Spawn(class'WeaponLAW',,, loc);
-	Spawn(class'WeaponMiniCrossbow',,, loc);
-	Spawn(class'WeaponNanoSword',,, loc);
-	Spawn(class'WeaponNanoVirusGrenade',,, loc);
-	Spawn(class'WeaponPepperGun',,, loc);
-	Spawn(class'WeaponPistol',,, loc);
-	Spawn(class'WeaponPlasmaRifle',,, loc);
-	Spawn(class'WeaponProd',,, loc);
-	Spawn(class'WeaponRifle',,, loc);
-	Spawn(class'WeaponSawedOffShotgun',,, loc);
-	Spawn(class'WeaponShuriken',,, loc);
-	Spawn(class'WeaponStealthPistol',,, loc);
-	Spawn(class'WeaponSword',,, loc);
+    Spawn(class'WeaponAssaultGun',,, loc);
+    Spawn(class'WeaponAssaultShotgun',,, loc);
+    Spawn(class'WeaponBaton',,, loc);
+    Spawn(class'WeaponCombatKnife',,, loc);
+    Spawn(class'WeaponCrowbar',,, loc);
+    Spawn(class'WeaponEMPGrenade',,, loc);
+    Spawn(class'WeaponFlamethrower',,, loc);
+    Spawn(class'WeaponGasGrenade',,, loc);
+    Spawn(class'WeaponGEPGun',,, loc);
+    Spawn(class'WeaponHideAGun',,, loc);
+    Spawn(class'WeaponLAM',,, loc);
+    Spawn(class'WeaponLAW',,, loc);
+    Spawn(class'WeaponMiniCrossbow',,, loc);
+    Spawn(class'WeaponNanoSword',,, loc);
+    Spawn(class'WeaponNanoVirusGrenade',,, loc);
+    Spawn(class'WeaponPepperGun',,, loc);
+    Spawn(class'WeaponPistol',,, loc);
+    Spawn(class'WeaponPlasmaRifle',,, loc);
+    Spawn(class'WeaponProd',,, loc);
+    Spawn(class'WeaponRifle',,, loc);
+    Spawn(class'WeaponSawedOffShotgun',,, loc);
+    Spawn(class'WeaponShuriken',,, loc);
+    Spawn(class'WeaponStealthPistol',,, loc);
+    Spawn(class'WeaponSword',,, loc);
 }
 
 // ----------------------------------------------------------------------
@@ -11626,84 +11626,84 @@ exec function AllWeapons()
 
 exec function AllImages()
 {
-	local Vector loc;
-	local Inventory item;
+    local Vector loc;
+    local Inventory item;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	item = Spawn(class'Image01_GunFireSensor');
-	item.Frob(Self, None);
-	item = Spawn(class'Image01_LibertyIsland');
-	item.Frob(Self, None);
-	item = Spawn(class'Image01_TerroristCommander');
-	item.Frob(Self, None);
-	item = Spawn(class'Image02_Ambrosia_Flyer');
-	item.Frob(Self, None);
-	item = Spawn(class'Image02_NYC_Warehouse');
-	item.Frob(Self, None);
-	item = Spawn(class'Image02_BobPage_ManOfYear');
-	item.Frob(Self, None);
-	item = Spawn(class'Image03_747Diagram');
-	item.Frob(Self, None);
-	item = Spawn(class'Image03_NYC_Airfield');
-	item.Frob(Self, None);
-	item = Spawn(class'Image03_WaltonSimons');
-	item.Frob(Self, None);
-	item = Spawn(class'Image04_NSFHeadquarters');
-	item.Frob(Self, None);
-	item = Spawn(class'Image04_UNATCONotice');
-	item.Frob(Self, None);
-	item = Spawn(class'Image05_GreaselDisection');
-	item.Frob(Self, None);
-	item = Spawn(class'Image05_NYC_MJ12Lab');
-	item.Frob(Self, None);
-	item = Spawn(class'Image06_HK_Market');
-	item.Frob(Self, None);
-	item = Spawn(class'Image06_HK_MJ12Helipad');
-	item.Frob(Self, None);
-	item = Spawn(class'Image06_HK_MJ12Lab');
-	item.Frob(Self, None);
-	item = Spawn(class'Image06_HK_Versalife');
-	item.Frob(Self, None);
-	item = Spawn(class'Image06_HK_WanChai');
-	item.Frob(Self, None);
-	item = Spawn(class'Image08_JoeGreenMIBMJ12');
-	item.Frob(Self, None);
-	item = Spawn(class'Image09_NYC_Ship_Bottom');
-	item.Frob(Self, None);
-	item = Spawn(class'Image09_NYC_Ship_Top');
-	item.Frob(Self, None);
-	item = Spawn(class'Image10_Paris_Catacombs');
-	item.Frob(Self, None);
-	item = Spawn(class'Image10_Paris_CatacombsTunnels');
-	item.Frob(Self, None);
-	item = Spawn(class'Image10_Paris_Metro');
-	item.Frob(Self, None);
-	item = Spawn(class'Image11_Paris_Cathedral');
-	item.Frob(Self, None);
-	item = Spawn(class'Image11_Paris_CathedralEntrance');
-	item.Frob(Self, None);
-	item = Spawn(class'Image12_Vandenberg_Command');
-	item.Frob(Self, None);
-	item = Spawn(class'Image12_Vandenberg_Sub');
-	item.Frob(Self, None);
-	item = Spawn(class'Image12_Tiffany_HostagePic');
-	item.Frob(Self, None);
-	item = Spawn(class'Image14_OceanLab');
-	item.Frob(Self, None);
-	item = Spawn(class'Image14_Schematic');
-	item.Frob(Self, None);
-	item = Spawn(class'Image15_Area51Bunker');
-	item.Frob(Self, None);
-	item = Spawn(class'Image15_GrayDisection');
-	item.Frob(Self, None);
-	item = Spawn(class'Image15_BlueFusionDevice');
-	item.Frob(Self, None);
-	item = Spawn(class'Image15_Area51_Sector3');
-	item.Frob(Self, None);
-	item = Spawn(class'Image15_Area51_Sector4');
-	item.Frob(Self, None);
+    item = Spawn(class'Image01_GunFireSensor');
+    item.Frob(Self, None);
+    item = Spawn(class'Image01_LibertyIsland');
+    item.Frob(Self, None);
+    item = Spawn(class'Image01_TerroristCommander');
+    item.Frob(Self, None);
+    item = Spawn(class'Image02_Ambrosia_Flyer');
+    item.Frob(Self, None);
+    item = Spawn(class'Image02_NYC_Warehouse');
+    item.Frob(Self, None);
+    item = Spawn(class'Image02_BobPage_ManOfYear');
+    item.Frob(Self, None);
+    item = Spawn(class'Image03_747Diagram');
+    item.Frob(Self, None);
+    item = Spawn(class'Image03_NYC_Airfield');
+    item.Frob(Self, None);
+    item = Spawn(class'Image03_WaltonSimons');
+    item.Frob(Self, None);
+    item = Spawn(class'Image04_NSFHeadquarters');
+    item.Frob(Self, None);
+    item = Spawn(class'Image04_UNATCONotice');
+    item.Frob(Self, None);
+    item = Spawn(class'Image05_GreaselDisection');
+    item.Frob(Self, None);
+    item = Spawn(class'Image05_NYC_MJ12Lab');
+    item.Frob(Self, None);
+    item = Spawn(class'Image06_HK_Market');
+    item.Frob(Self, None);
+    item = Spawn(class'Image06_HK_MJ12Helipad');
+    item.Frob(Self, None);
+    item = Spawn(class'Image06_HK_MJ12Lab');
+    item.Frob(Self, None);
+    item = Spawn(class'Image06_HK_Versalife');
+    item.Frob(Self, None);
+    item = Spawn(class'Image06_HK_WanChai');
+    item.Frob(Self, None);
+    item = Spawn(class'Image08_JoeGreenMIBMJ12');
+    item.Frob(Self, None);
+    item = Spawn(class'Image09_NYC_Ship_Bottom');
+    item.Frob(Self, None);
+    item = Spawn(class'Image09_NYC_Ship_Top');
+    item.Frob(Self, None);
+    item = Spawn(class'Image10_Paris_Catacombs');
+    item.Frob(Self, None);
+    item = Spawn(class'Image10_Paris_CatacombsTunnels');
+    item.Frob(Self, None);
+    item = Spawn(class'Image10_Paris_Metro');
+    item.Frob(Self, None);
+    item = Spawn(class'Image11_Paris_Cathedral');
+    item.Frob(Self, None);
+    item = Spawn(class'Image11_Paris_CathedralEntrance');
+    item.Frob(Self, None);
+    item = Spawn(class'Image12_Vandenberg_Command');
+    item.Frob(Self, None);
+    item = Spawn(class'Image12_Vandenberg_Sub');
+    item.Frob(Self, None);
+    item = Spawn(class'Image12_Tiffany_HostagePic');
+    item.Frob(Self, None);
+    item = Spawn(class'Image14_OceanLab');
+    item.Frob(Self, None);
+    item = Spawn(class'Image14_Schematic');
+    item.Frob(Self, None);
+    item = Spawn(class'Image15_Area51Bunker');
+    item.Frob(Self, None);
+    item = Spawn(class'Image15_GrayDisection');
+    item.Frob(Self, None);
+    item = Spawn(class'Image15_BlueFusionDevice');
+    item.Frob(Self, None);
+    item = Spawn(class'Image15_Area51_Sector3');
+    item.Frob(Self, None);
+    item = Spawn(class'Image15_Area51_Sector4');
+    item.Frob(Self, None);
 }
 
 // ----------------------------------------------------------------------
@@ -11712,14 +11712,14 @@ exec function AllImages()
 
 exec function Trig(name ev)
 {
-	local Actor A;
+    local Actor A;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (ev != '')
-		foreach AllActors(class'Actor', A, ev)
-			A.Trigger(Self, Self);
+    if (ev != '')
+        foreach AllActors(class'Actor', A, ev)
+            A.Trigger(Self, Self);
 }
 
 // ----------------------------------------------------------------------
@@ -11728,14 +11728,14 @@ exec function Trig(name ev)
 
 exec function UnTrig(name ev)
 {
-	local Actor A;
+    local Actor A;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (ev != '')
-		foreach AllActors(class'Actor', A, ev)
-			A.UnTrigger(Self, Self);
+    if (ev != '')
+        foreach AllActors(class'Actor', A, ev)
+            A.UnTrigger(Self, Self);
 }
 
 // ----------------------------------------------------------------------
@@ -11744,24 +11744,24 @@ exec function UnTrig(name ev)
 
 exec function SetState(name state)
 {
-	local ScriptedPawn P;
-	local Actor hitActor;
-	local vector loc, line, HitLocation, hitNormal;
+    local ScriptedPawn P;
+    local Actor hitActor;
+    local vector loc, line, HitLocation, hitNormal;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	loc = Location;
-	loc.Z += BaseEyeHeight;
-	line = Vector(ViewRotation) * 2000;
+    loc = Location;
+    loc.Z += BaseEyeHeight;
+    line = Vector(ViewRotation) * 2000;
 
-	hitActor = Trace(hitLocation, hitNormal, loc+line, loc, true);
-	P = ScriptedPawn(hitActor);
-	if (P != None)
-	{
-		P.GotoState(state);
-		ClientMessage("Setting "$P.BindName$" to the "$state$" state");
-	}
+    hitActor = Trace(hitLocation, hitNormal, loc+line, loc, true);
+    P = ScriptedPawn(hitActor);
+    if (P != None)
+    {
+        P.GotoState(state);
+        ClientMessage("Setting "$P.BindName$" to the "$state$" state");
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -11779,126 +11779,126 @@ exec function SetState(name state)
 
 exec function DXDumpInfo()
 {
-	local DumpLocation dumploc;
-	local DeusExLevelInfo info;
-	local string userName, mapName, strCopies;
-	local Inventory item, nextItem;
-	local DeusExWeapon W;
-	local Skill skill;
-	local Augmentation aug;
-	local bool bHasAugs;
+    local DumpLocation dumploc;
+    local DeusExLevelInfo info;
+    local string userName, mapName, strCopies;
+    local Inventory item, nextItem;
+    local DeusExWeapon W;
+    local Skill skill;
+    local Augmentation aug;
+    local bool bHasAugs;
 
-	dumploc = CreateDumpLocationObject();
-	if (dumploc != None)
-	{
-		userName = dumploc.GetCurrentUser();
-		CriticalDelete(dumploc);
-	}
+    dumploc = CreateDumpLocationObject();
+    if (dumploc != None)
+    {
+        userName = dumploc.GetCurrentUser();
+        CriticalDelete(dumploc);
+    }
 
-	if (userName == "")
-		userName = "NO USERNAME";
+    if (userName == "")
+        userName = "NO USERNAME";
 
-	mapName = "NO MAPNAME";
-	foreach AllActors(class'DeusExLevelInfo', info)
-		mapName = info.MapName;
+    mapName = "NO MAPNAME";
+    foreach AllActors(class'DeusExLevelInfo', info)
+        mapName = info.MapName;
 
-	log("");
-	log("**** DXDumpInfo - User: "$userName$" - Map: "$mapName$" ****");
-	log("");
-	log("  Inventory:");
+    log("");
+    log("**** DXDumpInfo - User: "$userName$" - Map: "$mapName$" ****");
+    log("");
+    log("  Inventory:");
 
-	if (Inventory != None)
-	{
-		item = Inventory;
-		do
-		{
-			nextItem = item.Inventory;
+    if (Inventory != None)
+    {
+        item = Inventory;
+        do
+        {
+            nextItem = item.Inventory;
 
-			if (item.bDisplayableInv || item.IsA('Ammo'))
-			{
-				W = DeusExWeapon(item);
-				if ((W != None) && W.bHandToHand && (W.ProjectileClass != None))
-					strCopies = " ("$W.AmmoType.AmmoAmount$" rds)";
-				else if (item.IsA('Ammo') && (Ammo(item).PickupViewMesh != Mesh'TestBox'))
-					strCopies = " ("$Ammo(item).AmmoAmount$" rds)";
-				else if (item.IsA('Pickup') && (Pickup(item).NumCopies > 1))
-					strCopies = " ("$Pickup(item).NumCopies$")";
-				else
-					strCopies = "";
+            if (item.bDisplayableInv || item.IsA('Ammo'))
+            {
+                W = DeusExWeapon(item);
+                if ((W != None) && W.bHandToHand && (W.ProjectileClass != None))
+                    strCopies = " ("$W.AmmoType.AmmoAmount$" rds)";
+                else if (item.IsA('Ammo') && (Ammo(item).PickupViewMesh != Mesh'TestBox'))
+                    strCopies = " ("$Ammo(item).AmmoAmount$" rds)";
+                else if (item.IsA('Pickup') && (Pickup(item).NumCopies > 1))
+                    strCopies = " ("$Pickup(item).NumCopies$")";
+                else
+                    strCopies = "";
 
-				log("    "$item.GetItemName(String(item.Class))$strCopies);
-			}
-			item = nextItem;
-		}
-		until (item == None);
-	}
-	else
-		log("    Empty");
+                log("    "$item.GetItemName(String(item.Class))$strCopies);
+            }
+            item = nextItem;
+        }
+        until (item == None);
+    }
+    else
+        log("    Empty");
 
-	GenerateTotalHealth();
-	log("");
-	log("  Health:");
-	log("    Overall   - "$Health$"%");
-	log("    Head      - "$HealthHead$"%");
-	log("    Torso     - "$HealthTorso$"%");
-	log("    Left arm  - "$HealthArmLeft$"%");
-	log("    Right arm - "$HealthArmRight$"%");
-	log("    Left leg  - "$HealthLegLeft$"%");
-	log("    Right leg - "$HealthLegRight$"%");
+    GenerateTotalHealth();
+    log("");
+    log("  Health:");
+    log("    Overall   - "$Health$"%");
+    log("    Head      - "$HealthHead$"%");
+    log("    Torso     - "$HealthTorso$"%");
+    log("    Left arm  - "$HealthArmLeft$"%");
+    log("    Right arm - "$HealthArmRight$"%");
+    log("    Left leg  - "$HealthLegLeft$"%");
+    log("    Right leg - "$HealthLegRight$"%");
 
-	log("");
-	log("  BioElectric Energy:");
-	log("    "$Int(Energy)$"%");
+    log("");
+    log("  BioElectric Energy:");
+    log("    "$Int(Energy)$"%");
 
-	log("");
-	log("  Credits:");
-	log("    "$Credits);
+    log("");
+    log("  Credits:");
+    log("    "$Credits);
 
-	log("");
-	log("  Skill Points:");
-	log("    Available    - "$SkillPointsAvail);
-	log("    Total Earned - "$SkillPointsTotal);
+    log("");
+    log("  Skill Points:");
+    log("    Available    - "$SkillPointsAvail);
+    log("    Total Earned - "$SkillPointsTotal);
 
-	log("");
-	log("  Skills:");
-	if (SkillSystem != None)
-	{
-		skill = SkillSystem.FirstSkill;
-		while (skill != None)
-		{
-			if (skill.SkillName != "")
-				log("    "$skill.SkillName$" - "$skill.skillLevelStrings[skill.CurrentLevel]);
+    log("");
+    log("  Skills:");
+    if (SkillSystem != None)
+    {
+        skill = SkillSystem.FirstSkill;
+        while (skill != None)
+        {
+            if (skill.SkillName != "")
+                log("    "$skill.SkillName$" - "$skill.skillLevelStrings[skill.CurrentLevel]);
 
-			skill = skill.next;
-		}
-	}
+            skill = skill.next;
+        }
+    }
 
-	bHasAugs = False;
-	log("");
-	log("  Augmentations:");
-	if (AugmentationSystem != None)
-	{
-		aug = AugmentationSystem.FirstAug;
-		while (aug != None)
-		{
-			if (aug.bHasIt && (aug.AugmentationLocation != LOC_Default) && (aug.AugmentationName != ""))
-			{
-				bHasAugs = True;
-				log("    "$aug.AugmentationName$" - Location: "$aug.AugLocsText[aug.AugmentationLocation]$" - Level: "$aug.CurrentLevel+1);
-			}
+    bHasAugs = False;
+    log("");
+    log("  Augmentations:");
+    if (AugmentationSystem != None)
+    {
+        aug = AugmentationSystem.FirstAug;
+        while (aug != None)
+        {
+            if (aug.bHasIt && (aug.AugmentationLocation != LOC_Default) && (aug.AugmentationName != ""))
+            {
+                bHasAugs = True;
+                log("    "$aug.AugmentationName$" - Location: "$aug.AugLocsText[aug.AugmentationLocation]$" - Level: "$aug.CurrentLevel+1);
+            }
 
-			aug = aug.next;
-		}
-	}
+            aug = aug.next;
+        }
+    }
 
-	if (!bHasAugs)
-		log("    None");
+    if (!bHasAugs)
+        log("    None");
 
-	log("");
-	log("**** DXDumpInfo - END ****");
-	log("");
+    log("");
+    log("**** DXDumpInfo - END ****");
+    log("");
 
-	ClientMessage("Info dumped for user "$userName);
+    ClientMessage("Info dumped for user "$userName);
 }
 
 
@@ -11911,15 +11911,15 @@ exec function DXDumpInfo()
 
 function InvokeUIScreen(Class<DeusExBaseWindow> windowClass)
 {
-	local DeusExRootWindow root;
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-	{
-		if ( root.IsKeyDown( IK_Alt ) || root.IsKeyDown( IK_Shift ) || root.IsKeyDown( IK_Ctrl ))
-			return;
+    local DeusExRootWindow root;
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+    {
+        if ( root.IsKeyDown( IK_Alt ) || root.IsKeyDown( IK_Shift ) || root.IsKeyDown( IK_Ctrl ))
+            return;
 
-		root.InvokeUIScreen(windowClass);
-	}
+        root.InvokeUIScreen(windowClass);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -11931,11 +11931,11 @@ function InvokeUIScreen(Class<DeusExBaseWindow> windowClass)
 
 function ResetConversationHistory()
 {
-	if (conHistory != None)
-	{
-		CriticalDelete(conHistory);
-		conHistory = None;
-	}
+    if (conHistory != None)
+    {
+        CriticalDelete(conHistory);
+        conHistory = None;
+    }
 }
 
 // ======================================================================
@@ -11950,70 +11950,70 @@ function ResetConversationHistory()
 
 function CreateColorThemeManager()
 {
-	if (ThemeManager == None)
-	{
-		ThemeManager = Spawn(Class'ColorThemeManager', Self);
+    if (ThemeManager == None)
+    {
+        ThemeManager = Spawn(Class'ColorThemeManager', Self);
 
-		// Add all default themes.
+        // Add all default themes.
 
-		// Menus
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Default');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_BlueAndGold');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_CoolGreen');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Cops');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Cyan');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_DesertStorm');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_DriedBlood');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Dusk');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Earth');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Green');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Grey');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_IonStorm');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Lava');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_NightVision');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Ninja');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Olive');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_PaleGreen');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Pastel');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Plasma');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Primaries');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Purple');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Red');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Seawater');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_SoylentGreen');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Starlight');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Steel');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_SteelGreen');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Superhero');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Terminator');
-		ThemeManager.AddTheme(Class'ColorThemeMenu_Violet');
+        // Menus
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Default');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_BlueAndGold');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_CoolGreen');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Cops');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Cyan');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_DesertStorm');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_DriedBlood');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Dusk');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Earth');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Green');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Grey');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_IonStorm');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Lava');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_NightVision');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Ninja');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Olive');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_PaleGreen');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Pastel');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Plasma');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Primaries');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Purple');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Red');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Seawater');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_SoylentGreen');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Starlight');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Steel');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_SteelGreen');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Superhero');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Terminator');
+        ThemeManager.AddTheme(Class'ColorThemeMenu_Violet');
 
-		// HUD
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Default');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Amber');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Cops');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Cyan');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_DarkBlue');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_DesertStorm');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_DriedBlood');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Dusk');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Grey');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_IonStorm');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_NightVision');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Ninja');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_PaleGreen');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Pastel');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Plasma');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Primaries');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Purple');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Red');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_SoylentGreen');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Starlight');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_SteelGreen');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Superhero');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Terminator');
-		ThemeManager.AddTheme(Class'ColorThemeHUD_Violet');
-	}
+        // HUD
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Default');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Amber');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Cops');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Cyan');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_DarkBlue');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_DesertStorm');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_DriedBlood');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Dusk');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Grey');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_IonStorm');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_NightVision');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Ninja');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_PaleGreen');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Pastel');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Plasma');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Primaries');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Purple');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Red');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_SoylentGreen');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Starlight');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_SteelGreen');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Superhero');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Terminator');
+        ThemeManager.AddTheme(Class'ColorThemeHUD_Violet');
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -12025,11 +12025,11 @@ function CreateColorThemeManager()
 
 exec function NextHUDColorTheme()
 {
-	if (ThemeManager != None)
-	{
-		ThemeManager.NextHUDColorTheme();
-		DeusExRootWindow(rootWindow).ChangeStyle();
-	}
+    if (ThemeManager != None)
+    {
+        ThemeManager.NextHUDColorTheme();
+        DeusExRootWindow(rootWindow).ChangeStyle();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -12039,11 +12039,11 @@ exec function NextHUDColorTheme()
 
 exec function NextMenuColorTheme()
 {
-	if (ThemeManager != None)
-	{
-		ThemeManager.NextMenuColorTheme();
-		DeusExRootWindow(rootWindow).ChangeStyle();
-	}
+    if (ThemeManager != None)
+    {
+        ThemeManager.NextMenuColorTheme();
+        DeusExRootWindow(rootWindow).ChangeStyle();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -12052,7 +12052,7 @@ exec function NextMenuColorTheme()
 
 exec function SetHUDBordersVisible(bool bVisible)
 {
-	bHUDBordersVisible = bVisible;
+    bHUDBordersVisible = bVisible;
 }
 
 // ----------------------------------------------------------------------
@@ -12061,7 +12061,7 @@ exec function SetHUDBordersVisible(bool bVisible)
 
 function bool GetHUDBordersVisible()
 {
-	return bHUDBordersVisible;
+    return bHUDBordersVisible;
 }
 
 // ----------------------------------------------------------------------
@@ -12070,7 +12070,7 @@ function bool GetHUDBordersVisible()
 
 exec function SetHUDBorderTranslucency(bool bNewTranslucency)
 {
-	bHUDBordersTranslucent = bNewTranslucency;
+    bHUDBordersTranslucent = bNewTranslucency;
 }
 
 // ----------------------------------------------------------------------
@@ -12079,7 +12079,7 @@ exec function SetHUDBorderTranslucency(bool bNewTranslucency)
 
 function bool GetHUDBorderTranslucency()
 {
-	return bHUDBordersTranslucent;
+    return bHUDBordersTranslucent;
 }
 
 // ----------------------------------------------------------------------
@@ -12088,7 +12088,7 @@ function bool GetHUDBorderTranslucency()
 
 exec function SetHUDBackgroundTranslucency(bool bNewTranslucency)
 {
-	bHUDBackgroundTranslucent = bNewTranslucency;
+    bHUDBackgroundTranslucent = bNewTranslucency;
 }
 
 // ----------------------------------------------------------------------
@@ -12097,7 +12097,7 @@ exec function SetHUDBackgroundTranslucency(bool bNewTranslucency)
 
 function bool GetHUDBackgroundTranslucency()
 {
-	return bHUDBackgroundTranslucent;
+    return bHUDBackgroundTranslucent;
 }
 
 // ----------------------------------------------------------------------
@@ -12106,7 +12106,7 @@ function bool GetHUDBackgroundTranslucency()
 
 exec function SetMenuTranslucency(bool bNewTranslucency)
 {
-	bMenusTranslucent = bNewTranslucency;
+    bMenusTranslucent = bNewTranslucency;
 }
 
 // ----------------------------------------------------------------------
@@ -12115,7 +12115,7 @@ exec function SetMenuTranslucency(bool bNewTranslucency)
 
 function bool GetMenuTranslucency()
 {
-	return bMenusTranslucent;
+    return bMenusTranslucent;
 }
 
 // ----------------------------------------------------------------------
@@ -12124,56 +12124,56 @@ function bool GetMenuTranslucency()
 
 exec function DebugCommand(string teststr)
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (GlobalDebugObj == None)
-		GlobalDebugObj = new(Self) class'DebugInfo';
+    if (GlobalDebugObj == None)
+        GlobalDebugObj = new(Self) class'DebugInfo';
 
-	if (GlobalDebugObj != None)
-		GlobalDebugObj.Command(teststr);
+    if (GlobalDebugObj != None)
+        GlobalDebugObj.Command(teststr);
 }
 
 exec function SetDebug(name cmd, name val)
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (GlobalDebugObj == None)
-		GlobalDebugObj = new(Self) class'DebugInfo';
+    if (GlobalDebugObj == None)
+        GlobalDebugObj = new(Self) class'DebugInfo';
 
-	Log("Want to setting Debug String " $ cmd $ " to " $ val);
+    Log("Want to setting Debug String " $ cmd $ " to " $ val);
 
-	if (GlobalDebugObj != None)
-		GlobalDebugObj.SetString(String(cmd),String(val));
+    if (GlobalDebugObj != None)
+        GlobalDebugObj.SetString(String(cmd),String(val));
 }
 
 exec function GetDebug(name cmd)
 {
-	local string temp;
+    local string temp;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (GlobalDebugObj == None)
-		GlobalDebugObj = new(Self) class'DebugInfo';
+    if (GlobalDebugObj == None)
+        GlobalDebugObj = new(Self) class'DebugInfo';
 
-	if (GlobalDebugObj != None)
-	{
-		temp=GlobalDebugObj.GetString(String(cmd));
-		Log("Debug String " $ cmd $ " has value " $ temp);
-	}
+    if (GlobalDebugObj != None)
+    {
+        temp=GlobalDebugObj.GetString(String(cmd));
+        Log("Debug String " $ cmd $ " has value " $ temp);
+    }
 }
 
 exec function LogMsg(string msg)
 {
-	Log(msg);
+    Log(msg);
 }
 
 simulated event Destroyed()
 {
-	if (GlobalDebugObj != None)
-		CriticalDelete(GlobalDebugObj);
+    if (GlobalDebugObj != None)
+        CriticalDelete(GlobalDebugObj);
 
    ClearAugmentationDisplay();
 
@@ -12181,7 +12181,7 @@ simulated event Destroyed()
       CloseThisComputer(ActiveComputer);
    ActiveComputer = None;
 
-	Super.Destroyed();
+    Super.Destroyed();
 }
 
 // ----------------------------------------------------------------------
@@ -12190,53 +12190,53 @@ simulated event Destroyed()
 
 exec function MoveActor(int xPos, int yPos, int zPos)
 {
-	local Actor            hitActor;
-	local Vector           hitLocation, hitNormal;
-	local Vector           position, line, newPos;
+    local Actor            hitActor;
+    local Vector           hitLocation, hitNormal;
+    local Vector           position, line, newPos;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	position    = Location;
-	position.Z += BaseEyeHeight;
-	line        = Vector(ViewRotation) * 4000;
+    position    = Location;
+    position.Z += BaseEyeHeight;
+    line        = Vector(ViewRotation) * 4000;
 
-	hitActor = Trace(hitLocation, hitNormal, position+line, position, true);
-	if (hitActor != None)
-	{
-		newPos.x=xPos;
-		newPos.y=yPos;
-		newPos.z=zPos;
-		// hitPawn = ScriptedPawn(hitActor);
-		Log( "Trying to move " $ hitActor.Name $ " from " $ hitActor.Location $ " to " $ newPos);
-		hitActor.SetLocation(newPos);
-		Log( "Ended up at " $ hitActor.Location );
-	}
+    hitActor = Trace(hitLocation, hitNormal, position+line, position, true);
+    if (hitActor != None)
+    {
+        newPos.x=xPos;
+        newPos.y=yPos;
+        newPos.z=zPos;
+        // hitPawn = ScriptedPawn(hitActor);
+        Log( "Trying to move " $ hitActor.Name $ " from " $ hitActor.Location $ " to " $ newPos);
+        hitActor.SetLocation(newPos);
+        Log( "Ended up at " $ hitActor.Location );
+    }
 }
 
 exec function WhereActor(optional int Me)
 {
-	local Actor            hitActor;
-	local Vector           hitLocation, hitNormal;
-	local Vector           position, line, newPos;
+    local Actor            hitActor;
+    local Vector           hitLocation, hitNormal;
+    local Vector           position, line, newPos;
 
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (Me==1)
-		hitActor=self;
-	else
-	{
-		position    = Location;
-		position.Z += BaseEyeHeight;
-		line        = Vector(ViewRotation) * 4000;
-		hitActor    = Trace(hitLocation, hitNormal, position+line, position, true);
-	}
-	if (hitActor != None)
-	{
-		Log( hitActor.Name $ " is at " $ hitActor.Location );
-		BroadcastMessage( hitActor.Name $ " is at " $ hitActor.Location );
-	}
+    if (Me==1)
+        hitActor=self;
+    else
+    {
+        position    = Location;
+        position.Z += BaseEyeHeight;
+        line        = Vector(ViewRotation) * 4000;
+        hitActor    = Trace(hitLocation, hitNormal, position+line, position, true);
+    }
+    if (hitActor != None)
+    {
+        Log( hitActor.Name $ " is at " $ hitActor.Location );
+        BroadcastMessage( hitActor.Name $ " is at " $ hitActor.Location );
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -12245,35 +12245,35 @@ exec function WhereActor(optional int Me)
 
 function Matrix()
 {
-	if (Sprite == None)
-	{
-		Sprite = Texture(DynamicLoadObject("Extras.Matrix_A00", class'Texture'));
-		ConsoleCommand("RMODE 6");
-	}
-	else
-	{
-		Sprite = None;
-		ConsoleCommand("RMODE 5");
-	}
+    if (Sprite == None)
+    {
+        Sprite = Texture(DynamicLoadObject("Extras.Matrix_A00", class'Texture'));
+        ConsoleCommand("RMODE 6");
+    }
+    else
+    {
+        Sprite = None;
+        ConsoleCommand("RMODE 5");
+    }
 }
 
 exec function IAmWarren()
 {
-	if (!bCheatsEnabled)
-		return;
+    if (!bCheatsEnabled)
+        return;
 
-	if (!bWarrenEMPField)
-	{
-		bWarrenEMPField = true;
-		WarrenTimer = 0;
-		WarrenSlot  = 0;
-		ClientMessage("Warren's EMP Field activated");  // worry about localization?
-	}
-	else
-	{
-		bWarrenEMPField = false;
-		ClientMessage("Warren's EMP Field deactivated");  // worry about localization?
-	}
+    if (!bWarrenEMPField)
+    {
+        bWarrenEMPField = true;
+        WarrenTimer = 0;
+        WarrenSlot  = 0;
+        ClientMessage("Warren's EMP Field activated");  // worry about localization?
+    }
+    else
+    {
+        bWarrenEMPField = false;
+        ClientMessage("Warren's EMP Field deactivated");  // worry about localization?
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -12377,13 +12377,13 @@ function ReceiveSecondOptionSync ( Name PrefFive, Name PrefSix, Name PrefSeven, 
 
 simulated function ClientPlayAnimation( Actor src, Name anim, float rate, bool bLoop )
 {
-	if ( src != None )
-	{
-			//		if ( bLoop )
-			//			src.LoopAnim(anim, ,rate);
-			//		else
-			src.PlayAnim(anim, ,rate);
-	}
+    if ( src != None )
+    {
+            //        if ( bLoop )
+            //            src.LoopAnim(anim, ,rate);
+            //        else
+            src.PlayAnim(anim, ,rate);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -12392,14 +12392,14 @@ simulated function ClientPlayAnimation( Actor src, Name anim, float rate, bool b
 
 simulated function ClientSpawnProjectile( class<projectile> ProjClass, Actor owner, Vector Start, Rotator AdjustedAim )
 {
-	local DeusExProjectile proj;
+    local DeusExProjectile proj;
 
-	proj = DeusExProjectile(Spawn(ProjClass, Owner,, Start, AdjustedAim));
-	if ( proj != None )
-	{
-		proj.RemoteRole = ROLE_None;
-		proj.Damage = 0;
-	}
+    proj = DeusExProjectile(Spawn(ProjClass, Owner,, Start, AdjustedAim));
+    if ( proj != None )
+    {
+        proj.RemoteRole = ROLE_None;
+        proj.Damage = 0;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -12419,7 +12419,7 @@ simulated function ClientSpawnHits( bool bPenetrating, bool bHandToHand, Vector 
       else
       {
          hitspawner = Spawn(class'TraceHitSpawner',Other,,HitLocation,Rotator(HitNormal));
-			hitspawner.HitDamage = Damage;
+            hitspawner.HitDamage = Damage;
       }
    }
    else
@@ -12442,15 +12442,15 @@ simulated function ClientSpawnHits( bool bPenetrating, bool bHandToHand, Vector 
 // ----------------------------------------------------------------------
 function NintendoImmunityEffect( bool on )
 {
-	bNintendoImmunity = on;
+    bNintendoImmunity = on;
 
-	if (bNintendoImmunity)
-	{
- 		NintendoImmunityTime = Level.Timeseconds + NintendoDelay;
-		NintendoImmunityTimeLeft = NintendoDelay;
-	}
-	else
-		NintendoImmunityTimeLeft = 0.0;
+    if (bNintendoImmunity)
+    {
+         NintendoImmunityTime = Level.Timeseconds + NintendoDelay;
+        NintendoImmunityTimeLeft = NintendoDelay;
+    }
+    else
+        NintendoImmunityTimeLeft = 0.0;
 }
 
 // ----------------------------------------------------------------------
@@ -12496,7 +12496,7 @@ function GrantAugs(int NumAugs)
    local Augmentation CurrentAug;
    local int PriorityIndex;
    local int AugsLeft;
-	
+    
    if (Role < ROLE_Authority)
       return;
    AugsLeft = NumAugs;
@@ -12515,10 +12515,10 @@ function GrantAugs(int NumAugs)
       {
          if ((CurrentAug.Class.Name == AugPrefs[PriorityIndex]) && (CurrentAug.bHasIt == False))
          {
-	         AugmentationSystem.GivePlayerAugmentation(CurrentAug.Class);
-				// Max out aug
-				if (CurrentAug.bHasIt)
-					CurrentAug.CurrentLevel = CurrentAug.MaxLevel;
+             AugmentationSystem.GivePlayerAugmentation(CurrentAug.Class);
+                // Max out aug
+                if (CurrentAug.bHasIt)
+                    CurrentAug.CurrentLevel = CurrentAug.MaxLevel;
             AugsLeft = AugsLeft - 1;
          }
       }
@@ -12559,17 +12559,17 @@ function GiveInitialInventory()
    inventory.bInObjectBelt = True;
    anItem.Destroy();
 
-	// Give them a lockpick and a multitool so they can make choices with skills
-	// when they come across electronics and locks
-	anItem = Spawn(class'Lockpick');
-	anItem.Frob(Self,None);
-	inventory.bInObjectBelt = True;
-	anItem.Destroy();
+    // Give them a lockpick and a multitool so they can make choices with skills
+    // when they come across electronics and locks
+    anItem = Spawn(class'Lockpick');
+    anItem.Frob(Self,None);
+    inventory.bInObjectBelt = True;
+    anItem.Destroy();
 
    anItem = Spawn(class'Multitool');
-	anItem.Frob(Self,None);
-	inventory.bInObjectBelt = True;
-	anItem.Destroy();
+    anItem.Frob(Self,None);
+    inventory.bInObjectBelt = True;
+    anItem.Destroy();
 }
 
 // ----------------------------------------------------------------------
@@ -12580,15 +12580,15 @@ function GiveInitialInventory()
 // ----------------------------------------------------------------------
 function MultiplayerTick(float DeltaTime)
 {
-	local int burnTime;
-	local float augLevel;
+    local int burnTime;
+    local float augLevel;
 
    Super.MultiplayerTick(DeltaTime);
 
    //If we've just put away items, reset this.
    if ((LastInHand != InHand) && (Level.Netmode == NM_Client) && (inHand == None))
    {
-	   ClientInHandPending = None;
+       ClientInHandPending = None;
    }
 
    LastInHand = InHand;
@@ -12597,8 +12597,8 @@ function MultiplayerTick(float DeltaTime)
    {
       if ((ShieldStatus != SS_Off) && (DamageShield == None))
          DrawShield();
-		if ( (NintendoImmunityTimeLeft > 0.0) && ( InvulnSph == None ))
-			DrawInvulnShield();
+        if ( (NintendoImmunityTimeLeft > 0.0) && ( InvulnSph == None ))
+            DrawInvulnShield();
       if (Style != STY_Translucent)
          CreateShadow();
       else
@@ -12617,16 +12617,16 @@ function MultiplayerTick(float DeltaTime)
 
    lastRefreshTime = lastRefreshTime + DeltaTime;
 
-	if (bOnFire)
-	{
-		if ( Level.NetMode != NM_Standalone )
-			burnTime = Class'WeaponFlamethrower'.Default.mpBurnTime;
-		else
-			burnTime = Class'WeaponFlamethrower'.Default.BurnTime;
-		burnTimer += deltaTime;
-		if (burnTimer >= burnTime)
-			ExtinguishFire();
-	}
+    if (bOnFire)
+    {
+        if ( Level.NetMode != NM_Standalone )
+            burnTime = Class'WeaponFlamethrower'.Default.mpBurnTime;
+        else
+            burnTime = Class'WeaponFlamethrower'.Default.BurnTime;
+        burnTimer += deltaTime;
+        if (burnTimer >= burnTime)
+            ExtinguishFire();
+    }
   
    if (lastRefreshTime < 0.25)
       return;
@@ -12643,25 +12643,25 @@ function MultiplayerTick(float DeltaTime)
          ShieldStatus = SS_Fade;
    }
 
-	// If we have a drone active (post-death etc) and we're not using the aug, kill it off
-	augLevel = AugmentationSystem.GetAugLevelValue(class'AugDrone');
-	if (( aDrone != None ) && (augLevel == -1.0))
-		aDrone.TakeDamage(100, None, aDrone.Location, vect(0,0,0), 'EMP');
+    // If we have a drone active (post-death etc) and we're not using the aug, kill it off
+    augLevel = AugmentationSystem.GetAugLevelValue(class'AugDrone');
+    if (( aDrone != None ) && (augLevel == -1.0))
+        aDrone.TakeDamage(100, None, aDrone.Location, vect(0,0,0), 'EMP');
 
-	if ( Level.Timeseconds > ServerTimeLastRefresh )
-	{
-		SetServerTimeDiff( Level.Timeseconds );
-		ServerTimeLastRefresh = Level.Timeseconds + 10.0;
-	}
-	
+    if ( Level.Timeseconds > ServerTimeLastRefresh )
+    {
+        SetServerTimeDiff( Level.Timeseconds );
+        ServerTimeLastRefresh = Level.Timeseconds + 10.0;
+    }
+    
    MaintainEnergy(lastRefreshTime);
    UpdateTranslucency(lastRefreshTime);
-	if ( bNintendoImmunity )
-	{
-		NintendoImmunityTimeLeft = NintendoImmunityTime - Level.Timeseconds;
-		if ( Level.Timeseconds > NintendoImmunityTime )
-			NintendoImmunityEffect( False );
-	}
+    if ( bNintendoImmunity )
+    {
+        NintendoImmunityTimeLeft = NintendoImmunityTime - Level.Timeseconds;
+        if ( Level.Timeseconds > NintendoImmunityTime )
+            NintendoImmunityEffect( False );
+    }
    RepairInventory();
    lastRefreshTime = 0;
 }
@@ -12673,27 +12673,27 @@ function MultiplayerTick(float DeltaTime)
 // ----------------------------------------------------------------------
 function int MPBeltSizer(Inventory anItem)
 {
-	local int square;
-	local int retval;
+    local int square;
+    local int retval;
 
-	square = anItem.invSlotsX * anItem.invSlotsY;
-	if(square == 8)
-		retval = 3;
-	else if(square >= 4)
-		retval = 2;
-	else
-		retval = 1;
-	return retval;
-}	
+    square = anItem.invSlotsX * anItem.invSlotsY;
+    if(square == 8)
+        retval = 3;
+    else if(square >= 4)
+        retval = 2;
+    else
+        retval = 1;
+    return retval;
+}    
 
 // ----------------------------------------------------------------------
 
 function ForceDroneOff()
 {
-	local AugDrone anAug;
+    local AugDrone anAug;
 
    anAug = AugDrone(AugmentationSystem.FindAugmentation(class'AugDrone'));
-	//foreach AllActors(class'AugDrone', anAug)			
+    //foreach AllActors(class'AugDrone', anAug)            
    if (anAug != None)      
       anAug.Deactivate();
 }
@@ -12732,17 +12732,17 @@ function bool PlayerIsClient()
 // ----------------------------------------------------------------------
 simulated function DrawShield()
 {
-	local ShieldEffect shield;
+    local ShieldEffect shield;
 
    if (DamageShield != None)
    {
       return;
    }
 
-	shield = Spawn(class'ShieldEffect', Self,, Location, Rotation);
-	if (shield != None)
+    shield = Spawn(class'ShieldEffect', Self,, Location, Rotation);
+    if (shield != None)
    {
-		shield.SetBase(Self);
+        shield.SetBase(Self);
       shield.RemoteRole = ROLE_None;
       shield.AttachedPlayer = Self;
    }
@@ -12755,17 +12755,17 @@ simulated function DrawShield()
 // ----------------------------------------------------------------------
 simulated function DrawInvulnShield()
 {
-	if (( InvulnSph != None ) || (Level.NetMode == NM_Standalone))
-		return;
+    if (( InvulnSph != None ) || (Level.NetMode == NM_Standalone))
+        return;
 
-	InvulnSph = Spawn(class'InvulnSphere', Self, , Location, Rotation );
-	if ( InvulnSph != None )
-	{
-		InvulnSph.SetBase( Self );
-		InvulnSph.RemoteRole = ROLE_None;
-		InvulnSph.AttachedPlayer = Self;
-		InvulnSph.LifeSpan = NintendoImmunityTimeLeft;
-	}
+    InvulnSph = Spawn(class'InvulnSphere', Self, , Location, Rotation );
+    if ( InvulnSph != None )
+    {
+        InvulnSph.SetBase( Self );
+        InvulnSph.RemoteRole = ROLE_None;
+        InvulnSph.AttachedPlayer = Self;
+        InvulnSph.LifeSpan = NintendoImmunityTimeLeft;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -12785,7 +12785,7 @@ simulated function CreatePlayerTracker()
 exec function DisconnectPlayer()
 {
    if (DeusExRootWindow(rootWindow) != None)
-		DeusExRootWindow(rootWindow).ClearWindowStack();
+        DeusExRootWindow(rootWindow).ClearWindowStack();
    
    if (PlayerIsRemoteClient())
       ConsoleCommand("disconnect");
@@ -12832,8 +12832,8 @@ simulated function CreateShadow()
 // ----------------------------------------------------------------------
 function LocalLog(String S)
 {
-	if (( Player != None ) && ( Player.Console != None ))
-		Player.Console.AddString(S);
+    if (( Player != None ) && ( Player.Console != None ))
+        Player.Console.AddString(S);
 }
 
 // ----------------------------------------------------------------------
@@ -12841,11 +12841,11 @@ function LocalLog(String S)
 // ----------------------------------------------------------------------
 function ShowDemoSplash()
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
-	root = DeusExRootWindow(rootWindow);
-	if (root != None)
-		root.PushWindow(Class'DemoSplashWindow');
+    root = DeusExRootWindow(rootWindow);
+    if (root != None)
+        root.PushWindow(Class'DemoSplashWindow');
 }
 
 // ----------------------------------------------------------------------
@@ -12856,17 +12856,17 @@ function ShowDemoSplash()
 
 function VerifyConsole(Class<Console> ConsoleClass)
 {
-	local bool bCheckPassed;
-	
-	bCheckPassed = True;
+    local bool bCheckPassed;
+    
+    bCheckPassed = True;
 
-	if (Player.Console == None)
-		bCheckPassed = False;
-	else if (Player.Console.Class != ConsoleClass)
-		bCheckPassed = False;
+    if (Player.Console == None)
+        bCheckPassed = False;
+    else if (Player.Console.Class != ConsoleClass)
+        bCheckPassed = False;
 
-	if (bCheckPassed == False)
-		FailConsoleCheck();
+    if (bCheckPassed == False)
+        FailConsoleCheck();
 }
 
 // ----------------------------------------------------------------------
@@ -12876,17 +12876,17 @@ function VerifyConsole(Class<Console> ConsoleClass)
 // ----------------------------------------------------------------------
 function VerifyRootWindow(Class<DeusExRootWindow> WindowClass)
 {
-	local bool bCheckPassed;
-	
-	bCheckPassed = True;
+    local bool bCheckPassed;
+    
+    bCheckPassed = True;
 
-	if (RootWindow == None)
-		bCheckPassed = False;
-	else if (RootWindow.Class != WindowClass)
-		bCheckPassed = False;
+    if (RootWindow == None)
+        bCheckPassed = False;
+    else if (RootWindow.Class != WindowClass)
+        bCheckPassed = False;
 
-	if (bCheckPassed == False)
-		FailRootWindowCheck();
+    if (bCheckPassed == False)
+        FailRootWindowCheck();
 }
 
 // ----------------------------------------------------------------------
@@ -12894,8 +12894,8 @@ function VerifyRootWindow(Class<DeusExRootWindow> WindowClass)
 // ----------------------------------------------------------------------
 function FailRootWindowCheck()
 {
-	if (Level.Game.IsA('DeusExGameInfo'))
-		DeusExGameInfo(Level.Game).FailRootWindowCheck(Self);
+    if (Level.Game.IsA('DeusExGameInfo'))
+        DeusExGameInfo(Level.Game).FailRootWindowCheck(Self);
 }
 
 // ----------------------------------------------------------------------
@@ -12903,8 +12903,8 @@ function FailRootWindowCheck()
 // ----------------------------------------------------------------------
 function FailConsoleCheck()
 {
-	if (Level.Game.IsA('DeusExGameInfo'))
-		DeusExGameInfo(Level.Game).FailConsoleCheck(Self);
+    if (Level.Game.IsA('DeusExGameInfo'))
+        DeusExGameInfo(Level.Game).FailConsoleCheck(Self);
 }
 
 // ----------------------------------------------------------------------
@@ -12912,12 +12912,12 @@ function FailConsoleCheck()
 // ----------------------------------------------------------------------
 event Possess()
 {
-	Super.Possess();
+    Super.Possess();
 
-	if (Level.Netmode == NM_Client)
-	{
-		ClientPossessed();
-	}
+    if (Level.Netmode == NM_Client)
+    {
+        ClientPossessed();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -12925,8 +12925,8 @@ event Possess()
 // ----------------------------------------------------------------------
 function ClientPossessed()
 {
-	if (Level.Game.IsA('DeusExGameInfo'))
-		DeusExGameInfo(Level.Game).ClientPlayerPossessed(Self);
+    if (Level.Game.IsA('DeusExGameInfo'))
+        DeusExGameInfo(Level.Game).ClientPlayerPossessed(Self);
 }
 
 // ----------------------------------------------------------------------
@@ -12934,8 +12934,8 @@ function ClientPossessed()
 // ----------------------------------------------------------------------
 function ForceDisconnect(string Message)
 {
-	player.Console.AddString(Message);
-	DisconnectPlayer();
+    player.Console.AddString(Message);
+    DisconnectPlayer();
 }
 
 

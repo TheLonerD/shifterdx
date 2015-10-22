@@ -5,8 +5,8 @@ class Cigarettes extends Consumable;
 
 enum ECigType
 {
-	SC_Default,
-	SC_BigTop
+    SC_Default,
+    SC_BigTop
 };
 
 
@@ -14,93 +14,93 @@ var ECigType Cig;
 
 function BeginPlay()
 {
-	Super.BeginPlay();
+    Super.BeginPlay();
 
-	SetSkin();
+    SetSkin();
 }
 
 function SetSkin()
 {
-	local Texture lSkin;
-	local string texstr;
+    local Texture lSkin;
+    local string texstr;
 
-	switch (Cig)
-	{
-		case SC_Default:	 texstr = "HDTPitems.Skins.HDTPcigarettesTex1"; break;
-		case SC_BigTop:		 texstr = "HDTPitems.Skins.HDTPcigarettesTex2"; break;
-	}
+    switch (Cig)
+    {
+        case SC_Default:     texstr = "HDTPitems.Skins.HDTPcigarettesTex1"; break;
+        case SC_BigTop:         texstr = "HDTPitems.Skins.HDTPcigarettesTex2"; break;
+    }
 
-	lSkin = Texture(DynamicLoadObject(texstr,class'Texture', True));
+    lSkin = Texture(DynamicLoadObject(texstr,class'Texture', True));
 
-	if(lSkin != None)
-		Skin = lSkin;
+    if(lSkin != None)
+        Skin = lSkin;
 }
 
 function bool Facelift(bool bOn)
 {
-	local string texstr;
+    local string texstr;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-	{
-		switch (Cig)
-		{
-			case SC_Default:	 texstr = "HDTPitems.Skins.HDTPcigarettesTex1"; break;
-			case SC_BigTop:		 texstr = "HDTPitems.Skins.HDTPcigarettesTex2"; break;
-		}
-		Skin = Texture(DynamicLoadObject(texstr,class'Texture', True));
-	}
+    if(bOn)
+    {
+        switch (Cig)
+        {
+            case SC_Default:     texstr = "HDTPitems.Skins.HDTPcigarettesTex1"; break;
+            case SC_BigTop:         texstr = "HDTPitems.Skins.HDTPcigarettesTex2"; break;
+        }
+        Skin = Texture(DynamicLoadObject(texstr,class'Texture', True));
+    }
 
-	if(Skin == None || !bOn)
-		Skin = None;
+    if(Skin == None || !bOn)
+        Skin = None;
 
-	return true;
+    return true;
 
 }
 
 //== We can't just use the parent Consumable class, since we gotta do some complex stuff
 state Activated
 {
-	function Activate()
-	{
+    function Activate()
+    {
 
-	}
+    }
 
-	function BeginState()
-	{
-		local Pawn P;
-		local vector loc;
-		local rotator rot;
-		local CigSmoke puff; //SmokeTrail puff;
-		
-		P = Pawn(Owner);
-		if (P != None)
-		{
-			loc = Owner.Location;
-			rot = Owner.Rotation;
-			loc += 2.0 * Owner.CollisionRadius * vector(P.ViewRotation);
-			loc.Z += Owner.CollisionHeight * 0.9;
-			puff = Spawn(class'CigSmoke', Owner,, loc, rot);
-			if (puff != None)
-			{
-				puff.DrawScale = 1.0;
-				if(Frand() >= 0.5)
-					puff.DamageType = 'TearGas';
-			}
-			PlaySound(sound'MaleCough');
-			if(DeusExPlayer(Owner) != None)
-			{
-				if(DeusExPlayer(Owner).drugEffectTimer >= 0.0)
-					DeusExPlayer(Owner).drugEffectTimer = 0.0;
-				else
-					DeusExPlayer(Owner).drugEffectTimer = -0.1;
-			}
-		}
+    function BeginState()
+    {
+        local Pawn P;
+        local vector loc;
+        local rotator rot;
+        local CigSmoke puff; //SmokeTrail puff;
+        
+        P = Pawn(Owner);
+        if (P != None)
+        {
+            loc = Owner.Location;
+            rot = Owner.Rotation;
+            loc += 2.0 * Owner.CollisionRadius * vector(P.ViewRotation);
+            loc.Z += Owner.CollisionHeight * 0.9;
+            puff = Spawn(class'CigSmoke', Owner,, loc, rot);
+            if (puff != None)
+            {
+                puff.DrawScale = 1.0;
+                if(Frand() >= 0.5)
+                    puff.DamageType = 'TearGas';
+            }
+            PlaySound(sound'MaleCough');
+            if(DeusExPlayer(Owner) != None)
+            {
+                if(DeusExPlayer(Owner).drugEffectTimer >= 0.0)
+                    DeusExPlayer(Owner).drugEffectTimer = 0.0;
+                else
+                    DeusExPlayer(Owner).drugEffectTimer = -0.1;
+            }
+        }
 
-		Super.BeginState();
-	}
+        Super.BeginState();
+    }
 Begin:
 }
 

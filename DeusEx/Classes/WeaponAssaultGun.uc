@@ -3,192 +3,192 @@
 //=============================================================================
 class WeaponAssaultGun extends DeusExWeapon;
 
-var float	mpRecoilStrength;
+var float    mpRecoilStrength;
 var int muznum; //loop through muzzleflashes
 var texture muztex; //sigh
 
 function bool Facelift(bool bOn)
 {
-	local Name tName;
-	local int i;
+    local Name tName;
+    local int i;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	tName = GetStateName();
+    tName = GetStateName();
 
-	if(bOn)
-	{
-		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPAssaultGun", class'mesh', True));
-		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPAssaultGunPickup", class'mesh', True));
-		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPAssaultGun3rd", class'mesh', True));
-	}
+    if(bOn)
+    {
+        PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPAssaultGun", class'mesh', True));
+        PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPAssaultGunPickup", class'mesh', True));
+        ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPAssaultGun3rd", class'mesh', True));
+    }
 
-	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
-	{
-		Texture = None;
-		PlayerViewMesh = Default.PlayerViewMesh;
-		PickupViewMesh = Default.PickupViewMesh;
-		ThirdPersonMesh = Default.ThirdPersonMesh;
-		for(i = 0; i < 8; ++i)
-			MultiSkins[i] = Default.MultiSkins[i];
-	}
-	else
-	{
-		Mesh = PickupViewMesh;
-		CheckWeaponSkins();
-	}
+    if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+    {
+        Texture = None;
+        PlayerViewMesh = Default.PlayerViewMesh;
+        PickupViewMesh = Default.PickupViewMesh;
+        ThirdPersonMesh = Default.ThirdPersonMesh;
+        for(i = 0; i < 8; ++i)
+            MultiSkins[i] = Default.MultiSkins[i];
+    }
+    else
+    {
+        Mesh = PickupViewMesh;
+        CheckWeaponSkins();
+    }
 
-	if(tName == 'Pickup')
-		Mesh = PickupViewMesh;
-	else
-		Mesh = PlayerViewMesh;
+    if(tName == 'Pickup')
+        Mesh = PickupViewMesh;
+    else
+        Mesh = PlayerViewMesh;
 
-	return true;
+    return true;
 }
 
 //== HDTP Function to make sure the gun doesn't disappear
 simulated function renderoverlays(Canvas canvas)
 {
-	//== Only use if HDTP is loaded
-	if(PickupViewMesh != Default.PickupViewMesh)
-	{
-		if(bHasScope)
-			multiskins[3] = none;
-		else
-			multiskins[3] = texture'pinkmasktex';
-		if(bHasSilencer)
-			multiskins[4] = none;
-		else
-			multiskins[4] = texture'pinkmasktex';
-		if(bHasLaser)
-			multiskins[1] = none;
-		else
-			multiskins[1] = texture'pinkmasktex';
-		if(bLasing)
-			multiskins[5] = none;
-		else
-			multiskins[5] = texture'pinkmasktex';
-		//assault gun uses so many differently assigned multiskins we need to keep flicking back between em or we get invisible gunz
-		multiskins[0]=none;
-		if(muztex != none && multiskins[2] != muztex) //don't overwrite the muzzleflash..this is fucking ugly, but I think we can spare some comp cycles for shit like this
-			multiskins[2]=muztex;
-		else
-			multiskins[2]=none;
-	
-		multiskins[6]=none;
-		multiskins[7]=Getweaponhandtex();
-	
-		super(weapon).renderoverlays(canvas);
-	
-		if(bHasScope)
-			multiskins[6] = none;
-		else
-			multiskins[6] = texture'pinkmasktex';
-		if(bHasSilencer)
-			multiskins[2] = none;
-		else
-			multiskins[2] = texture'pinkmasktex';
-		if(bHasLaser)
-			multiskins[5] = none;
-		else
-			multiskins[5] = texture'pinkmasktex';
-		if(bLasing)
-			multiskins[3] = none;
-		else
-			multiskins[3] = texture'pinkmasktex';
-	
-		multiskins[0]=none;
-		multiskins[1]=none;
-		if(muztex != none && multiskins[4] != muztex) //and here too! Ghaaa
-			multiskins[4]=muztex;
-		else
-			multiskins[4]=none;
-		multiskins[7]=none;
-	}
-	else
-		Super.RenderOverlays(canvas);
+    //== Only use if HDTP is loaded
+    if(PickupViewMesh != Default.PickupViewMesh)
+    {
+        if(bHasScope)
+            multiskins[3] = none;
+        else
+            multiskins[3] = texture'pinkmasktex';
+        if(bHasSilencer)
+            multiskins[4] = none;
+        else
+            multiskins[4] = texture'pinkmasktex';
+        if(bHasLaser)
+            multiskins[1] = none;
+        else
+            multiskins[1] = texture'pinkmasktex';
+        if(bLasing)
+            multiskins[5] = none;
+        else
+            multiskins[5] = texture'pinkmasktex';
+        //assault gun uses so many differently assigned multiskins we need to keep flicking back between em or we get invisible gunz
+        multiskins[0]=none;
+        if(muztex != none && multiskins[2] != muztex) //don't overwrite the muzzleflash..this is fucking ugly, but I think we can spare some comp cycles for shit like this
+            multiskins[2]=muztex;
+        else
+            multiskins[2]=none;
+    
+        multiskins[6]=none;
+        multiskins[7]=Getweaponhandtex();
+    
+        super(weapon).renderoverlays(canvas);
+    
+        if(bHasScope)
+            multiskins[6] = none;
+        else
+            multiskins[6] = texture'pinkmasktex';
+        if(bHasSilencer)
+            multiskins[2] = none;
+        else
+            multiskins[2] = texture'pinkmasktex';
+        if(bHasLaser)
+            multiskins[5] = none;
+        else
+            multiskins[5] = texture'pinkmasktex';
+        if(bLasing)
+            multiskins[3] = none;
+        else
+            multiskins[3] = texture'pinkmasktex';
+    
+        multiskins[0]=none;
+        multiskins[1]=none;
+        if(muztex != none && multiskins[4] != muztex) //and here too! Ghaaa
+            multiskins[4]=muztex;
+        else
+            multiskins[4]=none;
+        multiskins[7]=none;
+    }
+    else
+        Super.RenderOverlays(canvas);
 }
 
 function CheckWeaponSkins()
 {
-	if(PickupViewMesh != Default.PickupViewMesh)
-	{
-		if(bHasScope)
-			multiskins[6] = none;
-		else
-			multiskins[6] = texture'pinkmasktex';
-		if(bHasSilencer)
-			multiskins[2] = none;
-		else
-			multiskins[2] = texture'pinkmasktex';
-		if(bHasLaser)
-			multiskins[5] = none;
-		else
-			multiskins[5] = texture'pinkmasktex';
-		if(bLasing)
-			multiskins[3] = none;
-		else
-			multiskins[3] = texture'pinkmasktex';
-		multiskins[0]=none;
-		multiskins[1]=none;
-		multiskins[4]=none;
-		multiskins[7]=none;
-	}
+    if(PickupViewMesh != Default.PickupViewMesh)
+    {
+        if(bHasScope)
+            multiskins[6] = none;
+        else
+            multiskins[6] = texture'pinkmasktex';
+        if(bHasSilencer)
+            multiskins[2] = none;
+        else
+            multiskins[2] = texture'pinkmasktex';
+        if(bHasLaser)
+            multiskins[5] = none;
+        else
+            multiskins[5] = texture'pinkmasktex';
+        if(bLasing)
+            multiskins[3] = none;
+        else
+            multiskins[3] = texture'pinkmasktex';
+        multiskins[0]=none;
+        multiskins[1]=none;
+        multiskins[4]=none;
+        multiskins[7]=none;
+    }
 }
 
 //== This is automatically called by the Mesh's notifications.
 //==  Need to override because multiskins varies for 1st/3rd meshes
 simulated function SwapMuzzleFlashTexture()
 {
-	local int i;
+    local int i;
 
-	if (!bHasMuzzleFlash || bHasSilencer)
-		return;
+    if (!bHasMuzzleFlash || bHasSilencer)
+        return;
 
-	if(playerpawn(owner) != none || PickupViewMesh == Default.Mesh)      //diff meshes, see
-		i=2;
-	else
-		i=4;
-	Muztex = GetMuzzleTex();
-	Multiskins[i] = Muztex;
-	MuzzleFlashLight();
-	SetTimer(0.1, False);
+    if(playerpawn(owner) != none || PickupViewMesh == Default.Mesh)      //diff meshes, see
+        i=2;
+    else
+        i=4;
+    Muztex = GetMuzzleTex();
+    Multiskins[i] = Muztex;
+    MuzzleFlashLight();
+    SetTimer(0.1, False);
 }
 
 simulated function EraseMuzzleFlashTexture()
 {
-	local int i;
+    local int i;
 
-	Muztex = none; //put this before the silencer check just in case we somehow add a silencer while mid shooting (it could happen!)
-	if(!bHasMuzzleflash || bHasSilencer)
-		return;
+    Muztex = none; //put this before the silencer check just in case we somehow add a silencer while mid shooting (it could happen!)
+    if(!bHasMuzzleflash || bHasSilencer)
+        return;
 
-	if(playerpawn(owner) != none || PickupViewMesh == Default.Mesh)      //diff meshes, see
-		i=2;
-	else
-		i=4;
+    if(playerpawn(owner) != none || PickupViewMesh == Default.Mesh)      //diff meshes, see
+        i=2;
+    else
+        i=4;
 
-	MultiSkins[i] = None;
+    MultiSkins[i] = None;
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		HitDamage = mpHitDamage;
-		BaseAccuracy = mpBaseAccuracy;
-		ReloadTime = mpReloadTime;
-		AccurateRange = mpAccurateRange;
-		MaxRange = mpMaxRange;
-		ReloadCount = mpReloadCount;
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        HitDamage = mpHitDamage;
+        BaseAccuracy = mpBaseAccuracy;
+        ReloadTime = mpReloadTime;
+        AccurateRange = mpAccurateRange;
+        MaxRange = mpMaxRange;
+        ReloadCount = mpReloadCount;
 
-		// Tuned for advanced -> master skill system (Monte & Ricardo's number) client-side
-		recoilStrength = 0.75;
-	}
+        // Tuned for advanced -> master skill system (Monte & Ricardo's number) client-side
+        recoilStrength = 0.75;
+    }
 }
 
 defaultproperties

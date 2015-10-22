@@ -8,16 +8,16 @@ var name LastStateName;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPCat", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPCat", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 // ----------------------------------------------------------------------
@@ -26,68 +26,68 @@ function bool Facelift(bool bOn)
 
 function bool WillTakeStompDamage(Actor stomper)
 {
-	if(stomper == GetPlayerPawn())
-		return False; //== Really, JC isn't THAT clumsy
+    if(stomper == GetPlayerPawn())
+        return False; //== Really, JC isn't THAT clumsy
 
-	return Super.WillTakeStompDamage(stomper);
+    return Super.WillTakeStompDamage(stomper);
 }
 
 function bool ShouldBeStartled(Pawn startler)
 {
-	local float speed;
-	local float time;
-	local float dist;
-	local float dist2;
-	local bool  bPh33r;
+    local float speed;
+    local float time;
+    local float dist;
+    local float dist2;
+    local bool  bPh33r;
 
-	bPh33r = false;
-	if (startler != None)
-	{
-		speed = VSize(startler.Velocity);
-		if (speed >= 20 && (startler.CollisionRadius * startler.CollisionHeight) > (CollisionRadius * CollisionHeight * 1.5))
-		{
-			dist = VSize(Location - startler.Location);
-			time = dist/speed;
-			if (time <= 3.0)
-			{
-				dist2 = VSize(Location - (startler.Location+startler.Velocity*time));
-				if (dist2 < speed*1.5)
-					bPh33r = true;
-			}
-		}
-	}
+    bPh33r = false;
+    if (startler != None)
+    {
+        speed = VSize(startler.Velocity);
+        if (speed >= 20 && (startler.CollisionRadius * startler.CollisionHeight) > (CollisionRadius * CollisionHeight * 1.5))
+        {
+            dist = VSize(Location - startler.Location);
+            time = dist/speed;
+            if (time <= 3.0)
+            {
+                dist2 = VSize(Location - (startler.Location+startler.Velocity*time));
+                if (dist2 < speed*1.5)
+                    bPh33r = true;
+            }
+        }
+    }
 
-	return bPh33r;
+    return bPh33r;
 }
 
 //== Kitties eat birds and rats, y'know
 function bool IsValidFood(Actor foodActor)
 {
-	if(foodActor.IsA('RatCarcass') || foodActor.IsA('SeagullCarcass') || foodActor.IsA('PigeonCarcass'))
-	{
-		return Super.IsValidFood(foodActor);
-	}
-	return False;
+    if(foodActor.IsA('RatCarcass') || foodActor.IsA('SeagullCarcass') || foodActor.IsA('PigeonCarcass'))
+    {
+        return Super.IsValidFood(foodActor);
+    }
+    return False;
 }
 
 function Tick(float deltaTime)
 {
-	Super.Tick(deltaTime);
+    Super.Tick(deltaTime);
 
-	if(LastStateName != GetStateName())
-	{
-		LastStateName = GetStateName();
-	}
+    if(LastStateName != GetStateName())
+    {
+        LastStateName = GetStateName();
+    }
 
-	time += deltaTime;
+    time += deltaTime;
 
-	// check for random noises
-	if (time > 1.0)
-	{
-		time = 0;
-		if (FRand() < 0.05)
-			PlaySound(sound'CatPurr', SLOT_None,,, 128);
-	}
+    // check for random noises
+    if (time > 1.0)
+    {
+        time = 0;
+        if (FRand() < 0.05)
+            PlaySound(sound'CatPurr', SLOT_None,,, 128);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -97,91 +97,91 @@ function Tick(float deltaTime)
 function CheckEnemyParams(Pawn checkPawn,
                           out Pawn bestPawn, out int bestThreatLevel, out float bestDist)
 {
-	local int threatLevel;
+    local int threatLevel;
 
-	if((!checkPawn.IsA('Animal') || checkPawn.IsA('Cat')) && CheckPawnAllianceType(checkPawn) != ALLIANCE_Hostile) //== Only go after the truly hostile
-		return;
+    if((!checkPawn.IsA('Animal') || checkPawn.IsA('Cat')) && CheckPawnAllianceType(checkPawn) != ALLIANCE_Hostile) //== Only go after the truly hostile
+        return;
 
-	if(checkPawn == Self) //Really now...
-		return;
+    if(checkPawn == Self) //Really now...
+        return;
 
-	if(checkPawn.Physics == PHYS_Flying && checkPawn != Enemy) //== Only track flying things if we're already watching them
-		return;
+    if(checkPawn.Physics == PHYS_Flying && checkPawn != Enemy) //== Only track flying things if we're already watching them
+        return;
 
-	Super.CheckEnemyParams(checkPawn, bestPawn, bestThreatLevel, bestDist);
+    Super.CheckEnemyParams(checkPawn, bestPawn, bestThreatLevel, bestDist);
 
-	if(checkPawn.CollisionHeight * checkPawn.CollisionRadius <= CollisionHeight * CollisionRadius)
-		threatLevel = 4;
+    if(checkPawn.CollisionHeight * checkPawn.CollisionRadius <= CollisionHeight * CollisionRadius)
+        threatLevel = 4;
 
-	if(checkPawn.Physics == PHYS_Flying)
-	{
-		if(VSize(checkPawn.Location - Location) > 128 && checkPawn.Location.Z - Location.Z >= 16) //Flying things which are too far away get ignored
-			threatLevel = -1;
-		else
-			threatLevel /= 2;
-	}
+    if(checkPawn.Physics == PHYS_Flying)
+    {
+        if(VSize(checkPawn.Location - Location) > 128 && checkPawn.Location.Z - Location.Z >= 16) //Flying things which are too far away get ignored
+            threatLevel = -1;
+        else
+            threatLevel /= 2;
+    }
 
-	if(threatLevel > bestThreatLevel)
-	{
-		bestPawn = checkPawn;
-		bestThreatLevel = threatLevel;
-		bestDist = VSize(checkPawn.Location - Location);
-	}
+    if(threatLevel > bestThreatLevel)
+    {
+        bestPawn = checkPawn;
+        bestThreatLevel = threatLevel;
+        bestDist = VSize(checkPawn.Location - Location);
+    }
 }
 
 state Attacking
 {
-	function Tick(float deltaSeconds)
-	{
-		Super.Tick(deltaSeconds);
-		if (Enemy != None)
-		{
-			if(Enemy.CollisionRadius * Enemy.CollisionHeight > CollisionRadius * CollisionHeight * 1.2 && Weapon.IsA('WeaponCatScratch'))
-				GotoState('Fleeing');
-		}
-	}
+    function Tick(float deltaSeconds)
+    {
+        Super.Tick(deltaSeconds);
+        if (Enemy != None)
+        {
+            if(Enemy.CollisionRadius * Enemy.CollisionHeight > CollisionRadius * CollisionHeight * 1.2 && Weapon.IsA('WeaponCatScratch'))
+                GotoState('Fleeing');
+        }
+    }
 }
 
 state Alerting
 {
 ignores all;
 begin:
-	GoToState('Wandering');
+    GoToState('Wandering');
 }
 
 function PlayTakingHit(EHitLocation hitPos)
 {
-	// nil
+    // nil
 }
 
 function PlayAttack()
 {
-	// nil
+    // nil
 }
 
 function TweenToAttack(float tweentime)
 {
-	// nil
+    // nil
 }
 
 function PlayEatingSound()
 {
-	PlaySound(sound'CatPurr', SLOT_None,,, 128);
+    PlaySound(sound'CatPurr', SLOT_None,,, 128);
 }
 
 function PlayStartEating()
 {
-	AmbientSound = Sound'DeusExSounds.Animal.CatPurr';
+    AmbientSound = Sound'DeusExSounds.Animal.CatPurr';
 }
 
 function PlayEating()
 {
-	LoopAnim('BreatheLight');
+    LoopAnim('BreatheLight');
 }
 
 function PlayStopEating()
 {
-	AmbientSound = None;
+    AmbientSound = None;
 }
 
 defaultproperties

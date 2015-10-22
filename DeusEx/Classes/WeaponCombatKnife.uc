@@ -5,239 +5,239 @@ class WeaponCombatKnife extends DeusExWeapon;
 
 function bool Facelift(bool bOn)
 {
-	local Name tName;
+    local Name tName;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	tName = GetStateName();
+    tName = GetStateName();
 
-	if(bOn)
-	{
-		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCombatKnife", class'mesh', True));
-		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCombatKnifePickup", class'mesh', True));
-		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCombatKnife3rd", class'mesh', True));
-	}
+    if(bOn)
+    {
+        PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCombatKnife", class'mesh', True));
+        PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCombatKnifePickup", class'mesh', True));
+        ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCombatKnife3rd", class'mesh', True));
+    }
 
-	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
-	{
-		Texture = None;
-		PlayerViewMesh = Default.PlayerViewMesh;
-		PickupViewMesh = Default.PickupViewMesh;
-		ThirdPersonMesh = Default.ThirdPersonMesh;
-	}
-	else
-		Mesh = PickupViewMesh;
+    if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+    {
+        Texture = None;
+        PlayerViewMesh = Default.PlayerViewMesh;
+        PickupViewMesh = Default.PickupViewMesh;
+        ThirdPersonMesh = Default.ThirdPersonMesh;
+    }
+    else
+        Mesh = PickupViewMesh;
 
-	if(tName == 'Pickup')
-		Mesh = PickupViewMesh;
-	else
-		Mesh = PlayerViewMesh;
+    if(tName == 'Pickup')
+        Mesh = PickupViewMesh;
+    else
+        Mesh = PlayerViewMesh;
 
-	return true;
+    return true;
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		HitDamage = mpHitDamage;
-		BaseAccuracy = mpBaseAccuracy;
-		ReloadTime = mpReloadTime;
-		AccurateRange = mpAccurateRange;
-		MaxRange = mpMaxRange;
-	}
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        HitDamage = mpHitDamage;
+        BaseAccuracy = mpBaseAccuracy;
+        ReloadTime = mpReloadTime;
+        AccurateRange = mpAccurateRange;
+        MaxRange = mpMaxRange;
+    }
 }
 
 simulated function renderoverlays(Canvas canvas)
 {
-	multiskins[1] = Getweaponhandtex();
+    multiskins[1] = Getweaponhandtex();
 
-	super.renderoverlays(canvas);
+    super.renderoverlays(canvas);
 
-	multiskins[1] = none; 
+    multiskins[1] = none; 
 }
 
 function BringUp()
 {
-	if(AmmoType != Class'DeusEx.AmmoNone')
-		if(AmmoType.AmmoAmount <= 0)
-			AmmoType.AmmoAmount = 1;
+    if(AmmoType != Class'DeusEx.AmmoNone')
+        if(AmmoType.AmmoAmount <= 0)
+            AmmoType.AmmoAmount = 1;
 
-	Super.BringUp();
+    Super.BringUp();
 }
 
 function AltFire(float Value)
 {
-	if(Class != class'WeaponCombatKnife')
-	{
-		Super.AltFire(Value);
-		return;
-	}
-	
-	AmmoType.UseAmmo(1);
+    if(Class != class'WeaponCombatKnife')
+    {
+        Super.AltFire(Value);
+        return;
+    }
+    
+    AmmoType.UseAmmo(1);
 
 
-	if (( Level.NetMode != NM_Standalone ) )// && !bListenClient )
-		bClientReady = False;
-	bReadyToFire = False;
-//	GotoState('AltFiring');
-	ProjectileAltFire(AltProjectileClass, AltProjectileSpeed, bAltWarnTarget);
-//	PlaySelectiveAltFiring();
-	PlayFiringAltSound();
-	bPointing=True;
-	if ( Owner.IsA('PlayerPawn') )
-		PlayerPawn(Owner).PlayFiring();
+    if (( Level.NetMode != NM_Standalone ) )// && !bListenClient )
+        bClientReady = False;
+    bReadyToFire = False;
+//    GotoState('AltFiring');
+    ProjectileAltFire(AltProjectileClass, AltProjectileSpeed, bAltWarnTarget);
+//    PlaySelectiveAltFiring();
+    PlayFiringAltSound();
+    bPointing=True;
+    if ( Owner.IsA('PlayerPawn') )
+        PlayerPawn(Owner).PlayFiring();
 
-	if(AmmoType.AmmoAmount <= 0)
-	{
-		if(Level.NetMode == NM_Standalone)
-			SwitchItem();
-		Destroy();
-	}
-	else
-		PlaySelect();
+    if(AmmoType.AmmoAmount <= 0)
+    {
+        if(Level.NetMode == NM_Standalone)
+            SwitchItem();
+        Destroy();
+    }
+    else
+        PlaySelect();
 
-	// Update ammo count on object belt
-	if (DeusExPlayer(Owner) != None)
-		DeusExPlayer(Owner).UpdateBeltText(Self);
+    // Update ammo count on object belt
+    if (DeusExPlayer(Owner) != None)
+        DeusExPlayer(Owner).UpdateBeltText(Self);
 }
 
 function Fire(float Value)
 {
-	if(Class != class'WeaponCombatKnife')
-	{
-		Super.Fire(Value);
-		return;
-	}
+    if(Class != class'WeaponCombatKnife')
+    {
+        Super.Fire(Value);
+        return;
+    }
 
-	if (( Level.NetMode != NM_Standalone ) )// && !bListenClient )
-		bClientReady = False;
-	bReadyToFire = False;
-	GotoState('NormalFire');
-	bPointing=True;
-	if ( Owner.IsA('PlayerPawn') )
-		PlayerPawn(Owner).PlayFiring();
-	PlaySelectiveFiring();
-	PlayFiringSound();
+    if (( Level.NetMode != NM_Standalone ) )// && !bListenClient )
+        bClientReady = False;
+    bReadyToFire = False;
+    GotoState('NormalFire');
+    bPointing=True;
+    if ( Owner.IsA('PlayerPawn') )
+        PlayerPawn(Owner).PlayFiring();
+    PlaySelectiveFiring();
+    PlayFiringSound();
 
 
-	// Update ammo count on object belt
-	if (DeusExPlayer(Owner) != None)
-		DeusExPlayer(Owner).UpdateBeltText(Self);
+    // Update ammo count on object belt
+    if (DeusExPlayer(Owner) != None)
+        DeusExPlayer(Owner).UpdateBeltText(Self);
 }
 
 simulated function bool ClientAltFire( float value)
 {
-	if(Class != class'WeaponCombatKnife')
-	{
-		return Super.ClientAltFire(value);
-	}
+    if(Class != class'WeaponCombatKnife')
+    {
+        return Super.ClientAltFire(value);
+    }
 
-	SimAmmoAmount = AmmoType.AmmoAmount - 1;
-	if ( (Owner.IsA('DeusExPlayer') && (DeusExPlayer(Owner).NintendoImmunityTimeLeft > 0.01)) ||
-		  (!bClientReadyToFire) || bInProcess )
-	{
-		DeusExPlayer(Owner).bJustFired = False;
-		bPointing = False;
-		bFiring = False;
-		return false;
-	}
+    SimAmmoAmount = AmmoType.AmmoAmount - 1;
+    if ( (Owner.IsA('DeusExPlayer') && (DeusExPlayer(Owner).NintendoImmunityTimeLeft > 0.01)) ||
+          (!bClientReadyToFire) || bInProcess )
+    {
+        DeusExPlayer(Owner).bJustFired = False;
+        bPointing = False;
+        bFiring = False;
+        return false;
+    }
 
-	ServerForceAltFire();
+    ServerForceAltFire();
 
-	bClientReadyToFire = False;
-	bInProcess = True;
-	GotoState('ClientAltFiring');
-	bPointing = True;
-	if ( PlayerPawn(Owner) != None )
-		PlayerPawn(Owner).PlayFiring();
-//	PlaySelectiveAltFiring();
-	PlayFiringAltSound();
-	return true;
+    bClientReadyToFire = False;
+    bInProcess = True;
+    GotoState('ClientAltFiring');
+    bPointing = True;
+    if ( PlayerPawn(Owner) != None )
+        PlayerPawn(Owner).PlayFiring();
+//    PlaySelectiveAltFiring();
+    PlayFiringAltSound();
+    return true;
 }
 
 simulated function bool ClientFire( float value )
 {
-	if(Class != class'WeaponCombatKnife')
-	{
-		return Super.ClientFire(value);
-	}
+    if(Class != class'WeaponCombatKnife')
+    {
+        return Super.ClientFire(value);
+    }
 
-	if ( (Owner.IsA('DeusExPlayer') && (DeusExPlayer(Owner).NintendoImmunityTimeLeft > 0.01)) ||
-		  (!bClientReadyToFire) || bInProcess )
-	{
-		DeusExPlayer(Owner).bJustFired = False;
-		bPointing = False;
-		bFiring = False;
-		return false;
-	}
+    if ( (Owner.IsA('DeusExPlayer') && (DeusExPlayer(Owner).NintendoImmunityTimeLeft > 0.01)) ||
+          (!bClientReadyToFire) || bInProcess )
+    {
+        DeusExPlayer(Owner).bJustFired = False;
+        bPointing = False;
+        bFiring = False;
+        return false;
+    }
 
-	ServerForceFire();
+    ServerForceFire();
 
-	bClientReadyToFire = False;
-	bInProcess = True;
-	GotoState('ClientFiring');
-	bPointing = True;
-	if ( PlayerPawn(Owner) != None )
-		PlayerPawn(Owner).PlayFiring();
-	PlaySelectiveFiring();
-	PlayFiringSound();
-	return true;
+    bClientReadyToFire = False;
+    bInProcess = True;
+    GotoState('ClientFiring');
+    bPointing = True;
+    if ( PlayerPawn(Owner) != None )
+        PlayerPawn(Owner).PlayFiring();
+    PlaySelectiveFiring();
+    PlayFiringSound();
+    return true;
 }
 
 function bool HandlePickupQuery(Inventory Item)
 {
-	local DeusExPlayer player;
-	local bool bResult;
-	local Ammo defAmmo;
+    local DeusExPlayer player;
+    local bool bResult;
+    local Ammo defAmmo;
 
-	player = DeusExPlayer(Owner);
+    player = DeusExPlayer(Owner);
 
-	if (Item.Class == Class)
-	{
-		if (!( (Weapon(item).bWeaponStay && (Level.NetMode == NM_Standalone)) && (!Weapon(item).bHeldItem || Weapon(item).bTossedOut)))
-		{
-			// Only add ammo of the default type
-			// There was an easy way to get 32 20mm shells, buy picking up another assault rifle with 20mm ammo selected
-			if ( AmmoType != None && AmmoName != None && AmmoName != class'AmmoNone' )
-			{
-				defAmmo = Ammo(player.FindInventoryType(AmmoName));
-				defAmmo.AddAmmo( Weapon(Item).PickupAmmoCount );
+    if (Item.Class == Class)
+    {
+        if (!( (Weapon(item).bWeaponStay && (Level.NetMode == NM_Standalone)) && (!Weapon(item).bHeldItem || Weapon(item).bTossedOut)))
+        {
+            // Only add ammo of the default type
+            // There was an easy way to get 32 20mm shells, buy picking up another assault rifle with 20mm ammo selected
+            if ( AmmoType != None && AmmoName != None && AmmoName != class'AmmoNone' )
+            {
+                defAmmo = Ammo(player.FindInventoryType(AmmoName));
+                defAmmo.AddAmmo( Weapon(Item).PickupAmmoCount );
 
-				if ( Level.NetMode != NM_Standalone )
-				{
-					if (( player != None ) && ( player.InHand != None ))
-					{
-						if ( DeusExWeapon(item).class == DeusExWeapon(player.InHand).class )
-							ReadyToFire();
-					}
-				}
+                if ( Level.NetMode != NM_Standalone )
+                {
+                    if (( player != None ) && ( player.InHand != None ))
+                    {
+                        if ( DeusExWeapon(item).class == DeusExWeapon(player.InHand).class )
+                            ReadyToFire();
+                    }
+                }
 
-				player.ClientMessage(Item.PickupMessage @ Item.itemArticle @ Item.itemName, 'Pickup');
+                player.ClientMessage(Item.PickupMessage @ Item.itemArticle @ Item.itemName, 'Pickup');
 
-				Item.Destroy();
+                Item.Destroy();
 
-				return true;
-			}
-		}
-	}
+                return true;
+            }
+        }
+    }
 
-	bResult = Super.HandlePickupQuery(Item);
+    bResult = Super.HandlePickupQuery(Item);
 
-	// Notify the object belt of the new ammo
-	if (player != None)
-		player.UpdateBeltText(Self);
+    // Notify the object belt of the new ammo
+    if (player != None)
+        player.UpdateBeltText(Self);
 
-	return bResult;
+    return bResult;
 }
 
 function bool TestCycleable()
 {
-	return true;
+    return true;
 }
 
 defaultproperties

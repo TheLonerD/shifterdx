@@ -6,66 +6,66 @@ class GuntherHermann extends HumanMilitary;
 //
 // Damage type table for Gunther Hermann:
 //
-// Shot			- 100%
-// Sabot		- 100%
-// Exploded		- 100%
-// TearGas		- 10%
-// PoisonGas	- 10%
-// Poison		- 10%
-// HalonGas		- 10%
-// Radiation	- 10%
-// Shocked		- 10%
-// Stunned		- 0%
+// Shot            - 100%
+// Sabot        - 100%
+// Exploded        - 100%
+// TearGas        - 10%
+// PoisonGas    - 10%
+// Poison        - 10%
+// HalonGas        - 10%
+// Radiation    - 10%
+// Shocked        - 10%
+// Stunned        - 0%
 // KnockedOut   - 0%
-// Flamed		- 0%
-// Burned		- 0%
-// NanoVirus	- 0%
-// EMP			- 0%
+// Flamed        - 0%
+// Burned        - 0%
+// NanoVirus    - 0%
+// EMP            - 0%
 //
 
 function float ShieldDamage(name damageType)
 {
-	// handle special damage types
-	if ((damageType == 'Flamed') || (damageType == 'Burned') || (damageType == 'Stunned') ||
-	    (damageType == 'KnockedOut'))
-		return 0.0;
-	else if ((damageType == 'TearGas') || (damageType == 'PoisonGas') || (damageType == 'HalonGas') ||
-			(damageType == 'Radiation') || (damageType == 'Shocked') || (damageType == 'Poison') ||
-	        (damageType == 'PoisonEffect'))
-		return 0.1;
-	else
-		return Super.ShieldDamage(damageType);
+    // handle special damage types
+    if ((damageType == 'Flamed') || (damageType == 'Burned') || (damageType == 'Stunned') ||
+        (damageType == 'KnockedOut'))
+        return 0.0;
+    else if ((damageType == 'TearGas') || (damageType == 'PoisonGas') || (damageType == 'HalonGas') ||
+            (damageType == 'Radiation') || (damageType == 'Shocked') || (damageType == 'Poison') ||
+            (damageType == 'PoisonEffect'))
+        return 0.1;
+    else
+        return Super.ShieldDamage(damageType);
 }
 
 function bool Facelift(bool bOn)
 {
-	local int i;
+    local int i;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPcharacters.HDTPGunther", class'mesh', True));
+    if(bOn)
+        Mesh = mesh(DynamicLoadObject("HDTPcharacters.HDTPGunther", class'mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Texture = Default.Texture;
-		Mesh = Default.Mesh;
-		for(i = 0; i < 8; i++)
-		{
-			MultiSkins[i] = Default.MultiSkins[i];
-		}
-	}
-	else
-	{
-		Texture = None;
-		for(i = 0; i < 8; i++)
-		{
-			MultiSkins[i] = None;
-		}
-	}
+    if(Mesh == None || !bOn)
+    {
+        Texture = Default.Texture;
+        Mesh = Default.Mesh;
+        for(i = 0; i < 8; i++)
+        {
+            MultiSkins[i] = Default.MultiSkins[i];
+        }
+    }
+    else
+    {
+        Texture = None;
+        for(i = 0; i < 8; i++)
+        {
+            MultiSkins[i] = None;
+        }
+    }
 
-	return true;
+    return true;
 }
 
 // ----------------------------------------------------------------------
@@ -76,33 +76,33 @@ function bool Facelift(bool bOn)
 
 function Carcass SpawnCarcass()
 {
-	local AugmentationCannister AugCan;
+    local AugmentationCannister AugCan;
 
-	if (bStunned)
-		return Super.SpawnCarcass();
+    if (bStunned)
+        return Super.SpawnCarcass();
 
-	Explode();
+    Explode();
 
-	//== Gunther will have the Skull Gun Aug, only available if you kill him rather than use his killphrase
-	AugCan = spawn(Class'AugmentationCannister', None,, Location);
-	AugCan.AddAugs[0] = 'AugSkullGun';
+    //== Gunther will have the Skull Gun Aug, only available if you kill him rather than use his killphrase
+    AugCan = spawn(Class'AugmentationCannister', None,, Location);
+    AugCan.AddAugs[0] = 'AugSkullGun';
 
-	return None;
+    return None;
 }
 
 function Explode(optional vector HitLocation) //== For cross-mod compatibility
 {
-	Super.Explode(HitLocation);
+    Super.Explode(HitLocation);
 }
 
 function GotoDisabledState(name damageType, EHitLocation hitPos)
 {
-	if (!bCollideActors && !bBlockActors && !bBlockPlayers)
-		return;
-	if (CanShowPain())
-		TakeHit(hitPos);
-	else
-		GotoNextState();
+    if (!bCollideActors && !bBlockActors && !bBlockPlayers)
+        return;
+    if (CanShowPain())
+        TakeHit(hitPos);
+    else
+        GotoNextState();
 }
 
 //
@@ -110,42 +110,42 @@ function GotoDisabledState(name damageType, EHitLocation hitPos)
 //
 state KillswitchActivated
 {
-	function BeginState()
-	{
-		StandUp();
-		LastPainTime = Level.TimeSeconds;
-		LastPainAnim = AnimSequence;
-		bInterruptState = false;
-		BlockReactions();
-		bCanConverse = False;
-		bStasis = False;
-		SetDistress(true);
-		TakeHitTimer = 2.0;
-		EnemyReadiness = 1.0;
-		ReactionLevel  = 1.0;
-		bInTransientState = true;
-	}
+    function BeginState()
+    {
+        StandUp();
+        LastPainTime = Level.TimeSeconds;
+        LastPainAnim = AnimSequence;
+        bInterruptState = false;
+        BlockReactions();
+        bCanConverse = False;
+        bStasis = False;
+        SetDistress(true);
+        TakeHitTimer = 2.0;
+        EnemyReadiness = 1.0;
+        ReactionLevel  = 1.0;
+        bInTransientState = true;
+    }
 
 Begin:
-	FinishAnim();
-	PlayAnim('HitTorso', 2.0, 0.1);
-	FinishAnim();
-	PlayAnim('HitHead', 2.0, 0.1);
-	FinishAnim();
-	PlayAnim('HitTorsoBack', 2.0, 0.1);
-	FinishAnim();
-	PlayAnim('HitHeadBack', 2.0, 0.1);
-	FinishAnim();
-	PlayAnim('HitHead', 3.0, 0.1);
-	FinishAnim();
-	PlayAnim('HitHeadBack', 3.0, 0.1);
-	FinishAnim();
-	PlayAnim('HitHead', 5.0, 0.1);
-	FinishAnim();
-	PlayAnim('HitHeadBack', 5.0, 0.1);
-	FinishAnim();
-	Explode();
-	Destroy();
+    FinishAnim();
+    PlayAnim('HitTorso', 2.0, 0.1);
+    FinishAnim();
+    PlayAnim('HitHead', 2.0, 0.1);
+    FinishAnim();
+    PlayAnim('HitTorsoBack', 2.0, 0.1);
+    FinishAnim();
+    PlayAnim('HitHeadBack', 2.0, 0.1);
+    FinishAnim();
+    PlayAnim('HitHead', 3.0, 0.1);
+    FinishAnim();
+    PlayAnim('HitHeadBack', 3.0, 0.1);
+    FinishAnim();
+    PlayAnim('HitHead', 5.0, 0.1);
+    FinishAnim();
+    PlayAnim('HitHeadBack', 5.0, 0.1);
+    FinishAnim();
+    Explode();
+    Destroy();
 }
 
 defaultproperties

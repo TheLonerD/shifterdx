@@ -5,16 +5,16 @@ class HangingShopLight extends HangingDecoration;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPHangingShopLight", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPDecos.HDTPHangingShopLight", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 defaultproperties

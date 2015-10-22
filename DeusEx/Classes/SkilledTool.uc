@@ -2,51 +2,51 @@
 // SkilledTool.
 //=============================================================================
 class SkilledTool extends DeusExPickup
-	abstract;
+    abstract;
 
-var() sound			useSound;
-var bool			bBeingUsed;
+var() sound            useSound;
+var bool            bBeingUsed;
 
 var Texture HDTPHandTex[5];
 
 //== Make HDTP's fancy-dancy new hand textures available
 function bool Facelift(bool bOn)
 {
-	local int i;
+    local int i;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	//== Load up the hand textures for HDTP, if present
-	if(bOn)
-		HDTPHandTex[1] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexblack", class'Texture', True));
+    //== Load up the hand textures for HDTP, if present
+    if(bOn)
+        HDTPHandTex[1] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexblack", class'Texture', True));
 
-	if(!bOn || HDTPHandTex[1] == None)
-	{
-		for(i = 0; i < 5; ++i)
-			HDTPHandTex[i] = texture'weaponhandstex';
-	}
-	else
-	{
-		HDTPHandTex[2] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexlatino", class'Texture'));
-		HDTPHandTex[3] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexginger", class'Texture'));
-		HDTPHandTex[4] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexalbino", class'Texture'));
-	}
+    if(!bOn || HDTPHandTex[1] == None)
+    {
+        for(i = 0; i < 5; ++i)
+            HDTPHandTex[i] = texture'weaponhandstex';
+    }
+    else
+    {
+        HDTPHandTex[2] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexlatino", class'Texture'));
+        HDTPHandTex[3] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexginger", class'Texture'));
+        HDTPHandTex[4] = Texture(DynamicLoadObject("HDTPItems.Skins.weaponhandstexalbino", class'Texture'));
+    }
 
 
-	return true;
+    return true;
 }
 
 
 function texture GetWeaponHandTex()
 {
-	local deusexplayer p;
+    local deusexplayer p;
 
-	p = deusexplayer(owner);
-	if(p != none)
-		return HDTPHandTex[p.PlayerSkin];
+    p = deusexplayer(owner);
+    if(p != none)
+        return HDTPHandTex[p.PlayerSkin];
 
-	return HDTPHandTex[0];
+    return HDTPHandTex[0];
 }
 
 // ----------------------------------------------------------------------
@@ -55,8 +55,8 @@ function texture GetWeaponHandTex()
 
 function PlayUseAnim()
 {
-	if (!IsInState('UseIt'))
-		GotoState('UseIt');
+    if (!IsInState('UseIt'))
+        GotoState('UseIt');
 }
 
 // ----------------------------------------------------------------------
@@ -65,8 +65,8 @@ function PlayUseAnim()
 
 function StopUseAnim()
 {
-	if (IsInState('UseIt'))
-		GotoState('StopIt');
+    if (IsInState('UseIt'))
+        GotoState('StopIt');
 }
 
 // ----------------------------------------------------------------------
@@ -75,16 +75,16 @@ function StopUseAnim()
 
 function PlayIdleAnim()
 {
-	local float rnd;
+    local float rnd;
 
-	rnd = FRand();
+    rnd = FRand();
 
-	if (rnd < 0.1)
-		PlayAnim('Idle1');
-	else if (rnd < 0.2)
-		PlayAnim('Idle2');
-	else if (rnd < 0.3)
-		PlayAnim('Idle3');
+    if (rnd < 0.1)
+        PlayAnim('Idle1');
+    else if (rnd < 0.2)
+        PlayAnim('Idle2');
+    else if (rnd < 0.3)
+        PlayAnim('Idle3');
 }
 
 // ----------------------------------------------------------------------
@@ -95,7 +95,7 @@ function PlayIdleAnim()
 
 function PickupFunction(Pawn Other)
 {
-	GotoState('Idle2');
+    GotoState('Idle2');
 }
 
 // ----------------------------------------------------------------------
@@ -106,8 +106,8 @@ function PickupFunction(Pawn Other)
 
 function BringUp()
 {
-	if (!IsInState('Idle'))
-		GotoState('Idle');
+    if (!IsInState('Idle'))
+        GotoState('Idle');
 }
 
 // ----------------------------------------------------------------------
@@ -118,79 +118,79 @@ function BringUp()
 
 function PutDown()
 {
-	if (IsInState('Idle'))
-		GotoState('DownItem');
+    if (IsInState('Idle'))
+        GotoState('DownItem');
 }
 
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
 state Idle
 {
-	function Timer()
-	{
-		PlayIdleAnim();
-	}
+    function Timer()
+    {
+        PlayIdleAnim();
+    }
 
 Begin:
-	//bHidden = False;
-	bOnlyOwnerSee = True;
-	PlayAnim('Select',, 0.1);
+    //bHidden = False;
+    bOnlyOwnerSee = True;
+    PlayAnim('Select',, 0.1);
 DontPlaySelect:
-	FinishAnim();
-	PlayAnim('Idle1',, 0.1);
-	SetTimer(3.0, True);
+    FinishAnim();
+    PlayAnim('Idle1',, 0.1);
+    SetTimer(3.0, True);
 }
 
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
 state UseIt
 {
-	function PutDown()
-	{
-		
-	}
+    function PutDown()
+    {
+        
+    }
 
 Begin:
-	if (( Level.NetMode != NM_Standalone ) && ( Owner != None ))
-		SetLocation( Owner.Location );		
-	AmbientSound = useSound;
-	PlayAnim('UseBegin',, 0.1);
-	FinishAnim();
-	LoopAnim('UseLoop',, 0.1);
+    if (( Level.NetMode != NM_Standalone ) && ( Owner != None ))
+        SetLocation( Owner.Location );        
+    AmbientSound = useSound;
+    PlayAnim('UseBegin',, 0.1);
+    FinishAnim();
+    LoopAnim('UseLoop',, 0.1);
 }
 
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
 state StopIt
 {
-	function PutDown()
-	{
-		
-	}
+    function PutDown()
+    {
+        
+    }
 
 Begin:
-	AmbientSound = None;
-	PlayAnim('UseEnd',, 0.1);
-	FinishAnim();
-	GotoState('Idle', 'DontPlaySelect');
+    AmbientSound = None;
+    PlayAnim('UseEnd',, 0.1);
+    FinishAnim();
+    GotoState('Idle', 'DontPlaySelect');
 }
 
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
 state DownItem
 {
-	function PutDown()
-	{
-		
-	}
+    function PutDown()
+    {
+        
+    }
 
 Begin:
-	AmbientSound = None;
-	bHidden = False;		// make sure we can see the animation
-	PlayAnim('Down',, 0.1);
-	FinishAnim();
-	bHidden = True;	// hide it correctly
-	GotoState('Idle2');
+    AmbientSound = None;
+    bHidden = False;        // make sure we can see the animation
+    PlayAnim('Down',, 0.1);
+    FinishAnim();
+    bHidden = True;    // hide it correctly
+    GotoState('Idle2');
 }
 
 //
@@ -198,14 +198,14 @@ Begin:
 //
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
-	
-	// Decrease the volume and radius for mp
-	if ( Level.NetMode != NM_Standalone )
-	{
-		SoundVolume = 96;
-		SoundRadius = 16;
-	}
+    Super.PreBeginPlay();
+    
+    // Decrease the volume and radius for mp
+    if ( Level.NetMode != NM_Standalone )
+    {
+        SoundVolume = 96;
+        SoundRadius = 16;
+    }
 }
 
 // ----------------------------------------------------------------------

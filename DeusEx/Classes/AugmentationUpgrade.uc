@@ -9,18 +9,18 @@ class AugmentationUpgrade expands AugmentationUpgradeCannister;
 //==  give the player the correct item
 function inventory SpawnCopy( Pawn Other )
 {
-	local AugmentationUpgradeCannister AugUpCan;
-	local Inventory retinv;
+    local AugmentationUpgradeCannister AugUpCan;
+    local Inventory retinv;
 
-	AugUpCan = spawn(class'AugmentationUpgradeCannister');
-	retinv = AugUpCan.SpawnCopy(Other);
+    AugUpCan = spawn(class'AugmentationUpgradeCannister');
+    retinv = AugUpCan.SpawnCopy(Other);
 
-	if(retinv != None)
-		Destroy();
-	else //== Well shit, this didn't go well.  Just use this
-		AugUpCan.Destroy();
+    if(retinv != None)
+        Destroy();
+    else //== Well shit, this didn't go well.  Just use this
+        AugUpCan.Destroy();
 
-	return retinv;
+    return retinv;
 }
 
 defaultproperties

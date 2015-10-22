@@ -2,13 +2,13 @@
 // Keypad.
 //=============================================================================
 class Keypad extends HackableDevices
-	abstract;
+    abstract;
 
 var() string validCode;
 var() sound successSound;
 var() sound failureSound;
 var() name FailEvent;
-var() bool bToggleLock;		// if True, toggle the lock state instead of triggering
+var() bool bToggleLock;        // if True, toggle the lock state instead of triggering
 
 var HUDKeypadWindow keypadwindow;
 
@@ -25,61 +25,61 @@ replication
 
 simulated function PreBeginPlay()
 {
-	CleanValidCode();
-	Super.PreBeginPlay();
+    CleanValidCode();
+    Super.PreBeginPlay();
 }
 
 //== Strips out illegal characters so we have an enterable code for the keypad
 function CleanValidCode()
 {
-	local string tCode, tChar;
-	local int i;
-	local bool bAllXes; //Special case.  An all-X code means a purposefully unenterable code
+    local string tCode, tChar;
+    local int i;
+    local bool bAllXes; //Special case.  An all-X code means a purposefully unenterable code
 
-	bAllXes = true;
-	tCode = "";
+    bAllXes = true;
+    tCode = "";
 
-	for(i = 0; i < len(validCode); i++)
-	{
-		tChar = Mid(validCode, i, 1);
+    for(i = 0; i < len(validCode); i++)
+    {
+        tChar = Mid(validCode, i, 1);
 
-		if(Caps(tChar) != "X")
-			bAllXes = False;
+        if(Caps(tChar) != "X")
+            bAllXes = False;
 
-		switch(tChar)
-		{
-			case "0":
-			case "1":
-			case "2":
-			case "3":
-			case "4":
-			case "5":
-			case "6":
-			case "7":
-			case "8":
-			case "9":
-			case "#":
-			case "*":
-				tCode = tCode $ tChar;
-				tChar = "";
-				break;
-			case "?":	// Another special case.  A question mark indicates a random number
-				tCode = tCode $ Rand(10);
-				tChar = "";
-				break;
-		}
+        switch(tChar)
+        {
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+            case "#":
+            case "*":
+                tCode = tCode $ tChar;
+                tChar = "";
+                break;
+            case "?":    // Another special case.  A question mark indicates a random number
+                tCode = tCode $ Rand(10);
+                tChar = "";
+                break;
+        }
 
-		//== If the tChar variable hasn't been cleared out then it's an invalid character.  Replace with a star
-		if(tChar != "")
-			tCode = tCode $ "*";
-	}
+        //== If the tChar variable hasn't been cleared out then it's an invalid character.  Replace with a star
+        if(tChar != "")
+            tCode = tCode $ "*";
+    }
 
-	//== If we have a purposefully unenterable code (including zero-length) use the uncleaned version
-	if(bAllXes)
-		tCode = validCode;
+    //== If we have a purposefully unenterable code (including zero-length) use the uncleaned version
+    if(bAllXes)
+        tCode = validCode;
 
-	//== Set the valid code equal to the tCode
-	validCode = tCode;
+    //== Set the valid code equal to the tCode
+    validCode = tCode;
 }
 
 // ----------------------------------------------------------------------
@@ -88,16 +88,16 @@ function CleanValidCode()
 
 function HackAction(Actor Hacker, bool bHacked)
 {
-	local DeusExPlayer Player;
+    local DeusExPlayer Player;
 
-	// if we're already using this keypad, get out
-	if (keypadwindow != None)
-		return;
+    // if we're already using this keypad, get out
+    if (keypadwindow != None)
+        return;
 
-	Player = DeusExPlayer(Hacker);
+    Player = DeusExPlayer(Hacker);
 
-	if (Player != None)
-	{
+    if (Player != None)
+    {
       // DEUS_EX AMSD if we are in multiplayer, just act based on bHacked
       // if you want keypad windows to work in multiplayer, just get rid of this
       // if statement.  I've already got the windows working, they're just disabled.
@@ -114,7 +114,7 @@ function HackAction(Actor Hacker, bool bHacked)
       
       //DEUS_EX AMSD Must call in player for replication to work.
       Player.ActivateKeypadWindow(Self, bHacked);
-	}
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -123,7 +123,7 @@ function HackAction(Actor Hacker, bool bHacked)
 // ----------------------------------------------------------------------
 simulated function ActivateKeypadWindow(DeusExPlayer Hacker, bool bHacked)
 {
-	local DeusExRootWindow root;
+    local DeusExRootWindow root;
 
    root = DeusExRootWindow(Hacker.rootWindow);
    if (root != None)

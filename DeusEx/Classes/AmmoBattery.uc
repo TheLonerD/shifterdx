@@ -5,16 +5,16 @@ class AmmoBattery extends DeusExAmmo;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmoProdtex1", class'Texture', True));
+    if(bOn)
+        skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmoProdtex1", class'Texture', True));
 
-	if(skin == None || !bOn)
-		skin = Default.skin;
+    if(skin == None || !bOn)
+        skin = Default.skin;
 
-	return true;
+    return true;
 }
 
 defaultproperties

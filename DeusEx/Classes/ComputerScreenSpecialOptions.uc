@@ -6,8 +6,8 @@ class ComputerScreenSpecialOptions expands ComputerUIWindow;
 
 struct S_OptionButtons
 {
-	var int specialIndex;
-	var MenuUIChoiceButton btnSpecial;
+    var int specialIndex;
+    var MenuUIChoiceButton btnSpecial;
 };
 
 var S_OptionButtons optionButtons[4];
@@ -33,11 +33,11 @@ var localized String EmailButtonLabel;
 
 function CreateControls()
 {
-	Super.CreateControls();
+    Super.CreateControls();
 
-	btnLogout = winButtonBar.AddButton(ButtonLabelLogout, HALIGN_Right);
+    btnLogout = winButtonBar.AddButton(ButtonLabelLogout, HALIGN_Right);
 
-	CreateSpecialInfoWindow();
+    CreateSpecialInfoWindow();
 }
 
 // ----------------------------------------------------------------------
@@ -46,10 +46,10 @@ function CreateControls()
 
 function CreateClientWindow()
 {
-	Super.CreateClientWindow();
+    Super.CreateClientWindow();
 
-	if (winClient != None)
-		ComputerUIScaleClientWindow(winClient).SetTextureHeights(TopTextureHeight, MiddleTextureHeight, BottomTextureHeight);
+    if (winClient != None)
+        ComputerUIScaleClientWindow(winClient).SetTextureHeights(TopTextureHeight, MiddleTextureHeight, BottomTextureHeight);
 }
 
 // ----------------------------------------------------------------------
@@ -58,12 +58,12 @@ function CreateClientWindow()
 
 function CreateSpecialInfoWindow()
 {
-	winSpecialInfo = MenuUISmallLabelWindow(winClient.NewChild(Class'MenuUISmallLabelWindow'));
+    winSpecialInfo = MenuUISmallLabelWindow(winClient.NewChild(Class'MenuUISmallLabelWindow'));
 
-	winSpecialInfo.SetPos(10, 97);
-	winSpecialInfo.SetSize(315, 25);
-	winSpecialInfo.SetTextAlignments(HALIGN_Left, VALIGN_Center);
-	winSpecialInfo.SetTextMargins(0, 0);
+    winSpecialInfo.SetPos(10, 97);
+    winSpecialInfo.SetSize(315, 25);
+    winSpecialInfo.SetTextAlignments(HALIGN_Left, VALIGN_Center);
+    winSpecialInfo.SetTextMargins(0, 0);
 }
 
 // ----------------------------------------------------------------------
@@ -72,15 +72,15 @@ function CreateSpecialInfoWindow()
 
 function SetNetworkTerminal(NetworkTerminal newTerm)
 {
-	Super.SetNetworkTerminal(newTerm);
+    Super.SetNetworkTerminal(newTerm);
 
-	if (winTerm.IsA('NetworkTerminalPersonal'))
-		btnReturn = winButtonBar.AddButton(EmailButtonLabel, HALIGN_Left);
-	else if (winTerm.IsA('NetworkTerminalSecurity'))
-		btnReturn = winButtonBar.AddButton(SecurityButtonLabel, HALIGN_Left);
+    if (winTerm.IsA('NetworkTerminalPersonal'))
+        btnReturn = winButtonBar.AddButton(EmailButtonLabel, HALIGN_Left);
+    else if (winTerm.IsA('NetworkTerminalSecurity'))
+        btnReturn = winButtonBar.AddButton(SecurityButtonLabel, HALIGN_Left);
 
-	if (btnReturn != None)
-		CreateLeftEdgeWindow();
+    if (btnReturn != None)
+        CreateLeftEdgeWindow();
 }
 
 // ----------------------------------------------------------------------
@@ -91,9 +91,9 @@ function SetNetworkTerminal(NetworkTerminal newTerm)
 
 function SetCompOwner(ElectronicDevices newCompOwner)
 {
-	Super.SetCompOwner(newCompOwner);
+    Super.SetCompOwner(newCompOwner);
 
-	CreateOptionButtons();
+    CreateOptionButtons();
 }
 
 // ----------------------------------------------------------------------
@@ -102,40 +102,40 @@ function SetCompOwner(ElectronicDevices newCompOwner)
 
 function CreateOptionButtons()
 {
-	local int specialIndex;
-	local int numOptions;
-	local MenuUIChoiceButton winButton;
+    local int specialIndex;
+    local int numOptions;
+    local MenuUIChoiceButton winButton;
 
-	// Figure out how many special options we have
+    // Figure out how many special options we have
 
-	numOptions = 0;
-	for (specialIndex=0; specialIndex<ArrayCount(Computers(compOwner).specialOptions); specialIndex++)
-	{
-		if ((Computers(compOwner).specialOptions[specialIndex].userName == "") || (Caps(Computers(compOwner).specialOptions[specialIndex].userName) == winTerm.GetUserName()))
-		{
-			if (Computers(compOwner).specialOptions[specialIndex].Text != "")
-			{
-				// Create the button
-				winButton = MenuUIChoiceButton(winClient.NewChild(Class'MenuUIChoiceButton'));
-				winButton.SetPos(buttonLeftMargin, firstButtonPosY + (numOptions * MiddleTextureHeight));
-				winButton.SetButtonText(Computers(compOwner).specialOptions[specialIndex].Text);
-				winButton.SetSensitivity(!Computers(compOwner).specialOptions[specialIndex].bAlreadyTriggered);
-				winButton.SetWidth(273);
+    numOptions = 0;
+    for (specialIndex=0; specialIndex<ArrayCount(Computers(compOwner).specialOptions); specialIndex++)
+    {
+        if ((Computers(compOwner).specialOptions[specialIndex].userName == "") || (Caps(Computers(compOwner).specialOptions[specialIndex].userName) == winTerm.GetUserName()))
+        {
+            if (Computers(compOwner).specialOptions[specialIndex].Text != "")
+            {
+                // Create the button
+                winButton = MenuUIChoiceButton(winClient.NewChild(Class'MenuUIChoiceButton'));
+                winButton.SetPos(buttonLeftMargin, firstButtonPosY + (numOptions * MiddleTextureHeight));
+                winButton.SetButtonText(Computers(compOwner).specialOptions[specialIndex].Text);
+                winButton.SetSensitivity(!Computers(compOwner).specialOptions[specialIndex].bAlreadyTriggered);
+                winButton.SetWidth(273);
 
-				optionButtons[numOptions].specialIndex = specialIndex;
-				optionButtons[numOptions].btnSpecial   = winButton;
+                optionButtons[numOptions].specialIndex = specialIndex;
+                optionButtons[numOptions].btnSpecial   = winButton;
 
-				numOptions++;				
-			}
-		}
-	}
+                numOptions++;                
+            }
+        }
+    }
 
-	ComputerUIScaleClientWindow(winClient).SetNumMiddleTextures(numOptions);
+    ComputerUIScaleClientWindow(winClient).SetNumMiddleTextures(numOptions);
 
-	// Update the location of the Special Info window and the Status window
-	winSpecialInfo.SetPos(10, specialOffsetY + TopTextureHeight + (MiddleTextureHeight * numOptions));
-	statusPosY = statusPosYOffset + TopTextureHeight + (MiddleTextureHeight * numOptions);
-	AskParentForReconfigure();
+    // Update the location of the Special Info window and the Status window
+    winSpecialInfo.SetPos(10, specialOffsetY + TopTextureHeight + (MiddleTextureHeight * numOptions));
+    statusPosY = statusPosYOffset + TopTextureHeight + (MiddleTextureHeight * numOptions);
+    AskParentForReconfigure();
 }
 
 // ----------------------------------------------------------------------
@@ -152,38 +152,38 @@ function UpdateOptionsButtons()
 
 function bool ButtonActivated( Window buttonPressed )
 {
-	local bool bHandled;
+    local bool bHandled;
 
-	// First check to see if one of our Special Options 
-	// buttons was pressed
-	if (buttonPressed.IsA('MenuUIChoiceButton'))
-	{
-		ActivateSpecialOption(MenuUIChoiceButton(buttonPressed));
-		bHandled = True;	
-	}
-	else
-	{
-		bHandled = True;
-		switch( buttonPressed )
-		{
-			case btnLogout:
-				CloseScreen("LOGOUT");
-				break;
+    // First check to see if one of our Special Options 
+    // buttons was pressed
+    if (buttonPressed.IsA('MenuUIChoiceButton'))
+    {
+        ActivateSpecialOption(MenuUIChoiceButton(buttonPressed));
+        bHandled = True;    
+    }
+    else
+    {
+        bHandled = True;
+        switch( buttonPressed )
+        {
+            case btnLogout:
+                CloseScreen("LOGOUT");
+                break;
 
-			case btnReturn:
-				CloseScreen("RETURN");
-				break;
+            case btnReturn:
+                CloseScreen("RETURN");
+                break;
 
-			default:
-				bHandled = False;
-				break;
-		}
-	}
+            default:
+                bHandled = False;
+                break;
+        }
+    }
 
-	if (bHandled)
-		return True;
-	else
-		return Super.ButtonActivated(buttonPressed);
+    if (bHandled)
+        return True;
+    else
+        return Super.ButtonActivated(buttonPressed);
 }
 
 // ----------------------------------------------------------------------
@@ -192,48 +192,48 @@ function bool ButtonActivated( Window buttonPressed )
 
 function ActivateSpecialOption(MenuUIChoiceButton buttonPressed)
 {
-	local int buttonIndex;
-	local int specialIndex;
-	local Actor A;
+    local int buttonIndex;
+    local int specialIndex;
+    local Actor A;
 
-	specialIndex = -1;
+    specialIndex = -1;
 
-	// Loop through the buttons and find a Match!
-	for(buttonIndex=0; buttonIndex<arrayCount(optionButtons); buttonIndex++)
-	{
-		if (optionButtons[buttonIndex].btnSpecial == buttonPressed)
-		{
-			specialIndex = optionButtons[buttonIndex].specialIndex;
+    // Loop through the buttons and find a Match!
+    for(buttonIndex=0; buttonIndex<arrayCount(optionButtons); buttonIndex++)
+    {
+        if (optionButtons[buttonIndex].btnSpecial == buttonPressed)
+        {
+            specialIndex = optionButtons[buttonIndex].specialIndex;
 
-			// Disable this button so the user can't activate this 
-			// choice again
-			optionButtons[buttonIndex].btnSpecial.SetSensitivity(False);
+            // Disable this button so the user can't activate this 
+            // choice again
+            optionButtons[buttonIndex].btnSpecial.SetSensitivity(False);
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 
-	// If we found the matching button, activate the option!
-	if (specialIndex != -1)
-	{
-		// Make sure this option wasn't already triggered
-		if (!Computers(compOwner).specialOptions[specialIndex].bAlreadyTriggered)
-		{
-			if (Computers(compOwner).specialOptions[specialIndex].TriggerEvent != '')
-				foreach player.AllActors(class'Actor', A, Computers(compOwner).specialOptions[specialIndex].TriggerEvent)
-					A.Trigger(None, player);
-		
-			if (Computers(compOwner).specialOptions[specialIndex].UnTriggerEvent != '')
-				foreach player.AllActors(class'Actor', A, Computers(compOwner).specialOptions[specialIndex].UnTriggerEvent)
-					A.UnTrigger(None, player);
-		
-			if (Computers(compOwner).specialOptions[specialIndex].bTriggerOnceOnly)
-				Computers(compOwner).specialOptions[specialIndex].bAlreadyTriggered = True;
+    // If we found the matching button, activate the option!
+    if (specialIndex != -1)
+    {
+        // Make sure this option wasn't already triggered
+        if (!Computers(compOwner).specialOptions[specialIndex].bAlreadyTriggered)
+        {
+            if (Computers(compOwner).specialOptions[specialIndex].TriggerEvent != '')
+                foreach player.AllActors(class'Actor', A, Computers(compOwner).specialOptions[specialIndex].TriggerEvent)
+                    A.Trigger(None, player);
+        
+            if (Computers(compOwner).specialOptions[specialIndex].UnTriggerEvent != '')
+                foreach player.AllActors(class'Actor', A, Computers(compOwner).specialOptions[specialIndex].UnTriggerEvent)
+                    A.UnTrigger(None, player);
+        
+            if (Computers(compOwner).specialOptions[specialIndex].bTriggerOnceOnly)
+                Computers(compOwner).specialOptions[specialIndex].bAlreadyTriggered = True;
 
-			// Display a message			
-			winSpecialInfo.SetText(Computers(compOwner).specialOptions[specialIndex].TriggerText);
-		}
-	}
+            // Display a message            
+            winSpecialInfo.SetText(Computers(compOwner).specialOptions[specialIndex].TriggerText);
+        }
+    }
 }
 
 // ----------------------------------------------------------------------

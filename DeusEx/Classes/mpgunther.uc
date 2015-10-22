@@ -5,33 +5,33 @@ class MPGUNTHER extends Human;
 
 function bool Facelift(bool bOn)
 {
-	local int i;
+    local int i;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPcharacters.HDTPGunther", class'mesh', True));
+    if(bOn)
+        Mesh = mesh(DynamicLoadObject("HDTPcharacters.HDTPGunther", class'mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Texture = Default.Texture;
-		Mesh = Default.Mesh;
-		for(i = 0; i < 8; i++)
-		{
-			MultiSkins[i] = Default.MultiSkins[i];
-		}
-	}
-	else
-	{
-		Texture = None;
-		for(i = 0; i < 8; i++)
-		{
-			MultiSkins[i] = None;
-		}
-	}
+    if(Mesh == None || !bOn)
+    {
+        Texture = Default.Texture;
+        Mesh = Default.Mesh;
+        for(i = 0; i < 8; i++)
+        {
+            MultiSkins[i] = Default.MultiSkins[i];
+        }
+    }
+    else
+    {
+        Texture = None;
+        for(i = 0; i < 8; i++)
+        {
+            MultiSkins[i] = None;
+        }
+    }
 
-	return true;
+    return true;
 }
 
 // ----------------------------------------------------------------------
@@ -40,9 +40,9 @@ function bool Facelift(bool bOn)
 
 event TravelPostAccept()
 {
-	local DeusExLevelInfo info;
+    local DeusExLevelInfo info;
 
-	Super.TravelPostAccept();
+    Super.TravelPostAccept();
 }
 
 // ----------------------------------------------------------------------

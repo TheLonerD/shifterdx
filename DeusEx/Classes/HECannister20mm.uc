@@ -7,21 +7,21 @@ var ParticleGenerator smokeGen;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPHECannister", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPHECannister", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 function PostBeginPlay()
 {
-	Super.PostBeginPlay();
+    Super.PostBeginPlay();
 
    if (Level.NetMode == NM_DedicatedServer)
       return;
@@ -39,27 +39,27 @@ simulated function PostNetBeginPlay()
 
 simulated function SpawnSmokeEffects()
 {
-	smokeGen = Spawn(class'ParticleGenerator', Self);
-	if (smokeGen != None)
-	{
-		smokeGen.particleTexture = Texture'Effects.Smoke.SmokePuff1';
-		smokeGen.particleDrawScale = 0.3;
-		smokeGen.checkTime = 0.02;
-		smokeGen.riseRate = 8.0;
-		smokeGen.ejectSpeed = 0.0;
-		smokeGen.particleLifeSpan = 2.0;
-		smokeGen.bRandomEject = True;
-		smokeGen.SetBase(Self);
+    smokeGen = Spawn(class'ParticleGenerator', Self);
+    if (smokeGen != None)
+    {
+        smokeGen.particleTexture = Texture'Effects.Smoke.SmokePuff1';
+        smokeGen.particleDrawScale = 0.3;
+        smokeGen.checkTime = 0.02;
+        smokeGen.riseRate = 8.0;
+        smokeGen.ejectSpeed = 0.0;
+        smokeGen.particleLifeSpan = 2.0;
+        smokeGen.bRandomEject = True;
+        smokeGen.SetBase(Self);
       smokeGen.RemoteRole = ROLE_None;
-	}
+    }
 }
 
 simulated function Destroyed()
 {
-	if (smokeGen != None)
-		smokeGen.DelayedDestroy();
+    if (smokeGen != None)
+        smokeGen.DelayedDestroy();
 
-	Super.Destroyed();
+    Super.Destroyed();
 }
 
 defaultproperties

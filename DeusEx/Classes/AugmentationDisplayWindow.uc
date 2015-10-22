@@ -14,8 +14,8 @@ var DeusExProjectile defenseTarget;
 var ViewportWindow winDrone;
 var bool bDroneCreated;
 var bool bDroneReferenced;
-//var SpyDrone aDrone;		// MBCODE: Took this out and moved it to DeusExPlayer since the server
-									// has no idea about these windows or the drone (needed for multiplayer).
+//var SpyDrone aDrone;        // MBCODE: Took this out and moved it to DeusExPlayer since the server
+                                    // has no idea about these windows or the drone (needed for multiplayer).
 
 var bool bTargetActive;
 var bool bTargetWindowActive;
@@ -63,23 +63,23 @@ var localized String YouAreBurnedString;
 var localized String TurretInvincibleString;
 var localized String CameraInvincibleString;
 var localized String NeutBurnPoisonString;
-var localized String	OnlyString;
+var localized String    OnlyString;
 var localized String KillsToGoString;
 var localized String KillToGoString;
-var localized String	LessThanMinuteString;
-var localized String	LessThanXString1;
-var localized String	LessThanXString2;
-var localized String	LeadsMatchString;
-var localized String	TiedMatchString;
+var localized String    LessThanMinuteString;
+var localized String    LessThanXString1;
+var localized String    LessThanXString2;
+var localized String    LeadsMatchString;
+var localized String    TiedMatchString;
 var localized String WillWinMatchString;
 var localized String OutOfRangeString;
 var localized String LostLegsString;
 var localized String DropItem1String;
 var localized String DropItem2String;
 var localized String msgTeammateHit, msgTeamNsf, msgTeamUnatco;
-var localized String	UseString;
-var localized String	TeamTalkString;
-var localized String	TalkString;
+var localized String    UseString;
+var localized String    TeamTalkString;
+var localized String    TalkString;
 var localized String YouKilledTeammateString;
 var localized String TeamLAMString;
 var localized String TeamComputerString;
@@ -98,20 +98,20 @@ const VISIONALLY = 2;
 const VISIONNEUTRAL = 0;
 
 // Show name of player in multiplayer on a timer
-var String	targetPlayerName;					// Player's name in targeting reticle
+var String    targetPlayerName;                    // Player's name in targeting reticle
 var String  targetPlayerHealthString;     // Target player's health (for targeting aug)'
 var String  targetPlayerLocationString;   // Point on target player at which you are aiming (For multiplayer)
-var float	targetPlayerTime;					// Timer
-var float	targetRangeTime;
-var color	targetPlayerColor;				// Color red or green
-var bool		targetOutOfRange;					// Is target out of range with current weapon
-const			targetPlayerDelay		= 3;			// Delay in seconds until name is not displayed
-const			targetPlayerXMul		= 0.08;
-const			targetPlayerYMul		= 0.79;
+var float    targetPlayerTime;                    // Timer
+var float    targetRangeTime;
+var color    targetPlayerColor;                // Color red or green
+var bool        targetOutOfRange;                    // Is target out of range with current weapon
+const            targetPlayerDelay        = 3;            // Delay in seconds until name is not displayed
+const            targetPlayerXMul        = 0.08;
+const            targetPlayerYMul        = 0.79;
 
-var String	keyDropItem, keyTalk, keyTeamTalk;
+var String    keyDropItem, keyTalk, keyTeamTalk;
 
-var Color	colRed, colGreen, colWhite;
+var Color    colRed, colGreen, colWhite;
 
 
 // ----------------------------------------------------------------------
@@ -120,10 +120,10 @@ var Color	colRed, colGreen, colWhite;
 
 event InitWindow()
 {
-	Super.InitWindow();
-	bTickEnabled = True;
-	Lower();
-	RefreshMultiplayerKeys();
+    Super.InitWindow();
+    bTickEnabled = True;
+    Lower();
+    RefreshMultiplayerKeys();
 }
 
 // ----------------------------------------------------------------------
@@ -132,47 +132,47 @@ event InitWindow()
 
 function Actor TraceLOS(float checkDist, out vector HitLocation)
 {
-	local Actor target;
-	local Vector HitLoc, HitNormal, StartTrace, EndTrace;
+    local Actor target;
+    local Vector HitLoc, HitNormal, StartTrace, EndTrace;
 
-	target = None;
+    target = None;
 
-	// figure out how far ahead we should trace
-	StartTrace = Player.Location;
-	EndTrace = Player.Location + (Vector(Player.ViewRotation) * checkDist);
+    // figure out how far ahead we should trace
+    StartTrace = Player.Location;
+    EndTrace = Player.Location + (Vector(Player.ViewRotation) * checkDist);
 
-	// adjust for the eye height
-	StartTrace.Z += Player.BaseEyeHeight;
-	EndTrace.Z += Player.BaseEyeHeight;
+    // adjust for the eye height
+    StartTrace.Z += Player.BaseEyeHeight;
+    EndTrace.Z += Player.BaseEyeHeight;
 
-	// find the object that we are looking at
-	// make sure we don't select the object that we're carrying
-	foreach Player.TraceActors(class'Actor', target, HitLoc, HitNormal, EndTrace, StartTrace)
-	{
-		if (target.IsA('Pawn') || target.IsA('DeusExDecoration') || target.IsA('ThrownProjectile') ||
-			(target.IsA('DeusExMover') && DeusExMover(target).bBreakable))
-		{
-			//== Y|y: don't find hidden objects
-			if (target.bHidden)
-				target = None;
-			else if (target != Player.CarriedDecoration)
-			{
-				if ( (Player.Level.NetMode != NM_Standalone) && target.IsA('DeusExPlayer') )
-				{
-					if ( DeusExPlayer(target).AdjustHitLocation( HitLoc, EndTrace - StartTrace ) )
-						break;
-					else
-						target = None;
-				}
-				else
-					break;
-			}
-		}
-	}
+    // find the object that we are looking at
+    // make sure we don't select the object that we're carrying
+    foreach Player.TraceActors(class'Actor', target, HitLoc, HitNormal, EndTrace, StartTrace)
+    {
+        if (target.IsA('Pawn') || target.IsA('DeusExDecoration') || target.IsA('ThrownProjectile') ||
+            (target.IsA('DeusExMover') && DeusExMover(target).bBreakable))
+        {
+            //== Y|y: don't find hidden objects
+            if (target.bHidden)
+                target = None;
+            else if (target != Player.CarriedDecoration)
+            {
+                if ( (Player.Level.NetMode != NM_Standalone) && target.IsA('DeusExPlayer') )
+                {
+                    if ( DeusExPlayer(target).AdjustHitLocation( HitLoc, EndTrace - StartTrace ) )
+                        break;
+                    else
+                        target = None;
+                }
+                else
+                    break;
+            }
+        }
+    }
 
-	HitLocation = HitLoc;
+    HitLocation = HitLoc;
 
-	return target;
+    return target;
 }
 
 // ----------------------------------------------------------------------
@@ -181,38 +181,38 @@ function Actor TraceLOS(float checkDist, out vector HitLocation)
 
 function Interpolate(GC gc, float fromX, float fromY, float toX, float toY, int power)
 {
-	local float xPos, yPos;
-	local float deltaX, deltaY;
-	local float maxDist;
-	local int   points;
-	local int   i;
+    local float xPos, yPos;
+    local float deltaX, deltaY;
+    local float maxDist;
+    local int   points;
+    local int   i;
 
-	maxDist = 16;
+    maxDist = 16;
 
-	points = 1;
-	deltaX = (toX-fromX);
-	deltaY = (toY-fromY);
-	while (power >= 0)
-	{
-		if ((deltaX >= maxDist) || (deltaX <= -maxDist) || (deltaY >= maxDist) || (deltaY <= -maxDist))
-		{
-			deltaX *= 0.5;
-			deltaY *= 0.5;
-			points *= 2;
-			power--;
-		}
-		else
-			break;
-	}
+    points = 1;
+    deltaX = (toX-fromX);
+    deltaY = (toY-fromY);
+    while (power >= 0)
+    {
+        if ((deltaX >= maxDist) || (deltaX <= -maxDist) || (deltaY >= maxDist) || (deltaY <= -maxDist))
+        {
+            deltaX *= 0.5;
+            deltaY *= 0.5;
+            points *= 2;
+            power--;
+        }
+        else
+            break;
+    }
 
-	xPos = fromX + ((Player.Level.TimeSeconds % 0.5) * deltaX * 2);
-	yPos = fromY + ((Player.Level.TimeSeconds % 0.5) * deltaY * 2);
-	for (i=0; i<points-1; i++)
-	{
-		xPos += deltaX;
-		yPos += deltaY;
-		gc.DrawPattern(xPos, yPos, 2, 2, 0, 0, Texture'Solid');
-	}
+    xPos = fromX + ((Player.Level.TimeSeconds % 0.5) * deltaX * 2);
+    yPos = fromY + ((Player.Level.TimeSeconds % 0.5) * deltaY * 2);
+    for (i=0; i<points-1; i++)
+    {
+        xPos += deltaX;
+        yPos += deltaY;
+        gc.DrawPattern(xPos, yPos, 2, 2, 0, 0, Texture'Solid');
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -221,23 +221,23 @@ function Interpolate(GC gc, float fromX, float fromY, float toX, float toY, int 
 
 function ConfigurationChanged()
 {
-	local float x, y, w, h, cx, cy;
+    local float x, y, w, h, cx, cy;
 
-	if ((winDrone != None) || (winZoom != None))
-	{
-		w = width/4;
-		h = height/4;
-		cx = width/8 + margin;
-		cy = height/2;
-		x = cx - w/2;
-		y = cy - h/2;
+    if ((winDrone != None) || (winZoom != None))
+    {
+        w = width/4;
+        h = height/4;
+        cx = width/8 + margin;
+        cy = height/2;
+        x = cx - w/2;
+        y = cy - h/2;
 
-		if (winDrone != None)
-			winDrone.ConfigureChild(x, y, w, h);
+        if (winDrone != None)
+            winDrone.ConfigureChild(x, y, w, h);
 
-		if (winZoom != None)
-			winZoom.ConfigureChild(x, y, w, h);
-	}
+        if (winZoom != None)
+            winZoom.ConfigureChild(x, y, w, h);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -246,9 +246,9 @@ function ConfigurationChanged()
 
 function bool ChildRequestedReconfiguration(Window childWin)
 {
-	ConfigurationChanged();
+    ConfigurationChanged();
 
-	return True;
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -256,29 +256,29 @@ function bool ChildRequestedReconfiguration(Window childWin)
 // ----------------------------------------------------------------------
 function RefreshMultiplayerKeys()
 {
-	local String Alias, keyName;
-	local int i;
+    local String Alias, keyName;
+    local int i;
 
-	for ( i = 0; i < 255; i++ )
-	{
-		keyName = player.ConsoleCommand ( "KEYNAME "$i );
-		if ( keyName != "" )
-		{
-			Alias = player.ConsoleCommand( "KEYBINDING "$keyName );
-			if ( Alias ~= "DropItem" )
-				keyDropItem = keyName;
-			else if ( Alias ~= "Talk" )
-				keyTalk = keyName;
-			else if ( Alias ~= "TeamTalk" )
-				keyTeamTalk = keyName;
-		}
-	}
-	if ( keyDropItem ~= "" )
-		keyDropItem = KeyNotBoundString;
-	if ( keyTalk ~= "" )
-		keyTalk = KeyNotBoundString;
-	if ( keyTeamTalk ~= "" )
-		keyTeamTalk = KeyNotBoundString;
+    for ( i = 0; i < 255; i++ )
+    {
+        keyName = player.ConsoleCommand ( "KEYNAME "$i );
+        if ( keyName != "" )
+        {
+            Alias = player.ConsoleCommand( "KEYBINDING "$keyName );
+            if ( Alias ~= "DropItem" )
+                keyDropItem = keyName;
+            else if ( Alias ~= "Talk" )
+                keyTalk = keyName;
+            else if ( Alias ~= "TeamTalk" )
+                keyTeamTalk = keyName;
+        }
+    }
+    if ( keyDropItem ~= "" )
+        keyDropItem = KeyNotBoundString;
+    if ( keyTalk ~= "" )
+        keyTalk = KeyNotBoundString;
+    if ( keyTeamTalk ~= "" )
+        keyTeamTalk = KeyNotBoundString;
 }
 
 
@@ -288,54 +288,54 @@ function RefreshMultiplayerKeys()
 
 function Tick(float deltaTime)
 {
-	// check for the drone ViewportWindow being constructed
-	if (Player.bSpyDroneActive && (Player.aDrone != None) && (winDrone == None) && 
-		(Player.PlayerIsClient() || (Player.Level.NetMode==NM_Standalone)) )
-	{
-		winDrone = ViewportWindow(NewChild(class'ViewportWindow'));
-		if (winDrone != None)
-		{
-			winDrone.AskParentForReconfigure();
-			winDrone.Lower();
-			winDrone.SetViewportActor(Player.aDrone);
-		}
-	}
+    // check for the drone ViewportWindow being constructed
+    if (Player.bSpyDroneActive && (Player.aDrone != None) && (winDrone == None) && 
+        (Player.PlayerIsClient() || (Player.Level.NetMode==NM_Standalone)) )
+    {
+        winDrone = ViewportWindow(NewChild(class'ViewportWindow'));
+        if (winDrone != None)
+        {
+            winDrone.AskParentForReconfigure();
+            winDrone.Lower();
+            winDrone.SetViewportActor(Player.aDrone);
+        }
+    }
 
-	// check for the target ViewportWindow being constructed
-	if (bTargetActive && bTargetWindowActive && (targetLevel > 2) && (winZoom == None) && (lastTarget != None) && (Player.Level.NetMode == NM_Standalone))
-	{
-		winZoom = ViewportWindow(NewChild(class'ViewportWindow'));
-		if (winZoom != None)
-		{
-			winZoom.AskParentForReconfigure();
-			winZoom.Lower();
-		}
-	}
+    // check for the target ViewportWindow being constructed
+    if (bTargetActive && bTargetWindowActive && (targetLevel > 2) && (winZoom == None) && (lastTarget != None) && (Player.Level.NetMode == NM_Standalone))
+    {
+        winZoom = ViewportWindow(NewChild(class'ViewportWindow'));
+        if (winZoom != None)
+        {
+            winZoom.AskParentForReconfigure();
+            winZoom.Lower();
+        }
+    }
 
-	// handle Destroy() in Tick() since they can't be in DrawWindow()
-	if (!Player.bSpyDroneActive)
-	{
-		if (winDrone != None)
-		{
-			winDrone.Destroy();
-			winDrone = None;
-		}
-		if ((Player.aDrone != None) && IsActorValid(Player.aDrone))
-		{
-			RemoveActorRef(Player.aDrone);
-			bDroneReferenced = false;
-		}
-		bDroneCreated = false;
-	}
+    // handle Destroy() in Tick() since they can't be in DrawWindow()
+    if (!Player.bSpyDroneActive)
+    {
+        if (winDrone != None)
+        {
+            winDrone.Destroy();
+            winDrone = None;
+        }
+        if ((Player.aDrone != None) && IsActorValid(Player.aDrone))
+        {
+            RemoveActorRef(Player.aDrone);
+            bDroneReferenced = false;
+        }
+        bDroneCreated = false;
+    }
 
-	if (winZoom != None)
-	{
-		if ((bTargetActive && (lastTarget == None)) || !bTargetActive || !bTargetWindowActive)
-		{
-			winZoom.Destroy();
-			winZoom = None;
-		}
-	}
+    if (winZoom != None)
+    {
+        if ((bTargetActive && (lastTarget == None)) || !bTargetActive || !bTargetWindowActive)
+        {
+            winZoom.Destroy();
+            winZoom = None;
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -344,38 +344,38 @@ function Tick(float deltaTime)
 
 function PostDrawWindow(GC gc)
 {
-	local PlayerPawn pp;
+    local PlayerPawn pp;
 
-	pp = Player.GetPlayerPawn();
+    pp = Player.GetPlayerPawn();
 
    //DEUS_EX AMSD Draw vision first so that everything else doesn't get washed green
-	if (bVisionActive)
-		DrawVisionAugmentation(gc);
+    if (bVisionActive)
+        DrawVisionAugmentation(gc);
 
-	if ( Player.Level.NetMode != NM_Standalone )
-		DrawMiscStatusMessages( gc );
+    if ( Player.Level.NetMode != NM_Standalone )
+        DrawMiscStatusMessages( gc );
 
-	if (bDefenseActive)
-		DrawDefenseAugmentation(gc);
+    if (bDefenseActive)
+        DrawDefenseAugmentation(gc);
 
-	if (Player.bSpyDroneActive)
-		DrawSpyDroneAugmentation(gc);
+    if (Player.bSpyDroneActive)
+        DrawSpyDroneAugmentation(gc);
 
    // draw IFF and accuracy information all the time, return False if target aug is not active
-	DrawTargetAugmentation(gc);
+    DrawTargetAugmentation(gc);
 
    gc.SetFont(Font'FontMenuSmall_DS');
-	gc.SetTextColor(colHeaderText);
-	gc.SetStyle(DSTY_Normal);
-	gc.SetTileColor(colBorder);
+    gc.SetTextColor(colHeaderText);
+    gc.SetStyle(DSTY_Normal);
+    gc.SetTileColor(colBorder);
 
    if ( (pp != None) && (pp.bShowScores) )
-	{
-		if ( DeathMatchGame(Player.DXGame) != None )
-			DeathMatchGame(Player.DXGame).ShowDMScoreboard( Player, gc, width, height );
-		else if ( TeamDMGame(Player.DXGame) != None )
-			TeamDMGame(Player.DXGame).ShowTeamDMScoreboard( Player, gc, width, height );
-	}
+    {
+        if ( DeathMatchGame(Player.DXGame) != None )
+            DeathMatchGame(Player.DXGame).ShowDMScoreboard( Player, gc, width, height );
+        else if ( TeamDMGame(Player.DXGame) != None )
+            TeamDMGame(Player.DXGame).ShowTeamDMScoreboard( Player, gc, width, height );
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -384,43 +384,43 @@ function PostDrawWindow(GC gc)
 
 function DrawDefenseAugmentation(GC gc)
 {
-	local String str;
-	local float boxCX, boxCY;
-	local float x, y, w, h, mult;
-	local bool bDrawLine;
+    local String str;
+    local float boxCX, boxCY;
+    local float x, y, w, h, mult;
+    local bool bDrawLine;
 
-	if (defenseTarget != None)
-	{
-		bDrawLine = False;
+    if (defenseTarget != None)
+    {
+        bDrawLine = False;
 
-		if (defenseTarget.IsInState('Exploding'))
-		{
-			str = msgADSDetonating;
-			bDrawLine = True;
-		}
-		else
-			str = msgADSTracking;
+        if (defenseTarget.IsInState('Exploding'))
+        {
+            str = msgADSDetonating;
+            bDrawLine = True;
+        }
+        else
+            str = msgADSTracking;
 
-		mult = VSize(defenseTarget.Location - Player.Location);
-		str = str $ CR() $ msgRange @ Int(mult/16) @ msgRangeUnits;
+        mult = VSize(defenseTarget.Location - Player.Location);
+        str = str $ CR() $ msgRange @ Int(mult/16) @ msgRangeUnits;
 
-		if (!ConvertVectorToCoordinates(defenseTarget.Location, boxCX, boxCY))
-			str = str @ msgBehind;
+        if (!ConvertVectorToCoordinates(defenseTarget.Location, boxCX, boxCY))
+            str = str @ msgBehind;
 
-		gc.GetTextExtent(0, w, h, str);
-		x = boxCX - w/2;
-		y = boxCY - h;
-		gc.SetTextColorRGB(255,0,0);
-		gc.DrawText(x, y, w, h, str);
-		gc.SetTextColor(colHeaderText);
+        gc.GetTextExtent(0, w, h, str);
+        x = boxCX - w/2;
+        y = boxCY - h;
+        gc.SetTextColorRGB(255,0,0);
+        gc.DrawText(x, y, w, h, str);
+        gc.SetTextColor(colHeaderText);
 
-		if (bDrawLine)
-		{
-			gc.SetTileColorRGB(255,0,0);
-			Interpolate(gc, width/2, height/2, boxCX, boxCY, 64);
-			gc.SetTileColor(colHeaderText);
-		}
-	}
+        if (bDrawLine)
+        {
+            gc.SetTileColorRGB(255,0,0);
+            Interpolate(gc, width/2, height/2, boxCX, boxCY, 64);
+            gc.SetTileColor(colHeaderText);
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -429,61 +429,61 @@ function DrawDefenseAugmentation(GC gc)
 
 function DrawSpyDroneAugmentation(GC gc)
 {
-	local String str;
-	local float boxCX, boxCY, boxTLX, boxTLY, boxBRX, boxBRY, boxW, boxH;
-	local float x, y, w, h, mult;
-	local Vector loc;
+    local String str;
+    local float boxCX, boxCY, boxTLX, boxTLY, boxBRX, boxBRY, boxW, boxH;
+    local float x, y, w, h, mult;
+    local Vector loc;
 
-	// set the coords of the drone window
-	boxW = width/4;
-	boxH = height/4;
-	boxCX = width/8 + margin;
-	boxCY = height/2;
-	boxTLX = boxCX - boxW/2;
-	boxTLY = boxCY - boxH/2;
-	boxBRX = boxCX + boxW/2;
-	boxBRY = boxCY + boxH/2;
+    // set the coords of the drone window
+    boxW = width/4;
+    boxH = height/4;
+    boxCX = width/8 + margin;
+    boxCY = height/2;
+    boxTLX = boxCX - boxW/2;
+    boxTLY = boxCY - boxH/2;
+    boxBRX = boxCX + boxW/2;
+    boxBRY = boxCY + boxH/2;
 
-	if (winDrone != None)
-	{
-		DrawDropShadowBox(gc, boxTLX, boxTLY, boxW, boxH);
+    if (winDrone != None)
+    {
+        DrawDropShadowBox(gc, boxTLX, boxTLY, boxW, boxH);
 
-		str = msgDroneActive;
-		gc.GetTextExtent(0, w, h, str);
-		x = boxCX - w/2;
-		y = boxTLY - h - margin;
-		gc.DrawText(x, y, w, h, str);
+        str = msgDroneActive;
+        gc.GetTextExtent(0, w, h, str);
+        x = boxCX - w/2;
+        y = boxTLY - h - margin;
+        gc.DrawText(x, y, w, h, str);
 
-		// print a low energy warning message
-		if ((Player.Energy / Player.Default.Energy) < 0.2)
-		{
-			str = msgEnergyLow;
-			gc.GetTextExtent(0, w, h, str);
-			x = boxCX - w/2;
-			y = boxTLY + margin;
-			gc.SetTextColorRGB(255,0,0);
-			gc.DrawText(x, y, w, h, str);
-			gc.SetTextColor(colHeaderText);
-		}
-	}
-	// Since drone is created on server, they is a delay in when it will actually show up on the client
-	// the flags dronecreated and drone referenced negotiate this timing
-	if ( !bDroneCreated )  	
-	{
-		if (Player.aDrone == None)
-		{
-			bDroneCreated = true;
-			Player.CreateDrone();
-		}
-	}
-	else if ( !bDroneReferenced )
-	{
-		if ( Player.aDrone != None )
-		{
-			bDroneReferenced = true;
-			AddActorRef( Player.aDrone );
-		}
-	}
+        // print a low energy warning message
+        if ((Player.Energy / Player.Default.Energy) < 0.2)
+        {
+            str = msgEnergyLow;
+            gc.GetTextExtent(0, w, h, str);
+            x = boxCX - w/2;
+            y = boxTLY + margin;
+            gc.SetTextColorRGB(255,0,0);
+            gc.DrawText(x, y, w, h, str);
+            gc.SetTextColor(colHeaderText);
+        }
+    }
+    // Since drone is created on server, they is a delay in when it will actually show up on the client
+    // the flags dronecreated and drone referenced negotiate this timing
+    if ( !bDroneCreated )      
+    {
+        if (Player.aDrone == None)
+        {
+            bDroneCreated = true;
+            Player.CreateDrone();
+        }
+    }
+    else if ( !bDroneReferenced )
+    {
+        if ( Player.aDrone != None )
+        {
+            bDroneReferenced = true;
+            AddActorRef( Player.aDrone );
+        }
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -492,15 +492,15 @@ function DrawSpyDroneAugmentation(GC gc)
 
 function float TopCentralMessage( GC gc, String str, color textColor )
 {
-	local float x, y, w, h;
+    local float x, y, w, h;
 
-	gc.SetFont(Font'FontMenuTitle');
-	gc.GetTextExtent( 0, w, h, str );
-	gc.SetTextColor( textColor );
-	x = (width * 0.5) - (w * 0.5);
-	y = height * 0.33;
-	DrawFadedText( gc, x, y, textColor, str );
-	return( y + h );
+    gc.SetFont(Font'FontMenuTitle');
+    gc.GetTextExtent( 0, w, h, str );
+    gc.SetTextColor( textColor );
+    x = (width * 0.5) - (w * 0.5);
+    y = height * 0.33;
+    DrawFadedText( gc, x, y, textColor, str );
+    return( y + h );
 }
 
 // ----------------------------------------------------------------------
@@ -508,20 +508,20 @@ function float TopCentralMessage( GC gc, String str, color textColor )
 // ----------------------------------------------------------------------
 function DrawFadedText( GC gc, float x, float y, Color msgColor, String msg )
 {
-	local Color adj;
-	local float mul, w, h;
+    local Color adj;
+    local float mul, w, h;
 
-	EnableTranslucentText(True);
-	gc.SetStyle(DSTY_Translucent);
-	mul = FClamp( (Player.mpMsgTime - Player.Level.Timeseconds)/Player.mpMsgDelay, 0.0, 1.0 );
-	adj.r = mul * msgColor.r;
-	adj.g = mul * msgColor.g;
-	adj.b = mul * msgColor.b;
-	gc.SetTextColor(adj);
-	gc.GetTextExtent( 0, w, h, msg );
-	gc.DrawText( x, y, w, h, msg );
-	gc.SetStyle(DSTY_Normal);
-	EnableTranslucentText(False);
+    EnableTranslucentText(True);
+    gc.SetStyle(DSTY_Translucent);
+    mul = FClamp( (Player.mpMsgTime - Player.Level.Timeseconds)/Player.mpMsgDelay, 0.0, 1.0 );
+    adj.r = mul * msgColor.r;
+    adj.g = mul * msgColor.g;
+    adj.b = mul * msgColor.b;
+    gc.SetTextColor(adj);
+    gc.GetTextExtent( 0, w, h, msg );
+    gc.DrawText( x, y, w, h, msg );
+    gc.SetStyle(DSTY_Normal);
+    EnableTranslucentText(False);
 }
 
 // ----------------------------------------------------------------------
@@ -529,189 +529,189 @@ function DrawFadedText( GC gc, float x, float y, Color msgColor, String msg )
 // ----------------------------------------------------------------------
 function DrawMiscStatusMessages( GC gc )
 {
-	local DeusExWeapon weap;
-	local float x, y, w, h, cury;
-	local Color msgColor;
-	local String str;
-	local bool bNeutralMsg;
-	local String dropKeyName, keyName;
-	local int i;
+    local DeusExWeapon weap;
+    local float x, y, w, h, cury;
+    local Color msgColor;
+    local String str;
+    local bool bNeutralMsg;
+    local String dropKeyName, keyName;
+    local int i;
 
-	bNeutralMsg = False;
+    bNeutralMsg = False;
 
-	if (( Player.Level.Timeseconds < Player.mpMsgTime ) && !Player.bShowScores )
-	{
-		msgColor = colGreen;
+    if (( Player.Level.Timeseconds < Player.mpMsgTime ) && !Player.bShowScores )
+    {
+        msgColor = colGreen;
 
-		switch( Player.mpMsgCode )
-		{
-			case Player.MPMSG_TeamUnatco:
-				str = msgTeamUnatco;
-				cury = TopCentralMessage( gc, str, msgColor );
-				if ( keyTalk ~= KeyNotBoundString )
-					RefreshMultiplayerKeys();
-				str = UseString $ keyTalk $ TalkString;
-				gc.GetTextExtent( 0, w, h, str );
-				cury += h;
-				DrawFadedText( gc, (width * 0.5) - (w * 0.5), cury, msgColor, str );
-				if ( TeamDMGame(Player.DXGame) != None )
-				{
-					cury += h;
-					if ( keyTeamTalk ~= KeyNotBoundString )
-						RefreshMultiplayerKeys();
-					str = UseString $ keyTeamTalk $ TeamTalkString;
-					gc.GetTextExtent( 0, w, h, str );
-					DrawFadedText( gc, (width * 0.5) - (w * 0.5), cury, msgColor, str );
-				}
-				break;
-			case Player.MPMSG_TeamNsf:
-				str = msgTeamNsf;
-				cury = TopCentralMessage( gc, str, msgColor );
-				if ( keyTalk ~= KeyNotBoundString )
-					RefreshMultiplayerKeys();
-				str = UseString $ keyTalk $ TalkString;
-				gc.GetTextExtent( 0, w, h, str );
-				cury += h;
-				DrawFadedText( gc, (width * 0.5) - (w * 0.5), cury, msgColor, str );
-				if ( TeamDMGame(Player.DXGame) != None )
-				{
-					cury += h;
-					if ( keyTeamTalk ~= KeyNotBoundString )
-						RefreshMultiplayerKeys();
-					str = UseString $ keyTeamTalk $ TeamTalkString;
-					gc.GetTextExtent( 0, w, h, str );
-					DrawFadedText( gc, (width * 0.5) - (w * 0.5), cury, msgColor, str );
-				}
-				break;
-			case Player.MPMSG_TeamHit:
-				msgColor = colRed;
-				str = msgTeammateHit;
-				TopCentralMessage( gc, str, msgColor );
-				break;
-			case Player.MPMSG_TeamSpot:
-				str = SpottedTeamString;
-				TopCentralMessage( gc, str, msgColor );
-				break;
-			case Player.MPMSG_FirstPoison:
-				str = YouArePoisonedString;
-				cury = TopCentralMessage( gc, str, msgColor );
-				gc.GetTextExtent( 0, w, h, NeutBurnPoisonString );
-				x = (width * 0.5) - (w * 0.5);
-				DrawFadedText( gc, x, cury, msgColor, NeutBurnPoisonString );
-				break;
-			case Player.MPMSG_FirstBurn:
-				str = YouAreBurnedString;
-				cury = TopCentralMessage( gc, str, msgColor );
-				gc.GetTextExtent( 0, w, h, NeutBurnPoisonString );
-				x = (width * 0.5) - (w * 0.5);
-				DrawFadedText( gc, x, cury, msgColor, NeutBurnPoisonString );
-				break;
-			case Player.MPMSG_TurretInv:
-				str = TurretInvincibleString;
-				TopCentralMessage( gc, str, msgColor );
-				break;
-			case Player.MPMSG_CameraInv:
-				str = CameraInvincibleString;
-				TopCentralMessage( gc, str, msgColor );
-				break;
-			case Player.MPMSG_CloseKills:
-				if ( Player.mpMsgOptionalParam > 1 )
-					str = OnlyString $ Player.mpMsgOptionalParam $ KillsToGoString;
-				else
-					str = OnlyString $ Player.mpMsgOptionalParam $ KillToGoString;
-				if ( Player.mpMsgOptionalString ~= "Tied" )	// Should only happen in a team game
-					str = str $ TiedMatchString;
-				else
-					str = str $ Player.mpMsgOptionalString $ WillWinMatchString;
-				TopCentralMessage( gc, str, msgColor );
-				break;
-			case Player.MPMSG_TimeNearEnd:
-				if ( Player.mpMsgOptionalParam > 1 )
-					str = LessThanXString1 $ Player.mpMsgOptionalParam $ LessThanXString2;
-				else
-					str = LessThanMinuteString;
+        switch( Player.mpMsgCode )
+        {
+            case Player.MPMSG_TeamUnatco:
+                str = msgTeamUnatco;
+                cury = TopCentralMessage( gc, str, msgColor );
+                if ( keyTalk ~= KeyNotBoundString )
+                    RefreshMultiplayerKeys();
+                str = UseString $ keyTalk $ TalkString;
+                gc.GetTextExtent( 0, w, h, str );
+                cury += h;
+                DrawFadedText( gc, (width * 0.5) - (w * 0.5), cury, msgColor, str );
+                if ( TeamDMGame(Player.DXGame) != None )
+                {
+                    cury += h;
+                    if ( keyTeamTalk ~= KeyNotBoundString )
+                        RefreshMultiplayerKeys();
+                    str = UseString $ keyTeamTalk $ TeamTalkString;
+                    gc.GetTextExtent( 0, w, h, str );
+                    DrawFadedText( gc, (width * 0.5) - (w * 0.5), cury, msgColor, str );
+                }
+                break;
+            case Player.MPMSG_TeamNsf:
+                str = msgTeamNsf;
+                cury = TopCentralMessage( gc, str, msgColor );
+                if ( keyTalk ~= KeyNotBoundString )
+                    RefreshMultiplayerKeys();
+                str = UseString $ keyTalk $ TalkString;
+                gc.GetTextExtent( 0, w, h, str );
+                cury += h;
+                DrawFadedText( gc, (width * 0.5) - (w * 0.5), cury, msgColor, str );
+                if ( TeamDMGame(Player.DXGame) != None )
+                {
+                    cury += h;
+                    if ( keyTeamTalk ~= KeyNotBoundString )
+                        RefreshMultiplayerKeys();
+                    str = UseString $ keyTeamTalk $ TeamTalkString;
+                    gc.GetTextExtent( 0, w, h, str );
+                    DrawFadedText( gc, (width * 0.5) - (w * 0.5), cury, msgColor, str );
+                }
+                break;
+            case Player.MPMSG_TeamHit:
+                msgColor = colRed;
+                str = msgTeammateHit;
+                TopCentralMessage( gc, str, msgColor );
+                break;
+            case Player.MPMSG_TeamSpot:
+                str = SpottedTeamString;
+                TopCentralMessage( gc, str, msgColor );
+                break;
+            case Player.MPMSG_FirstPoison:
+                str = YouArePoisonedString;
+                cury = TopCentralMessage( gc, str, msgColor );
+                gc.GetTextExtent( 0, w, h, NeutBurnPoisonString );
+                x = (width * 0.5) - (w * 0.5);
+                DrawFadedText( gc, x, cury, msgColor, NeutBurnPoisonString );
+                break;
+            case Player.MPMSG_FirstBurn:
+                str = YouAreBurnedString;
+                cury = TopCentralMessage( gc, str, msgColor );
+                gc.GetTextExtent( 0, w, h, NeutBurnPoisonString );
+                x = (width * 0.5) - (w * 0.5);
+                DrawFadedText( gc, x, cury, msgColor, NeutBurnPoisonString );
+                break;
+            case Player.MPMSG_TurretInv:
+                str = TurretInvincibleString;
+                TopCentralMessage( gc, str, msgColor );
+                break;
+            case Player.MPMSG_CameraInv:
+                str = CameraInvincibleString;
+                TopCentralMessage( gc, str, msgColor );
+                break;
+            case Player.MPMSG_CloseKills:
+                if ( Player.mpMsgOptionalParam > 1 )
+                    str = OnlyString $ Player.mpMsgOptionalParam $ KillsToGoString;
+                else
+                    str = OnlyString $ Player.mpMsgOptionalParam $ KillToGoString;
+                if ( Player.mpMsgOptionalString ~= "Tied" )    // Should only happen in a team game
+                    str = str $ TiedMatchString;
+                else
+                    str = str $ Player.mpMsgOptionalString $ WillWinMatchString;
+                TopCentralMessage( gc, str, msgColor );
+                break;
+            case Player.MPMSG_TimeNearEnd:
+                if ( Player.mpMsgOptionalParam > 1 )
+                    str = LessThanXString1 $ Player.mpMsgOptionalParam $ LessThanXString2;
+                else
+                    str = LessThanMinuteString;
 
-				if ( Player.mpMsgOptionalString ~= "Tied" )	// Should only happen in a team game
-					str = str $ TiedMatchString;
-				else
-					str = str $ Player.mpMsgOptionalString $ LeadsMatchString;
-				TopCentralMessage( gc, str, msgColor );
-				break;
-			case Player.MPMSG_LostLegs:
-				str = LostLegsString;
-				TopCentralMessage( gc, str, msgColor );
-				break;
-			case Player.MPMSG_DropItem:
-				if ( keyDropItem ~= KeyNotBoundString )
-					RefreshMultiplayerKeys();
-				str = DropItem1String $ keyDropItem $ DropItem2String;
-				TopCentralMessage( gc, str, msgColor );
-				break;
-			case Player.MPMSG_KilledTeammate:
-				msgColor = colRed;
-				TopCentralMessage( gc, YouKilledTeammateString, msgColor );
-				break;
-			case Player.MPMSG_TeamLAM:
-				str = TeamLAMString;
-				TopCentralMessage( gc, str, msgColor );
-				break;
-			case Player.MPMSG_TeamComputer:
-				str = TeamComputerString;
-				TopCentralMessage( gc, str, msgColor );
-				break;
-			case Player.MPMSG_NoCloakWeapon:
-				str = NoCloakWeaponString;
-				TopCentralMessage( gc, str, msgColor );
-				break;
-			case Player.MPMSG_TeamHackTurret:
-				str = TeamHackTurretString;
-				TopCentralMessage( gc, str, msgColor );
-				break;
-		}
-		gc.SetTextColor(colWhite);
-	}
-	if ( Player.Level.Timeseconds < targetPlayerTime )
-	{
-		gc.SetFont(Font'FontMenuSmall');
-		gc.GetTextExtent(0, w, h, targetPlayerName $ targetPlayerHealthString $ targetPlayerLocationString);
-		gc.SetTextColor(targetPlayerColor);
-		x = width * targetPlayerXMul - (w*0.5);
-		if ( x < 1) x = 1;
-		y = height * targetPlayerYMul;
-		gc.DrawText( x, y, w, h, targetPlayerName $ targetPlayerHealthString $ targetPlayerLocationString);
-		if (( targetOutOfRange ) && ( targetRangeTime > Player.Level.Timeseconds ))
-		{
-			gc.GetTextExtent(0, w, h, OutOfRangeString);
-			x = (width * 0.5) - (w*0.5);
-			y = (height * 0.5) - (h * 3.0);
-			gc.DrawText( x, y, w, h, OutOfRangeString );
-		}
-		gc.SetTextColor(colWhite);
-	}
-	weap = DeusExWeapon(Player.inHand);
-	if (( weap != None ) && ( weap.AmmoLeftInClip() == 0 ) && (weap.NumClips() == 0) )
-	{
-		if ( weap.IsA('WeaponGrenade') ||
-			  weap.IsA('WeaponShuriken') ||
-			  weap.IsA('WeaponHideAGun') ||
-			  weap.IsA('WeaponLAW'))
-		{
-		}
-		else
-		{
-			if ( Player.Level.Timeseconds < OutOfAmmoTime )
-			{
-				gc.SetFont(Font'FontMenuTitle');
-				gc.GetTextExtent( 0, w, h, OutOfAmmoString );
-				gc.SetTextColor(colRed);
-				x = (width*0.5) - (w*0.5);
-				y = (height*0.5) - (h*5.0);
-				gc.DrawText( x, y, w, h, OutOfAmmoString );
-			}
-			if ( Player.Level.Timeseconds-OutOfAmmoTime > 0.33 )
-				OutOfAmmoTime = Player.Level.Timeseconds + 1.0;
-		}
-	}
+                if ( Player.mpMsgOptionalString ~= "Tied" )    // Should only happen in a team game
+                    str = str $ TiedMatchString;
+                else
+                    str = str $ Player.mpMsgOptionalString $ LeadsMatchString;
+                TopCentralMessage( gc, str, msgColor );
+                break;
+            case Player.MPMSG_LostLegs:
+                str = LostLegsString;
+                TopCentralMessage( gc, str, msgColor );
+                break;
+            case Player.MPMSG_DropItem:
+                if ( keyDropItem ~= KeyNotBoundString )
+                    RefreshMultiplayerKeys();
+                str = DropItem1String $ keyDropItem $ DropItem2String;
+                TopCentralMessage( gc, str, msgColor );
+                break;
+            case Player.MPMSG_KilledTeammate:
+                msgColor = colRed;
+                TopCentralMessage( gc, YouKilledTeammateString, msgColor );
+                break;
+            case Player.MPMSG_TeamLAM:
+                str = TeamLAMString;
+                TopCentralMessage( gc, str, msgColor );
+                break;
+            case Player.MPMSG_TeamComputer:
+                str = TeamComputerString;
+                TopCentralMessage( gc, str, msgColor );
+                break;
+            case Player.MPMSG_NoCloakWeapon:
+                str = NoCloakWeaponString;
+                TopCentralMessage( gc, str, msgColor );
+                break;
+            case Player.MPMSG_TeamHackTurret:
+                str = TeamHackTurretString;
+                TopCentralMessage( gc, str, msgColor );
+                break;
+        }
+        gc.SetTextColor(colWhite);
+    }
+    if ( Player.Level.Timeseconds < targetPlayerTime )
+    {
+        gc.SetFont(Font'FontMenuSmall');
+        gc.GetTextExtent(0, w, h, targetPlayerName $ targetPlayerHealthString $ targetPlayerLocationString);
+        gc.SetTextColor(targetPlayerColor);
+        x = width * targetPlayerXMul - (w*0.5);
+        if ( x < 1) x = 1;
+        y = height * targetPlayerYMul;
+        gc.DrawText( x, y, w, h, targetPlayerName $ targetPlayerHealthString $ targetPlayerLocationString);
+        if (( targetOutOfRange ) && ( targetRangeTime > Player.Level.Timeseconds ))
+        {
+            gc.GetTextExtent(0, w, h, OutOfRangeString);
+            x = (width * 0.5) - (w*0.5);
+            y = (height * 0.5) - (h * 3.0);
+            gc.DrawText( x, y, w, h, OutOfRangeString );
+        }
+        gc.SetTextColor(colWhite);
+    }
+    weap = DeusExWeapon(Player.inHand);
+    if (( weap != None ) && ( weap.AmmoLeftInClip() == 0 ) && (weap.NumClips() == 0) )
+    {
+        if ( weap.IsA('WeaponGrenade') ||
+              weap.IsA('WeaponShuriken') ||
+              weap.IsA('WeaponHideAGun') ||
+              weap.IsA('WeaponLAW'))
+        {
+        }
+        else
+        {
+            if ( Player.Level.Timeseconds < OutOfAmmoTime )
+            {
+                gc.SetFont(Font'FontMenuTitle');
+                gc.GetTextExtent( 0, w, h, OutOfAmmoString );
+                gc.SetTextColor(colRed);
+                x = (width*0.5) - (w*0.5);
+                y = (height*0.5) - (h*5.0);
+                gc.DrawText( x, y, w, h, OutOfAmmoString );
+            }
+            if ( Player.Level.Timeseconds-OutOfAmmoTime > 0.33 )
+                OutOfAmmoTime = Player.Level.Timeseconds + 1.0;
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -720,131 +720,131 @@ function DrawMiscStatusMessages( GC gc )
 
 function GetTargetReticleColor( Actor target, out Color xcolor )
 {
-	local DeusExPlayer safePlayer;
-	local AutoTurret turret;
-	local bool bDM, bTeamDM;
-	local Vector dist;
+    local DeusExPlayer safePlayer;
+    local AutoTurret turret;
+    local bool bDM, bTeamDM;
+    local Vector dist;
    local float SightDist;
-	local DeusExWeapon w;
-	local int team;
-	local String titleString;
+    local DeusExWeapon w;
+    local int team;
+    local String titleString;
 
-	bDM = (DeathMatchGame(player.DXGame) != None);
-	bTeamDM = (TeamDMGame(player.DXGame) != None);
+    bDM = (DeathMatchGame(player.DXGame) != None);
+    bTeamDM = (TeamDMGame(player.DXGame) != None);
 
-	if ( target.IsA('ScriptedPawn') )
-	{
-		if (ScriptedPawn(target).CheckPawnAllianceType(Player) == ALLIANCE_Hostile)
-			xcolor = colRed;
-		else if(ScriptedPawn(target).CheckPawnAllianceType(Player) == ALLIANCE_Friendly) // || player.AugmentationSystem.GetClassLevel(class'AugIFF') < 1)
-			xcolor = colGreen;
-		else
-		{
-			xcolor.R = 80;
-			xcolor.G = 80;
-			xcolor.B = 255;
-		}
-	}
-	else if ( Player.Level.NetMode != NM_Standalone )	// Only do the rest in multiplayer
-	{
-		if ( target.IsA('DeusExPlayer') && (target != player) )	// Other players IFF
-		{
-			if ( bTeamDM && (TeamDMGame(player.DXGame).ArePlayersAllied(DeusExPlayer(target),player)) )
-			{ 
-				xcolor = colGreen;
-				if ( (Player.mpMsgFlags & Player.MPFLAG_FirstSpot) != Player.MPFLAG_FirstSpot )
-					Player.MultiplayerNotifyMsg( Player.MPMSG_TeamSpot );
-			}
-			else
-				xcolor = colRed;
+    if ( target.IsA('ScriptedPawn') )
+    {
+        if (ScriptedPawn(target).CheckPawnAllianceType(Player) == ALLIANCE_Hostile)
+            xcolor = colRed;
+        else if(ScriptedPawn(target).CheckPawnAllianceType(Player) == ALLIANCE_Friendly) // || player.AugmentationSystem.GetClassLevel(class'AugIFF') < 1)
+            xcolor = colGreen;
+        else
+        {
+            xcolor.R = 80;
+            xcolor.G = 80;
+            xcolor.B = 255;
+        }
+    }
+    else if ( Player.Level.NetMode != NM_Standalone )    // Only do the rest in multiplayer
+    {
+        if ( target.IsA('DeusExPlayer') && (target != player) )    // Other players IFF
+        {
+            if ( bTeamDM && (TeamDMGame(player.DXGame).ArePlayersAllied(DeusExPlayer(target),player)) )
+            { 
+                xcolor = colGreen;
+                if ( (Player.mpMsgFlags & Player.MPFLAG_FirstSpot) != Player.MPFLAG_FirstSpot )
+                    Player.MultiplayerNotifyMsg( Player.MPMSG_TeamSpot );
+            }
+            else
+                xcolor = colRed;
 
          SightDist = VSize(target.Location - Player.Location);
 
-			if ( ( bTeamDM && (TeamDMGame(player.DXGame).ArePlayersAllied(DeusExPlayer(target),player))) ||
-				  (target.Style != STY_Translucent) || (bVisionActive && (Sightdist <= visionLevelvalue)) )              
-			{
-				targetPlayerName = DeusExPlayer(target).PlayerReplicationInfo.PlayerName;
+            if ( ( bTeamDM && (TeamDMGame(player.DXGame).ArePlayersAllied(DeusExPlayer(target),player))) ||
+                  (target.Style != STY_Translucent) || (bVisionActive && (Sightdist <= visionLevelvalue)) )              
+            {
+                targetPlayerName = DeusExPlayer(target).PlayerReplicationInfo.PlayerName;
             // DEUS_EX AMSD Show health of enemies with the target active.
             if (bTargetActive)
                TargetPlayerHealthString = "(" $ int(100 * (DeusExPlayer(target).Health / Float(DeusExPlayer(target).Default.Health))) $ "%)";
-				targetOutOfRange = False;
-				w = DeusExWeapon(player.Weapon);
-				if (( w != None ) && ( xcolor != colGreen ))
-				{
-					dist = player.Location - target.Location;
-					if ( VSize(dist) > w.maxRange ) 
-					{
-						if (!(( WeaponAssaultGun(w) != None ) && ( Ammo20mm(WeaponAssaultGun(w).AmmoType) != None )))
-						{
-							targetRangeTime = Player.Level.Timeseconds + 0.1;
-							targetOutOfRange = True;
-						}
-					}
-				}
-				targetPlayerTime = Player.Level.Timeseconds + targetPlayerDelay;
-				targetPlayerColor = xcolor;
-			}
-			else
-				xcolor = colWhite;	// cloaked enemy
-		}
-		else if (target.IsA('ThrownProjectile'))	// Grenades IFF
-		{
-			if ( ThrownProjectile(target).bDisabled )
-				xcolor = colWhite;
-			else if ( (bTeamDM && (ThrownProjectile(target).team == player.PlayerReplicationInfo.team)) || 
-				(player == DeusExPlayer(target.Owner)) )
-				xcolor = colGreen;
-			else
-				xcolor = colRed;
-		}
-		else if ( target.IsA('AutoTurret') || target.IsA('AutoTurretGun') ) // Autoturrets IFF
-		{
-			if ( target.IsA('AutoTurretGun') )
-			{
-				team = AutoTurretGun(target).team;
-				titleString = AutoTurretGun(target).titleString;
-			}
-			else
-			{
-				team = AutoTurret(target).team;
-				titleString = AutoTurret(target).titleString;
-			}
-			if ( (bTeamDM && (player.PlayerReplicationInfo.team == team)) ||
-				  (!bTeamDM && (player.PlayerReplicationInfo.PlayerID == team)) )
-				xcolor = colGreen;
-			else if (team == -1)
-				xcolor = colWhite;
-			else
-				xcolor = colRed;
+                targetOutOfRange = False;
+                w = DeusExWeapon(player.Weapon);
+                if (( w != None ) && ( xcolor != colGreen ))
+                {
+                    dist = player.Location - target.Location;
+                    if ( VSize(dist) > w.maxRange ) 
+                    {
+                        if (!(( WeaponAssaultGun(w) != None ) && ( Ammo20mm(WeaponAssaultGun(w).AmmoType) != None )))
+                        {
+                            targetRangeTime = Player.Level.Timeseconds + 0.1;
+                            targetOutOfRange = True;
+                        }
+                    }
+                }
+                targetPlayerTime = Player.Level.Timeseconds + targetPlayerDelay;
+                targetPlayerColor = xcolor;
+            }
+            else
+                xcolor = colWhite;    // cloaked enemy
+        }
+        else if (target.IsA('ThrownProjectile'))    // Grenades IFF
+        {
+            if ( ThrownProjectile(target).bDisabled )
+                xcolor = colWhite;
+            else if ( (bTeamDM && (ThrownProjectile(target).team == player.PlayerReplicationInfo.team)) || 
+                (player == DeusExPlayer(target.Owner)) )
+                xcolor = colGreen;
+            else
+                xcolor = colRed;
+        }
+        else if ( target.IsA('AutoTurret') || target.IsA('AutoTurretGun') ) // Autoturrets IFF
+        {
+            if ( target.IsA('AutoTurretGun') )
+            {
+                team = AutoTurretGun(target).team;
+                titleString = AutoTurretGun(target).titleString;
+            }
+            else
+            {
+                team = AutoTurret(target).team;
+                titleString = AutoTurret(target).titleString;
+            }
+            if ( (bTeamDM && (player.PlayerReplicationInfo.team == team)) ||
+                  (!bTeamDM && (player.PlayerReplicationInfo.PlayerID == team)) )
+                xcolor = colGreen;
+            else if (team == -1)
+                xcolor = colWhite;
+            else
+                xcolor = colRed;
 
-			targetPlayerName = titleString;
-			targetOutOfRange = False;
-			targetPlayerTime = Player.Level.Timeseconds + targetPlayerDelay;
-			targetPlayerColor = xcolor;
-		}
-		else if ( target.IsA('ComputerSecurity'))
-		{
-			if ( ComputerSecurity(target).team == -1 )
-				xcolor = colWhite;
-			else if ((bTeamDM && (ComputerSecurity(target).team==player.PlayerReplicationInfo.team)) ||
-						 (bDM && (ComputerSecurity(target).team==player.PlayerReplicationInfo.PlayerID)))
-				xcolor = colGreen;
-			else
-				xcolor = colRed;
-		}
-		else if ( target.IsA('SecurityCamera'))
-		{
+            targetPlayerName = titleString;
+            targetOutOfRange = False;
+            targetPlayerTime = Player.Level.Timeseconds + targetPlayerDelay;
+            targetPlayerColor = xcolor;
+        }
+        else if ( target.IsA('ComputerSecurity'))
+        {
+            if ( ComputerSecurity(target).team == -1 )
+                xcolor = colWhite;
+            else if ((bTeamDM && (ComputerSecurity(target).team==player.PlayerReplicationInfo.team)) ||
+                         (bDM && (ComputerSecurity(target).team==player.PlayerReplicationInfo.PlayerID)))
+                xcolor = colGreen;
+            else
+                xcolor = colRed;
+        }
+        else if ( target.IsA('SecurityCamera'))
+        {
          if ( !SecurityCamera(target).bActive )
             xcolor = colWhite;
-			else if ( SecurityCamera(target).team == -1 )
-				xcolor = colWhite;
-			else if ((bTeamDM && (SecurityCamera(target).team==player.PlayerReplicationInfo.team)) ||
-						 (bDM && (SecurityCamera(target).team==player.PlayerReplicationInfo.PlayerID)))
-				xcolor = colGreen;
-			else
-				xcolor = colRed;
-		}
-	}
+            else if ( SecurityCamera(target).team == -1 )
+                xcolor = colWhite;
+            else if ((bTeamDM && (SecurityCamera(target).team==player.PlayerReplicationInfo.team)) ||
+                         (bDM && (SecurityCamera(target).team==player.PlayerReplicationInfo.PlayerID)))
+                xcolor = colGreen;
+            else
+                xcolor = colRed;
+        }
+    }
 }
 
 
@@ -854,351 +854,351 @@ function GetTargetReticleColor( Actor target, out Color xcolor )
 
 function DrawTargetAugmentation(GC gc)
 {
-	local String str;
-	local Actor target;
-	local float boxCX, boxCY, boxTLX, boxTLY, boxBRX, boxBRY, boxW, boxH;
-	local float x, y, w, h, mult;
-	local Vector v1, v2;
-	local int i, j, k;
-	local DeusExWeapon weapon;
-	local bool bUseOldTarget;
-	local Color crossColor;
-	local DeusExPlayer own;
-	local vector AimLocation;
-	local int AimBodyPart;
+    local String str;
+    local Actor target;
+    local float boxCX, boxCY, boxTLX, boxTLY, boxBRX, boxBRY, boxW, boxH;
+    local float x, y, w, h, mult;
+    local Vector v1, v2;
+    local int i, j, k;
+    local DeusExWeapon weapon;
+    local bool bUseOldTarget;
+    local Color crossColor;
+    local DeusExPlayer own;
+    local vector AimLocation;
+    local int AimBodyPart;
 
 
-	crossColor.R = 255; crossColor.G = 255; crossColor.B = 255;
+    crossColor.R = 255; crossColor.G = 255; crossColor.B = 255;
 
-	// check 500 feet in front of the player
-	target = TraceLOS(8000,AimLocation);
+    // check 500 feet in front of the player
+    target = TraceLOS(8000,AimLocation);
 
-	targetplayerhealthstring = "";
-	targetplayerlocationstring = "";
+    targetplayerhealthstring = "";
+    targetplayerlocationstring = "";
 
-	if ( target != None )
-	{
-		GetTargetReticleColor( target, crossColor );
+    if ( target != None )
+    {
+        GetTargetReticleColor( target, crossColor );
 
-		if ((DeusExPlayer(target) != None) && (bTargetActive))
-		{
-			AimBodyPart = DeusExPlayer(target).GetMPHitLocation(AimLocation);
-			if (AimBodyPart == 1)
-				TargetPlayerLocationString = "("$msgHead$")";
-			else if ((AimBodyPart == 2) || (AimBodyPart == 5) || (AimBodyPart == 6))
-				TargetPlayerLocationString = "("$msgTorso$")";
-			else if ((AimBodyPart == 3) || (AimBodyPart == 4))
-				TargetPlayerLocationString = "("$msgLegs$")";
-		}
+        if ((DeusExPlayer(target) != None) && (bTargetActive))
+        {
+            AimBodyPart = DeusExPlayer(target).GetMPHitLocation(AimLocation);
+            if (AimBodyPart == 1)
+                TargetPlayerLocationString = "("$msgHead$")";
+            else if ((AimBodyPart == 2) || (AimBodyPart == 5) || (AimBodyPart == 6))
+                TargetPlayerLocationString = "("$msgTorso$")";
+            else if ((AimBodyPart == 3) || (AimBodyPart == 4))
+                TargetPlayerLocationString = "("$msgLegs$")";
+        }
 
-		weapon = DeusExWeapon(Player.Weapon);
-		if ((weapon != None) && !weapon.bHandToHand && !bUseOldTarget)
-		{
-			// if the target is out of range, don't draw the reticle
-			if (weapon.MaxRange >= VSize(target.Location - Player.Location))
-			{
-				w = width;
-				h = height;
-				x = int(w * 0.5)-1;
-				y = int(h * 0.5)-1;
+        weapon = DeusExWeapon(Player.Weapon);
+        if ((weapon != None) && !weapon.bHandToHand && !bUseOldTarget)
+        {
+            // if the target is out of range, don't draw the reticle
+            if (weapon.MaxRange >= VSize(target.Location - Player.Location))
+            {
+                w = width;
+                h = height;
+                x = int(w * 0.5)-1;
+                y = int(h * 0.5)-1;
 
-				// scale based on screen resolution - default is 640x480
-				//mult = FClamp(weapon.currentAccuracy * 80.0 * (width/640.0), corner, 80.0);
+                // scale based on screen resolution - default is 640x480
+                //mult = FClamp(weapon.currentAccuracy * 80.0 * (width/640.0), corner, 80.0);
 
-				//== A value of 60 will more accurately reflect the extent of weapon spread
-				//==  so that the edges of the reticle define the outer extent of the spread
-				mult = FClamp(weapon.currentAccuracy * 60.0 * (width/640.0), corner, 60.0);
+                //== A value of 60 will more accurately reflect the extent of weapon spread
+                //==  so that the edges of the reticle define the outer extent of the spread
+                mult = FClamp(weapon.currentAccuracy * 60.0 * (width/640.0), corner, 60.0);
 
-				// make sure it's not too close to the center unless you have a perfect accuracy
-				mult = FMax(mult, corner+4.0);
-				if (weapon.currentAccuracy == 0.0)
-					mult = corner;
+                // make sure it's not too close to the center unless you have a perfect accuracy
+                mult = FMax(mult, corner+4.0);
+                if (weapon.currentAccuracy == 0.0)
+                    mult = corner;
 
-				// draw the drop shadowed reticle
-				gc.SetTileColorRGB(0,0,0);
-				for (i=1; i>=0; i--)
-				{
-					gc.DrawBox(x+i, y-mult+i, 1, corner, 0, 0, 1, Texture'Solid');
-					gc.DrawBox(x+i, y+mult-corner+i, 1, corner, 0, 0, 1, Texture'Solid');
-					gc.DrawBox(x-(corner-1)/2+i, y-mult+i, corner, 1, 0, 0, 1, Texture'Solid');
-					gc.DrawBox(x-(corner-1)/2+i, y+mult+i, corner, 1, 0, 0, 1, Texture'Solid');
+                // draw the drop shadowed reticle
+                gc.SetTileColorRGB(0,0,0);
+                for (i=1; i>=0; i--)
+                {
+                    gc.DrawBox(x+i, y-mult+i, 1, corner, 0, 0, 1, Texture'Solid');
+                    gc.DrawBox(x+i, y+mult-corner+i, 1, corner, 0, 0, 1, Texture'Solid');
+                    gc.DrawBox(x-(corner-1)/2+i, y-mult+i, corner, 1, 0, 0, 1, Texture'Solid');
+                    gc.DrawBox(x-(corner-1)/2+i, y+mult+i, corner, 1, 0, 0, 1, Texture'Solid');
 
-					gc.DrawBox(x-mult+i, y+i, corner, 1, 0, 0, 1, Texture'Solid');
-					gc.DrawBox(x+mult-corner+i, y+i, corner, 1, 0, 0, 1, Texture'Solid');
-					gc.DrawBox(x-mult+i, y-(corner-1)/2+i, 1, corner, 0, 0, 1, Texture'Solid');
-					gc.DrawBox(x+mult+i, y-(corner-1)/2+i, 1, corner, 0, 0, 1, Texture'Solid');
+                    gc.DrawBox(x-mult+i, y+i, corner, 1, 0, 0, 1, Texture'Solid');
+                    gc.DrawBox(x+mult-corner+i, y+i, corner, 1, 0, 0, 1, Texture'Solid');
+                    gc.DrawBox(x-mult+i, y-(corner-1)/2+i, 1, corner, 0, 0, 1, Texture'Solid');
+                    gc.DrawBox(x+mult+i, y-(corner-1)/2+i, 1, corner, 0, 0, 1, Texture'Solid');
 
-					gc.SetTileColor(crossColor);
-				}
-			}
-		}
-		// movers are invalid targets for the aug
-		if (target.IsA('DeusExMover'))
-			target = None;
-	}
+                    gc.SetTileColor(crossColor);
+                }
+            }
+        }
+        // movers are invalid targets for the aug
+        if (target.IsA('DeusExMover'))
+            target = None;
+    }
 
-	// let there be a 0.5 second delay before losing a target
-	if (target == None)
-	{
-		if ((Player.Level.TimeSeconds - lastTargetTime < 0.5) && IsActorValid(lastTarget))
-		{
-			target = lastTarget;
-			bUseOldTarget = True;
-		}
-		else
-		{
-			RemoveActorRef(lastTarget);
-			lastTarget = None;
-		}
-	}
-	else
-	{
-		lastTargetTime = Player.Level.TimeSeconds;
-		bUseOldTarget = False;
-		if (lastTarget != target)
-		{
-			RemoveActorRef(lastTarget);
-			lastTarget = target;
-			AddActorRef(lastTarget);
-		}
-	}
+    // let there be a 0.5 second delay before losing a target
+    if (target == None)
+    {
+        if ((Player.Level.TimeSeconds - lastTargetTime < 0.5) && IsActorValid(lastTarget))
+        {
+            target = lastTarget;
+            bUseOldTarget = True;
+        }
+        else
+        {
+            RemoveActorRef(lastTarget);
+            lastTarget = None;
+        }
+    }
+    else
+    {
+        lastTargetTime = Player.Level.TimeSeconds;
+        bUseOldTarget = False;
+        if (lastTarget != target)
+        {
+            RemoveActorRef(lastTarget);
+            lastTarget = target;
+            AddActorRef(lastTarget);
+        }
+    }
 
-	if (target != None)
-	{
-		// draw a cornered targetting box
-		v1.X = target.CollisionRadius;
-		v1.Y = target.CollisionRadius;
-		v1.Z = target.CollisionHeight;
+    if (target != None)
+    {
+        // draw a cornered targetting box
+        v1.X = target.CollisionRadius;
+        v1.Y = target.CollisionRadius;
+        v1.Z = target.CollisionHeight;
 
-		if (ConvertVectorToCoordinates(target.Location, boxCX, boxCY))
-		{
-			boxTLX = boxCX;
-			boxTLY = boxCY;
-			boxBRX = boxCX;
-			boxBRY = boxCY;
+        if (ConvertVectorToCoordinates(target.Location, boxCX, boxCY))
+        {
+            boxTLX = boxCX;
+            boxTLY = boxCY;
+            boxBRX = boxCX;
+            boxBRY = boxCY;
 
-			// get the smallest box to enclose actor
-			// modified from Scott's ActorDisplayWindow
-			for (i=-1; i<=1; i+=2)
-			{
-				for (j=-1; j<=1; j+=2)
-				{
-					for (k=-1; k<=1; k+=2)
-					{
-						v2 = v1;
-						v2.X *= i;
-						v2.Y *= j;
-						v2.Z *= k;
-						v2.X += target.Location.X;
-						v2.Y += target.Location.Y;
-						v2.Z += target.Location.Z;
+            // get the smallest box to enclose actor
+            // modified from Scott's ActorDisplayWindow
+            for (i=-1; i<=1; i+=2)
+            {
+                for (j=-1; j<=1; j+=2)
+                {
+                    for (k=-1; k<=1; k+=2)
+                    {
+                        v2 = v1;
+                        v2.X *= i;
+                        v2.Y *= j;
+                        v2.Z *= k;
+                        v2.X += target.Location.X;
+                        v2.Y += target.Location.Y;
+                        v2.Z += target.Location.Z;
 
-						if (ConvertVectorToCoordinates(v2, x, y))
-						{
-							boxTLX = FMin(boxTLX, x);
-							boxTLY = FMin(boxTLY, y);
-							boxBRX = FMax(boxBRX, x);
-							boxBRY = FMax(boxBRY, y);
-						}
-					}
-				}
-			}
+                        if (ConvertVectorToCoordinates(v2, x, y))
+                        {
+                            boxTLX = FMin(boxTLX, x);
+                            boxTLY = FMin(boxTLY, y);
+                            boxBRX = FMax(boxBRX, x);
+                            boxBRY = FMax(boxBRY, y);
+                        }
+                    }
+                }
+            }
 
-			boxTLX = FClamp(boxTLX, margin, width-margin);
-			boxTLY = FClamp(boxTLY, margin, height-margin);
-			boxBRX = FClamp(boxBRX, margin, width-margin);
-			boxBRY = FClamp(boxBRY, margin, height-margin);
+            boxTLX = FClamp(boxTLX, margin, width-margin);
+            boxTLY = FClamp(boxTLY, margin, height-margin);
+            boxBRX = FClamp(boxBRX, margin, width-margin);
+            boxBRY = FClamp(boxBRY, margin, height-margin);
 
-			boxW = boxBRX - boxTLX;
-			boxH = boxBRY - boxTLY;
+            boxW = boxBRX - boxTLX;
+            boxH = boxBRY - boxTLY;
 
-			if ((bTargetActive) && (Player.Level.Netmode == NM_Standalone))
-			{
-				// set the coords of the zoom window, and draw the box
-				// even if we don't have a zoom window
-				x = width/8 + margin;
-				y = height/2;
-				w = width/4;
-				h = height/4;
+            if ((bTargetActive) && (Player.Level.Netmode == NM_Standalone))
+            {
+                // set the coords of the zoom window, and draw the box
+                // even if we don't have a zoom window
+                x = width/8 + margin;
+                y = height/2;
+                w = width/4;
+                h = height/4;
 
-				DrawDropShadowBox(gc, x-w/2, y-h/2, w, h);
+                DrawDropShadowBox(gc, x-w/2, y-h/2, w, h);
 
-				boxCX = width/8 + margin;
-				boxCY = height/2;
-				boxTLX = boxCX - width/8;
-				boxTLY = boxCY - height/8;
-				boxBRX = boxCX + width/8;
-				boxBRY = boxCY + height/8;
+                boxCX = width/8 + margin;
+                boxCY = height/2;
+                boxTLX = boxCX - width/8;
+                boxTLY = boxCY - height/8;
+                boxBRX = boxCX + width/8;
+                boxBRY = boxCY + height/8;
 
-				if (targetLevel > 2 && bTargetWindowActive)
-				{
-					if (winZoom != None)
-					{
-						mult = (target.CollisionRadius + target.CollisionHeight);
-						v1 = Player.Location;
-						v1.Z += Player.BaseEyeHeight;
-						v2 = 1.5 * Player.Normal(target.Location - v1);
-						winZoom.SetViewportLocation(target.Location - mult * v2);
-						winZoom.SetWatchActor(target);
-					}
-					// window construction now happens in Tick()
-				}
-				else
-				{
-					// black out the zoom window and draw a "no image" message
-					gc.SetStyle(DSTY_Normal);
-					gc.SetTileColorRGB(0,0,0);
-					gc.DrawPattern(boxTLX, boxTLY, w, h, 0, 0, Texture'Solid');
+                if (targetLevel > 2 && bTargetWindowActive)
+                {
+                    if (winZoom != None)
+                    {
+                        mult = (target.CollisionRadius + target.CollisionHeight);
+                        v1 = Player.Location;
+                        v1.Z += Player.BaseEyeHeight;
+                        v2 = 1.5 * Player.Normal(target.Location - v1);
+                        winZoom.SetViewportLocation(target.Location - mult * v2);
+                        winZoom.SetWatchActor(target);
+                    }
+                    // window construction now happens in Tick()
+                }
+                else
+                {
+                    // black out the zoom window and draw a "no image" message
+                    gc.SetStyle(DSTY_Normal);
+                    gc.SetTileColorRGB(0,0,0);
+                    gc.DrawPattern(boxTLX, boxTLY, w, h, 0, 0, Texture'Solid');
 
-					//gc.SetTextColorRGB(255,255,255);
-					//gc.GetTextExtent(0, w, h, msgNoImage);
-					//x = boxCX - w/2;
-					//y = boxCY - h/2;
-					//gc.DrawText(x, y, w, h, msgNoImage);
-				}
+                    //gc.SetTextColorRGB(255,255,255);
+                    //gc.GetTextExtent(0, w, h, msgNoImage);
+                    //x = boxCX - w/2;
+                    //y = boxCY - h/2;
+                    //gc.DrawText(x, y, w, h, msgNoImage);
+                }
 
-				// print the name of the target above the box
-				if (target.IsA('Pawn'))
-					str = target.FamiliarName; //target.BindName;
-				else if (target.IsA('DeusExDecoration'))
-					str = DeusExDecoration(target).GetDecoName(); //itemName;
-				else if (target.IsA('DeusExProjectile'))
-					str = DeusExProjectile(target).itemName;
-				else
-					str = target.GetItemName(String(target.Class));
+                // print the name of the target above the box
+                if (target.IsA('Pawn'))
+                    str = target.FamiliarName; //target.BindName;
+                else if (target.IsA('DeusExDecoration'))
+                    str = DeusExDecoration(target).GetDecoName(); //itemName;
+                else if (target.IsA('DeusExProjectile'))
+                    str = DeusExProjectile(target).itemName;
+                else
+                    str = target.GetItemName(String(target.Class));
 
-				// print disabled robot info
-				if (target.IsA('Robot') && (Robot(target).EMPHitPoints == 0))
-					str = str $ " (" $ msgDisabled $ ")";
-				gc.SetTextColor(crossColor);
+                // print disabled robot info
+                if (target.IsA('Robot') && (Robot(target).EMPHitPoints == 0))
+                    str = str $ " (" $ msgDisabled $ ")";
+                gc.SetTextColor(crossColor);
 
-				// print the range to target
-				mult = VSize(target.Location - Player.Location);
-				str = str $ CR() $ msgRange @ Int(mult/16) @ msgRangeUnits;
+                // print the range to target
+                mult = VSize(target.Location - Player.Location);
+                str = str $ CR() $ msgRange @ Int(mult/16) @ msgRangeUnits;
 
-				gc.GetTextExtent(0, w, h, str);
-				x = boxTLX + margin;
-				y = boxTLY - h - margin;
-				gc.DrawText(x, y, w, h, str);
+                gc.GetTextExtent(0, w, h, str);
+                x = boxTLX + margin;
+                y = boxTLY - h - margin;
+                gc.DrawText(x, y, w, h, str);
 
-				// level zero gives very basic health info
-				if (target.IsA('Pawn'))
-					mult = Float(Pawn(target).Health) / Float(Pawn(target).Default.Health);
-				else if (target.IsA('DeusExDecoration'))
-					mult = Float(DeusExDecoration(target).HitPoints) / Float(DeusExDecoration(target).Default.HitPoints);
-				else
-					mult = 1.0;
+                // level zero gives very basic health info
+                if (target.IsA('Pawn'))
+                    mult = Float(Pawn(target).Health) / Float(Pawn(target).Default.Health);
+                else if (target.IsA('DeusExDecoration'))
+                    mult = Float(DeusExDecoration(target).HitPoints) / Float(DeusExDecoration(target).Default.HitPoints);
+                else
+                    mult = 1.0;
 
-				if (targetLevel == 0)
-				{
-					// level zero only gives us general health readings
-					if (mult >= 0.66)
-					{
-						str = msgHigh;
-						mult = 1.0;
-					}
-					else if (mult >= 0.33)
-					{
-						str = msgMedium;
-						mult = 0.5;
-					}
-					else
-					{
-						str = msgLow;
-						mult = 0.05;
-					}
+                if (targetLevel == 0)
+                {
+                    // level zero only gives us general health readings
+                    if (mult >= 0.66)
+                    {
+                        str = msgHigh;
+                        mult = 1.0;
+                    }
+                    else if (mult >= 0.33)
+                    {
+                        str = msgMedium;
+                        mult = 0.5;
+                    }
+                    else
+                    {
+                        str = msgLow;
+                        mult = 0.05;
+                    }
 
-					str = str @ msgHealth;
-				}
-				else
-				{
-					// level one gives exact health readings
-					str = Int(mult * 100.0) $ msgPercent;
-					if (target.IsA('Pawn') && !target.IsA('Robot') && !target.IsA('Animal'))
-					{
-						x = mult;		// save this for color calc
-						str = str @ msgOverall;
-						mult = Float(Pawn(target).HealthHead) / Float(Pawn(target).Default.HealthHead);
-						str = str $ CR() $ Int(mult * 100.0) $ msgPercent @ msgHead;
-						mult = Float(Pawn(target).HealthTorso) / Float(Pawn(target).Default.HealthTorso);
-						str = str $ CR() $ Int(mult * 100.0) $ msgPercent @ msgTorso;
-						mult = Float(Pawn(target).HealthArmLeft) / Float(Pawn(target).Default.HealthArmLeft);
-						str = str $ CR() $ Int(mult * 100.0) $ msgPercent @ msgLeftArm;
-						mult = Float(Pawn(target).HealthArmRight) / Float(Pawn(target).Default.HealthArmRight);
-						str = str $ CR() $ Int(mult * 100.0) $ msgPercent @ msgRightArm;
-						mult = Float(Pawn(target).HealthLegLeft) / Float(Pawn(target).Default.HealthLegLeft);
-						str = str $ CR() $ Int(mult * 100.0) $ msgPercent @ msgLeftLeg;
-						mult = Float(Pawn(target).HealthLegRight) / Float(Pawn(target).Default.HealthLegRight);
-						str = str $ CR() $ Int(mult * 100.0) $ msgPercent @ msgRightLeg;
-						mult = x;
-					}
-					else
-					{
-						str = str @ msgHealth;
-					}
-				}
+                    str = str @ msgHealth;
+                }
+                else
+                {
+                    // level one gives exact health readings
+                    str = Int(mult * 100.0) $ msgPercent;
+                    if (target.IsA('Pawn') && !target.IsA('Robot') && !target.IsA('Animal'))
+                    {
+                        x = mult;        // save this for color calc
+                        str = str @ msgOverall;
+                        mult = Float(Pawn(target).HealthHead) / Float(Pawn(target).Default.HealthHead);
+                        str = str $ CR() $ Int(mult * 100.0) $ msgPercent @ msgHead;
+                        mult = Float(Pawn(target).HealthTorso) / Float(Pawn(target).Default.HealthTorso);
+                        str = str $ CR() $ Int(mult * 100.0) $ msgPercent @ msgTorso;
+                        mult = Float(Pawn(target).HealthArmLeft) / Float(Pawn(target).Default.HealthArmLeft);
+                        str = str $ CR() $ Int(mult * 100.0) $ msgPercent @ msgLeftArm;
+                        mult = Float(Pawn(target).HealthArmRight) / Float(Pawn(target).Default.HealthArmRight);
+                        str = str $ CR() $ Int(mult * 100.0) $ msgPercent @ msgRightArm;
+                        mult = Float(Pawn(target).HealthLegLeft) / Float(Pawn(target).Default.HealthLegLeft);
+                        str = str $ CR() $ Int(mult * 100.0) $ msgPercent @ msgLeftLeg;
+                        mult = Float(Pawn(target).HealthLegRight) / Float(Pawn(target).Default.HealthLegRight);
+                        str = str $ CR() $ Int(mult * 100.0) $ msgPercent @ msgRightLeg;
+                        mult = x;
+                    }
+                    else
+                    {
+                        str = str @ msgHealth;
+                    }
+                }
 
-				gc.GetTextExtent(0, w, h, str);
-				x = boxTLX + margin;
-				y = boxTLY + margin;
-				gc.SetTextColor(GetColorScaled(mult));
-				gc.DrawText(x, y, w, h, str);
-				gc.SetTextColor(colHeaderText);
+                gc.GetTextExtent(0, w, h, str);
+                x = boxTLX + margin;
+                y = boxTLY + margin;
+                gc.SetTextColor(GetColorScaled(mult));
+                gc.DrawText(x, y, w, h, str);
+                gc.SetTextColor(colHeaderText);
 
-				if (targetLevel > 1)
-				{
-					// level two gives us weapon info as well
-					if (target.IsA('Pawn'))
-					{
-						str = msgWeapon;
-	
-						if (Pawn(target).Weapon != None)
-						{
-							//== Y|y: Display the proper weapon name.  Per Lork on the OTP forums
-							if(Pawn(target).Weapon.ItemName == class'DeusExWeapon'.Default.ItemName) //Justice: If the weapon has a name...
-								str = str @ target.GetItemName(String(Pawn(target).Weapon.Class));
-							else
-								str = str @ Pawn(target).Weapon.ItemName; //Justice: ...Use it
-						}
-						else
-							str = str @ msgNone;
+                if (targetLevel > 1)
+                {
+                    // level two gives us weapon info as well
+                    if (target.IsA('Pawn'))
+                    {
+                        str = msgWeapon;
+    
+                        if (Pawn(target).Weapon != None)
+                        {
+                            //== Y|y: Display the proper weapon name.  Per Lork on the OTP forums
+                            if(Pawn(target).Weapon.ItemName == class'DeusExWeapon'.Default.ItemName) //Justice: If the weapon has a name...
+                                str = str @ target.GetItemName(String(Pawn(target).Weapon.Class));
+                            else
+                                str = str @ Pawn(target).Weapon.ItemName; //Justice: ...Use it
+                        }
+                        else
+                            str = str @ msgNone;
 
-						gc.GetTextExtent(0, w, h, str);
-						x = boxTLX + margin;
-						y = boxBRY - h - margin;
-						gc.DrawText(x, y, w, h, str);
-					}
-				}
-			}
-			else
-			{
-				// display disabled robots
-				if (target.IsA('Robot') && (Robot(target).EMPHitPoints == 0))
-				{
-					str = msgDisabled;
-					gc.SetTextColor(crossColor);
-					gc.GetTextExtent(0, w, h, str);
-					x = boxCX - w/2;
-					y = boxTLY - h - margin;
-					gc.DrawText(x, y, w, h, str);
-				}
-			}
-		}
-	}
-	else if ((bTargetActive) && (Player.Level.NetMode == NM_Standalone))
-	{
-		if (Player.Level.TimeSeconds % 1.5 > 0.75)
-			str = msgScanning1;
-		else
-			str = msgScanning2;
-		gc.GetTextExtent(0, w, h, str);
-		x = width/2 - w/2;
-		y = (height/2 - h) - 20;
-		gc.DrawText(x, y, w, h, str);
-	}
+                        gc.GetTextExtent(0, w, h, str);
+                        x = boxTLX + margin;
+                        y = boxBRY - h - margin;
+                        gc.DrawText(x, y, w, h, str);
+                    }
+                }
+            }
+            else
+            {
+                // display disabled robots
+                if (target.IsA('Robot') && (Robot(target).EMPHitPoints == 0))
+                {
+                    str = msgDisabled;
+                    gc.SetTextColor(crossColor);
+                    gc.GetTextExtent(0, w, h, str);
+                    x = boxCX - w/2;
+                    y = boxTLY - h - margin;
+                    gc.DrawText(x, y, w, h, str);
+                }
+            }
+        }
+    }
+    else if ((bTargetActive) && (Player.Level.NetMode == NM_Standalone))
+    {
+        if (Player.Level.TimeSeconds % 1.5 > 0.75)
+            str = msgScanning1;
+        else
+            str = msgScanning2;
+        gc.GetTextExtent(0, w, h, str);
+        x = width/2 - w/2;
+        y = (height/2 - h) - 20;
+        gc.DrawText(x, y, w, h, str);
+    }
 
-	// set the crosshair colors
-	DeusExRootWindow(player.rootWindow).hud.cross.SetCrosshairColor(crossColor);
+    // set the crosshair colors
+    DeusExRootWindow(player.rootWindow).hud.cross.SetCrosshairColor(crossColor);
 }
 
 // ----------------------------------------------------------------------
@@ -1207,45 +1207,45 @@ function DrawTargetAugmentation(GC gc)
 
 function DrawVisionAugmentation(GC gc)
 {
-	local Vector loc; 
-	local float boxCX, boxCY, boxTLX, boxTLY, boxBRX, boxBRY, boxW, boxH;
-	local float dist, x, y, w, h;
+    local Vector loc; 
+    local float boxCX, boxCY, boxTLX, boxTLY, boxBRX, boxBRY, boxW, boxH;
+    local float dist, x, y, w, h;
    local float BrightDot;
-	local Actor A;
+    local Actor A;
    local float DrawGlow;
    local float RadianView;
    local float OldFlash, NewFlash;
    local vector OldFog, NewFog;
-	local Texture oldSkins[9];
+    local Texture oldSkins[9];
 
-	local float visLevelValue;
-	local int visLevel; 
+    local float visLevelValue;
+    local int visLevel; 
 
-	local bool bHidden;
+    local bool bHidden;
 
-	visLevel = -1;
-	visLevelValue = 0;
+    visLevel = -1;
+    visLevelValue = 0;
 
-	if(visLevel == -1 && visLevelValue == 0)
-	{
-		visLevel = visionLevel;
-		visLevelValue = visionLevelValue;
-	}
+    if(visLevel == -1 && visLevelValue == 0)
+    {
+        visLevel = visionLevel;
+        visLevelValue = visionLevelValue;
+    }
 
-	boxW = width/2;
-	boxH = height/2;
-	boxCX = width/2;
-	boxCY = height/2;
-	boxTLX = boxCX - boxW/2;
-	boxTLY = boxCY - boxH/2;
-	boxBRX = boxCX + boxW/2;
-	boxBRY = boxCY + boxH/2;
+    boxW = width/2;
+    boxH = height/2;
+    boxCX = width/2;
+    boxCY = height/2;
+    boxTLX = boxCX - boxW/2;
+    boxTLY = boxCY - boxH/2;
+    boxBRX = boxCX + boxW/2;
+    boxBRY = boxCY + boxH/2;
 
-	// at level one and higher, enhance heat sources (FLIR)
-	// use DrawActor to enhance NPC visibility
-	if (visLevel >= 1)
-	{
-		// shift the entire screen to dark red (except for the middle box)
+    // at level one and higher, enhance heat sources (FLIR)
+    // use DrawActor to enhance NPC visibility
+    if (visLevel >= 1)
+    {
+        // shift the entire screen to dark red (except for the middle box)
       if (player.Level.Netmode == NM_Standalone && visLevel >= 1)
       {
          gc.SetStyle(DSTY_Modulated);
@@ -1270,9 +1270,9 @@ function DrawVisionAugmentation(GC gc)
       }
       
 
-		// adjust for the player's eye height
-		loc = Player.Location;
-		loc.Z += Player.BaseEyeHeight;
+        // adjust for the player's eye height
+        loc = Player.Location;
+        loc.Z += Player.BaseEyeHeight;
 
       // DEUS_EX AMSD In multiplayer, in order to not let you snipe people hiding in the dark across the map, but not get
       // bad feedback from coloring everything green, we have to make the red non translucent so that scale glow darkens it,
@@ -1375,9 +1375,9 @@ function DrawVisionAugmentation(GC gc)
          gc.SetTextColor(colHeaderText);
          gc.DrawText(x, y, w, h, msgIRAmpActive);
       }
-	}
+    }
 
-	// shift the middle of the screen green (NV) and increase the contrast
+    // shift the middle of the screen green (NV) and increase the contrast
    // DEUS_EX AMSD In singleplayer, draw this here
    // In multiplayer, drawn earlier so you can still see through walls with it.
    if (player.Level.Netmode == NM_Standalone)
@@ -1388,10 +1388,10 @@ function DrawVisionAugmentation(GC gc)
    }
    gc.SetStyle(DSTY_Normal);
 
-	if (player.Level.NetMode == NM_Standalone)
+    if (player.Level.NetMode == NM_Standalone)
       DrawDropShadowBox(gc, boxTLX, boxTLY, boxW, boxH);
 
-	// draw text label
+    // draw text label
    if (player.Level.Netmode == NM_Standalone)
    {
       gc.GetTextExtent(0, w, h, msgLightAmpActive);
@@ -1418,14 +1418,14 @@ function bool IsHeatSource(Actor A)
          return True;
       return False;
    }
-	else if (A.IsA('DeusExCarcass'))
-		return True;   
-	else if (A.IsA('FleshFragment'))
-		return True;
-//	else if (A.IsA('LaserEmitter'))
-//		return True;
+    else if (A.IsA('DeusExCarcass'))
+        return True;   
+    else if (A.IsA('FleshFragment'))
+        return True;
+//    else if (A.IsA('LaserEmitter'))
+//        return True;
    else
-		return False;
+        return False;
 }
 
 // ----------------------------------------------------------------------
@@ -1436,21 +1436,21 @@ function bool IsHeatSource(Actor A)
 
 function Texture GetGridTexture(Texture tex)
 {
-	if (tex == None)
-		return Texture'BlackMaskTex';
-	else if (tex == Texture'BlackMaskTex')
-		return Texture'BlackMaskTex';
-	else if (tex == Texture'GrayMaskTex')
-		return Texture'BlackMaskTex';
-	else if (tex == Texture'PinkMaskTex')
-		return Texture'BlackMaskTex';
-	//Added == Y|yukichigai
-	else if (VisionTargetStatus == 3)
-		return Texture(DynamicLoadObject("Extras.Matrix_A00", class'Texture'));
-	else if (VisionTargetStatus == VISIONENEMY)         
+    if (tex == None)
+        return Texture'BlackMaskTex';
+    else if (tex == Texture'BlackMaskTex')
+        return Texture'BlackMaskTex';
+    else if (tex == Texture'GrayMaskTex')
+        return Texture'BlackMaskTex';
+    else if (tex == Texture'PinkMaskTex')
+        return Texture'BlackMaskTex';
+    //Added == Y|yukichigai
+    else if (VisionTargetStatus == 3)
+        return Texture(DynamicLoadObject("Extras.Matrix_A00", class'Texture'));
+    else if (VisionTargetStatus == VISIONENEMY)         
       return Texture'Virus_SFX';
    else if (VisionTargetStatus == VISIONALLY)
-		return Texture'Wepn_Prifle_SFX';
+        return Texture'Wepn_Prifle_SFX';
    else if (VisionTargetStatus == VISIONNEUTRAL)
       return Texture'WhiteStatic';
    else
@@ -1465,35 +1465,35 @@ function Texture GetGridTexture(Texture tex)
 
 function SetSkins(Actor actor, out Texture oldSkins[9])
 {
-	local int     i;
-	local texture curSkin;
+    local int     i;
+    local texture curSkin;
 
-	if(actor.IsA('LaserEmitter'))
-	{
-		if(LaserEmitter(actor).proxy != None)
-		{
-			oldSkins[0] = LaserEmitter(actor).proxy.Skin;
-			if(LaserEmitter(actor).proxy.bHidden)
-				oldSkins[1] = LaserEmitter(actor).proxy.Skin;
-			else
-				oldSkins[1] = Texture'BlackMaskTex';
-			LaserEmitter(actor).proxy.Skin = Texture'Effects.Virus_SFX';
-			LaserEmitter(actor).proxy.bHidden = false;
-		}
-	}
-	else
-	{
-		for (i=0; i<8; i++)
-			oldSkins[i] = actor.MultiSkins[i];
-		oldSkins[i] = actor.Skin;
-	
-		for (i=0; i<8; i++)
-		{
-			curSkin = actor.GetMeshTexture(i);
-			actor.MultiSkins[i] = GetGridTexture(curSkin);
-		}
-		actor.Skin = GetGridTexture(oldSkins[i]);
-	}
+    if(actor.IsA('LaserEmitter'))
+    {
+        if(LaserEmitter(actor).proxy != None)
+        {
+            oldSkins[0] = LaserEmitter(actor).proxy.Skin;
+            if(LaserEmitter(actor).proxy.bHidden)
+                oldSkins[1] = LaserEmitter(actor).proxy.Skin;
+            else
+                oldSkins[1] = Texture'BlackMaskTex';
+            LaserEmitter(actor).proxy.Skin = Texture'Effects.Virus_SFX';
+            LaserEmitter(actor).proxy.bHidden = false;
+        }
+    }
+    else
+    {
+        for (i=0; i<8; i++)
+            oldSkins[i] = actor.MultiSkins[i];
+        oldSkins[i] = actor.Skin;
+    
+        for (i=0; i<8; i++)
+        {
+            curSkin = actor.GetMeshTexture(i);
+            actor.MultiSkins[i] = GetGridTexture(curSkin);
+        }
+        actor.Skin = GetGridTexture(oldSkins[i]);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1504,22 +1504,22 @@ function SetSkins(Actor actor, out Texture oldSkins[9])
 
 function ResetSkins(Actor actor, Texture oldSkins[9])
 {
-	local int i;
+    local int i;
 
-	if(actor.IsA('LaserEmitter'))
-	{
-		if(LaserEmitter(actor).proxy != None)
-		{
-			LaserEmitter(actor).proxy.Skin = oldSkins[0];
-			LaserEmitter(actor).proxy.bHidden = (oldSkins[0] == oldSkins[1]);
-		}
-	}
-	else
-	{
-		for (i=0; i<8; i++)
-			actor.MultiSkins[i] = oldSkins[i];
-		actor.Skin = oldSkins[i];
-	}
+    if(actor.IsA('LaserEmitter'))
+    {
+        if(LaserEmitter(actor).proxy != None)
+        {
+            LaserEmitter(actor).proxy.Skin = oldSkins[0];
+            LaserEmitter(actor).proxy.bHidden = (oldSkins[0] == oldSkins[1]);
+        }
+    }
+    else
+    {
+        for (i=0; i<8; i++)
+            actor.MultiSkins[i] = oldSkins[i];
+        actor.Skin = oldSkins[i];
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1528,15 +1528,15 @@ function ResetSkins(Actor actor, Texture oldSkins[9])
 
 function DrawDropShadowBox(GC gc, float x, float y, float w, float h)
 {
-	local Color oldColor;
+    local Color oldColor;
 
-	gc.GetTileColor(oldColor);
-	gc.SetTileColorRGB(0,0,0);
-	gc.DrawBox(x, y+h+1, w+2, 1, 0, 0, 1, Texture'Solid');
-	gc.DrawBox(x+w+1, y, 1, h+2, 0, 0, 1, Texture'Solid');
-	gc.SetTileColor(colBorder);
-	gc.DrawBox(x-1, y-1, w+2, h+2, 0, 0, 1, Texture'Solid');
-	gc.SetTileColor(oldColor);
+    gc.GetTileColor(oldColor);
+    gc.SetTileColorRGB(0,0,0);
+    gc.DrawBox(x, y+h+1, w+2, 1, 0, 0, 1, Texture'Solid');
+    gc.DrawBox(x+w+1, y, 1, h+2, 0, 0, 1, Texture'Solid');
+    gc.SetTileColor(colBorder);
+    gc.DrawBox(x-1, y-1, w+2, h+2, 0, 0, 1, Texture'Solid');
+    gc.SetTileColor(oldColor);
 }
 
 // ----------------------------------------------------------------------
@@ -1559,10 +1559,10 @@ function int GetVisionTargetStatus(Actor Target)
    {
 /*      if(target.IsA('ScriptedPawn') && player.AugmentationSystem.GetClassLevel(class'AugIFF') >= 1)
       {
-	if(ScriptedPawn(target).CheckPawnAllianceType(Player) == ALLIANCE_Hostile)
-	   return VISIONENEMY;
-	if(ScriptedPawn(target).CheckPawnAllianceType(Player) == ALLIANCE_Friendly)
-	   return VISIONALLY;
+    if(ScriptedPawn(target).CheckPawnAllianceType(Player) == ALLIANCE_Hostile)
+       return VISIONENEMY;
+    if(ScriptedPawn(target).CheckPawnAllianceType(Player) == ALLIANCE_Friendly)
+       return VISIONALLY;
       } */
       return VISIONNEUTRAL;
    }

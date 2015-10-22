@@ -10,34 +10,34 @@ state Active
 {
 Begin:
 Loop:
-	Sleep(1.0);
+    Sleep(1.0);
 
-	if (Player.Health < 100)
-	{
-		Player.HealPlayer(Int(LevelValues[CurrentLevel]), False);
-//	else
-//		Deactivate();
+    if (Player.Health < 100)
+    {
+        Player.HealPlayer(Int(LevelValues[CurrentLevel]), False);
+//    else
+//        Deactivate();
 
-		Player.ClientFlash(0.5, vect(0, 0, 500));
-	}
-	Goto('Loop');
+        Player.ClientFlash(0.5, vect(0, 0, 500));
+    }
+    Goto('Loop');
 }
 
 function Deactivate()
 {
-	Super.Deactivate();
+    Super.Deactivate();
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		LevelValues[3] = mpAugValue;
-		EnergyRate = mpEnergyDrain;
-	}
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        LevelValues[3] = mpAugValue;
+        EnergyRate = mpEnergyDrain;
+    }
 }
 
 defaultproperties

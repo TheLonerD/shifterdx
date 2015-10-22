@@ -5,7 +5,7 @@ class GilbertRenton extends HumanCivilian;
 
 function Bool HasTwoHandedWeapon()
 {
-	return False;
+    return False;
 }
 
 defaultproperties

@@ -6,20 +6,20 @@ class AugHeartLung extends Augmentation;
 state Active
 {
 Begin:
-	// make sure if the player turns on any other augs while
-	// this one is on, it gets affected also.
+    // make sure if the player turns on any other augs while
+    // this one is on, it gets affected also.
 Loop:
-	Player.AugmentationSystem.BoostAugs(True, Self);
-	Sleep(1.0);
-	Goto('Loop');
+    Player.AugmentationSystem.BoostAugs(True, Self);
+    Sleep(1.0);
+    Goto('Loop');
 }
 
 function Deactivate()
 {
-	Super.Deactivate();
+    Super.Deactivate();
 
-	Player.AugmentationSystem.BoostAugs(False, Self);
-	Player.AugmentationSystem.DeactivateAll();
+    Player.AugmentationSystem.BoostAugs(False, Self);
+    Player.AugmentationSystem.DeactivateAll();
 }
 
 defaultproperties

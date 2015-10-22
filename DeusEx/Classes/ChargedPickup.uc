@@ -5,7 +5,7 @@
 //Modified -- Y|yukichigai
 
 class ChargedPickup extends DeusExPickup
-	abstract;
+    abstract;
 
 var() class<Skill> skillNeeded;
 var() bool bOneUseOnly;
@@ -22,26 +22,26 @@ var localized String ChargeRemainingLabel;
 
 simulated function bool UpdateInfo(Object winObject)
 {
-	local PersonaInfoWindow winInfo;
-	local DeusExPlayer player;
-	local String outText;
+    local PersonaInfoWindow winInfo;
+    local DeusExPlayer player;
+    local String outText;
 
-	winInfo = PersonaInfoWindow(winObject);
-	if (winInfo == None)
-		return False;
+    winInfo = PersonaInfoWindow(winObject);
+    if (winInfo == None)
+        return False;
 
-	player = DeusExPlayer(Owner);
+    player = DeusExPlayer(Owner);
 
-	if (player != None)
-	{
-		winInfo.SetTitle(itemName);
-		winInfo.SetText(Description $ winInfo.CR() $ winInfo.CR());
+    if (player != None)
+    {
+        winInfo.SetTitle(itemName);
+        winInfo.SetText(Description $ winInfo.CR() $ winInfo.CR());
 
-		outText = ChargeRemainingLabel @ Int(GetCurrentCharge()) $ "%";
-		winInfo.AppendText(outText);
-	}
+        outText = ChargeRemainingLabel @ Int(GetCurrentCharge()) $ "%";
+        winInfo.AppendText(outText);
+    }
 
-	return True;
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -50,7 +50,7 @@ simulated function bool UpdateInfo(Object winObject)
 
 simulated function Float GetCurrentCharge()
 {
-	return (Float(Charge) / Float(Default.Charge)) * 100.0;
+    return (Float(Charge) / Float(Default.Charge)) * 100.0;
 }
 
 // ----------------------------------------------------------------------
@@ -59,10 +59,10 @@ simulated function Float GetCurrentCharge()
 
 function ChargedPickupBegin(DeusExPlayer Player)
 {
-	Player.AddChargedDisplay(Self);
-	PlaySound(ActivateSound, SLOT_None);
-	if (LoopSound != None)
-		AmbientSound = LoopSound;
+    Player.AddChargedDisplay(Self);
+    PlaySound(ActivateSound, SLOT_None);
+    if (LoopSound != None)
+        AmbientSound = LoopSound;
 
    //DEUS_EX AMSD In multiplayer, remove it from the belt if the belt
    //is the only inventory.
@@ -75,7 +75,7 @@ function ChargedPickupBegin(DeusExPlayer Player)
       BeltPos=default.BeltPos;
    }
 
-	bIsActive = True;
+    bIsActive = True;
 }
 
 // ----------------------------------------------------------------------
@@ -84,17 +84,17 @@ function ChargedPickupBegin(DeusExPlayer Player)
 
 function ChargedPickupEnd(DeusExPlayer Player)
 {
-	Player.RemoveChargedDisplay(Self);
-	PlaySound(DeactivateSound, SLOT_None);
-	if (LoopSound != None)
-		AmbientSound = None;
+    Player.RemoveChargedDisplay(Self);
+    PlaySound(DeactivateSound, SLOT_None);
+    if (LoopSound != None)
+        AmbientSound = None;
 
-	// remove it from our inventory if this is a one
-	// use item
-	if (bOneUseOnly)
-		Player.DeleteInventory(Self);
+    // remove it from our inventory if this is a one
+    // use item
+    if (bOneUseOnly)
+        Player.DeleteInventory(Self);
 
-	bIsActive = False;
+    bIsActive = False;
 }
 
 // ----------------------------------------------------------------------
@@ -103,7 +103,7 @@ function ChargedPickupEnd(DeusExPlayer Player)
 
 simulated function bool IsActive()
 {
-	return bIsActive;
+    return bIsActive;
 }
 
 // ----------------------------------------------------------------------
@@ -120,17 +120,17 @@ function ChargedPickupUpdate(DeusExPlayer Player)
 
 simulated function int CalcChargeDrain(DeusExPlayer Player)
 {
-	local float skillValue;
-	local float drain;
+    local float skillValue;
+    local float drain;
 
-	drain = 4.0;
-	skillValue = 1.0;
+    drain = 4.0;
+    skillValue = 1.0;
 
-	if (skillNeeded != None)
-		skillValue = Player.SkillSystem.GetSkillLevelValue(skillNeeded);
-	drain *= skillValue;
+    if (skillNeeded != None)
+        skillValue = Player.SkillSystem.GetSkillLevelValue(skillNeeded);
+    drain *= skillValue;
 
-	return Int(drain);
+    return Int(drain);
 }
 
 // ----------------------------------------------------------------------
@@ -142,23 +142,23 @@ simulated function int CalcChargeDrain(DeusExPlayer Player)
 
 function UsedUp()
 {
-	local DeusExPlayer Player;
+    local DeusExPlayer Player;
 
-	if ( Pawn(Owner) != None )
-	{
-		bActivatable = false;
-		Pawn(Owner).ClientMessage(ExpireMessage);	
-	}
-	Owner.PlaySound(DeactivateSound);
-	Player = DeusExPlayer(Owner);
+    if ( Pawn(Owner) != None )
+    {
+        bActivatable = false;
+        Pawn(Owner).ClientMessage(ExpireMessage);    
+    }
+    Owner.PlaySound(DeactivateSound);
+    Player = DeusExPlayer(Owner);
 
-	if (Player != None)
-	{
-		if (Player.inHand == Self)
-			ChargedPickupEnd(Player);
-	}
+    if (Player != None)
+    {
+        if (Player.inHand == Self)
+            ChargedPickupEnd(Player);
+    }
 
-	Destroy();
+    Destroy();
 }
 
 // ----------------------------------------------------------------------
@@ -175,67 +175,67 @@ state DeActivated
 
 state Activated
 {
-	function Timer()
-	{
-		local DeusExPlayer Player;
+    function Timer()
+    {
+        local DeusExPlayer Player;
 
-		Player = DeusExPlayer(Owner);
-		if (Player != None)
-		{
-			ChargedPickupUpdate(Player);
-			Charge -= CalcChargeDrain(Player);
-			if (Charge <= 0)
-				UsedUp();
-		}
-	}
+        Player = DeusExPlayer(Owner);
+        if (Player != None)
+        {
+            ChargedPickupUpdate(Player);
+            Charge -= CalcChargeDrain(Player);
+            if (Charge <= 0)
+                UsedUp();
+        }
+    }
 
-	function BeginState()
-	{
-		local DeusExPlayer Player;
+    function BeginState()
+    {
+        local DeusExPlayer Player;
 
-		Super.BeginState();
+        Super.BeginState();
 
-		Player = DeusExPlayer(Owner);
-		if (Player != None)
-		{
-			// remove it from our inventory, but save our owner info
-			if (bOneUseOnly)
-			{
-//				Player.DeleteInventory(Self);
-				
-				// Remove from player's hand
-				Player.PutInHand(None);
+        Player = DeusExPlayer(Owner);
+        if (Player != None)
+        {
+            // remove it from our inventory, but save our owner info
+            if (bOneUseOnly)
+            {
+//                Player.DeleteInventory(Self);
+                
+                // Remove from player's hand
+                Player.PutInHand(None);
 
-				SetOwner(Player);
-			}
+                SetOwner(Player);
+            }
 
-			ChargedPickupBegin(Player);
-			SetTimer(0.1, True);
-		}
-	}
+            ChargedPickupBegin(Player);
+            SetTimer(0.1, True);
+        }
+    }
 
-	function EndState()
-	{
-		local DeusExPlayer Player;
+    function EndState()
+    {
+        local DeusExPlayer Player;
 
-		Super.EndState();
+        Super.EndState();
 
-		Player = DeusExPlayer(Owner);
-		if (Player != None)
-		{
-			ChargedPickupEnd(Player);
-			SetTimer(0.1, False);
-		}
-	}
+        Player = DeusExPlayer(Owner);
+        if (Player != None)
+        {
+            ChargedPickupEnd(Player);
+            SetTimer(0.1, False);
+        }
+    }
 
-	function Activate()
-	{
-		// if this is a single-use item, don't allow the player to turn it off
-		if (bOneUseOnly)
-			return;
+    function Activate()
+    {
+        // if this is a single-use item, don't allow the player to turn it off
+        if (bOneUseOnly)
+            return;
 
-		Super.Activate();
-	}
+        Super.Activate();
+    }
 }
 
 // ----------------------------------------------------------------------

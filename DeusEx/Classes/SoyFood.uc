@@ -5,15 +5,15 @@ class SoyFood extends Consumable;
 
 state Activated
 {
-	function Activate()
-	{
-		Super.Activate();
-	}
+    function Activate()
+    {
+        Super.Activate();
+    }
 
-	function BeginState()
-	{
-		Super.BeginState();
-	}
+    function BeginState()
+    {
+        Super.BeginState();
+    }
 Begin:
 }
 

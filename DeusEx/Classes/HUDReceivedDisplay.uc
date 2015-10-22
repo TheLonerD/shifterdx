@@ -20,14 +20,14 @@ var localized string TextReceivedLabel;
 
 event InitWindow()
 {
-	Super.InitWindow();
+    Super.InitWindow();
 
-	CreateTileWindow();
-	CreateReceivedLabel();
+    CreateTileWindow();
+    CreateReceivedLabel();
 
-	StyleChanged();
+    StyleChanged();
 
-	bTickEnabled = False;
+    bTickEnabled = False;
 }
 
 // ----------------------------------------------------------------------
@@ -36,15 +36,15 @@ event InitWindow()
 
 function CreateTileWindow()
 {
-	winTile = TileWindow(NewChild(Class'TileWindow'));
+    winTile = TileWindow(NewChild(Class'TileWindow'));
 
-	winTile.SetOrder(ORDER_RightThenDown);
-	winTile.SetChildAlignments(HALIGN_Left, VALIGN_Center);
-	winTile.SetPos(0, topMargin);
-	winTile.SetMargins(10, 10);
-	winTile.SetMinorSpacing(4);
-	winTile.MakeWidthsEqual(False);
-	winTile.MakeHeightsEqual(True);
+    winTile.SetOrder(ORDER_RightThenDown);
+    winTile.SetChildAlignments(HALIGN_Left, VALIGN_Center);
+    winTile.SetPos(0, topMargin);
+    winTile.SetMargins(10, 10);
+    winTile.SetMinorSpacing(4);
+    winTile.MakeWidthsEqual(False);
+    winTile.MakeHeightsEqual(True);
 }
 
 // ----------------------------------------------------------------------
@@ -53,9 +53,9 @@ function CreateTileWindow()
 
 function CreateReceivedLabel()
 {
-	txtReceived = TextWindow(winTile.NewChild(Class'TextWindow'));
-	txtReceived.SetFont(fontReceived);
-	txtReceived.SetText(TextReceivedLabel);
+    txtReceived = TextWindow(winTile.NewChild(Class'TextWindow'));
+    txtReceived.SetFont(fontReceived);
+    txtReceived.SetText(TextReceivedLabel);
 }
 
 // ----------------------------------------------------------------------
@@ -64,10 +64,10 @@ function CreateReceivedLabel()
 
 event Tick(float deltaSeconds)
 {
-	displayTimer += deltaSeconds;
+    displayTimer += deltaSeconds;
 
-	if (displayTimer > displayLength)
-		RemoveItems();
+    if (displayTimer > displayLength)
+        RemoveItems();
 }
 
 // ----------------------------------------------------------------------
@@ -77,28 +77,28 @@ event Tick(float deltaSeconds)
 event ParentRequestedPreferredSize(bool bWidthSpecified, out float preferredWidth,
                                    bool bHeightSpecified, out float preferredHeight)
 {
-	local float tileWidth, tileHeight;
+    local float tileWidth, tileHeight;
 
-	if ((!bWidthSpecified) && (!bHeightSpecified))
-	{
-		winTile.QueryPreferredSize(preferredWidth, preferredHeight);
+    if ((!bWidthSpecified) && (!bHeightSpecified))
+    {
+        winTile.QueryPreferredSize(preferredWidth, preferredHeight);
 
-		preferredHeight += topMargin;
-		if (preferredHeight < minHeight)
-			preferredHeight = minHeight;
-	}
-	else if (bWidthSpecified)
-	{
-		preferredHeight = winTile.QueryPreferredHeight(preferredWidth);
-		preferredHeight += topMargin;
+        preferredHeight += topMargin;
+        if (preferredHeight < minHeight)
+            preferredHeight = minHeight;
+    }
+    else if (bWidthSpecified)
+    {
+        preferredHeight = winTile.QueryPreferredHeight(preferredWidth);
+        preferredHeight += topMargin;
 
-		if (preferredHeight < minHeight)
-			preferredHeight = minHeight;
-	}
-	else
-	{
-		preferredWidth = winTile.QueryPreferredWidth(preferredHeight);
-	}
+        if (preferredHeight < minHeight)
+            preferredHeight = minHeight;
+    }
+    else
+    {
+        preferredWidth = winTile.QueryPreferredWidth(preferredHeight);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -107,7 +107,7 @@ event ParentRequestedPreferredSize(bool bWidthSpecified, out float preferredWidt
 
 function ConfigurationChanged()
 {
-	winTile.ConfigureChild(0, topMargin, width, height);
+    winTile.ConfigureChild(0, topMargin, width, height);
 }
 
 // ----------------------------------------------------------------------
@@ -116,9 +116,9 @@ function ConfigurationChanged()
 
 function bool ChildRequestedReconfiguration(window child)
 {
-	ConfigurationChanged();
+    ConfigurationChanged();
 
-	return True;
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -127,58 +127,58 @@ function bool ChildRequestedReconfiguration(window child)
 
 function AddItem(Inventory invItem, Int count)
 {
-	local HUDReceivedDisplayItem item;
-	local Window itemWindow, nextWindow;
-	local string labelText;
+    local HUDReceivedDisplayItem item;
+    local Window itemWindow, nextWindow;
+    local string labelText;
 
-	if(count <= 0)
-		return;
+    if(count <= 0)
+        return;
 
-	if(invItem == None || invItem.IsA('AmmoNone'))
-		return;
+    if(invItem == None || invItem.IsA('AmmoNone'))
+        return;
 
-	//== I have no idea what I was thinking here.  This will just make the ammo display show how much ammo YOU have
-	//if(Ammo(invItem) != None)
-	//	if(Ammo(invItem).AmmoAmount > count)
-	//		count = Ammo(invItem).AmmoAmount;
+    //== I have no idea what I was thinking here.  This will just make the ammo display show how much ammo YOU have
+    //if(Ammo(invItem) != None)
+    //    if(Ammo(invItem).AmmoAmount > count)
+    //        count = Ammo(invItem).AmmoAmount;
 
-	//== Check for duplicate items
-	if(winTile != None)
-		itemWindow = winTile.GetTopChild();
+    //== Check for duplicate items
+    if(winTile != None)
+        itemWindow = winTile.GetTopChild();
 
-	while( itemWindow != None )
-	{
-		nextWindow = itemWindow.GetLowerSibling();
-		if(itemWindow.IsA('HudReceivedDisplayItem'))
-		{
-			if(HudReceivedDisplayItem(itemWindow).itemClass == invItem.Class && invItem.Class != None) //== Duplicate entry, we should just update the number
-			{
-				labelText = invItem.beltDescription;
-				if(labelText == "")
-					labelText = invItem.Default.beltDescription;
-	
-				HudReceivedDisplayItem(itemWindow).itemCount += count;
-	
-				if(HudReceivedDisplayItem(itemWindow).itemCount > 1)
-					labelText = labelText $ " (" $ string(HudReceivedDisplayItem(itemWindow).itemCount) $ ")";
-	
-				if(HudReceivedDisplayItem(itemWindow).winLabel != None)
-					HudReceivedDisplayItem(itemWindow).winLabel.SetText(labelText);
-			}
-		}
-		itemWindow = nextWindow;
-	}
+    while( itemWindow != None )
+    {
+        nextWindow = itemWindow.GetLowerSibling();
+        if(itemWindow.IsA('HudReceivedDisplayItem'))
+        {
+            if(HudReceivedDisplayItem(itemWindow).itemClass == invItem.Class && invItem.Class != None) //== Duplicate entry, we should just update the number
+            {
+                labelText = invItem.beltDescription;
+                if(labelText == "")
+                    labelText = invItem.Default.beltDescription;
+    
+                HudReceivedDisplayItem(itemWindow).itemCount += count;
+    
+                if(HudReceivedDisplayItem(itemWindow).itemCount > 1)
+                    labelText = labelText $ " (" $ string(HudReceivedDisplayItem(itemWindow).itemCount) $ ")";
+    
+                if(HudReceivedDisplayItem(itemWindow).winLabel != None)
+                    HudReceivedDisplayItem(itemWindow).winLabel.SetText(labelText);
+            }
+        }
+        itemWindow = nextWindow;
+    }
 
-	if(labelText == "")
-	{
-		item = HUDReceivedDisplayItem(winTile.NewChild(Class'HUDReceivedDisplayItem'));
-		item.SetItem(invItem, count);
-	}
+    if(labelText == "")
+    {
+        item = HUDReceivedDisplayItem(winTile.NewChild(Class'HUDReceivedDisplayItem'));
+        item.SetItem(invItem, count);
+    }
 
-	displayTimer = 0.0;
-	Show();
-	bTickEnabled = True;
-	AskParentForReconfigure();
+    displayTimer = 0.0;
+    Show();
+    bTickEnabled = True;
+    AskParentForReconfigure();
 }
 
 // ----------------------------------------------------------------------
@@ -187,26 +187,26 @@ function AddItem(Inventory invItem, Int count)
 
 function RemoveItems()
 {
-	local Window itemWindow;
-	local Window nextWindow;
+    local Window itemWindow;
+    local Window nextWindow;
 
-	bTickEnabled = False;
+    bTickEnabled = False;
 
-	itemWindow = winTile.GetTopChild();
-	while( itemWindow != None )
-	{
-		nextWindow = itemWindow.GetLowerSibling();
+    itemWindow = winTile.GetTopChild();
+    while( itemWindow != None )
+    {
+        nextWindow = itemWindow.GetLowerSibling();
 
-		// Don't destroy the "Received" TextWindow()
-		if (!itemWindow.IsA('TextWindow'))
-		{
-			itemWindow.Destroy();
-		}
+        // Don't destroy the "Received" TextWindow()
+        if (!itemWindow.IsA('TextWindow'))
+        {
+            itemWindow.Destroy();
+        }
 
-		itemWindow = nextWindow;
-	}
+        itemWindow = nextWindow;
+    }
 
-	Hide();
+    Hide();
 }
 
 // ----------------------------------------------------------------------
@@ -215,10 +215,10 @@ function RemoveItems()
 
 function float GetTimeRemaining()
 {
-	if (IsVisible())
-		return displayLength - displayTimer;
-	else
-		return 0.0;
+    if (IsVisible())
+        return displayLength - displayTimer;
+    else
+        return 0.0;
 }
 
 // ----------------------------------------------------------------------
@@ -227,10 +227,10 @@ function float GetTimeRemaining()
 
 event StyleChanged()
 {
-	Super.StyleChanged();
+    Super.StyleChanged();
 
-	if (txtReceived != None)
-		txtReceived.SetTextColor(colText);
+    if (txtReceived != None)
+        txtReceived.SetTextColor(colText);
 }
 
 // ----------------------------------------------------------------------

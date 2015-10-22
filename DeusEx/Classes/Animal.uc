@@ -2,7 +2,7 @@
 // Animal.
 //=============================================================================
 class Animal extends ScriptedPawn
-	abstract;
+    abstract;
 
 var bool          bPlayDying;
 
@@ -28,52 +28,52 @@ var bool          bFoodOverridesAttack;
 function float ModifyDamage(int Damage, Pawn instigatedBy, Vector hitLocation,
                             Vector offset, Name damageType)
 {
-	local float actualDamage;
+    local float actualDamage;
 
-	actualDamage = Super.ModifyDamage(Damage, instigatedBy, hitLocation, offset, damageType);
+    actualDamage = Super.ModifyDamage(Damage, instigatedBy, hitLocation, offset, damageType);
 
-	//if (damageType == 'Stunned')
-	//	actualDamage = 0;
+    //if (damageType == 'Stunned')
+    //    actualDamage = 0;
 
-	return actualDamage;
+    return actualDamage;
 }
 
 function GotoDisabledState(name damageType, EHitLocation hitPos)
 {
-	if (!bCollideActors && !bBlockActors && !bBlockPlayers)
-		return;
-	else if ((damageType == 'TearGas') || (damageType == 'HalonGas'))
-		GotoState('Fleeing');
-	else if (damageType == 'Stunned')
-		GotoState('Fleeing');
-	else if (CanShowPain())
-		TakeHit(hitPos);
-	else
-		GotoNextState();
+    if (!bCollideActors && !bBlockActors && !bBlockPlayers)
+        return;
+    else if ((damageType == 'TearGas') || (damageType == 'HalonGas'))
+        GotoState('Fleeing');
+    else if (damageType == 'Stunned')
+        GotoState('Fleeing');
+    else if (CanShowPain())
+        TakeHit(hitPos);
+    else
+        GotoNextState();
 }
 
 
 function EHitLocation HandleDamage(int Damage, Vector hitLocation, Vector offset, name damageType)
 {
-	local EHitLocation hitPos;
+    local EHitLocation hitPos;
 
-	hitPos = HITLOC_None;
+    hitPos = HITLOC_None;
 
-	if (offset.X < 0.0)
-		hitPos = HITLOC_TorsoBack;
-	else
-		hitPos = HITLOC_TorsoFront;
+    if (offset.X < 0.0)
+        hitPos = HITLOC_TorsoBack;
+    else
+        hitPos = HITLOC_TorsoFront;
 
-	if (!bInvincible)
-		Health -= Damage;
+    if (!bInvincible)
+        Health -= Damage;
 
-	return hitPos;
+    return hitPos;
 
 }
 
 function TakeDamage(int Damage, Pawn instigatedBy, Vector hitlocation, Vector momentum, name damageType)
 {
-	TakeDamageBase(Damage, instigatedBy, hitlocation, momentum, damageType, true);
+    TakeDamageBase(Damage, instigatedBy, hitlocation, momentum, damageType, true);
 }
 
 
@@ -85,182 +85,182 @@ function ComputeFallDirection(float totalTime, int numFrames,
 
 function Pawn FrightenedByPawn()
 {
-	local pawn  candidate;
-	local bool  bCheck;
-	local Pawn  fearPawn;
+    local pawn  candidate;
+    local bool  bCheck;
+    local Pawn  fearPawn;
 
-	fearPawn = None;
-	if ((!bFleeBigPawns) || (!bBlockActors && !bBlockPlayers))
-		return fearPawn;
+    fearPawn = None;
+    if ((!bFleeBigPawns) || (!bBlockActors && !bBlockPlayers))
+        return fearPawn;
 
-	foreach RadiusActors(Class'Pawn', candidate, 500)
-	{
-		bCheck = false;
-		if (!ClassIsChildOf(candidate.Class, Class))
-		{
-			if (candidate.bBlockActors)
-			{
-				if (bBlockActors && !candidate.bIsPlayer)
-					bCheck = true;
-				else if (bBlockPlayers && candidate.bIsPlayer)
-					bCheck = true;
-			}
-		}
+    foreach RadiusActors(Class'Pawn', candidate, 500)
+    {
+        bCheck = false;
+        if (!ClassIsChildOf(candidate.Class, Class))
+        {
+            if (candidate.bBlockActors)
+            {
+                if (bBlockActors && !candidate.bIsPlayer)
+                    bCheck = true;
+                else if (bBlockPlayers && candidate.bIsPlayer)
+                    bCheck = true;
+            }
+        }
 
-		if (bCheck)
-		{
-			if ((candidate.MaxStepHeight < CollisionHeight*1.5) && (candidate.CollisionHeight*0.5 <= CollisionHeight))
-				bCheck = false;
-		}
+        if (bCheck)
+        {
+            if ((candidate.MaxStepHeight < CollisionHeight*1.5) && (candidate.CollisionHeight*0.5 <= CollisionHeight))
+                bCheck = false;
+        }
 
-		if (bCheck)
-		{
-			if (ShouldBeStartled(candidate))
-			{
-				fearPawn = candidate;
-				break;
-			}
-		}
-	}
+        if (bCheck)
+        {
+            if (ShouldBeStartled(candidate))
+            {
+                fearPawn = candidate;
+                break;
+            }
+        }
+    }
 
-	return fearPawn;
+    return fearPawn;
 }
 
 
 function bool ShouldBeStartled(Pawn startler)
 {
-	local float speed;
-	local float time;
-	local float dist;
-	local float dist2;
-	local bool  bPh33r;
+    local float speed;
+    local float time;
+    local float dist;
+    local float dist2;
+    local bool  bPh33r;
 
-	bPh33r = false;
-	if (startler != None)
-	{
-		speed = VSize(startler.Velocity);
-		if (speed >= 20)
-		{
-			dist = VSize(Location - startler.Location);
-			time = dist/speed;
-			if (time <= 2.0)
-			{
-				dist2 = VSize(Location - (startler.Location+startler.Velocity*time));
-				if (dist2 < speed*0.6)
-					bPh33r = true;
-			}
-		}
-	}
+    bPh33r = false;
+    if (startler != None)
+    {
+        speed = VSize(startler.Velocity);
+        if (speed >= 20)
+        {
+            dist = VSize(Location - startler.Location);
+            time = dist/speed;
+            if (time <= 2.0)
+            {
+                dist2 = VSize(Location - (startler.Location+startler.Velocity*time));
+                if (dist2 < speed*0.6)
+                    bPh33r = true;
+            }
+        }
+    }
 
-	return bPh33r;
+    return bPh33r;
 }
 
 function FleeFromPawn(Pawn fleePawn)
 {
-	SetEnemy(fleePawn, , true);
-	GotoState('AvoidingPawn');
+    SetEnemy(fleePawn, , true);
+    GotoState('AvoidingPawn');
 }
 
 
 function vector GetSwimPivot()
 {
-	// THIS IS A HIDEOUS, UGLY, MASSIVELY EVIL HACK!!!!
-	return (vect(0,0,0));
+    // THIS IS A HIDEOUS, UGLY, MASSIVELY EVIL HACK!!!!
+    return (vect(0,0,0));
 }
 
 //== Stolen from Pawn.uc and overridden to check whether or not the model has certain animations
 function LipSynch(float deltaTime)
 {
-	local name animseq;
-	local float rnd;
-	local float tweentime;
+    local name animseq;
+    local float rnd;
+    local float tweentime;
 
-	// update the animation timers that we are using
-	animTimer[0] += deltaTime;
-	animTimer[1] += deltaTime;
-	animTimer[2] += deltaTime;
+    // update the animation timers that we are using
+    animTimer[0] += deltaTime;
+    animTimer[1] += deltaTime;
+    animTimer[2] += deltaTime;
 
-	if (bIsSpeaking)
-	{
-		// if our framerate is high enough (>20fps), tween the lips smoothly
-		if (Level.TimeSeconds - animTimer[3]  < 0.05)
-			tweentime = 0.1;
-		else
-			tweentime = 0.0;
+    if (bIsSpeaking)
+    {
+        // if our framerate is high enough (>20fps), tween the lips smoothly
+        if (Level.TimeSeconds - animTimer[3]  < 0.05)
+            tweentime = 0.1;
+        else
+            tweentime = 0.0;
 
-		// the last animTimer slot is used to check framerate
-		animTimer[3] = Level.TimeSeconds;
+        // the last animTimer slot is used to check framerate
+        animTimer[3] = Level.TimeSeconds;
 
-		if (nextPhoneme == "A")
-			animseq = 'MouthA';
-		else if (nextPhoneme == "E")
-			animseq = 'MouthE';
-		else if (nextPhoneme == "F")
-			animseq = 'MouthF';
-		else if (nextPhoneme == "M")
-			animseq = 'MouthM';
-		else if (nextPhoneme == "O")
-			animseq = 'MouthO';
-		else if (nextPhoneme == "T")
-			animseq = 'MouthT';
-		else if (nextPhoneme == "U")
-			animseq = 'MouthU';
-		else if (nextPhoneme == "X")
-			animseq = 'MouthClosed';
+        if (nextPhoneme == "A")
+            animseq = 'MouthA';
+        else if (nextPhoneme == "E")
+            animseq = 'MouthE';
+        else if (nextPhoneme == "F")
+            animseq = 'MouthF';
+        else if (nextPhoneme == "M")
+            animseq = 'MouthM';
+        else if (nextPhoneme == "O")
+            animseq = 'MouthO';
+        else if (nextPhoneme == "T")
+            animseq = 'MouthT';
+        else if (nextPhoneme == "U")
+            animseq = 'MouthU';
+        else if (nextPhoneme == "X")
+            animseq = 'MouthClosed';
 
-		if (animseq != '' && HasAnim(animseq))
-		{
-			if (lastPhoneme != nextPhoneme)
-			{
-				lastPhoneme = nextPhoneme;
-				TweenBlendAnim(animseq, tweentime);
-			}
-		}
-	}
-	else if (bWasSpeaking)
-	{
-		bWasSpeaking = False;
-		if(HasAnim('MouthClosed'))
-			TweenBlendAnim('MouthClosed', tweentime);
-	}
+        if (animseq != '' && HasAnim(animseq))
+        {
+            if (lastPhoneme != nextPhoneme)
+            {
+                lastPhoneme = nextPhoneme;
+                TweenBlendAnim(animseq, tweentime);
+            }
+        }
+    }
+    else if (bWasSpeaking)
+    {
+        bWasSpeaking = False;
+        if(HasAnim('MouthClosed'))
+            TweenBlendAnim('MouthClosed', tweentime);
+    }
 
-	// blink randomly
-	if (animTimer[0] > 2.0)
-	{
-		animTimer[0] = 0;
-		if (FRand() < 0.4 && HasAnim('Blink'))
-			PlayBlendAnim('Blink', 1.0, 0.1, 1);
-	}
+    // blink randomly
+    if (animTimer[0] > 2.0)
+    {
+        animTimer[0] = 0;
+        if (FRand() < 0.4 && HasAnim('Blink'))
+            PlayBlendAnim('Blink', 1.0, 0.1, 1);
+    }
 
-	LoopHeadConvoAnim();
-	LoopBaseConvoAnim();
+    LoopHeadConvoAnim();
+    LoopBaseConvoAnim();
 }
 
 //== Also overridden to check for the presence of animations before running them
 function LoopBaseConvoAnim()
 {
-	local float rnd;
+    local float rnd;
 
-	rnd = FRand();
+    rnd = FRand();
 
-	// move arms randomly
-	if (bIsSpeaking)
-	{
-		if (animTimer[2] > 2.5)
-		{
-			animTimer[2] = 0;
-			if (rnd < 0.1 && HasAnim('GestureLeft'))
-				PlayAnim('GestureLeft', 0.35, 0.4);
-			else if (rnd < 0.2 && HasAnim('GestureRight'))
-				PlayAnim('GestureRight', 0.35, 0.4);
-			else if (rnd < 0.3 && HasAnim('GestureBoth'))
-				PlayAnim('GestureBoth', 0.35, 0.4);
-		}
-	}
+    // move arms randomly
+    if (bIsSpeaking)
+    {
+        if (animTimer[2] > 2.5)
+        {
+            animTimer[2] = 0;
+            if (rnd < 0.1 && HasAnim('GestureLeft'))
+                PlayAnim('GestureLeft', 0.35, 0.4);
+            else if (rnd < 0.2 && HasAnim('GestureRight'))
+                PlayAnim('GestureRight', 0.35, 0.4);
+            else if (rnd < 0.3 && HasAnim('GestureBoth'))
+                PlayAnim('GestureBoth', 0.35, 0.4);
+        }
+    }
 
-	// if we're not playing an animation, loop the breathe
-	if (!IsAnimating() && HasAnim('BreatheLight'))
-		LoopAnim('BreatheLight',, 0.4);
+    // if we're not playing an animation, loop the breathe
+    if (!IsAnimating() && HasAnim('BreatheLight'))
+        LoopAnim('BreatheLight',, 0.4);
 }
 
 // ----------------------------------------------------------------------
@@ -269,8 +269,8 @@ function LoopBaseConvoAnim()
 
 function PlayReloadBegin()
 {
-	if(HasAnim('ReloadBegin'))
-		PlayAnimPivot('ReloadBegin',, 0.1);
+    if(HasAnim('ReloadBegin'))
+        PlayAnimPivot('ReloadBegin',, 0.1);
 }
 
 
@@ -280,8 +280,8 @@ function PlayReloadBegin()
 
 function PlayReload()
 {
-	if(HasAnim('Reload'))
-		LoopAnimPivot('Reload',,0.2);
+    if(HasAnim('Reload'))
+        LoopAnimPivot('Reload',,0.2);
 }
 
 
@@ -291,63 +291,63 @@ function PlayReload()
 
 function PlayReloadEnd()
 {
-	if(HasAnim('ReloadEnd'))
-		PlayAnimPivot('ReloadEnd',, 0.1);
+    if(HasAnim('ReloadEnd'))
+        PlayAnimPivot('ReloadEnd',, 0.1);
 }
 
 state Fleeing
 {
-	function PickDestination()
-	{
-		local int     iterations;
-		local float   magnitude;
-		local rotator rot1;
+    function PickDestination()
+    {
+        local int     iterations;
+        local float   magnitude;
+        local rotator rot1;
 
-		iterations = 4;
-		magnitude  = 400*(FRand()*0.4+0.8);  // 400, +/-20%
-		rot1       = Rotator(Location-Enemy.Location);
-		if (!AIPickRandomDestination(100, magnitude, rot1.Yaw, 0.6, rot1.Pitch, 0.6, iterations,
-		                             FRand()*0.4+0.35, destLoc))
-			destLoc = Location;  // we give up
-	}
+        iterations = 4;
+        magnitude  = 400*(FRand()*0.4+0.8);  // 400, +/-20%
+        rot1       = Rotator(Location-Enemy.Location);
+        if (!AIPickRandomDestination(100, magnitude, rot1.Yaw, 0.6, rot1.Pitch, 0.6, iterations,
+                                     FRand()*0.4+0.35, destLoc))
+            destLoc = Location;  // we give up
+    }
 }
 
 state Wandering
 {
-	function PickDestination()
-	{
-		local int   iterations;
-		local float magnitude;
+    function PickDestination()
+    {
+        local int   iterations;
+        local float magnitude;
 
-		magnitude  = (wanderlust*300+100) * (FRand()*0.2+0.9); // 100-400, +/-10%
-		iterations = 5;  // try up to 5 different directions
+        magnitude  = (wanderlust*300+100) * (FRand()*0.2+0.9); // 100-400, +/-10%
+        iterations = 5;  // try up to 5 different directions
 
-		if (!AIPickRandomDestination(30, magnitude, 0, 0, 0, 0, iterations, FRand()*0.4+0.35, destLoc))
-			destLoc = Location;
-	}
+        if (!AIPickRandomDestination(30, magnitude, 0, 0, 0, 0, iterations, FRand()*0.4+0.35, destLoc))
+            destLoc = Location;
+    }
 
-	function Tick(float deltaSeconds)
-	{
-		local pawn fearPawn;
+    function Tick(float deltaSeconds)
+    {
+        local pawn fearPawn;
 
-		Global.Tick(deltaSeconds);
+        Global.Tick(deltaSeconds);
 
-		fleePawnTimer += deltaSeconds;
-		if (fleePawnTimer > 0.5)
-		{
-			fleePawnTimer = 0;
-			fearPawn = FrightenedByPawn();
-			if (fearPawn != None)
-				FleeFromPawn(fearPawn);
-		}
-	}
+        fleePawnTimer += deltaSeconds;
+        if (fleePawnTimer > 0.5)
+        {
+            fleePawnTimer = 0;
+            fearPawn = FrightenedByPawn();
+            if (fearPawn != None)
+                FleeFromPawn(fearPawn);
+        }
+    }
 }
 
 
 state RubbingEyes
 {
 Begin:
-	GotoState('Fleeing');
+    GotoState('Fleeing');
 }
 
 
@@ -393,69 +393,69 @@ function PlayCowerEnd() {}
 
 function PlayPanicRunning()
 {
-	PlayRunning();
+    PlayRunning();
 }
 function PlayTurning()
 {
-	LoopAnimPivot('Walk', 0.1);
+    LoopAnimPivot('Walk', 0.1);
 }
 function TweenToWalking(float tweentime)
 {
-	TweenAnimPivot('Walk', tweentime);
+    TweenAnimPivot('Walk', tweentime);
 }
 function PlayWalking()
 {
-	LoopAnimPivot('Walk', , 0.15);
+    LoopAnimPivot('Walk', , 0.15);
 }
 function TweenToRunning(float tweentime)
 {
-	LoopAnimPivot('Run',, tweentime);
+    LoopAnimPivot('Run',, tweentime);
 }
 function PlayRunning()
 {
-	LoopAnimPivot('Run');
+    LoopAnimPivot('Run');
 }
 function TweenToWaiting(float tweentime)
 {
-	TweenAnimPivot('BreatheLight', tweentime);
+    TweenAnimPivot('BreatheLight', tweentime);
 }
 function PlayWaiting()
 {
-	LoopAnimPivot('BreatheLight', , 0.3);
+    LoopAnimPivot('BreatheLight', , 0.3);
 }
 function TweenToSwimming(float tweentime)
 {
-	TweenAnimPivot('Swim', tweentime, GetSwimPivot());
+    TweenAnimPivot('Swim', tweentime, GetSwimPivot());
 }
 function PlaySwimming()
 {
-	LoopAnimPivot('Swim', , , , GetSwimPivot());
+    LoopAnimPivot('Swim', , , , GetSwimPivot());
 }
 
 
 function PlayDying(name damageType, vector hitLoc)
 {
-	local Vector X, Y, Z;
-	local float dotp;
+    local Vector X, Y, Z;
+    local float dotp;
 
-	if (bPlayDying)
-	{
-		GetAxes(Rotation, X, Y, Z);
-		dotp = (Location - HitLoc) dot X;
+    if (bPlayDying)
+    {
+        GetAxes(Rotation, X, Y, Z);
+        dotp = (Location - HitLoc) dot X;
 
-		// die from the correct side
-		if (dotp < 0.0)		// shot from the front, fall back
-			PlayAnimPivot('DeathBack',, 0.1);
-		else				// shot from the back, fall front
-			PlayAnimPivot('DeathFront',, 0.1);
-	}
+        // die from the correct side
+        if (dotp < 0.0)        // shot from the front, fall back
+            PlayAnimPivot('DeathBack',, 0.1);
+        else                // shot from the back, fall front
+            PlayAnimPivot('DeathFront',, 0.1);
+    }
 
-	//== You can stun animals now.  Like you care. -- Y|yukichigai
-	if ((damageType == 'Stunned') || (damageType == 'KnockedOut') ||
-	    (damageType == 'Poison') || (damageType == 'PoisonEffect'))
-		bStunned = True;
+    //== You can stun animals now.  Like you care. -- Y|yukichigai
+    if ((damageType == 'Stunned') || (damageType == 'KnockedOut') ||
+        (damageType == 'Poison') || (damageType == 'PoisonEffect'))
+        bStunned = True;
 
-	PlayDyingSound();
+    PlayDyingSound();
 }
 
 
@@ -466,17 +466,17 @@ function PlayPauseWhenEating()
 
 function PlayStartEating()
 {
-	PlayAnimPivot('EatBegin');
+    PlayAnimPivot('EatBegin');
 }
 
 function PlayEating()
 {
-	PlayAnimPivot('Eat', 1.3, 0.2);
+    PlayAnimPivot('Eat', 1.3, 0.2);
 }
 
 function PlayStopEating()
 {
-	PlayAnimPivot('EatEnd');
+    PlayAnimPivot('EatEnd');
 }
 
 function PlayEatingSound()
@@ -486,297 +486,297 @@ function PlayEatingSound()
 
 function float GetMaxDistance(Actor foodActor)
 {
-	return (foodActor.CollisionRadius+CollisionRadius);
+    return (foodActor.CollisionRadius+CollisionRadius);
 }
 
 
 function bool IsInRange(Actor foodActor)
 {
-	return (VSize(foodActor.Location-Location) <= GetMaxDistance(foodActor)+20);
+    return (VSize(foodActor.Location-Location) <= GetMaxDistance(foodActor)+20);
 }
 
 
 function bool GetFeedSpot(Actor foodActor, out vector feedSpot)
 {
-	local rotator rot;
+    local rotator rot;
 
-	if (IsInRange(foodActor))
-	{
-		feedSpot = Location;
-		return true;
-	}
-	else
-	{
-		rot = Rotator(foodActor.Location - Location);
-		return AIDirectionReachable(foodActor.Location, rot.Yaw, rot.Pitch,
-		                            0, GetMaxDistance(foodActor), feedSpot);
-	}
+    if (IsInRange(foodActor))
+    {
+        feedSpot = Location;
+        return true;
+    }
+    else
+    {
+        rot = Rotator(foodActor.Location - Location);
+        return AIDirectionReachable(foodActor.Location, rot.Yaw, rot.Pitch,
+                                    0, GetMaxDistance(foodActor), feedSpot);
+    }
 }
 
 function bool IsValidFood(Actor foodActor)
 {
-	if (foodActor == None)
-		return false;
-	else if (foodActor.bDeleteMe)
-		return false;
-	else if (DeusExCarcass(foodActor) != None && DeusExCarcass(foodActor).bOnFire) //A little too freshly barbecued
-		return false;
-	else if (foodActor.Region.Zone.bWaterZone)
-		return false;
-	else if ((foodActor.Physics == PHYS_Swimming) || (foodActor.Physics == PHYS_Falling))
-		return false;
-	else if (!ClassIsChildOf(foodActor.Class, FoodClass))
-		return false;
-	else
-		return true;
+    if (foodActor == None)
+        return false;
+    else if (foodActor.bDeleteMe)
+        return false;
+    else if (DeusExCarcass(foodActor) != None && DeusExCarcass(foodActor).bOnFire) //A little too freshly barbecued
+        return false;
+    else if (foodActor.Region.Zone.bWaterZone)
+        return false;
+    else if ((foodActor.Physics == PHYS_Swimming) || (foodActor.Physics == PHYS_Falling))
+        return false;
+    else if (!ClassIsChildOf(foodActor.Class, FoodClass))
+        return false;
+    else
+        return true;
 }
 
 
 function bool InterestedInFood()
 {
-	if (((GetStateName() == 'Wandering') || (GetStateName() == 'Standing') || (GetStateName() == 'Patrolling')) &&
-	    (LastRendered() < 10.0))
-		return true;
-	else if (bFoodOverridesAttack && ((GetStateName() == 'Attacking') || (GetStateName() == 'Seeking')) && (aggressiveTimer <= 0))
-		return true;
-	else
-		return false;
+    if (((GetStateName() == 'Wandering') || (GetStateName() == 'Standing') || (GetStateName() == 'Patrolling')) &&
+        (LastRendered() < 10.0))
+        return true;
+    else if (bFoodOverridesAttack && ((GetStateName() == 'Attacking') || (GetStateName() == 'Seeking')) && (aggressiveTimer <= 0))
+        return true;
+    else
+        return false;
 }
 
 
 function SpewBlood(vector Position)
 {
-	spawn(class'BloodSpurt', , , Position);
-	spawn(class'BloodDrop', , , Position);
-	if (FRand() < 0.5)
-		spawn(class'BloodDrop', , , Position);
+    spawn(class'BloodSpurt', , , Position);
+    spawn(class'BloodDrop', , , Position);
+    if (FRand() < 0.5)
+        spawn(class'BloodDrop', , , Position);
 }
 
 function Chomp()
 {
-	Munch(Food);  // mmm... finger-lickin' good!
+    Munch(Food);  // mmm... finger-lickin' good!
 }
 
 function vector GetChompPosition()
 {
-	return (Location+Vector(Rotation)*CollisionRadius);
+    return (Location+Vector(Rotation)*CollisionRadius);
 }
 
 function Munch(Actor foodActor)
 {
-	if (IsValidFood(foodActor) && IsInRange(Food))
-	{
-		foodActor.TakeDamage(FoodDamage, self, foodActor.Location, vect(0,0,0), 'Munch');  // finger-lickin' good!
-		if (bMessyEater)
-			SpewBlood(GetChompPosition());
-		Health += FoodHealth;
-		if (Health > Default.Health)
-			Health = Default.Health;
-	}
+    if (IsValidFood(foodActor) && IsInRange(Food))
+    {
+        foodActor.TakeDamage(FoodDamage, self, foodActor.Location, vect(0,0,0), 'Munch');  // finger-lickin' good!
+        if (bMessyEater)
+            SpewBlood(GetChompPosition());
+        Health += FoodHealth;
+        if (Health > Default.Health)
+            Health = Default.Health;
+    }
 }
 
 function bool ShouldFlee()
 {
-	return (Health <= MinHealth);
+    return (Health <= MinHealth);
 }
 
 function bool ShouldDropWeapon()
 {
-	if(Weapon != None)
-		if(DeusExWeapon(Weapon).bNativeAttack)
-			return false;
+    if(Weapon != None)
+        if(DeusExWeapon(Weapon).bNativeAttack)
+            return false;
 
-	return Super.ShouldDropWeapon();
+    return Super.ShouldDropWeapon();
 }
 
 function Tick(float deltaSeconds)
 {
-	local Actor  curFood;
-	local int    lastIndex;
-	local float  dist;
-	local vector tempVect;
+    local Actor  curFood;
+    local int    lastIndex;
+    local float  dist;
+    local vector tempVect;
 
-	Super.Tick(deltaSeconds);
+    Super.Tick(deltaSeconds);
 
-	if (checkAggTimer > 0)
-	{
-		checkAggTimer -= deltaSeconds;
-		if (checkAggTimer < 0)
-			checkAggTimer = 0;
-	}
+    if (checkAggTimer > 0)
+    {
+        checkAggTimer -= deltaSeconds;
+        if (checkAggTimer < 0)
+            checkAggTimer = 0;
+    }
 
-	if (aggressiveTimer > 0)
-	{
-		aggressiveTimer -= deltaSeconds;
-		if (aggressiveTimer < 0)
-			aggressiveTimer = 0;
-	}
+    if (aggressiveTimer > 0)
+    {
+        aggressiveTimer -= deltaSeconds;
+        if (aggressiveTimer < 0)
+            aggressiveTimer = 0;
+    }
 
-	if ((FoodClass != None) && InterestedInFood())
-	{
-		FoodTimer += deltaSeconds;
-		if (FoodTimer > 0.5)
-		{
-			FoodTimer = 0;
-			lastIndex = FoodIndex;
-			foreach CycleActors(FoodClass, curFood, FoodIndex)
-			{
-				if (IsValidFood(curFood))
-				{
-					dist = VSize(curFood.Location - Location);
-					if ((dist < 400) || ((dist < 800) && (AICanSee(curFood, , false, true, false, false) > 0.0)))
-					{
-						if ((BestFood == None) || (dist < BestDist))
-						{
-							if (GetFeedSpot(curFood, tempVect))
-							{
-								BestDist  = dist;
-								BestFood  = curFood;
-								FoodIndex = 0;
-							}
-							break;
-						}
-					}
-				}
-			}
-			if (lastIndex >= FoodIndex)  // have we cycled through all actors?
-			{
-				if (BestFood != None)
-				{
-					if (bBefriendFoodGiver && (BestFood.Instigator != None))
-						DecreaseAgitation(BestFood.Instigator, 2);
-					Food = BestFood;
-					SetState('Eating');
-				}
-				BestFood = None;
-			}
-		}
-	}
-	else
-		FoodTimer = 0;
+    if ((FoodClass != None) && InterestedInFood())
+    {
+        FoodTimer += deltaSeconds;
+        if (FoodTimer > 0.5)
+        {
+            FoodTimer = 0;
+            lastIndex = FoodIndex;
+            foreach CycleActors(FoodClass, curFood, FoodIndex)
+            {
+                if (IsValidFood(curFood))
+                {
+                    dist = VSize(curFood.Location - Location);
+                    if ((dist < 400) || ((dist < 800) && (AICanSee(curFood, , false, true, false, false) > 0.0)))
+                    {
+                        if ((BestFood == None) || (dist < BestDist))
+                        {
+                            if (GetFeedSpot(curFood, tempVect))
+                            {
+                                BestDist  = dist;
+                                BestFood  = curFood;
+                                FoodIndex = 0;
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            if (lastIndex >= FoodIndex)  // have we cycled through all actors?
+            {
+                if (BestFood != None)
+                {
+                    if (bBefriendFoodGiver && (BestFood.Instigator != None))
+                        DecreaseAgitation(BestFood.Instigator, 2);
+                    Food = BestFood;
+                    SetState('Eating');
+                }
+                BestFood = None;
+            }
+        }
+    }
+    else
+        FoodTimer = 0;
 
 }
 
 
 state Eating
 {
-	function SetFall()
-	{
-		StartFalling('Eating', 'ContinueEat');
-	}
+    function SetFall()
+    {
+        StartFalling('Eating', 'ContinueEat');
+    }
 
-	function HitWall(vector HitNormal, actor Wall)
-	{
-		if (Physics == PHYS_Falling)
-			return;
-		CheckOpenDoor(HitNormal, Wall);
-	}
+    function HitWall(vector HitNormal, actor Wall)
+    {
+        if (Physics == PHYS_Falling)
+            return;
+        CheckOpenDoor(HitNormal, Wall);
+    }
 
-	function AnimEnd()
-	{
-		PlayWaiting();
-	}
+    function AnimEnd()
+    {
+        PlayWaiting();
+    }
 
-	function Tick(float deltaSeconds)
-	{
-		Super.Tick(deltaSeconds);
+    function Tick(float deltaSeconds)
+    {
+        Super.Tick(deltaSeconds);
 
-		if (bFoodOverridesAttack && (checkAggTimer <= 0))
-		{
-			checkAggTimer = 0.3;
-			if (aggressiveTimer > 0)
-				ResetReactions();
-			else
-				BlockReactions();
-		}
-	}
+        if (bFoodOverridesAttack && (checkAggTimer <= 0))
+        {
+            checkAggTimer = 0.3;
+            if (aggressiveTimer > 0)
+                ResetReactions();
+            else
+                BlockReactions();
+        }
+    }
 
-	function BeginState()
-	{
-		StandUp();
-		SetEnemy(None, EnemyLastSeen, true);
-		Disable('AnimEnd');
-		SetDistress(false);
-		if (!bFoodOverridesAttack)
-			ResetReactions();
-		else if (aggressiveTimer > 0)
-			ResetReactions();
-		else
-			BlockReactions();
-	}
+    function BeginState()
+    {
+        StandUp();
+        SetEnemy(None, EnemyLastSeen, true);
+        Disable('AnimEnd');
+        SetDistress(false);
+        if (!bFoodOverridesAttack)
+            ResetReactions();
+        else if (aggressiveTimer > 0)
+            ResetReactions();
+        else
+            BlockReactions();
+    }
 
-	function EndState()
-	{
-		ResetReactions();
-		Food     = None;
-		BestFood = None;
-	}
+    function EndState()
+    {
+        ResetReactions();
+        Food     = None;
+        BestFood = None;
+    }
 
 Begin:
-	destPoint = None;
-	Acceleration = vect(0,0,0);
+    destPoint = None;
+    Acceleration = vect(0,0,0);
 
 GoToFood:
-	WaitForLanding();
-	if (!IsValidFood(Food))
-		FollowOrders();
-	if (!GetFeedSpot(Food, destLoc))
-		FollowOrders();
-	PlayRunning();
-	MoveTo(destLoc, MaxDesiredSpeed);
-	if (!IsInRange(Food))
-		Goto('GoToFood');
+    WaitForLanding();
+    if (!IsValidFood(Food))
+        FollowOrders();
+    if (!GetFeedSpot(Food, destLoc))
+        FollowOrders();
+    PlayRunning();
+    MoveTo(destLoc, MaxDesiredSpeed);
+    if (!IsInRange(Food))
+        Goto('GoToFood');
 
 TurnToFood:
-	Acceleration = vect(0,0,0);
-	PlayTurning();
-	TurnToward(Food);
-	if (!bPauseWhenEating || (FRand() >= 0.4))
-		Goto('StartEating');
+    Acceleration = vect(0,0,0);
+    PlayTurning();
+    TurnToward(Food);
+    if (!bPauseWhenEating || (FRand() >= 0.4))
+        Goto('StartEating');
 
 PauseEating:
-	PlayPauseWhenEating();
-	FinishAnim();
+    PlayPauseWhenEating();
+    FinishAnim();
 
 StartEating:
-	if (!IsValidFood(Food))
-		FollowOrders();
-	if (!IsInRange(Food))
-		Goto('GoToFood');
-	PlayStartEating();
-	FinishAnim();
+    if (!IsValidFood(Food))
+        FollowOrders();
+    if (!IsInRange(Food))
+        Goto('GoToFood');
+    PlayStartEating();
+    FinishAnim();
 
 Eat:
-	if (!IsValidFood(Food))
-		Goto('StopEating');
-	if (!IsInRange(Food))
-		Goto('StopEating');
-	PlayEatingSound();
-	PlayEating();
-	if (bAnimNotify)
-		FinishAnim();
-	else
-	{
-		FinishAnim();
-		Munch(Food);
-	}
-	if (!bPauseWhenEating || (FRand() > 0.1))
-		Goto('Eat');
+    if (!IsValidFood(Food))
+        Goto('StopEating');
+    if (!IsInRange(Food))
+        Goto('StopEating');
+    PlayEatingSound();
+    PlayEating();
+    if (bAnimNotify)
+        FinishAnim();
+    else
+    {
+        FinishAnim();
+        Munch(Food);
+    }
+    if (!bPauseWhenEating || (FRand() > 0.1))
+        Goto('Eat');
 
 StopEating:
-	PlayStopEating();
-	FinishAnim();
-	if (IsValidFood(Food))
-	{
-		if (!IsInRange(Food))
-			Goto('GoToFood');
-		else
-			Goto('PauseEating');
-	}
+    PlayStopEating();
+    FinishAnim();
+    if (IsValidFood(Food))
+    {
+        if (!IsInRange(Food))
+            Goto('GoToFood');
+        else
+            Goto('PauseEating');
+    }
 
 ContinueEat:
 ContinueFromDoor:
-	FollowOrders();
+    FollowOrders();
 }
 
 defaultproperties

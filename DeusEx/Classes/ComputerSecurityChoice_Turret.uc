@@ -10,13 +10,13 @@ class ComputerSecurityChoice_Turret extends ComputerCameraUIChoice;
 
 function SetCameraView(ComputerSecurityCameraWindow newCamera)
 {
-	Super.SetCameraView(newCamera);
+    Super.SetCameraView(newCamera);
 
-	if (winCamera != None)
-	{
-		if (winCamera.turret != None)
-		{
-			EnableWindow();		// In case was previously disabled
+    if (winCamera != None)
+    {
+        if (winCamera.turret != None)
+        {
+            EnableWindow();        // In case was previously disabled
 
          // DEUS_EX AMSD Multiplayer support
          if (winCamera.player.Level.NetMode == NM_Standalone)
@@ -41,20 +41,20 @@ function SetCameraView(ComputerSecurityCameraWindow newCamera)
             else
                SetValue(1);
          }
-		}
-		else
-		{
-			// Disable!
-			DisableWindow();
-			btnInfo.SetButtonText("");
-		}
-	}
-	else
-	{
-		// Disable!
-		DisableWindow();
-		btnInfo.SetButtonText("");
-	}
+        }
+        else
+        {
+            // Disable!
+            DisableWindow();
+            btnInfo.SetButtonText("");
+        }
+    }
+    else
+    {
+        // Disable!
+        DisableWindow();
+        btnInfo.SetButtonText("");
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -64,10 +64,10 @@ function SetCameraView(ComputerSecurityCameraWindow newCamera)
 function SetMPEnumState()
 {
    local int CameraState;
-	if (winCamera != None)
-	{
-		if (winCamera.turret != None)
-		{
+    if (winCamera != None)
+    {
+        if (winCamera.turret != None)
+        {
          CameraState = SecurityWindow.choiceWindows[0].GetValue();
          
          if (CameraState == 0)
@@ -90,9 +90,9 @@ function SetMPEnumState()
 
 function bool ButtonActivated(Window buttonPressed)
 {
-	Super.ButtonActivated(buttonPressed);
-	SetTurretState();
-	return True;
+    Super.ButtonActivated(buttonPressed);
+    SetTurretState();
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -101,9 +101,9 @@ function bool ButtonActivated(Window buttonPressed)
 
 function bool ButtonActivatedRight( Window buttonPressed )
 {
-	Super.ButtonActivated(buttonPressed);
-	SetTurretState();
-	return True;
+    Super.ButtonActivated(buttonPressed);
+    SetTurretState();
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -120,27 +120,27 @@ function SetTurretState()
       else if (GetValue() == 3)
          SetValue(0);
    }
-	switch(GetValue())
-	{
-		case 0:			// Disabled
-			securityWindow.SetTurretState(False, True);		
-			break;
+    switch(GetValue())
+    {
+        case 0:            // Disabled
+            securityWindow.SetTurretState(False, True);        
+            break;
 
-		case 1:			// Attack Allies
-			securityWindow.SetTurretState(True, False);		
-			securityWindow.SetTurretTrackMode(True, False);
-			break;
+        case 1:            // Attack Allies
+            securityWindow.SetTurretState(True, False);        
+            securityWindow.SetTurretTrackMode(True, False);
+            break;
 
-		case 2:			// Attack Enemies
-			securityWindow.SetTurretState(True, False);		
-			securityWindow.SetTurretTrackMode(False, True);
-			break;
+        case 2:            // Attack Enemies
+            securityWindow.SetTurretState(True, False);        
+            securityWindow.SetTurretTrackMode(False, True);
+            break;
 
-		case 3:			// Attack Everything
-			securityWindow.SetTurretState(True, False);		
-			securityWindow.SetTurretTrackMode(False, False);
-			break;
-	}
+        case 3:            // Attack Everything
+            securityWindow.SetTurretState(True, False);        
+            securityWindow.SetTurretTrackMode(False, False);
+            break;
+    }
 }
 
 // ----------------------------------------------------------------------

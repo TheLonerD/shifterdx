@@ -12,7 +12,7 @@ class MenuSelectDifficulty expands MenuUIMenuWindow;
 
 event InitWindow()
 {
-	Super.InitWindow();
+    Super.InitWindow();
 }
 
 // ----------------------------------------------------------------------
@@ -21,11 +21,11 @@ event InitWindow()
 
 event WindowReady()
 {
-	// Set focus to the Medium button
-	SetFocusWindow(winButtons[1]);
+    // Set focus to the Medium button
+    SetFocusWindow(winButtons[1]);
 
-	//== Enable right click for realistic button
-	winButtons[3].EnableRightMouseClick();
+    //== Enable right click for realistic button
+    winButtons[3].EnableRightMouseClick();
 }
 
 // ----------------------------------------------------------------------
@@ -34,28 +34,28 @@ event WindowReady()
 
 function ProcessCustomMenuButton(string key)
 {
-	switch(key)
-	{
-		case "EASY":
-			InvokeNewGameScreen(1.0);
-			break;
+    switch(key)
+    {
+        case "EASY":
+            InvokeNewGameScreen(1.0);
+            break;
 
-		case "MEDIUM":
-			InvokeNewGameScreen(1.5);
-			break;
+        case "MEDIUM":
+            InvokeNewGameScreen(1.5);
+            break;
 
-		case "HARD":
-			InvokeNewGameScreen(2.0);
-			break;
+        case "HARD":
+            InvokeNewGameScreen(2.0);
+            break;
 
-		case "REALISTIC":
-			InvokeNewGameScreen(4.0);
-			break;
+        case "REALISTIC":
+            InvokeNewGameScreen(4.0);
+            break;
 
-		case "UNREALISTIC":
-			InvokeNewGameScreen(4.1);
-			break;
-	}
+        case "UNREALISTIC":
+            InvokeNewGameScreen(4.1);
+            break;
+    }
 }
 
 //-----------------------------------------------------------------------
@@ -64,25 +64,25 @@ function ProcessCustomMenuButton(string key)
 
 function bool ButtonActivatedRight( Window buttonPressed )
 {
-	local int i;
+    local int i;
 
-	if(buttonPressed == winButtons[3])
-	{
-		if(buttonDefaults[3].Key == "REALISTIC")
-		{
-			winButtons[3].SetButtonText("Unrealistic");
-			buttonDefaults[3].Key = "UNREALISTIC";
-			PlaySound(Sound'Menu_Press', 0.25);
-			return True;
-		}
-		else if(buttonDefaults[3].Key == "UNREALISTIC")
-		{
-			winButtons[3].SetButtonText(ButtonNames[3]);
-			buttonDefaults[3].Key = "REALISTIC";
-			PlaySound(Sound'Menu_Press', 0.25);
-			return True;
-		}
-	}
+    if(buttonPressed == winButtons[3])
+    {
+        if(buttonDefaults[3].Key == "REALISTIC")
+        {
+            winButtons[3].SetButtonText("Unrealistic");
+            buttonDefaults[3].Key = "UNREALISTIC";
+            PlaySound(Sound'Menu_Press', 0.25);
+            return True;
+        }
+        else if(buttonDefaults[3].Key == "UNREALISTIC")
+        {
+            winButtons[3].SetButtonText(ButtonNames[3]);
+            buttonDefaults[3].Key = "REALISTIC";
+            PlaySound(Sound'Menu_Press', 0.25);
+            return True;
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -91,12 +91,12 @@ function bool ButtonActivatedRight( Window buttonPressed )
 
 function InvokeNewGameScreen(float difficulty)
 {
-	local MenuScreenNewGame newGame;
+    local MenuScreenNewGame newGame;
 
-	newGame = MenuScreenNewGame(root.InvokeMenuScreen(Class'MenuScreenNewGame'));
+    newGame = MenuScreenNewGame(root.InvokeMenuScreen(Class'MenuScreenNewGame'));
 
-	if (newGame != None)
-		newGame.SetDifficulty(difficulty);
+    if (newGame != None)
+        newGame.SetDifficulty(difficulty);
 }
 
 // ----------------------------------------------------------------------

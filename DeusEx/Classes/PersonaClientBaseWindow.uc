@@ -19,8 +19,8 @@ var int textureIndex;
 
 function SetClientTexture(int textureIndex, Texture newTexture)
 {
-	if ((textureIndex >= 0) && (textureIndex < arrayCount(clientTextures)))
-		clientTextures[textureIndex] = newTexture;
+    if ((textureIndex >= 0) && (textureIndex < arrayCount(clientTextures)))
+        clientTextures[textureIndex] = newTexture;
 }
 
 // ----------------------------------------------------------------------
@@ -29,10 +29,10 @@ function SetClientTexture(int textureIndex, Texture newTexture)
 
 function SetTextureLayout(int newTextureCols, int newTextureRows)
 {
-	textureCols = newTextureCols;
-	textureRows = newTextureRows;
+    textureCols = newTextureCols;
+    textureRows = newTextureRows;
 
-	CalculateTexturePositions();
+    CalculateTexturePositions();
 }
 
 // ----------------------------------------------------------------------
@@ -44,20 +44,20 @@ function SetTextureLayout(int newTextureCols, int newTextureRows)
 
 function CalculateTexturePositions()
 {
-	local int rowIndex;
-	local int colIndex;
+    local int rowIndex;
+    local int colIndex;
 
-	textureCount = 0;
+    textureCount = 0;
 
-	for(rowIndex=0; rowIndex<textureRows; rowIndex++)
-	{
-		for(colIndex=0; colIndex<textureCols; colIndex++)
-		{
-			texturePosX[textureCount] = colIndex * 256;
-			texturePosY[textureCount] = rowIndex * 256;
-			textureCount++;
-		}
-	}
+    for(rowIndex=0; rowIndex<textureRows; rowIndex++)
+    {
+        for(colIndex=0; colIndex<textureCols; colIndex++)
+        {
+            texturePosX[textureCount] = colIndex * 256;
+            texturePosY[textureCount] = rowIndex * 256;
+            textureCount++;
+        }
+    }
 }
 
 // ----------------------------------------------------------------------

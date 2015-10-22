@@ -1943,7 +1943,7 @@ beltDescription="MUN. 20MM"
 [AmmoRocketWP]
 ItemName="Roquettes WP"
 ItemArticle="des"
-Description="La roquette à phosphore blanc, également appelée 'wooly peter', a été conçue pour étendre les capacités du fusil GEP.	Bien qu'elle ne fasse que peu de dégâts lors de son explosion, elle dégage un nuage de phosphore blanc qui s'enflamme dès qu'il entre en contact avec l'air."
+Description="La roquette à phosphore blanc, également appelée 'wooly peter', a été conçue pour étendre les capacités du fusil GEP.    Bien qu'elle ne fasse que peu de dégâts lors de son explosion, elle dégage un nuage de phosphore blanc qui s'enflamme dès qu'il entre en contact avec l'air."
 beltDescription="ROQUETTE WP"
 
 [AugHealing]

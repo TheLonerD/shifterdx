@@ -2,7 +2,7 @@
 // WeaponMod
 //=============================================================================
 class WeaponMod extends DeusExPickup
-	abstract;
+    abstract;
 
 var() Float WeaponModifier;
 var localized String DragToUpgrade;
@@ -20,9 +20,9 @@ replication
 
 function PostBeginPlay()
 {
-	Super.PostBeginPlay();
+    Super.PostBeginPlay();
 
-	LoopAnim('Cycle');
+    LoopAnim('Cycle');
 }
 
 // ----------------------------------------------------------------------
@@ -63,19 +63,19 @@ function DestroyMod()
 
 simulated function bool UpdateInfo(Object winObject)
 {
-	local PersonaInfoWindow winInfo;
+    local PersonaInfoWindow winInfo;
 
-	winInfo = PersonaInfoWindow(winObject);
-	if (winInfo == None)
-		return False;
+    winInfo = PersonaInfoWindow(winObject);
+    if (winInfo == None)
+        return False;
 
-	winInfo.Clear();
-	winInfo.SetTitle(itemName);
-	winInfo.SetText(Description $ winInfo.CR() $ winInfo.CR());
+    winInfo.Clear();
+    winInfo.SetTitle(itemName);
+    winInfo.SetText(Description $ winInfo.CR() $ winInfo.CR());
 
-	winInfo.AppendText(DragToUpgrade);
+    winInfo.AppendText(DragToUpgrade);
 
-	return True;
+    return True;
 }
 
 // ----------------------------------------------------------------------

@@ -18,7 +18,7 @@ var Color colHeaderText;
 var Color colSensitive;
 var Color colInsensitive;
 
-var int num;	// what number should I be?
+var int num;    // what number should I be?
 
 var Texture keypadButtonTextures[2];
 
@@ -31,14 +31,14 @@ var Texture keypadButtonTextures[2];
 
 event InitWindow()
 {
-	Super.InitWindow();
-	
-	SetSize(25, 27);
+    Super.InitWindow();
+    
+    SetSize(25, 27);
 
-	// Get a pointer to the player
-	player = DeusExPlayer(GetRootWindow().parentPawn);
+    // Get a pointer to the player
+    player = DeusExPlayer(GetRootWindow().parentPawn);
 
-	StyleChanged();
+    StyleChanged();
 }
 
 // ----------------------------------------------------------------------
@@ -46,40 +46,40 @@ event InitWindow()
 // ----------------------------------------------------------------------
 
 event DrawWindow(GC gc)
-{		
-	local HUDKeypadWindow parent;
+{        
+    local HUDKeypadWindow parent;
 
-	parent = HUDKeypadWindow(GetParent());
+    parent = HUDKeypadWindow(GetParent());
 
-	// Draw the button graphic
-	gc.SetTileColor(colBackground);
+    // Draw the button graphic
+    gc.SetTileColor(colBackground);
 
-	if (bBackgroundTranslucent)
-		gc.SetStyle(DSTY_Translucent);
-	else
-		gc.SetStyle(DSTY_Masked);
-	
-	if (bButtonPressed)
-		gc.DrawTexture(0, 0, width, height, 0, 0, keypadButtonTextures[1]);
-	else
-		gc.DrawTexture(0, 0, width, height, 0, 0, keypadButtonTextures[0]);
+    if (bBackgroundTranslucent)
+        gc.SetStyle(DSTY_Translucent);
+    else
+        gc.SetStyle(DSTY_Masked);
+    
+    if (bButtonPressed)
+        gc.DrawTexture(0, 0, width, height, 0, 0, keypadButtonTextures[1]);
+    else
+        gc.DrawTexture(0, 0, width, height, 0, 0, keypadButtonTextures[0]);
 
-	// Display darker if the button's insensitive
-	if (bIsSensitive)
-		gc.SetTextColor(colSensitive);
-	else
-		gc.SetTextColor(colInsensitive);
+    // Display darker if the button's insensitive
+    if (bIsSensitive)
+        gc.SetTextColor(colSensitive);
+    else
+        gc.SetTextColor(colInsensitive);
 
-	// If the button is currently being depressed, then draw the 
-	// graphic down and to the right one.
-	gc.SetFont(Font'FontMenuExtraLarge');
-	gc.SetAlignments(HALIGN_Center, VALIGN_Center);
-	gc.EnableTranslucentText(True);
+    // If the button is currently being depressed, then draw the 
+    // graphic down and to the right one.
+    gc.SetFont(Font'FontMenuExtraLarge');
+    gc.SetAlignments(HALIGN_Center, VALIGN_Center);
+    gc.EnableTranslucentText(True);
 
-	if (bButtonPressed)
-		gc.DrawText(1, 3, width, height, parent.IndexToString(num));
-	else
-		gc.DrawText(0, 2, width, height, parent.IndexToString(num));
+    if (bButtonPressed)
+        gc.DrawText(1, 3, width, height, parent.IndexToString(num));
+    else
+        gc.DrawText(0, 2, width, height, parent.IndexToString(num));
 }
 
 // ----------------------------------------------------------------------
@@ -88,15 +88,15 @@ event DrawWindow(GC gc)
 
 event StyleChanged()
 {
-	local ColorTheme theme;
+    local ColorTheme theme;
 
-	theme = player.ThemeManager.GetCurrentHUDColorTheme();
+    theme = player.ThemeManager.GetCurrentHUDColorTheme();
 
-	colBackground = theme.GetColorFromName('HUDColor_Background');
+    colBackground = theme.GetColorFromName('HUDColor_Background');
 
-	bBorderTranslucent     = player.GetHUDBorderTranslucency();
-	bBackgroundTranslucent = player.GetHUDBackgroundTranslucency();
-	bDrawBorder            = player.GetHUDBordersVisible();
+    bBorderTranslucent     = player.GetHUDBorderTranslucency();
+    bBackgroundTranslucent = player.GetHUDBackgroundTranslucency();
+    bDrawBorder            = player.GetHUDBordersVisible();
 }
 
 // ----------------------------------------------------------------------

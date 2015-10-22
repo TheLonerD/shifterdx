@@ -14,23 +14,23 @@ var Float lastTickTime;
 // ----------------------------------------------------------------------
 replication
 {
-	// MBCODE: Replicate the last time healed to the server
-	reliable if ( Role < ROLE_Authority )
-		lastHealTime, healRefreshTime;
+    // MBCODE: Replicate the last time healed to the server
+    reliable if ( Role < ROLE_Authority )
+        lastHealTime, healRefreshTime;
 }
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPMedicalBot", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPMedicalBot", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 // ----------------------------------------------------------------------
@@ -42,27 +42,27 @@ function bool Facelift(bool bOn)
 //==  with the Shifter-ized ones to get both features.
 function PreBeginPlay()
 {
-	local MedicalBot medbot;
+    local MedicalBot medbot;
 
-	if(String(Class.Name) == "TNM_Medbot")
-	{
-		medbot = spawn(Class'DeusEx.MedicalBot', Owner);
+    if(String(Class.Name) == "TNM_Medbot")
+    {
+        medbot = spawn(Class'DeusEx.MedicalBot', Owner);
 
-		//== Only delete the old medbot if there's a new one
-		if(medbot != None)
-		{
-			//== Oy vey.  Make sure there aren't any tags we're messing up
-			medbot.FamiliarName = FamiliarName;
-			medbot.UnfamiliarName = UnfamiliarName;
-			medbot.BindName = BindName;
-			medbot.Tag = Tag;
-		
-			Destroy();
-			return;
-		}
-	}
+        //== Only delete the old medbot if there's a new one
+        if(medbot != None)
+        {
+            //== Oy vey.  Make sure there aren't any tags we're messing up
+            medbot.FamiliarName = FamiliarName;
+            medbot.UnfamiliarName = UnfamiliarName;
+            medbot.BindName = BindName;
+            medbot.Tag = Tag;
+        
+            Destroy();
+            return;
+        }
+    }
 
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 }
 
 // ----------------------------------------------------------------------
@@ -71,7 +71,7 @@ function PreBeginPlay()
 
 function PostBeginPlay()
 {
-	Super.PostBeginPlay();
+    Super.PostBeginPlay();
 
    if (Level.NetMode != NM_Standalone)
    {
@@ -81,19 +81,19 @@ function PostBeginPlay()
    if (IsImmobile())
       bAlwaysRelevant = True;
 
-	lastHealTime = -healRefreshTime;
+    lastHealTime = -healRefreshTime;
 }
 
 function Tick(float deltaTime)
 {
-	//== Track the time shift from pausing
-	if(DeusExGameInfo(Level.Game) != None)
-		if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime)
-			lastHealTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
+    //== Track the time shift from pausing
+    if(DeusExGameInfo(Level.Game) != None)
+        if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime)
+            lastHealTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
 
-	lastTickTime = Level.TimeSeconds;
+    lastTickTime = Level.TimeSeconds;
 
-	Super.Tick(deltaTime);
+    Super.Tick(deltaTime);
 }
 
 // ----------------------------------------------------------------------
@@ -102,8 +102,8 @@ function Tick(float deltaTime)
 
 function StandStill()
 {
-	GotoState('Idle', 'Idle');
-	Acceleration=Vect(0, 0, 0);
+    GotoState('Idle', 'Idle');
+    Acceleration=Vect(0, 0, 0);
 }
 
 // ----------------------------------------------------------------------
@@ -115,10 +115,10 @@ function StandStill()
 function Frob(Actor Frobber, Inventory frobWith)
 {
    local DeusExPlayer player;
-	local DeusExRootWindow root;
-	local HUDMedBotAddAugsScreen winAug;
-	local HUDMedBotHealthScreen  winHealth;
-	local AugmentationCannister augCan;
+    local DeusExRootWindow root;
+    local HUDMedBotAddAugsScreen winAug;
+    local HUDMedBotHealthScreen  winHealth;
+    local AugmentationCannister augCan;
 
    Super.Frob(Frobber, frobWith);
    
@@ -130,7 +130,7 @@ function Frob(Actor Frobber, Inventory frobWith)
    // DEUS_EX AMSD  In multiplayer, don't pop up the window, just use them
    // In singleplayer, do the old thing.  
    if (Level.NetMode == NM_Standalone)
-   {		
+   {        
       root = DeusExRootWindow(player.rootWindow);
       if (root != None)
       {
@@ -157,16 +157,16 @@ function Frob(Actor Frobber, Inventory frobWith)
    {
       if (CanHeal())
       {
-			if ( Level.NetMode != NM_Standalone )
-			{
-				PlaySound(sound'MedicalHiss', SLOT_None,,, 256);
-				if ( Frobber.IsA('DeusExPlayer') )
-				{
-					DeusExPlayer(Frobber).StopPoison();
-					DeusExPlayer(Frobber).ExtinguishFire();
-					DeusExPlayer(Frobber).drugEffectTimer = 0;
-				}
-			}
+            if ( Level.NetMode != NM_Standalone )
+            {
+                PlaySound(sound'MedicalHiss', SLOT_None,,, 256);
+                if ( Frobber.IsA('DeusExPlayer') )
+                {
+                    DeusExPlayer(Frobber).StopPoison();
+                    DeusExPlayer(Frobber).ExtinguishFire();
+                    DeusExPlayer(Frobber).drugEffectTimer = 0;
+                }
+            }
          HealPlayer(DeusExPlayer(Frobber));
       }
       else
@@ -182,14 +182,14 @@ function Frob(Actor Frobber, Inventory frobWith)
 
 function int HealPlayer(DeusExPlayer player)
 {
-	local int healedPoints;
+    local int healedPoints;
 
-	if (player != None)
-	{
-		healedPoints = player.HealPlayer(healAmount);
-		lastHealTime = Level.TimeSeconds;
-	}
-	return healedPoints;
+    if (player != None)
+    {
+        healedPoints = player.HealPlayer(healAmount);
+        lastHealTime = Level.TimeSeconds;
+    }
+    return healedPoints;
 }
 
 // ----------------------------------------------------------------------
@@ -199,8 +199,8 @@ function int HealPlayer(DeusExPlayer player)
 // ----------------------------------------------------------------------
 
 function bool CanHeal()
-{	
-	return (Level.TimeSeconds - lastHealTime > healRefreshTime);
+{    
+    return (Level.TimeSeconds - lastHealTime > healRefreshTime);
 }
 
 // ----------------------------------------------------------------------
@@ -209,7 +209,7 @@ function bool CanHeal()
 
 function Float GetRefreshTimeRemaining()
 {
-	return healRefreshTime - (Level.TimeSeconds - lastHealTime);
+    return healRefreshTime - (Level.TimeSeconds - lastHealTime);
 }
 
 // ----------------------------------------------------------------------

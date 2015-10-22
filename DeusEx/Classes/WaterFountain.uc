@@ -12,58 +12,58 @@ var localized String msgEmpty;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPWaterFountain", class'mesh', True));
+    if(bOn)
+        Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPWaterFountain", class'mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 function Timer()
 {
-	bUsing = False;
-	PlayAnim('Still');
-	AmbientSound = None;
+    bUsing = False;
+    PlayAnim('Still');
+    AmbientSound = None;
 }
 
 function Frob(Actor Frobber, Inventory frobWith)
 {
-	local int mult;
+    local int mult;
 
-	Super.Frob(Frobber, frobWith);
+    Super.Frob(Frobber, frobWith);
 
-	mult = 1;
+    mult = 1;
 
-	if (numUses <= 0)
-	{
-		if (Pawn(Frobber) != None)
-			Pawn(Frobber).ClientMessage(msgEmpty);
-		return;
-	}
+    if (numUses <= 0)
+    {
+        if (Pawn(Frobber) != None)
+            Pawn(Frobber).ClientMessage(msgEmpty);
+        return;
+    }
 
-	if (bUsing)
-		return;
+    if (bUsing)
+        return;
 
-	SetTimer(1.0, False); //Down from 2.0
-	bUsing = True;
+    SetTimer(1.0, False); //Down from 2.0
+    bUsing = True;
 
-	// heal the frobber a small bit
-	if (DeusExPlayer(Frobber) != None)
-	{
-		if(DeusExPlayer(Frobber).SkillSystem != None)
-			mult += DeusExPlayer(Frobber).SkillSystem.GetSkillLevel(class'SkillMedicine');
+    // heal the frobber a small bit
+    if (DeusExPlayer(Frobber) != None)
+    {
+        if(DeusExPlayer(Frobber).SkillSystem != None)
+            mult += DeusExPlayer(Frobber).SkillSystem.GetSkillLevel(class'SkillMedicine');
 
-		DeusExPlayer(Frobber).HealPlayer(mult);
-	}
+        DeusExPlayer(Frobber).HealPlayer(mult);
+    }
 
-	LoopAnim('Use');
-	AmbientSound = sound'WaterBubbling';
-	numUses--;
+    LoopAnim('Use');
+    AmbientSound = sound'WaterBubbling';
+    numUses--;
 }
 
 //Uses increased from 10

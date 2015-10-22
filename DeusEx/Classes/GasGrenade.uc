@@ -3,37 +3,37 @@
 //=============================================================================
 class GasGrenade extends ThrownProjectile;
 
-var float	mpBlastRadius;
-var float	mpProxRadius;
-var float	mpGasDamage;
-var float	mpFuselength;
+var float    mpBlastRadius;
+var float    mpProxRadius;
+var float    mpGasDamage;
+var float    mpFuselength;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPGasGrenadePickup", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPGasGrenadePickup", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	if ( Level.NetMode != NM_Standalone )
-	{
-		blastRadius=mpBlastRadius;
-		proxRadius=mpProxRadius;
-		Damage=mpGasDamage;
-		fuseLength=mpFuseLength;
-		bIgnoresNanoDefense=True;
-	}
+    if ( Level.NetMode != NM_Standalone )
+    {
+        blastRadius=mpBlastRadius;
+        proxRadius=mpProxRadius;
+        Damage=mpGasDamage;
+        fuseLength=mpFuseLength;
+        bIgnoresNanoDefense=True;
+    }
 }
 
 defaultproperties

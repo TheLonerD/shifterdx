@@ -5,33 +5,33 @@ class AnnaNavarre extends HumanMilitary;
 
 function bool Facelift(bool bOn)
 {
-	local int i;
+    local int i;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPcharacters.HDTPAnna", class'mesh', True));
+    if(bOn)
+        Mesh = mesh(DynamicLoadObject("HDTPcharacters.HDTPAnna", class'mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Texture = Default.Texture;
-		Mesh = Default.Mesh;
-		for(i = 0; i < 8; i++)
-		{
-			MultiSkins[i] = Default.MultiSkins[i];
-		}
-	}
-	else
-	{
-		Texture = None;
-		for(i = 0; i < 8; i++)
-		{
-			MultiSkins[i] = None;
-		}
-	}
+    if(Mesh == None || !bOn)
+    {
+        Texture = Default.Texture;
+        Mesh = Default.Mesh;
+        for(i = 0; i < 8; i++)
+        {
+            MultiSkins[i] = Default.MultiSkins[i];
+        }
+    }
+    else
+    {
+        Texture = None;
+        for(i = 0; i < 8; i++)
+        {
+            MultiSkins[i] = None;
+        }
+    }
 
-	return true;
+    return true;
 }
 
 // ----------------------------------------------------------------------
@@ -42,41 +42,41 @@ function bool Facelift(bool bOn)
 
 function Carcass SpawnCarcass()
 {
-	if (bStunned)
-		return Super.SpawnCarcass();
+    if (bStunned)
+        return Super.SpawnCarcass();
 
-	Explode();
+    Explode();
 
-	return None;
+    return None;
 }
 
 function Explode(optional vector HitLocation) //== For cross-mod compatibility
 {
-	Super.Explode(HitLocation);
+    Super.Explode(HitLocation);
 }
 
 function Bool HasTwoHandedWeapon()
 {
-	return False;
+    return False;
 }
 
 function float ModifyDamage(int Damage, Pawn instigatedBy, Vector hitLocation,
                             Vector offset, Name damageType)
 {
-	if ((damageType == 'Stunned') || (damageType == 'KnockedOut') || (damageType == 'Poison') || (damageType == 'PoisonEffect'))
-		return 0;
-	else
-		return Super.ModifyDamage(Damage, instigatedBy, hitLocation, offset, damageType);
+    if ((damageType == 'Stunned') || (damageType == 'KnockedOut') || (damageType == 'Poison') || (damageType == 'PoisonEffect'))
+        return 0;
+    else
+        return Super.ModifyDamage(Damage, instigatedBy, hitLocation, offset, damageType);
 }
 
 function GotoDisabledState(name damageType, EHitLocation hitPos)
 {
-	if (!bCollideActors && !bBlockActors && !bBlockPlayers)
-		return;
-	if (CanShowPain())
-		TakeHit(hitPos);
-	else
-		GotoNextState();
+    if (!bCollideActors && !bBlockActors && !bBlockPlayers)
+        return;
+    if (CanShowPain())
+        TakeHit(hitPos);
+    else
+        GotoNextState();
 }
 
 defaultproperties

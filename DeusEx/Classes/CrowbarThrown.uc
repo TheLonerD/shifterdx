@@ -5,49 +5,49 @@ class CrowbarThrown extends DeusExProjectile;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPCrowbarPickup", class'mesh', True));
+    if(bOn)
+        Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPCrowbarPickup", class'mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Texture = None;
-		Mesh = Default.Mesh;
-	}
-	else
-		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPWeaponCrowbarTex2", class'Texture'));
+    if(Mesh == None || !bOn)
+    {
+        Texture = None;
+        Mesh = Default.Mesh;
+    }
+    else
+        Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPWeaponCrowbarTex2", class'Texture'));
 
-	return true;
+    return true;
 }
 
 // set it's rotation correctly
 simulated function Tick(float deltaTime)
 {
-	local Rotator rot;
+    local Rotator rot;
 
-	if (bStuck)
-		return;
+    if (bStuck)
+        return;
 
-	Super.Tick(deltaTime);
+    Super.Tick(deltaTime);
 
-	if (Level.Netmode != NM_DedicatedServer)
-	{
-		rot = Rotation;
-		rot.Roll += 16384;
-		rot.Pitch -= 16384;
-		SetRotation(rot);
-	}
+    if (Level.Netmode != NM_DedicatedServer)
+    {
+        rot = Rotation;
+        rot.Roll += 16384;
+        rot.Pitch -= 16384;
+        SetRotation(rot);
+    }
 }
 
 auto simulated state Flying
 {
-	simulated function Explode(vector HitLocation, vector HitNormal)
-	{
-		Super.Explode(HitLocation, HitNormal);
-		spawn(spawnWeaponClass, None,, HitLocation + (HitNormal * 0.1));
-	}
+    simulated function Explode(vector HitLocation, vector HitNormal)
+    {
+        Super.Explode(HitLocation, HitNormal);
+        spawn(spawnWeaponClass, None,, HitLocation + (HitNormal * 0.1));
+    }
 }
 
 defaultproperties

@@ -8,38 +8,38 @@ class AmmoSabot extends DeusExAmmo;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-	{
-		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAmmoShell", class'Mesh', True));
-		Skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmoShellTex2", class'Texture', True));
-	}
+    if(bOn)
+    {
+        Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAmmoShell", class'Mesh', True));
+        Skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmoShellTex2", class'Texture', True));
+    }
 
-	if(Mesh == None || Skin == None || !bOn)
-	{
-		Mesh = Default.Mesh;
-		Skin = Default.Skin;
-	}
+    if(Mesh == None || Skin == None || !bOn)
+    {
+        Mesh = Default.Mesh;
+        Skin = Default.Skin;
+    }
 
-	PickupViewMesh = Mesh;
-	MultiSkins[1] = Skin;
+    PickupViewMesh = Mesh;
+    MultiSkins[1] = Skin;
 
-	return true;
+    return true;
 } 
 
 function bool UseAmmo(int AmountNeeded)
 {
-	local vector offset, tempvec, X, Y, Z;
-	local ShellCasing2 shell;
+    local vector offset, tempvec, X, Y, Z;
+    local ShellCasing2 shell;
 
-	if (Super.UseAmmo(AmountNeeded))
-	{
-		GetAxes(Pawn(Owner).ViewRotation, X, Y, Z);
-		offset = Owner.CollisionRadius * X + 0.3 * Owner.CollisionRadius * Y;
-		tempvec = 0.8 * Owner.CollisionHeight * Z;
-		offset.Z += tempvec.Z;
+    if (Super.UseAmmo(AmountNeeded))
+    {
+        GetAxes(Pawn(Owner).ViewRotation, X, Y, Z);
+        offset = Owner.CollisionRadius * X + 0.3 * Owner.CollisionRadius * Y;
+        tempvec = 0.8 * Owner.CollisionHeight * Z;
+        offset.Z += tempvec.Z;
       if ((DeusExMPGame(Level.Game) != None) && (!DeusExMPGame(Level.Game).bSpawnEffects))
       {
          shell = None;
@@ -48,15 +48,15 @@ function bool UseAmmo(int AmountNeeded)
       {
          shell = spawn(class'ShellCasing2',,, Owner.Location + offset);
       }
-		if (shell != None)
-		{
-			shell.Velocity = (FRand()*20+90) * Y + (10-FRand()*20) * X;
-			shell.Velocity.Z = 0;
-		}
-		return True;
-	}
+        if (shell != None)
+        {
+            shell.Velocity = (FRand()*20+90) * Y + (10-FRand()*20) * X;
+            shell.Velocity.Z = 0;
+        }
+        return True;
+    }
 
-	return False;
+    return False;
 }
 
 defaultproperties

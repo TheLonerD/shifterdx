@@ -5,7 +5,7 @@ class MPSECRETARY extends Human;
 
 function Bool HasTwoHandedWeapon()
 {
-	return False;
+    return False;
 }
 
 // ----------------------------------------------------------------------
@@ -14,9 +14,9 @@ function Bool HasTwoHandedWeapon()
 
 event TravelPostAccept()
 {
-	local DeusExLevelInfo info;
+    local DeusExLevelInfo info;
 
-	Super.TravelPostAccept();
+    Super.TravelPostAccept();
 }
 
 // ----------------------------------------------------------------------

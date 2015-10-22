@@ -4,15 +4,15 @@
 
 class PersonaScreenAugmentations extends PersonaScreenBaseWindow;
 
-var PersonaActionButtonWindow			btnActivate;
-var PersonaActionButtonWindow			btnUpgrade;
-var PersonaActionButtonWindow			btnUseCell;
-var PersonaInfoWindow					winInfo;
-var PersonaAugmentationBodyWindow		winBody;
-var PersonaAugmentationOverlaysWindow	winOverlays;
+var PersonaActionButtonWindow            btnActivate;
+var PersonaActionButtonWindow            btnUpgrade;
+var PersonaActionButtonWindow            btnUseCell;
+var PersonaInfoWindow                    winInfo;
+var PersonaAugmentationBodyWindow        winBody;
+var PersonaAugmentationOverlaysWindow    winOverlays;
 var PersonaItemDetailWindow             winBioCells;
 var PersonaItemDetailWindow             winAugCans;
-var ProgressBarWindow					winBioEnergy;
+var ProgressBarWindow                    winBioEnergy;
 var TextWindow                          winBioEnergyText;
 
 // Currently selected button, either a skill or augmentation
@@ -21,8 +21,8 @@ var PersonaItemButton selectedAugButton;
 
 struct AugLoc_S
 {
-	var int x;
-	var int y;
+    var int x;
+    var int y;
 };
 
 var AugLoc_S augLocs[7];
@@ -59,9 +59,9 @@ var Localized string AugLocationSubdermal;
 
 event InitWindow()
 {
-	Super.InitWindow();
+    Super.InitWindow();
 
-	EnableButtons();
+    EnableButtons();
 }
 
 // ----------------------------------------------------------------------
@@ -70,22 +70,22 @@ event InitWindow()
 
 function CreateControls()
 {
-	Super.CreateControls();
+    Super.CreateControls();
 
-	CreateTitleWindow(9, 5, AugmentationsTitleText);
-	CreateInfoWindow();
-	CreateButtons();
-	CreateAugmentationLabels();
-	CreateAugmentationHighlights();
-	CreateAugmentationButtons();
-	CreateOverlaysWindow();
-	CreateBodyWindow();
-	CreateBioCellBar();
-	CreateAugCanWindow();
-	CreateBioCellWindow();
-	CreateStatusWindow();
+    CreateTitleWindow(9, 5, AugmentationsTitleText);
+    CreateInfoWindow();
+    CreateButtons();
+    CreateAugmentationLabels();
+    CreateAugmentationHighlights();
+    CreateAugmentationButtons();
+    CreateOverlaysWindow();
+    CreateBodyWindow();
+    CreateBioCellBar();
+    CreateAugCanWindow();
+    CreateBioCellWindow();
+    CreateStatusWindow();
 
-	PersonaNavBarWindow(winNavBar).btnAugs.SetSensitivity(False);
+    PersonaNavBarWindow(winNavBar).btnAugs.SetSensitivity(False);
 }
 
 // ----------------------------------------------------------------------
@@ -94,8 +94,8 @@ function CreateControls()
 
 function CreateStatusWindow()
 {
-	winStatus = PersonaStatusLineWindow(winClient.NewChild(Class'PersonaStatusLineWindow'));
-	winStatus.SetPos(348, 240);
+    winStatus = PersonaStatusLineWindow(winClient.NewChild(Class'PersonaStatusLineWindow'));
+    winStatus.SetPos(348, 240);
 }
 
 // ----------------------------------------------------------------------
@@ -104,26 +104,26 @@ function CreateStatusWindow()
 
 function CreateButtons()
 {
-	local PersonaButtonBarWindow winActionButtons;
+    local PersonaButtonBarWindow winActionButtons;
 
-	winActionButtons = PersonaButtonBarWindow(winClient.NewChild(Class'PersonaButtonBarWindow'));
-	winActionButtons.SetPos(13, 407);
-	winActionButtons.SetWidth(187);
-	winActionButtons.FillAllSpace(False);
+    winActionButtons = PersonaButtonBarWindow(winClient.NewChild(Class'PersonaButtonBarWindow'));
+    winActionButtons.SetPos(13, 407);
+    winActionButtons.SetWidth(187);
+    winActionButtons.FillAllSpace(False);
 
-	btnUpgrade = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
-	btnUpgrade.SetButtonText(UpgradeButtonLabel);
+    btnUpgrade = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
+    btnUpgrade.SetButtonText(UpgradeButtonLabel);
 
-	btnActivate = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
-	btnActivate.SetButtonText(ActivateButtonLabel);
+    btnActivate = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
+    btnActivate.SetButtonText(ActivateButtonLabel);
 
-	winActionButtons = PersonaButtonBarWindow(winClient.NewChild(Class'PersonaButtonBarWindow'));
-	winActionButtons.SetPos(346, 387);
-	winActionButtons.SetWidth(97);
-	winActionButtons.FillAllSpace(False);
+    winActionButtons = PersonaButtonBarWindow(winClient.NewChild(Class'PersonaButtonBarWindow'));
+    winActionButtons.SetPos(346, 387);
+    winActionButtons.SetWidth(97);
+    winActionButtons.FillAllSpace(False);
 
-	btnUseCell = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
-	btnUseCell.SetButtonText(UseCellButtonLabel);
+    btnUseCell = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
+    btnUseCell.SetButtonText(UseCellButtonLabel);
 }
 
 // ----------------------------------------------------------------------
@@ -132,9 +132,9 @@ function CreateButtons()
 
 function CreateBodyWindow()
 {
-	winBody = PersonaAugmentationBodyWindow(winClient.NewChild(Class'PersonaAugmentationBodyWindow'));
-	winBody.SetPos(72, 28);
-	winBody.Lower();
+    winBody = PersonaAugmentationBodyWindow(winClient.NewChild(Class'PersonaAugmentationBodyWindow'));
+    winBody.SetPos(72, 28);
+    winBody.Lower();
 }
 
 // ----------------------------------------------------------------------
@@ -143,9 +143,9 @@ function CreateBodyWindow()
 
 function CreateOverlaysWindow()
 {
-	winOverlays = PersonaAugmentationOverlaysWindow(winClient.NewChild(Class'PersonaAugmentationOverlaysWindow'));
-	winOverlays.SetPos(72, 28);
-	winOverlays.Lower();
+    winOverlays = PersonaAugmentationOverlaysWindow(winClient.NewChild(Class'PersonaAugmentationOverlaysWindow'));
+    winOverlays.SetPos(72, 28);
+    winOverlays.Lower();
 }
 
 // ----------------------------------------------------------------------
@@ -154,9 +154,9 @@ function CreateOverlaysWindow()
 
 function CreateInfoWindow()
 {
-	winInfo = PersonaInfoWindow(winClient.NewChild(Class'PersonaInfoWindow'));
-	winInfo.SetPos(348, 14);
-	winInfo.SetSize(238, 218);
+    winInfo = PersonaInfoWindow(winClient.NewChild(Class'PersonaInfoWindow'));
+    winInfo.SetPos(348, 14);
+    winInfo.SetSize(238, 218);
 }
 
 // ----------------------------------------------------------------------
@@ -165,13 +165,13 @@ function CreateInfoWindow()
 
 function CreateAugmentationLabels()
 {
-	CreateLabel( 57,  27, AugLocationCranial);
-	CreateLabel(212,  27, AugLocationEyes);
-	CreateLabel( 19, 103, AugLocationArms);
-	CreateLabel( 19, 187, AugLocationSubdermal);
-	CreateLabel(247, 109, AugLocationTorso);
-	CreateLabel( 19, 330, AugLocationDefault);
-	CreateLabel(247, 311, AugLocationLegs);
+    CreateLabel( 57,  27, AugLocationCranial);
+    CreateLabel(212,  27, AugLocationEyes);
+    CreateLabel( 19, 103, AugLocationArms);
+    CreateLabel( 19, 187, AugLocationSubdermal);
+    CreateLabel(247, 109, AugLocationTorso);
+    CreateLabel( 19, 330, AugLocationDefault);
+    CreateLabel(247, 311, AugLocationLegs);
 }
 
 // ----------------------------------------------------------------------
@@ -180,13 +180,13 @@ function CreateAugmentationLabels()
 
 function CreateLabel(int posX, int posY, String strLabel)
 {
-	local PersonaNormalTextWindow winLabel;
+    local PersonaNormalTextWindow winLabel;
 
-	winLabel = PersonaNormalTextWindow(winClient.NewChild(Class'PersonaNormalTextWindow'));
-	winLabel.SetPos(posX, posY);
-	winLabel.SetSize(52, 11);
-	winLabel.SetText(strLabel);
-	winLabel.SetTextMargins(2, 1);
+    winLabel = PersonaNormalTextWindow(winClient.NewChild(Class'PersonaNormalTextWindow'));
+    winLabel.SetPos(posX, posY);
+    winLabel.SetSize(52, 11);
+    winLabel.SetText(strLabel);
+    winLabel.SetTextMargins(2, 1);
 }
 
 // ----------------------------------------------------------------------
@@ -195,15 +195,15 @@ function CreateLabel(int posX, int posY, String strLabel)
 
 function CreateAugCanWindow()
 {
-	winAugCans = PersonaItemDetailWindow(winClient.NewChild(Class'PersonaItemDetailWindow'));
-	winAugCans.SetPos(346, 274);
-	winAugCans.SetWidth(242);
-	winAugCans.SetIcon(Class'AugmentationUpgradeCannister'.Default.LargeIcon);
-	winAugCans.SetIconSize(
-		Class'AugmentationUpgradeCannister'.Default.largeIconWidth,
-		Class'AugmentationUpgradeCannister'.Default.largeIconHeight);
+    winAugCans = PersonaItemDetailWindow(winClient.NewChild(Class'PersonaItemDetailWindow'));
+    winAugCans.SetPos(346, 274);
+    winAugCans.SetWidth(242);
+    winAugCans.SetIcon(Class'AugmentationUpgradeCannister'.Default.LargeIcon);
+    winAugCans.SetIconSize(
+        Class'AugmentationUpgradeCannister'.Default.largeIconWidth,
+        Class'AugmentationUpgradeCannister'.Default.largeIconHeight);
 
-	UpdateAugCans();
+    UpdateAugCans();
 }
 
 // ----------------------------------------------------------------------
@@ -212,15 +212,15 @@ function CreateAugCanWindow()
 
 function CreateBioCellWindow()
 {
-	winBioCells = PersonaItemDetailWindow(winClient.NewChild(Class'PersonaItemDetailWindow'));
-	winBioCells.SetPos(346, 332);
-	winBioCells.SetWidth(242);
-	winBioCells.SetIcon(Class'BioelectricCell'.Default.LargeIcon);
-	winBioCells.SetIconSize(
-		Class'BioelectricCell'.Default.largeIconWidth,
-		Class'BioelectricCell'.Default.largeIconHeight);
+    winBioCells = PersonaItemDetailWindow(winClient.NewChild(Class'PersonaItemDetailWindow'));
+    winBioCells.SetPos(346, 332);
+    winBioCells.SetWidth(242);
+    winBioCells.SetIcon(Class'BioelectricCell'.Default.LargeIcon);
+    winBioCells.SetIconSize(
+        Class'BioelectricCell'.Default.largeIconWidth,
+        Class'BioelectricCell'.Default.largeIconHeight);
 
-	UpdateBioCells();
+    UpdateBioCells();
 }
 
 // ----------------------------------------------------------------------
@@ -229,26 +229,26 @@ function CreateBioCellWindow()
 
 function CreateBioCellBar()
 {
-	winBioEnergy = ProgressBarWindow(winClient.NewChild(Class'ProgressBarWindow'));
+    winBioEnergy = ProgressBarWindow(winClient.NewChild(Class'ProgressBarWindow'));
 
-	winBioEnergy.SetPos(446, 389);
-	winBioEnergy.SetSize(140, 12);
-	winBioEnergy.SetValues(0, 100);
-	winBioEnergy.UseScaledColor(True);
-	winBioEnergy.SetVertical(False);
-	winBioEnergy.SetScaleColorModifier(0.5);
-	winBioEnergy.SetDrawBackground(True);
-	winBioEnergy.SetBackColor(colBarBack);
+    winBioEnergy.SetPos(446, 389);
+    winBioEnergy.SetSize(140, 12);
+    winBioEnergy.SetValues(0, 100);
+    winBioEnergy.UseScaledColor(True);
+    winBioEnergy.SetVertical(False);
+    winBioEnergy.SetScaleColorModifier(0.5);
+    winBioEnergy.SetDrawBackground(True);
+    winBioEnergy.SetBackColor(colBarBack);
 
-	winBioEnergyText = TextWindow(winClient.NewChild(Class'TextWindow'));
-	winBioEnergyText.SetPos(446, 391);
-	winBioEnergyText.SetSize(140, 12);
-	winBioEnergyText.SetTextMargins(0, 0);
-	winBioEnergyText.SetTextAlignments(HALIGN_Center, VALIGN_Center);
-	winBioEnergyText.SetFont(Font'FontMenuSmall_DS');
-	winBioEnergyText.SetTextColorRGB(255, 255, 255);
+    winBioEnergyText = TextWindow(winClient.NewChild(Class'TextWindow'));
+    winBioEnergyText.SetPos(446, 391);
+    winBioEnergyText.SetSize(140, 12);
+    winBioEnergyText.SetTextMargins(0, 0);
+    winBioEnergyText.SetTextAlignments(HALIGN_Center, VALIGN_Center);
+    winBioEnergyText.SetFont(Font'FontMenuSmall_DS');
+    winBioEnergyText.SetTextColorRGB(255, 255, 255);
 
-	UpdateBioEnergyBar();
+    UpdateBioEnergyBar();
 }
 
 // ----------------------------------------------------------------------
@@ -257,12 +257,12 @@ function CreateBioCellBar()
 
 function UpdateBioEnergyBar()
 {
-	local float energyPercent;
-		
-	energyPercent = 100.0 * (player.Energy / player.EnergyMax);
+    local float energyPercent;
+        
+    energyPercent = 100.0 * (player.Energy / player.EnergyMax);
 
-	winBioEnergy.SetCurrentValue(energyPercent);
-	winBioEnergyText.SetText(String(Int(energyPercent)) $ "%");
+    winBioEnergy.SetCurrentValue(energyPercent);
+    winBioEnergyText.SetText(String(Int(energyPercent)) $ "%");
 }
 
 // ----------------------------------------------------------------------
@@ -271,27 +271,27 @@ function UpdateBioEnergyBar()
 
 function UpdateAugCans()
 {
-	local Inventory anItem;
-	local int augCanCount;
+    local Inventory anItem;
+    local int augCanCount;
 
-	if (winAugCans != None)
-	{
-		winAugCans.SetText(AugCanUseText);
+    if (winAugCans != None)
+    {
+        winAugCans.SetText(AugCanUseText);
 
-		// Loop through the player's inventory and count how many upgrade cans
-		// the player has
-		anItem = player.Inventory;
+        // Loop through the player's inventory and count how many upgrade cans
+        // the player has
+        anItem = player.Inventory;
 
-		while(anItem != None)
-		{
-			if (anItem.IsA('AugmentationUpgradeCannister') || anItem.IsA('AugmentationUpgrade'))
-				augCanCount++;
+        while(anItem != None)
+        {
+            if (anItem.IsA('AugmentationUpgradeCannister') || anItem.IsA('AugmentationUpgrade'))
+                augCanCount++;
 
-			anItem = anItem.Inventory;
-		}	
+            anItem = anItem.Inventory;
+        }    
 
-		winAugCans.SetCount(augCanCount);
-	}
+        winAugCans.SetCount(augCanCount);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -300,21 +300,21 @@ function UpdateAugCans()
 
 function UpdateBioCells()
 {
-	local BioelectricCell bioCell;
+    local BioelectricCell bioCell;
 
-	if (winBioCells != None)
-	{
-		winBioCells.SetText(BioCellUseText);
+    if (winBioCells != None)
+    {
+        winBioCells.SetText(BioCellUseText);
 
-		bioCell = BioelectricCell(player.FindInventoryType(Class'BioelectricCell'));
+        bioCell = BioelectricCell(player.FindInventoryType(Class'BioelectricCell'));
 
-		if (bioCell != None)
-			winBioCells.SetCount(bioCell.NumCopies);
-		else
-			winBioCells.SetCount(0);	
-	}
+        if (bioCell != None)
+            winBioCells.SetCount(bioCell.NumCopies);
+        else
+            winBioCells.SetCount(0);    
+    }
 
-	UpdateBioEnergyBar();
+    UpdateBioEnergyBar();
 }
 
 // ----------------------------------------------------------------------
@@ -327,7 +327,7 @@ function RefreshWindow(float DeltaTime)
     UpdateBioCells();
     UpdateBioEnergyBar();
 
-    if (selectedAugButton != None)			
+    if (selectedAugButton != None)            
     {
         PersonaAugmentationItemButton(selectedAugButton).SetLevel(selectedAug.GetCurrentLevel());
         PersonaAugmentationItemButton(selectedAugButton).SetActive(selectedAug.IsActive());
@@ -345,12 +345,12 @@ function RefreshWindow(float DeltaTime)
 
 function CreateAugmentationHighlights()
 {
-	augHighlightWindows[0] = CreateHighlight(augHighlightTextures[0], 142,  45, 16, 19);
-	augHighlightWindows[1] = CreateHighlight(augHighlightTextures[1], 161,  63, 19, 12);
-	augHighlightWindows[2] = CreateHighlight(augHighlightTextures[2], 157, 108, 34, 48);
-	augHighlightWindows[3] = CreateHighlight(augHighlightTextures[3], 105, 110, 24, 43);
-	augHighlightWindows[4] = CreateHighlight(augHighlightTextures[4], 165, 222, 32, 94);
-	augHighlightWindows[5] = CreateHighlight(augHighlightTextures[5],  84, 160, 14, 36);
+    augHighlightWindows[0] = CreateHighlight(augHighlightTextures[0], 142,  45, 16, 19);
+    augHighlightWindows[1] = CreateHighlight(augHighlightTextures[1], 161,  63, 19, 12);
+    augHighlightWindows[2] = CreateHighlight(augHighlightTextures[2], 157, 108, 34, 48);
+    augHighlightWindows[3] = CreateHighlight(augHighlightTextures[3], 105, 110, 24, 43);
+    augHighlightWindows[4] = CreateHighlight(augHighlightTextures[4], 165, 222, 32, 94);
+    augHighlightWindows[5] = CreateHighlight(augHighlightTextures[5],  84, 160, 14, 36);
 }
 
 // ----------------------------------------------------------------------
@@ -358,21 +358,21 @@ function CreateAugmentationHighlights()
 // ----------------------------------------------------------------------
 
 function Window CreateHighlight(
-	Texture texHighlight, 
-	int posX, int posY, 
-	int sizeX, int sizeY)
+    Texture texHighlight, 
+    int posX, int posY, 
+    int sizeX, int sizeY)
 {
-	local Window newHighlight;
+    local Window newHighlight;
 
-	newHighlight = winClient.NewChild(Class'Window');
+    newHighlight = winClient.NewChild(Class'Window');
 
-	newHighlight.SetPos(posX, posY);
-	newHighlight.SetSize(sizeX, sizeY);
-	newHighlight.SetBackground(texHighlight);
-	newHighlight.SetBackgroundStyle(DSTY_Masked);
-	newHighlight.Hide();
+    newHighlight.SetPos(posX, posY);
+    newHighlight.SetSize(sizeX, sizeY);
+    newHighlight.SetBackground(texHighlight);
+    newHighlight.SetBackgroundStyle(DSTY_Masked);
+    newHighlight.Hide();
 
-	return newHighlight;
+    return newHighlight;
 }
 
 // ----------------------------------------------------------------------
@@ -384,62 +384,62 @@ function Window CreateHighlight(
 
 function CreateAugmentationButtons()
 {
-	local Augmentation anAug;
-	local int augX, augY;
-	local int torsoCount;
-	local int skinCount;
-	local int defaultCount;
-	local int slotIndex;
-	local int augCount;
+    local Augmentation anAug;
+    local int augX, augY;
+    local int torsoCount;
+    local int skinCount;
+    local int defaultCount;
+    local int slotIndex;
+    local int augCount;
 
-	augCount   = 0;
-	torsoCount = 0;
-	skinCount  = 0;
-	defaultCount = 0;
+    augCount   = 0;
+    torsoCount = 0;
+    skinCount  = 0;
+    defaultCount = 0;
 
-	// Iterate through the augmentations, creating a unique button for each
-	anAug = player.AugmentationSystem.FirstAug;
-	while(anAug != None)
-	{
-		if (( anAug.AugmentationName != "" ) && ( anAug.bHasIt ))
-		{
-			slotIndex = 0;
-			augX = augLocs[int(anAug.AugmentationLocation)].x;
-			augY = augLocs[int(anAug.AugmentationLocation)].y;
+    // Iterate through the augmentations, creating a unique button for each
+    anAug = player.AugmentationSystem.FirstAug;
+    while(anAug != None)
+    {
+        if (( anAug.AugmentationName != "" ) && ( anAug.bHasIt ))
+        {
+            slotIndex = 0;
+            augX = augLocs[int(anAug.AugmentationLocation)].x;
+            augY = augLocs[int(anAug.AugmentationLocation)].y;
 
-			// Show the highlight graphic for this augmentation slot as long
-			// as it's not the Default slot (for which there is no graphic)
+            // Show the highlight graphic for this augmentation slot as long
+            // as it's not the Default slot (for which there is no graphic)
 
-			if (anAug.AugmentationLocation < arrayCount(augHighlightWindows))
-				augHighlightWindows[anAug.AugmentationLocation].Show();
+            if (anAug.AugmentationLocation < arrayCount(augHighlightWindows))
+                augHighlightWindows[anAug.AugmentationLocation].Show();
 
-			if (int(anAug.AugmentationLocation) == 2)			// Torso
-			{
-				slotIndex = torsoCount;
-				augY += (torsoCount++ * augSlotSpacingY);
-			}
+            if (int(anAug.AugmentationLocation) == 2)            // Torso
+            {
+                slotIndex = torsoCount;
+                augY += (torsoCount++ * augSlotSpacingY);
+            }
 
-			if (int(anAug.AugmentationLocation) == 5)			// Subdermal
-			{
-				slotIndex = skinCount;
-				augY += (skinCount++ * augSlotSpacingY);
-			}
+            if (int(anAug.AugmentationLocation) == 5)            // Subdermal
+            {
+                slotIndex = skinCount;
+                augY += (skinCount++ * augSlotSpacingY);
+            }
 
-			if (int(anAug.AugmentationLocation) == 6)			// Default
-				augX += (defaultCount++ * augSlotSpacingX);
+            if (int(anAug.AugmentationLocation) == 6)            // Default
+                augX += (defaultCount++ * augSlotSpacingX);
 
-			augItems[augCount] = CreateAugButton(anAug, augX, augY, slotIndex);
+            augItems[augCount] = CreateAugButton(anAug, augX, augY, slotIndex);
 
-			// If the augmentation is active, make sure the button draws it 
-			// appropriately
+            // If the augmentation is active, make sure the button draws it 
+            // appropriately
 
-			augItems[augCount].SetActive(anAug.IsActive());
-				
-			augCount++;
-		}
+            augItems[augCount].SetActive(anAug.IsActive());
+                
+            augCount++;
+        }
 
-		anAug = anAug.next;
-	}	
+        anAug = anAug.next;
+    }    
 }
 
 // ----------------------------------------------------------------------
@@ -448,22 +448,22 @@ function CreateAugmentationButtons()
 
 function PersonaAugmentationItemButton CreateAugButton(Augmentation anAug, int augX, int augY, int slotIndex)
 {
-	local PersonaAugmentationItemButton newButton;
+    local PersonaAugmentationItemButton newButton;
 
-	newButton = PersonaAugmentationItemButton(winClient.NewChild(Class'PersonaAugmentationItemButton'));
-	newButton.SetPos(augX, augY);
-	newButton.SetClientObject(anAug);
-	newButton.SetIcon(anAug.icon);
+    newButton = PersonaAugmentationItemButton(winClient.NewChild(Class'PersonaAugmentationItemButton'));
+    newButton.SetPos(augX, augY);
+    newButton.SetClientObject(anAug);
+    newButton.SetIcon(anAug.icon);
 
-	// set the hotkey number
-	if (!anAug.bAlwaysActive)
-		newButton.SetHotkeyNumber(anAug.GetHotKey());
+    // set the hotkey number
+    if (!anAug.bAlwaysActive)
+        newButton.SetHotkeyNumber(anAug.GetHotKey());
 
-	// If the augmentation is currently active, notify the button
-	newButton.SetActive(anAug.IsActive());
-	newButton.SetLevel(anAug.GetCurrentLevel());
+    // If the augmentation is currently active, notify the button
+    newButton.SetActive(anAug.IsActive());
+    newButton.SetLevel(anAug.GetCurrentLevel());
 
-	return newButton;
+    return newButton;
 }
 
 // ----------------------------------------------------------------------
@@ -472,41 +472,41 @@ function PersonaAugmentationItemButton CreateAugButton(Augmentation anAug, int a
 
 function bool ButtonActivated(Window buttonPressed)
 {
-	local bool bHandled;
+    local bool bHandled;
 
-	if (Super.ButtonActivated(buttonPressed))
-		return True;
+    if (Super.ButtonActivated(buttonPressed))
+        return True;
 
-	bHandled   = True;
+    bHandled   = True;
 
-	// Check if this is one of our Augmentation buttons
-	if (buttonPressed.IsA('PersonaItemButton'))
-	{
-		SelectAugmentation(PersonaItemButton(buttonPressed));
-	}
-	else
-	{
-		switch(buttonPressed)
-		{
-			case btnUpgrade:
-				UpgradeAugmentation();
-				break;
+    // Check if this is one of our Augmentation buttons
+    if (buttonPressed.IsA('PersonaItemButton'))
+    {
+        SelectAugmentation(PersonaItemButton(buttonPressed));
+    }
+    else
+    {
+        switch(buttonPressed)
+        {
+            case btnUpgrade:
+                UpgradeAugmentation();
+                break;
 
-			case btnActivate:
-				ActivateAugmentation();
-				break;
+            case btnActivate:
+                ActivateAugmentation();
+                break;
 
-			case btnUseCell:
-				UseCell();
-				break;
+            case btnUseCell:
+                UseCell();
+                break;
 
-			default:
-				bHandled = False;
-				break;
-		}
-	}
+            default:
+                bHandled = False;
+                break;
+        }
+    }
 
-	return bHandled;
+    return bHandled;
 }
 
 // ----------------------------------------------------------------------
@@ -517,56 +517,56 @@ function bool ButtonActivated(Window buttonPressed)
 
 event bool VirtualKeyPressed(EInputKey key, bool bRepeat)
 {
-	local bool bKeyHandled;
-	bKeyHandled = True;
+    local bool bKeyHandled;
+    bKeyHandled = True;
 
-	if (Super.VirtualKeyPressed(key, bRepeat))
-		return True;
+    if (Super.VirtualKeyPressed(key, bRepeat))
+        return True;
 
-	switch( key ) 
-	{	
-		case IK_F3:
-			SelectAugByKey(0);
-			break;
-		case IK_F4:
-			SelectAugByKey(1);
-			break;
-		case IK_F5:
-			SelectAugByKey(2);
-			break;
-		case IK_F6:
-			SelectAugByKey(3);
-			break;
-		case IK_F7:
-			SelectAugByKey(4);
-			break;
-		case IK_F8:
-			SelectAugByKey(5);
-			break;
-		case IK_F9:
-			SelectAugByKey(6);
-			break;
-		case IK_F10:
-			SelectAugByKey(7);
-			break;
-		case IK_F11:
-			SelectAugByKey(8);
-			break;
-		case IK_F12:
-			SelectAugByKey(9);
-			break;
+    switch( key ) 
+    {    
+        case IK_F3:
+            SelectAugByKey(0);
+            break;
+        case IK_F4:
+            SelectAugByKey(1);
+            break;
+        case IK_F5:
+            SelectAugByKey(2);
+            break;
+        case IK_F6:
+            SelectAugByKey(3);
+            break;
+        case IK_F7:
+            SelectAugByKey(4);
+            break;
+        case IK_F8:
+            SelectAugByKey(5);
+            break;
+        case IK_F9:
+            SelectAugByKey(6);
+            break;
+        case IK_F10:
+            SelectAugByKey(7);
+            break;
+        case IK_F11:
+            SelectAugByKey(8);
+            break;
+        case IK_F12:
+            SelectAugByKey(9);
+            break;
 
-		// Enter will toggle an aug on/off
-		case IK_Enter:
-			ActivateAugmentation();
-			break;
+        // Enter will toggle an aug on/off
+        case IK_Enter:
+            ActivateAugmentation();
+            break;
 
-		default:
-			bKeyHandled = False;
-			break;
-	}
+        default:
+            bKeyHandled = False;
+            break;
+    }
 
-	return bKeyHandled;
+    return bKeyHandled;
 }
 
 // ----------------------------------------------------------------------
@@ -575,23 +575,23 @@ event bool VirtualKeyPressed(EInputKey key, bool bRepeat)
 
 function SelectAugByKey(int keyNum)
 {
-	local int buttonIndex;
-	local Augmentation anAug;
+    local int buttonIndex;
+    local Augmentation anAug;
 
-	for(buttonIndex=0; buttonIndex<arrayCount(augItems); buttonIndex++)
-	{
-		if (augItems[buttonIndex] != None)
-		{
-			anAug = Augmentation(augItems[buttonIndex].GetClientObject());
-		
-			if ((anAug != None) && (anAug.HotKeyNum - 3 == keyNum))
-			{
-				SelectAugmentation(augItems[buttonIndex]);
-				ActivateAugmentation();
-				break;
-			}
-		}
-	}
+    for(buttonIndex=0; buttonIndex<arrayCount(augItems); buttonIndex++)
+    {
+        if (augItems[buttonIndex] != None)
+        {
+            anAug = Augmentation(augItems[buttonIndex].GetClientObject());
+        
+            if ((anAug != None) && (anAug.HotKeyNum - 3 == keyNum))
+            {
+                SelectAugmentation(augItems[buttonIndex]);
+                ActivateAugmentation();
+                break;
+            }
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -600,21 +600,21 @@ function SelectAugByKey(int keyNum)
 
 function SelectAugmentation(PersonaItemButton buttonPressed)
 {
-	// Don't do extra work.
-	if (selectedAugButton != buttonPressed)
-	{
-		// Deselect current button
-		if (selectedAugButton != None)
-			selectedAugButton.SelectButton(False);
+    // Don't do extra work.
+    if (selectedAugButton != buttonPressed)
+    {
+        // Deselect current button
+        if (selectedAugButton != None)
+            selectedAugButton.SelectButton(False);
 
-		selectedAugButton = buttonPressed;
-		selectedAug       = Augmentation(selectedAugButton.GetClientObject());
+        selectedAugButton = buttonPressed;
+        selectedAug       = Augmentation(selectedAugButton.GetClientObject());
 
-		selectedAug.UpdateInfo(winInfo);
-		selectedAugButton.SelectButton(True);
+        selectedAug.UpdateInfo(winInfo);
+        selectedAugButton.SelectButton(True);
 
-		EnableButtons();
-	}
+        EnableButtons();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -623,37 +623,37 @@ function SelectAugmentation(PersonaItemButton buttonPressed)
 
 function UpgradeAugmentation()
 {
-	local AugmentationUpgradeCannister augCan;
-	local AugmentationUpgrade augUp; //Damn badly coded conversations
+    local AugmentationUpgradeCannister augCan;
+    local AugmentationUpgrade augUp; //Damn badly coded conversations
 
-	// First make sure we have a selected Augmentation
-	if (selectedAug == None)
-		return;
+    // First make sure we have a selected Augmentation
+    if (selectedAug == None)
+        return;
 
-	// Now check to see if we have an upgrade cannister
-	augCan = AugmentationUpgradeCannister(player.FindInventoryType(Class'AugmentationUpgradeCannister'));
-	augUp = AugmentationUpgrade(player.FindInventoryType(Class'AugmentationUpgrade'));
+    // Now check to see if we have an upgrade cannister
+    augCan = AugmentationUpgradeCannister(player.FindInventoryType(Class'AugmentationUpgradeCannister'));
+    augUp = AugmentationUpgrade(player.FindInventoryType(Class'AugmentationUpgrade'));
 
-	if (augCan != None || augUp != None)
-	{
-		// Increment the level and remove the aug cannister from
-		// the player's inventory
+    if (augCan != None || augUp != None)
+    {
+        // Increment the level and remove the aug cannister from
+        // the player's inventory
 
-		selectedAug.IncLevel();
-		selectedAug.UpdateInfo(winInfo);
+        selectedAug.IncLevel();
+        selectedAug.UpdateInfo(winInfo);
 
-		if(augUp != None)
-			augUp.UseOnce();
-		else
-			augCan.UseOnce();
+        if(augUp != None)
+            augUp.UseOnce();
+        else
+            augCan.UseOnce();
 
-		// Update the level icons
-		if (selectedAugButton != None)
-			PersonaAugmentationItemButton(selectedAugButton).SetLevel(selectedAug.GetCurrentLevel());
-	}
+        // Update the level icons
+        if (selectedAugButton != None)
+            PersonaAugmentationItemButton(selectedAugButton).SetLevel(selectedAug.GetCurrentLevel());
+    }
 
-	UpdateAugCans();
-	EnableButtons();
+    UpdateAugCans();
+    EnableButtons();
 }
 
 // ----------------------------------------------------------------------
@@ -662,23 +662,23 @@ function UpgradeAugmentation()
 
 function ActivateAugmentation()
 {
-	if (selectedAug == None)
-		return;
-	
-	if (selectedAug.IsActive())
-		selectedAug.Deactivate();
-	else
-		selectedAug.Activate();
+    if (selectedAug == None)
+        return;
+    
+    if (selectedAug.IsActive())
+        selectedAug.Deactivate();
+    else
+        selectedAug.Activate();
 
-	// If the augmentation activated or deactivated, set the 
-	// button appropriately.
+    // If the augmentation activated or deactivated, set the 
+    // button appropriately.
 
-	if (selectedAugButton != None)
-		PersonaAugmentationItemButton(selectedAugButton).SetActive(selectedAug.IsActive());
+    if (selectedAugButton != None)
+        PersonaAugmentationItemButton(selectedAugButton).SetActive(selectedAug.IsActive());
 
-	selectedAug.UpdateInfo(winInfo);
+    selectedAug.UpdateInfo(winInfo);
 
-	EnableButtons();
+    EnableButtons();
 }
 
 // ----------------------------------------------------------------------
@@ -687,15 +687,15 @@ function ActivateAugmentation()
 
 function UseCell()
 {
-	local BioelectricCell bioCell;
+    local BioelectricCell bioCell;
 
-	bioCell = BioelectricCell(player.FindInventoryType(Class'BioelectricCell'));
+    bioCell = BioelectricCell(player.FindInventoryType(Class'BioelectricCell'));
 
-	if (bioCell != None)
-		bioCell.Activate();
-		
-	UpdateBioCells();
-	EnableButtons();
+    if (bioCell != None)
+        bioCell.Activate();
+        
+    UpdateBioCells();
+    EnableButtons();
 }
 
 // ----------------------------------------------------------------------
@@ -704,39 +704,39 @@ function UseCell()
 
 function EnableButtons()
 {
-	// Upgrade can only be enabled if the player has an
-	// AugmentationUpgradeCannister that allows this augmentation to 
-	// be upgraded
+    // Upgrade can only be enabled if the player has an
+    // AugmentationUpgradeCannister that allows this augmentation to 
+    // be upgraded
 
-	if (selectedAug != None)
-		btnUpgrade.EnableWindow(selectedAug.CanBeUpgraded());
-	else
-		btnUpgrade.EnableWindow(False);
+    if (selectedAug != None)
+        btnUpgrade.EnableWindow(selectedAug.CanBeUpgraded());
+    else
+        btnUpgrade.EnableWindow(False);
 
-	// Only allow btnActivate to be active if 
-	//
-	// 1.  We have a selected augmentation 
-	// 2.  The player's energy is above 0
-	// 3.  This augmentation isn't "AlwaysActive"
+    // Only allow btnActivate to be active if 
+    //
+    // 1.  We have a selected augmentation 
+    // 2.  The player's energy is above 0
+    // 3.  This augmentation isn't "AlwaysActive"
 
-	btnActivate.EnableWindow((selectedAug != None) && (player.Energy > 0) && (!selectedAug.IsAlwaysActive()));
+    btnActivate.EnableWindow((selectedAug != None) && (player.Energy > 0) && (!selectedAug.IsAlwaysActive()));
 
-	if ( selectedAug != None )
-	{
-		if ( selectedAug.bIsActive )
-			btnActivate.SetButtonText(DeactivateButtonLabel);
-		else
-			btnActivate.SetButtonText(ActivateButtonLabel);
-	}
+    if ( selectedAug != None )
+    {
+        if ( selectedAug.bIsActive )
+            btnActivate.SetButtonText(DeactivateButtonLabel);
+        else
+            btnActivate.SetButtonText(ActivateButtonLabel);
+    }
 
-	// Use Cell button
-	//
-	// Only active if the player has one or more Energy Cells and 
-	// BioElectricEnergy < 100%
+    // Use Cell button
+    //
+    // Only active if the player has one or more Energy Cells and 
+    // BioElectricEnergy < 100%
 
-	btnUseCell.EnableWindow(
-		(player.Energy < player.EnergyMax) && 
-		(player.FindInventoryType(Class'BioelectricCell') != None));
+    btnUseCell.EnableWindow(
+        (player.Energy < player.EnergyMax) && 
+        (player.FindInventoryType(Class'BioelectricCell') != None));
 }
 
 // ----------------------------------------------------------------------

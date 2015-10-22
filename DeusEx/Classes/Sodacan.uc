@@ -5,11 +5,11 @@ class Sodacan extends Consumable;
 
 enum ESkinColor
 {
-	SC_Random,
-	SC_Nuke,
-	SC_Zap,
-	SC_Burn,
-	SC_Blast
+    SC_Random,
+    SC_Nuke,
+    SC_Zap,
+    SC_Burn,
+    SC_Blast
 };
 
 var() ESkinColor StackSkins[10]; //Should match the maxCopies var
@@ -18,181 +18,181 @@ var localized String InvDescription[4];
 
 function bool Facelift(bool bOn)
 {
-	local int skinnum;
-	local Texture otherIcon;
+    local int skinnum;
+    local Texture otherIcon;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(numCopies > 1 && numCopies <= 10) //Default.maxCopies
-	{
-		skinnum = StackSkins[numCopies - 1];
-		if(skinnum < 1 || skinnum > 4)
-		{
-			StackSkins[numCopies - 1] = RandomCanTex();
-			skinnum = StackSkins[numCopies - 1];
-		}
-	}
-	else
-	{
-		skinnum = StackSkins[0];
-		if(skinnum < 1 || skinnum > 4)
-		{
-			StackSkins[0] = RandomCanTex();
-			skinnum = StackSkins[0];
-		}
-	}
+    if(numCopies > 1 && numCopies <= 10) //Default.maxCopies
+    {
+        skinnum = StackSkins[numCopies - 1];
+        if(skinnum < 1 || skinnum > 4)
+        {
+            StackSkins[numCopies - 1] = RandomCanTex();
+            skinnum = StackSkins[numCopies - 1];
+        }
+    }
+    else
+    {
+        skinnum = StackSkins[0];
+        if(skinnum < 1 || skinnum > 4)
+        {
+            StackSkins[0] = RandomCanTex();
+            skinnum = StackSkins[0];
+        }
+    }
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPsodacan", class'mesh', True));
+    if(bOn)
+        Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPsodacan", class'mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Mesh = Default.Mesh;
-		PlayerViewMesh = Default.PlayerViewMesh;
-		PickupViewMesh = Default.PickupViewMesh;
-		ThirdPersonMesh = Default.ThirdPersonMesh;
-		Skin = Texture(DynamicLoadObject("DeusExItems.SodaCanTex"$ skinnum, class'Texture', False));
-	}
-	else
-	{
-		PlayerViewMesh = Mesh;
-		PickupViewMesh = Mesh;
-		ThirdPersonMesh = Mesh;
-		Skin = Texture(DynamicLoadObject("HDTPItems.HDTPSodacantex"$ skinnum, class'Texture', False));
-	}
+    if(Mesh == None || !bOn)
+    {
+        Mesh = Default.Mesh;
+        PlayerViewMesh = Default.PlayerViewMesh;
+        PickupViewMesh = Default.PickupViewMesh;
+        ThirdPersonMesh = Default.ThirdPersonMesh;
+        Skin = Texture(DynamicLoadObject("DeusExItems.SodaCanTex"$ skinnum, class'Texture', False));
+    }
+    else
+    {
+        PlayerViewMesh = Mesh;
+        PickupViewMesh = Mesh;
+        ThirdPersonMesh = Mesh;
+        Skin = Texture(DynamicLoadObject("HDTPItems.HDTPSodacantex"$ skinnum, class'Texture', False));
+    }
 
-	MultiSkins[1] = Skin;
-	Icon = Default.Icon;
-	LargeIcon = Default.LargeIcon;
+    MultiSkins[1] = Skin;
+    Icon = Default.Icon;
+    LargeIcon = Default.LargeIcon;
 
-	switch(skinnum)
-	{
-		case 0:
-		case 1:
-			ItemName = default.ItemName $ " (Nuke!)";
-			beltDescription = "NUKE!";
-			break;
-		case 2:
-			ItemName = default.ItemName $ " (Zap!)";
-			beltDescription = "ZAP!";
-			if(bOn) //Hey, we can dynamic load for HDTP, why not for Zodiac too
-			{
-				otherIcon = Texture(DynamicLoadObject("Zodiac.Icons.BeltIconZapSodaCan", class'Texture', True));
-				if(otherIcon != None)
-					Icon = otherIcon;
+    switch(skinnum)
+    {
+        case 0:
+        case 1:
+            ItemName = default.ItemName $ " (Nuke!)";
+            beltDescription = "NUKE!";
+            break;
+        case 2:
+            ItemName = default.ItemName $ " (Zap!)";
+            beltDescription = "ZAP!";
+            if(bOn) //Hey, we can dynamic load for HDTP, why not for Zodiac too
+            {
+                otherIcon = Texture(DynamicLoadObject("Zodiac.Icons.BeltIconZapSodaCan", class'Texture', True));
+                if(otherIcon != None)
+                    Icon = otherIcon;
 
-				otherIcon = Texture(DynamicLoadObject("Zodiac.Icons.LargeIconZapSodaCan", class'Texture', True));
-				if(otherIcon != None)
-					LargeIcon = otherIcon;
-			}
-			break;
-		case 3:
-			ItemName = default.ItemName $ " (Burn!)";
-			beltDescription = "BURN!";
-			break;
-		case 4:
-			ItemName = default.ItemName $ " (Blast!)";
-			beltDescription = "BLAST!";
-			break;
-	}
+                otherIcon = Texture(DynamicLoadObject("Zodiac.Icons.LargeIconZapSodaCan", class'Texture', True));
+                if(otherIcon != None)
+                    LargeIcon = otherIcon;
+            }
+            break;
+        case 3:
+            ItemName = default.ItemName $ " (Burn!)";
+            beltDescription = "BURN!";
+            break;
+        case 4:
+            ItemName = default.ItemName $ " (Blast!)";
+            beltDescription = "BLAST!";
+            break;
+    }
 
-	Description = InvDescription[skinnum - 1];
+    Description = InvDescription[skinnum - 1];
 }
 
 function PreBeginPlay()
 {
-	local Sodacan soda;
+    local Sodacan soda;
 
-	//== Hack.  Check for Zodiac's Zap! Soda and replace it with a normal Soda can
-	//==  set to SkinType SC_Zap and delete the existing... but only if we aren't
-	//==  in someone's inventory already
-	if(IsA('ZapSodaCan') && Pawn(Owner) == None)
-	{
-		soda = spawn(class'Sodacan', Owner);
-		soda.StackSkins[0] = SC_Zap;
-		soda.Facelift(True);
-		Destroy();
-		return;
-	}
+    //== Hack.  Check for Zodiac's Zap! Soda and replace it with a normal Soda can
+    //==  set to SkinType SC_Zap and delete the existing... but only if we aren't
+    //==  in someone's inventory already
+    if(IsA('ZapSodaCan') && Pawn(Owner) == None)
+    {
+        soda = spawn(class'Sodacan', Owner);
+        soda.StackSkins[0] = SC_Zap;
+        soda.Facelift(True);
+        Destroy();
+        return;
+    }
 
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
 }
 
 function ESkinColor RandomCanTex()
 {
-	local Sodacan soda;
+    local Sodacan soda;
 
-	//=== There's a random chance we'll have a different soda label
-	if(frand() > 0.25)
-	{
-		//== Check for any soda in a 2ft range.  Clusters of Nuke should stay as Nuke
-		foreach RadiusActors(class'Sodacan', soda, 32)
-		{
-			if((soda.StackSkins[0] == SC_Random || soda.StackSkins[0] == SC_Nuke) && soda != Self)
-				return SC_Nuke;
-		}
+    //=== There's a random chance we'll have a different soda label
+    if(frand() > 0.25)
+    {
+        //== Check for any soda in a 2ft range.  Clusters of Nuke should stay as Nuke
+        foreach RadiusActors(class'Sodacan', soda, 32)
+        {
+            if((soda.StackSkins[0] == SC_Random || soda.StackSkins[0] == SC_Nuke) && soda != Self)
+                return SC_Nuke;
+        }
 
-		switch(Rand(6))
-		{
-			case 0:
-			case 3:
-				return SC_Zap;
-				break;
+        switch(Rand(6))
+        {
+            case 0:
+            case 3:
+                return SC_Zap;
+                break;
 
-			case 1:
-			case 4:
-				return SC_Burn;
-				break;
+            case 1:
+            case 4:
+                return SC_Burn;
+                break;
 
-			case 2:
-			case 5:
-				return SC_Blast;
-				break;
-		}
-	}
+            case 2:
+            case 5:
+                return SC_Blast;
+                break;
+        }
+    }
 
-	return SC_Nuke;		
+    return SC_Nuke;        
 }
 
 function TransferSkin(Inventory inv)
 {
-	StackSkins[numCopies - 1] = Sodacan(inv).StackSkins[DeusExPickup(inv).numCopies];
+    StackSkins[numCopies - 1] = Sodacan(inv).StackSkins[DeusExPickup(inv).numCopies];
 
-	if(Level.NetMode == NM_Standalone)
-	{
-		Facelift(True);
-		DeusExPickup(inv).Facelift(True);
-	}
+    if(Level.NetMode == NM_Standalone)
+    {
+        Facelift(True);
+        DeusExPickup(inv).Facelift(True);
+    }
 }
 
 function UseOnce()
 {
-	Super.UseOnce();
+    Super.UseOnce();
 
-	if(numCopies > 0 && Level.NetMode == NM_Standalone)
-		Facelift(True);
+    if(numCopies > 0 && Level.NetMode == NM_Standalone)
+        Facelift(True);
 }
 
 state Activated
 {
-	//== Zodiac needs this to be specified; otherwise it won't load
-	function Activate()
-	{
-		// can't turn it off
-	}
+    //== Zodiac needs this to be specified; otherwise it won't load
+    function Activate()
+    {
+        // can't turn it off
+    }
 
-	function BeginState()
-	{
-		if(numCopies > 0 && numCopies <= 10)
-			healthEffect = StackSkins[numCopies - 1] + 1;
-		else
-			healthEffect = StackSkins[0] + 1;		
+    function BeginState()
+    {
+        if(numCopies > 0 && numCopies <= 10)
+            healthEffect = StackSkins[numCopies - 1] + 1;
+        else
+            healthEffect = StackSkins[0] + 1;        
 
-		PlaySound(sound'MaleBurp');
-		Super.BeginState();
-	}
+        PlaySound(sound'MaleBurp');
+        Super.BeginState();
+    }
 Begin:
 }
 

@@ -9,9 +9,9 @@ class MPJOSMAN extends Human;
 
 event TravelPostAccept()
 {
-	local DeusExLevelInfo info;
+    local DeusExLevelInfo info;
 
-	Super.TravelPostAccept();
+    Super.TravelPostAccept();
 }
 
 // ----------------------------------------------------------------------

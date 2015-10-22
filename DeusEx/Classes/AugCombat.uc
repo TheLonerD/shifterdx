@@ -21,30 +21,30 @@ Begin:
 
 function Deactivate()
 {
-	Super.Deactivate();
+    Super.Deactivate();
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		LevelValues[3] = mpAugValue;
-		EnergyRate = mpEnergyDrain;
-	}
-	else if(IsA('tnmpcAugCombat'))
-	{
-		AugmentationName = "Combat Strength";
-		Description = "Hit things.  Hit hard.  Make go smash.|n|nTECH ONE: Extra smashey.|n|nTECH TWO: More extra smashey.|n|nTECH THREE: More more smashey!|n|nTECH FOUR: EXTRA LOTS OF MEGA SMASHEY!";
-		MPInfo="When active, you do double damage with melee weapons.  Energy Drain: Low";
-		LevelValues[0] = 1.25;
-		LevelValues[1] = 1.50;
-		LevelValues[2] = 1.75;
-		LevelValues[3] = 2.00;
-		LevelValues[4] = 2.25;
-	}
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        LevelValues[3] = mpAugValue;
+        EnergyRate = mpEnergyDrain;
+    }
+    else if(IsA('tnmpcAugCombat'))
+    {
+        AugmentationName = "Combat Strength";
+        Description = "Hit things.  Hit hard.  Make go smash.|n|nTECH ONE: Extra smashey.|n|nTECH TWO: More extra smashey.|n|nTECH THREE: More more smashey!|n|nTECH FOUR: EXTRA LOTS OF MEGA SMASHEY!";
+        MPInfo="When active, you do double damage with melee weapons.  Energy Drain: Low";
+        LevelValues[0] = 1.25;
+        LevelValues[1] = 1.50;
+        LevelValues[2] = 1.75;
+        LevelValues[3] = 2.00;
+        LevelValues[4] = 2.25;
+    }
 }
 
 defaultproperties

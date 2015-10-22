@@ -31,30 +31,30 @@ function Deactivate()
 
    if((!bViewWindowActive && !bwindowActive) || player.Energy <= 0)
    {
-	//== Deactivate the scope if we don't actually have one
-	if(DeusExWeapon(Player.inHand) != None)
-	{
-		W = DeusExWeapon(Player.inHand);
-		if(W.bZoomed && !W.bHasScope)
-			W.ScopeOff();
-	}
+    //== Deactivate the scope if we don't actually have one
+    if(DeusExWeapon(Player.inHand) != None)
+    {
+        W = DeusExWeapon(Player.inHand);
+        if(W.bZoomed && !W.bHasScope)
+            W.ScopeOff();
+    }
 
-	Super.Deactivate();
+    Super.Deactivate();
 
-	SetTargetingAugStatus(CurrentLevel,False);
+    SetTargetingAugStatus(CurrentLevel,False);
    }
    else //if(bViewWindowActive)
    {
-	bViewWindowActive = false;
-	DeusExRootWindow(Player.rootWindow).hud.augDisplay.bTargetWindowActive = false;
-	//Player.PlaySound(DeactivateSound, SLOT_None);
-	Player.ClientMessage("Targeting window hidden");
+    bViewWindowActive = false;
+    DeusExRootWindow(Player.rootWindow).hud.augDisplay.bTargetWindowActive = false;
+    //Player.PlaySound(DeactivateSound, SLOT_None);
+    Player.ClientMessage("Targeting window hidden");
    }
 //   else
 //   {
-//	bWindowActive = false;
-//	DeusExRootWindow(Player.rootWindow).hud.augDisplay.bTargetActive = false;
-//	Player.PlaySound(DeactivateSound, SLOT_None);
+//    bWindowActive = false;
+//    DeusExRootWindow(Player.rootWindow).hud.augDisplay.bTargetActive = false;
+//    Player.PlaySound(DeactivateSound, SLOT_None);
 //   }
 }
 
@@ -64,24 +64,24 @@ function Deactivate()
 
 simulated function SetTargetingAugStatus(int Level, bool IsActive)
 {
-	DeusExRootWindow(Player.rootWindow).hud.augDisplay.bTargetActive = IsActive;
-	DeusExRootWindow(Player.rootWindow).hud.augDisplay.bTargetWindowActive = IsActive;
-	//bWindowActive = IsActive;
-	bViewWindowActive = IsActive && (CurrentLevel > 2);
-	DeusExRootWindow(Player.rootWindow).hud.augDisplay.targetLevel = Level;
+    DeusExRootWindow(Player.rootWindow).hud.augDisplay.bTargetActive = IsActive;
+    DeusExRootWindow(Player.rootWindow).hud.augDisplay.bTargetWindowActive = IsActive;
+    //bWindowActive = IsActive;
+    bViewWindowActive = IsActive && (CurrentLevel > 2);
+    DeusExRootWindow(Player.rootWindow).hud.augDisplay.targetLevel = Level;
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		LevelValues[3] = mpAugValue;
-		EnergyRate = mpEnergyDrain;
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        LevelValues[3] = mpAugValue;
+        EnergyRate = mpEnergyDrain;
       AugmentationLocation = LOC_Subdermal;
-	}
+    }
 }
 
 defaultproperties

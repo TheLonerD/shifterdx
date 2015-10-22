@@ -5,42 +5,42 @@ class LiquorBottle extends Consumable;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPLiquorBottle", class'mesh', True));
+    if(bOn)
+        Mesh = mesh(DynamicLoadObject("HDTPItems.HDTPLiquorBottle", class'mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Texture = None;
-		Mesh = Default.Mesh;
-		PlayerViewMesh = Default.PlayerViewMesh;
-		PickupViewMesh = Default.PickupViewMesh;
-		ThirdPersonMesh = Default.ThirdPersonMesh;
-	}
-	else
-	{
-		PlayerViewMesh = Mesh;
-		PickupViewMesh = Mesh;
-		ThirdPersonMesh = Mesh;
-		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquorBottletex2", class'Texture'));
-	}
+    if(Mesh == None || !bOn)
+    {
+        Texture = None;
+        Mesh = Default.Mesh;
+        PlayerViewMesh = Default.PlayerViewMesh;
+        PickupViewMesh = Default.PickupViewMesh;
+        ThirdPersonMesh = Default.ThirdPersonMesh;
+    }
+    else
+    {
+        PlayerViewMesh = Mesh;
+        PickupViewMesh = Mesh;
+        ThirdPersonMesh = Mesh;
+        Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLiquorBottletex2", class'Texture'));
+    }
 
-	return true;
+    return true;
 }
 
 state Activated
 {
-	function Activate()
-	{
-		Super.Activate();
-	}
+    function Activate()
+    {
+        Super.Activate();
+    }
 
-	function BeginState()
-	{
-		Super.BeginState();
-	}
+    function BeginState()
+    {
+        Super.BeginState();
+    }
 Begin:
 }
 

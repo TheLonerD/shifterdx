@@ -5,16 +5,16 @@ class BoxSmall extends Containers;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPboxsmall", class'mesh', True));
+    if(bOn)
+        Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPboxsmall", class'mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 defaultproperties

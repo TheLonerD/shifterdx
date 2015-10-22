@@ -5,31 +5,31 @@ class DataCube extends InformationDevices;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPDatacubetex1", class'Texture', True));
-	if(Skin == None || !bOn)
-	{
-		Texture = None;
-		MultiSkins[2] = None;
-		Skin = Default.Skin;
-	}
-	else
-	{
-		Texture = Texture'Effects.Corona.Corona_G';
-		MultiSkins[2] = Skin;
-	}
+    if(bOn)
+        Skin = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPDatacubetex1", class'Texture', True));
+    if(Skin == None || !bOn)
+    {
+        Texture = None;
+        MultiSkins[2] = None;
+        Skin = Default.Skin;
+    }
+    else
+    {
+        Texture = Texture'Effects.Corona.Corona_G';
+        MultiSkins[2] = Skin;
+    }
 
-	return true;
+    return true;
 }
 
 event FellOutOfWorld()
 {
-	log("Datacube exited the world at " $ Location $". Was using tag "$ textTag $" and package "$ TextPackage);
+    log("Datacube exited the world at " $ Location $". Was using tag "$ textTag $" and package "$ TextPackage);
 
-	Super.FellOutOfWorld();
+    Super.FellOutOfWorld();
 }
 
 defaultproperties

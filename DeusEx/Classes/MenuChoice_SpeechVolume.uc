@@ -10,9 +10,9 @@ class MenuChoice_SpeechVolume extends MenuChoice_Volume;
 
 event InitWindow()
 {
-	Super.InitWindow();
+    Super.InitWindow();
 
-	btnSlider.winSlider.SetScaleSounds(None, None, None);
+    btnSlider.winSlider.SetScaleSounds(None, None, None);
 }
 
 // ----------------------------------------------------------------------
@@ -24,16 +24,16 @@ event InitWindow()
 event bool ScalePositionChanged(Window scale, int newTickPosition,
                                 float newValue, bool bFinal)
 {
-	// Don't do anything while initializing as we get several 
-	// ScalePositionChanged() events before LoadSetting() is called.
+    // Don't do anything while initializing as we get several 
+    // ScalePositionChanged() events before LoadSetting() is called.
 
-	if (bInitializing)
-		return False;
+    if (bInitializing)
+        return False;
 
-	Player.SetInstantSpeechVolume(byte(newValue));
-	Player.PlaySound(sound'Menu_SpeechTest', SLOT_Talk,, True);
+    Player.SetInstantSpeechVolume(byte(newValue));
+    Player.PlaySound(sound'Menu_SpeechTest', SLOT_Talk,, True);
 
-	return False;
+    return False;
 }
 
 // ----------------------------------------------------------------------
@@ -42,8 +42,8 @@ event bool ScalePositionChanged(Window scale, int newTickPosition,
 
 function LoadSetting()
 {
-	Super.LoadSetting();
-	Player.SetInstantSpeechVolume(GetValue());
+    Super.LoadSetting();
+    Player.SetInstantSpeechVolume(GetValue());
 }
 
 // ----------------------------------------------------------------------
@@ -52,8 +52,8 @@ function LoadSetting()
 
 function CancelSetting()
 {
-	Super.CancelSetting();
-	LoadSetting();
+    Super.CancelSetting();
+    LoadSetting();
 }
 
 // ----------------------------------------------------------------------

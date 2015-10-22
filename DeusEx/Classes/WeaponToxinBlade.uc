@@ -5,7 +5,7 @@ class WeaponToxinBlade expands WeaponCombatKnife;
 
 function name WeaponDamageType()
 {
-	return 'Poison';
+    return 'Poison';
 }
 
 defaultproperties

@@ -5,7 +5,7 @@ class WeaponCatScratch extends WeaponNPCMelee;
 
 function name WeaponDamageType()
 {
-	return 'ShotSoft';
+    return 'ShotSoft';
 }
 
 defaultproperties

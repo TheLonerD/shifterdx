@@ -5,49 +5,49 @@ class NanoVirusGrenade extends ThrownProjectile;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPNanoVirusGrenadePickup", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPNanoVirusGrenadePickup", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 simulated function DrawExplosionEffects(vector HitLocation, vector HitNormal)
 {
-	local ExplosionLight light;
-	local int i;
-	local Rotator rot;
-	local SphereEffect sphere;
+    local ExplosionLight light;
+    local int i;
+    local Rotator rot;
+    local SphereEffect sphere;
    local ExplosionSmall expeffect;
 
-	// draw a pretty explosion
-	light = Spawn(class'ExplosionLight',,, HitLocation);
-	if (light != None)
-	{
+    // draw a pretty explosion
+    light = Spawn(class'ExplosionLight',,, HitLocation);
+    if (light != None)
+    {
       if (!bDamaged)
          light.RemoteRole = ROLE_None;
-		light.size = 8;
-		light.LightHue = 128;
-		light.LightSaturation = 96;
-		light.LightEffect = LE_Shell;
-	}
+        light.size = 8;
+        light.LightHue = 128;
+        light.LightSaturation = 96;
+        light.LightEffect = LE_Shell;
+    }
 
-	expeffect = Spawn(class'ExplosionSmall',,, HitLocation);
+    expeffect = Spawn(class'ExplosionSmall',,, HitLocation);
    if ((expeffect != None) && (!bDamaged))
       expeffect.RemoteRole = ROLE_None;
 
-	// draw a cool light sphere
-	sphere = Spawn(class'SphereEffect',,, HitLocation);
-	if (sphere != None)
+    // draw a cool light sphere
+    sphere = Spawn(class'SphereEffect',,, HitLocation);
+    if (sphere != None)
    {
       if (!bDamaged)
          sphere.RemoteRole = ROLE_None;
-		sphere.size = blastRadius / 32.0;
+        sphere.size = blastRadius / 32.0;
    }
 }
 

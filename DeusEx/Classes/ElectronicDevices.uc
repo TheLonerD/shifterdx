@@ -2,7 +2,7 @@
 // ElectronicDevices.
 //=============================================================================
 class ElectronicDevices extends DeusExDecoration
-	abstract;
+    abstract;
 
 defaultproperties
 {

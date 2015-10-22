@@ -9,126 +9,126 @@ var() float ChangeTimer;
 //== No facelift because HDTP lacks the shine overlay layer
 function bool Facelift(bool bOn)
 {
-	return false;
+    return false;
 }
 
 simulated function Tick(float DeltaTime)
 {
-	local float rnd;
+    local float rnd;
 
-	Super.Tick(DeltaTime);
+    Super.Tick(DeltaTime);
 
-	if(GetStateName() != 'Pickup')
-	{
-		if(bLightOn && ChangeTimer >= 1.000000)
-		{
-			ChangeTimer = 0.000000;
-			rnd = FRand();
-			if(rnd <= 0.100000)
-			{
-				if(Texture == Texture'Effects.Wepn_Prifle_SFX')
-				{
-					PlaySound(sound'Spark2', SLOT_None,,, 1024);
-					Texture=Texture'Effects.LaserBeam2';
-					HitDamage = 11;
-					LightHue = 160;
-				}
-				else
-				{
-					PlaySound(sound'Spark1', SLOT_None,0.75,, 1024);
-					Texture=Texture'Effects.Wepn_Prifle_SFX';
-					HitDamage = 15;
-					LightHue = 100;
-				}
-			}
-			else if(rnd >= 0.900000)
-			{
-				if(Texture == Texture'Effects.Wepn_Prifle_SFX')
-				{
-					PlaySound(sound'EMPZap', SLOT_None,0.75,, 1024);
-					Texture=Texture'Effects.Virus_SFX';
-					HitDamage = 22;
-					LightHue = 0;
-				}
-				else
-				{
-					PlaySound(sound'Spark1', SLOT_None,0.75,, 1024);
-					Texture=Texture'Effects.Wepn_Prifle_SFX';
-					HitDamage = 15;
-					LightHue = 100;
-				}
-			}
-		}
-		else if(bLightOn)
-			ChangeTimer += DeltaTime;
-	}
+    if(GetStateName() != 'Pickup')
+    {
+        if(bLightOn && ChangeTimer >= 1.000000)
+        {
+            ChangeTimer = 0.000000;
+            rnd = FRand();
+            if(rnd <= 0.100000)
+            {
+                if(Texture == Texture'Effects.Wepn_Prifle_SFX')
+                {
+                    PlaySound(sound'Spark2', SLOT_None,,, 1024);
+                    Texture=Texture'Effects.LaserBeam2';
+                    HitDamage = 11;
+                    LightHue = 160;
+                }
+                else
+                {
+                    PlaySound(sound'Spark1', SLOT_None,0.75,, 1024);
+                    Texture=Texture'Effects.Wepn_Prifle_SFX';
+                    HitDamage = 15;
+                    LightHue = 100;
+                }
+            }
+            else if(rnd >= 0.900000)
+            {
+                if(Texture == Texture'Effects.Wepn_Prifle_SFX')
+                {
+                    PlaySound(sound'EMPZap', SLOT_None,0.75,, 1024);
+                    Texture=Texture'Effects.Virus_SFX';
+                    HitDamage = 22;
+                    LightHue = 0;
+                }
+                else
+                {
+                    PlaySound(sound'Spark1', SLOT_None,0.75,, 1024);
+                    Texture=Texture'Effects.Wepn_Prifle_SFX';
+                    HitDamage = 15;
+                    LightHue = 100;
+                }
+            }
+        }
+        else if(bLightOn)
+            ChangeTimer += DeltaTime;
+    }
 }
 
 state DownWeapon
 {
-	function BeginState()
-	{
-		Super.BeginState();
-		LightType = LT_None;
-		Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
-		bUnlit = False;
-		bLightOn = False;
-	}
+    function BeginState()
+    {
+        Super.BeginState();
+        LightType = LT_None;
+        Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
+        bUnlit = False;
+        bLightOn = False;
+    }
 }
 
 state Idle
 {
-	function BeginState()
-	{
-		Super.BeginState();
-		if(!bLightOn)
-		{
-			PlaySound(sound'DeusExSounds.Weapons.NanoSwordSelect', SLOT_None, 0.5,, 768);
-			if(HitDamage < 14)
-			{
-				PlaySound(sound'Spark2', SLOT_None,0.75,, 1024);
-				Texture=Texture'Effects.LaserBeam2';
-			}
-			else if(HitDamage > 16)
-			{
-				PlaySound(sound'EMPZap', SLOT_None,0.75,, 1024);
-				Texture=Texture'Effects.Virus_SFX';
-			}
-			else
-			{
-				PlaySound(sound'Spark1', SLOT_None,,, 1024);
-				Texture=Texture'Effects.Wepn_Prifle_SFX';
-			}
+    function BeginState()
+    {
+        Super.BeginState();
+        if(!bLightOn)
+        {
+            PlaySound(sound'DeusExSounds.Weapons.NanoSwordSelect', SLOT_None, 0.5,, 768);
+            if(HitDamage < 14)
+            {
+                PlaySound(sound'Spark2', SLOT_None,0.75,, 1024);
+                Texture=Texture'Effects.LaserBeam2';
+            }
+            else if(HitDamage > 16)
+            {
+                PlaySound(sound'EMPZap', SLOT_None,0.75,, 1024);
+                Texture=Texture'Effects.Virus_SFX';
+            }
+            else
+            {
+                PlaySound(sound'Spark1', SLOT_None,,, 1024);
+                Texture=Texture'Effects.Wepn_Prifle_SFX';
+            }
 
-			LightType = LT_Steady;
-			bUnlit = True;
-			bLightOn = True;
-		}
-	}
+            LightType = LT_Steady;
+            bUnlit = True;
+            bLightOn = True;
+        }
+    }
 }
 
 auto state Pickup
 {
-	function BeginState()
-	{
-		Super.BeginState();
-		LightType = LT_Steady;
-		bLightOn = False;
-	}
+    function BeginState()
+    {
+        Super.BeginState();
+        LightType = LT_Steady;
+        bLightOn = False;
+    }
 
-	function EndState()
-	{
-		Super.EndState();
-		LightType = LT_None;
-		Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
-		bUnlit = False;
-		bLightOn = False;
-	}
+    function EndState()
+    {
+        Super.EndState();
+        LightType = LT_None;
+        Texture=Texture'DeusExItems.Skins.ReflectionMapTex1';
+        bUnlit = False;
+        bLightOn = False;
+    }
 }
 
 function bool TestCycleable()
 {
-	return True;
+    return True;
 }
 
 defaultproperties

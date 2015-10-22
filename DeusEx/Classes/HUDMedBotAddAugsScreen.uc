@@ -34,13 +34,13 @@ var Localized String UpgradedText;
 
 event InitWindow()
 {
-	Super.InitWindow();
+    Super.InitWindow();
 
-	HUDMedBotNavBarWindow(winNavBar).btnAugs.SetSensitivity(False);
+    HUDMedBotNavBarWindow(winNavBar).btnAugs.SetSensitivity(False);
 
-	PopulateAugCanList();
+    PopulateAugCanList();
 
-	EnableButtons();
+    EnableButtons();
 }
 
 // ----------------------------------------------------------------------
@@ -51,17 +51,17 @@ event InitWindow()
 
 event DestroyWindow()
 {
-	if (medBot != None)
-	{
-		if (!bSkipAnimation)
-		{
-			medBot.PlayAnim('Stop');
-			medBot.PlaySound(sound'MedicalBotLowerArm', SLOT_None);
-			medBot.FollowOrders();
-		}
-	}
+    if (medBot != None)
+    {
+        if (!bSkipAnimation)
+        {
+            medBot.PlayAnim('Stop');
+            medBot.PlaySound(sound'MedicalBotLowerArm', SLOT_None);
+            medBot.FollowOrders();
+        }
+    }
 
-	Super.DestroyWindow();
+    Super.DestroyWindow();
 }
 
 // ----------------------------------------------------------------------
@@ -70,21 +70,21 @@ event DestroyWindow()
 
 function CreateControls()
 {
-	CreateNavBarWindow();
-	CreateClientBorderWindow();
-	CreateClientWindow();
+    CreateNavBarWindow();
+    CreateClientBorderWindow();
+    CreateClientWindow();
 
-	CreateTitleWindow(9, 5, AugmentationsTitleText);
-	CreateInfoWindow();
-	CreateButtons();
-	CreateAugmentationLabels();
-	CreateAugmentationHighlights();
-	CreateAugmentationButtons();
-	CreateOverlaysWindow();
-	CreateBodyWindow();
-	CreateAugsLabel();
-	CreateAugCanList();
-	CreateMedbotLabel();
+    CreateTitleWindow(9, 5, AugmentationsTitleText);
+    CreateInfoWindow();
+    CreateButtons();
+    CreateAugmentationLabels();
+    CreateAugmentationHighlights();
+    CreateAugmentationButtons();
+    CreateOverlaysWindow();
+    CreateBodyWindow();
+    CreateAugsLabel();
+    CreateAugCanList();
+    CreateMedbotLabel();
 }
 
 // ----------------------------------------------------------------------
@@ -93,8 +93,8 @@ function CreateControls()
 
 function CreateNavBarWindow()
 {
-	winNavBar = PersonaNavBarBaseWindow(NewChild(Class'HUDMedBotNavBarWindow')); 
-	winNavBar.SetPos(0, 0);
+    winNavBar = PersonaNavBarBaseWindow(NewChild(Class'HUDMedBotNavBarWindow')); 
+    winNavBar.SetPos(0, 0);
 }
 
 // ----------------------------------------------------------------------
@@ -103,14 +103,14 @@ function CreateNavBarWindow()
 
 function CreateButtons()
 {
-	local PersonaButtonBarWindow winActionButtons;
+    local PersonaButtonBarWindow winActionButtons;
 
-	winActionButtons = PersonaButtonBarWindow(winClient.NewChild(Class'PersonaButtonBarWindow'));
-	winActionButtons.SetPos(346, 371);
-	winActionButtons.SetWidth(96);
+    winActionButtons = PersonaButtonBarWindow(winClient.NewChild(Class'PersonaButtonBarWindow'));
+    winActionButtons.SetPos(346, 371);
+    winActionButtons.SetWidth(96);
 
-	btnInstall = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
-	btnInstall.SetButtonText(InstallButtonLabel);
+    btnInstall = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
+    btnInstall.SetButtonText(InstallButtonLabel);
 }
 
 // ----------------------------------------------------------------------
@@ -119,9 +119,9 @@ function CreateButtons()
 
 function CreateInfoWindow()
 {
-	winInfo = PersonaInfoWindow(winClient.NewChild(Class'PersonaInfoWindow'));
-	winInfo.SetPos(348, 158);
-	winInfo.SetSize(238, 210);
+    winInfo = PersonaInfoWindow(winClient.NewChild(Class'PersonaInfoWindow'));
+    winInfo.SetPos(348, 158);
+    winInfo.SetSize(238, 210);
 }
 
 // ----------------------------------------------------------------------
@@ -130,7 +130,7 @@ function CreateInfoWindow()
 
 function CreateAugsLabel()
 {
-	CreatePersonaHeaderText(349, 15, AvailableAugsText, winClient);
+    CreatePersonaHeaderText(349, 15, AvailableAugsText, winClient);
 }
 
 // ----------------------------------------------------------------------
@@ -139,13 +139,13 @@ function CreateAugsLabel()
 
 function CreateMedbotLabel()
 {
-	local PersonaHeaderTextWindow txtLabel;
+    local PersonaHeaderTextWindow txtLabel;
 
-	txtLabel = PersonaHeaderTextWindow(NewChild(Class'PersonaHeaderTextWindow'));
-	txtLabel.SetPos(305, 9);
-	txtLabel.SetSize(250, 16);
-	txtLabel.SetTextAlignments(HALIGN_Right, VALIGN_Center);
-	txtLabel.SetText(MedbotInterfaceText);
+    txtLabel = PersonaHeaderTextWindow(NewChild(Class'PersonaHeaderTextWindow'));
+    txtLabel.SetPos(305, 9);
+    txtLabel.SetSize(250, 16);
+    txtLabel.SetTextAlignments(HALIGN_Right, VALIGN_Center);
+    txtLabel.SetText(MedbotInterfaceText);
 }
 
 // ----------------------------------------------------------------------
@@ -154,19 +154,19 @@ function CreateMedbotLabel()
 
 function CreateAugCanList()
 {
-	local PersonaScrollAreaWindow winScroll;
+    local PersonaScrollAreaWindow winScroll;
 
-	// First create the scroll window
-	winScroll = PersonaScrollAreaWindow(winClient.NewChild(Class'PersonaScrollAreaWindow'));
-	winScroll.SetPos(348, 34);
-	winScroll.SetSize(238, 116);
+    // First create the scroll window
+    winScroll = PersonaScrollAreaWindow(winClient.NewChild(Class'PersonaScrollAreaWindow'));
+    winScroll.SetPos(348, 34);
+    winScroll.SetSize(238, 116);
 
-	winAugsTile = TileWindow(winScroll.ClipWindow.NewChild(Class'TileWindow'));
-	winAugsTile.MakeWidthsEqual(False);
-	winAugsTile.MakeHeightsEqual(False);
-	winAugsTile.SetMinorSpacing(1);
-	winAugsTile.SetMargins(0, 0);
-	winAugsTile.SetOrder(ORDER_Down);
+    winAugsTile = TileWindow(winScroll.ClipWindow.NewChild(Class'TileWindow'));
+    winAugsTile.MakeWidthsEqual(False);
+    winAugsTile.MakeHeightsEqual(False);
+    winAugsTile.SetMinorSpacing(1);
+    winAugsTile.SetMargins(0, 0);
+    winAugsTile.SetOrder(ORDER_Down);
 }
 
 // ----------------------------------------------------------------------
@@ -175,37 +175,37 @@ function CreateAugCanList()
 
 function PopulateAugCanList()
 {
-	local Inventory item;
-	local int canCount;
-	local HUDMedBotAugCanWindow augCanWindow;
-	local PersonaNormalTextWindow txtNoCans;
+    local Inventory item;
+    local int canCount;
+    local HUDMedBotAugCanWindow augCanWindow;
+    local PersonaNormalTextWindow txtNoCans;
 
-	winAugsTile.DestroyAllChildren();
+    winAugsTile.DestroyAllChildren();
 
-	// Loop through all the Augmentation Cannisters in the player's 
-	// inventory, adding one row for each can.
-	item = player.Inventory;
+    // Loop through all the Augmentation Cannisters in the player's 
+    // inventory, adding one row for each can.
+    item = player.Inventory;
 
-	while(item != None)
-	{
-		if (item.IsA('AugmentationCannister'))
-		{
-			augCanWindow = HUDMedBotAugCanWindow(winAugsTile.NewChild(Class'HUDMedBotAugCanWindow'));
-			augCanWindow.SetCannister(AugmentationCannister(item));
+    while(item != None)
+    {
+        if (item.IsA('AugmentationCannister'))
+        {
+            augCanWindow = HUDMedBotAugCanWindow(winAugsTile.NewChild(Class'HUDMedBotAugCanWindow'));
+            augCanWindow.SetCannister(AugmentationCannister(item));
 
-			canCount++;
-		}
-		item = item.Inventory;
-	}
+            canCount++;
+        }
+        item = item.Inventory;
+    }
 
-	// If we didn't add any cans, then display "No Aug Cannisters Available!"
-	if (canCount == 0)
-	{
-		txtNoCans = PersonaNormalTextWindow(winAugsTile.NewChild(Class'PersonaNormalTextWindow'));
-		txtNoCans.SetText(NoCansAvailableText);
-		txtNoCans.SetTextMargins(4, 4);
-		txtNoCans.SetTextAlignments(HALIGN_Left, VALIGN_Center);
-	}
+    // If we didn't add any cans, then display "No Aug Cannisters Available!"
+    if (canCount == 0)
+    {
+        txtNoCans = PersonaNormalTextWindow(winAugsTile.NewChild(Class'PersonaNormalTextWindow'));
+        txtNoCans.SetText(NoCansAvailableText);
+        txtNoCans.SetTextMargins(4, 4);
+        txtNoCans.SetTextAlignments(HALIGN_Left, VALIGN_Center);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -214,67 +214,67 @@ function PopulateAugCanList()
 
 function bool ButtonActivated(Window buttonPressed)
 {
-	local bool bHandled;
-	local int level;
-	local int hkey;
-	local Augmentation anAug;
+    local bool bHandled;
+    local int level;
+    local int hkey;
+    local Augmentation anAug;
 
-	bHandled   = True;
+    bHandled   = True;
 
-	if(bInstallPending)
-	{
-		anAug = Augmentation(buttonPressed.GetClientObject());
-		if(anAug != None && anAug.bHasIt)
-		{
-			if(anAug.AugmentationLocation == selectedAug.AugmentationLocation)
-			{
-				level = anAug.CurrentLevel;
-				anAug.CurrentLevel = 0;
-				anAug.bHasIt = false;
-				hkey = anAug.HotKeyNum;
-				player.RemoveAugmentationDisplay(anAug);
-				player.AugmentationSystem.AugLocs[anAug.AugmentationLocation].augCount--;
-				anAug.HotKeyNum = -1;
-				bInstallPending = false;
-				winInfo.Clear();
-				winInfo.SetTitle(selectedAug.AugmentationName);
-				winInfo.SetText(selectedAug.AugmentationName$" installed at Level "$ level + 1 $".");
-				selectedAug.HotKeyNum = hkey;
-				InstallAugmentation(level);
-				selectedAug.HotKeyNum = hkey;
-				Super.CreateAugmentationButtons();
-				selectedAug = None;
-				selectedAugButton = None;
-				EnableButtons();
-				return true;
-			}
-		}
-		else
-			bInstallPending = false;
-	}
+    if(bInstallPending)
+    {
+        anAug = Augmentation(buttonPressed.GetClientObject());
+        if(anAug != None && anAug.bHasIt)
+        {
+            if(anAug.AugmentationLocation == selectedAug.AugmentationLocation)
+            {
+                level = anAug.CurrentLevel;
+                anAug.CurrentLevel = 0;
+                anAug.bHasIt = false;
+                hkey = anAug.HotKeyNum;
+                player.RemoveAugmentationDisplay(anAug);
+                player.AugmentationSystem.AugLocs[anAug.AugmentationLocation].augCount--;
+                anAug.HotKeyNum = -1;
+                bInstallPending = false;
+                winInfo.Clear();
+                winInfo.SetTitle(selectedAug.AugmentationName);
+                winInfo.SetText(selectedAug.AugmentationName$" installed at Level "$ level + 1 $".");
+                selectedAug.HotKeyNum = hkey;
+                InstallAugmentation(level);
+                selectedAug.HotKeyNum = hkey;
+                Super.CreateAugmentationButtons();
+                selectedAug = None;
+                selectedAugButton = None;
+                EnableButtons();
+                return true;
+            }
+        }
+        else
+            bInstallPending = false;
+    }
 
-	switch(buttonPressed)
-	{
-		case btnInstall:
-			bInstallPending = false;
-			if(player.AugmentationSystem.AreSlotsFull(selectedAug))
-				bInstallPending = true;
+    switch(buttonPressed)
+    {
+        case btnInstall:
+            bInstallPending = false;
+            if(player.AugmentationSystem.AreSlotsFull(selectedAug))
+                bInstallPending = true;
 
-			InstallAugmentation();
-			break;
+            InstallAugmentation();
+            break;
 
-		default:
-			bInstallPending = false;
-			bHandled = False;
-			break;
-	}
+        default:
+            bInstallPending = false;
+            bHandled = False;
+            break;
+    }
 
-	if (bHandled)
-		return true;
-	else 
-		return Super.ButtonActivated(buttonPressed);
+    if (bHandled)
+        return true;
+    else 
+        return Super.ButtonActivated(buttonPressed);
 
-	return bHandled;
+    return bHandled;
 }
 
 // ----------------------------------------------------------------------
@@ -286,64 +286,64 @@ function bool ButtonActivated(Window buttonPressed)
 
 function SelectAugmentation(PersonaItemButton buttonPressed)
 {
-	// Don't do extra work.
-	if (selectedAugButton != buttonPressed)
-	{
-		// Deselect current button
-		if (selectedAugButton != None)
-			selectedAugButton.SelectButton(False);
+    // Don't do extra work.
+    if (selectedAugButton != buttonPressed)
+    {
+        // Deselect current button
+        if (selectedAugButton != None)
+            selectedAugButton.SelectButton(False);
 
-		selectedAugButton = buttonPressed;
-		selectedAug       = Augmentation(selectedAugButton.GetClientObject());
+        selectedAugButton = buttonPressed;
+        selectedAug       = Augmentation(selectedAugButton.GetClientObject());
 
-		// Check to see if this augmentation has already been installed
-		if (HUDMedBotAugItemButton(buttonPressed).bHasIt)
-		{
-			winInfo.Clear();
-			winInfo.SetTitle(selectedAug.AugmentationName);
-			winInfo.SetText(AlreadyHasItText);
-			if(selectedAug.CurrentLevel < selectedAug.MaxLevel)
-			{
-				winInfo.SetText(MayUpgradeText);
-				selectedAug.UsingMedBot(True);
-				selectedAug.AppendInfo(winInfo);
-			}
-			else
-			{
-				winInfo.SetText(CannotUpgradeText);
-				winInfo.SetText(SelectAnotherText); 
-				selectedAug = None;
-				selectedAugButton = None;
-			}
-		}
-		else if (HUDMedBotAugItemButton(buttonPressed).bSlotFull) 
-		{
-			winInfo.Clear();
-			winInfo.SetTitle(selectedAug.AugmentationName);
-			winInfo.SetText(SlotFullText);
-			selectedAug.UsingMedBot(True);
-			selectedAug.AppendInfo(winInfo);
-//			winInfo.SetText("In order to install this augmentation you must replace an existing one.");
-//			winInfo.SetText(SelectAnotherText); 
-//			selectedAug = None;
-//			selectedAugButton = None;
-		}
-		else
-		{
-			selectedAug.UsingMedBot(True);
-			if(!HUDMedBotAugItemButton(buttonPressed).bHasIt)
-				selectedAug.UpdateInfo(winInfo);
-		}
+        // Check to see if this augmentation has already been installed
+        if (HUDMedBotAugItemButton(buttonPressed).bHasIt)
+        {
+            winInfo.Clear();
+            winInfo.SetTitle(selectedAug.AugmentationName);
+            winInfo.SetText(AlreadyHasItText);
+            if(selectedAug.CurrentLevel < selectedAug.MaxLevel)
+            {
+                winInfo.SetText(MayUpgradeText);
+                selectedAug.UsingMedBot(True);
+                selectedAug.AppendInfo(winInfo);
+            }
+            else
+            {
+                winInfo.SetText(CannotUpgradeText);
+                winInfo.SetText(SelectAnotherText); 
+                selectedAug = None;
+                selectedAugButton = None;
+            }
+        }
+        else if (HUDMedBotAugItemButton(buttonPressed).bSlotFull) 
+        {
+            winInfo.Clear();
+            winInfo.SetTitle(selectedAug.AugmentationName);
+            winInfo.SetText(SlotFullText);
+            selectedAug.UsingMedBot(True);
+            selectedAug.AppendInfo(winInfo);
+//            winInfo.SetText("In order to install this augmentation you must replace an existing one.");
+//            winInfo.SetText(SelectAnotherText); 
+//            selectedAug = None;
+//            selectedAugButton = None;
+        }
+        else
+        {
+            selectedAug.UsingMedBot(True);
+            if(!HUDMedBotAugItemButton(buttonPressed).bHasIt)
+                selectedAug.UpdateInfo(winInfo);
+        }
 
-		if(selectedAugButton != None)
-			selectedAugButton.SelectButton(True);
+        if(selectedAugButton != None)
+            selectedAugButton.SelectButton(True);
 
-		EnableButtons();
-		if(HUDMedBotAugItemButton(buttonPressed).bHasIt)
-			btnInstall.SetButtonText(UpgradeButtonLabel);
-		else
-			btnInstall.SetButtonText(InstallButtonLabel);
-	}
+        EnableButtons();
+        if(HUDMedBotAugItemButton(buttonPressed).bHasIt)
+            btnInstall.SetButtonText(UpgradeButtonLabel);
+        else
+            btnInstall.SetButtonText(InstallButtonLabel);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -352,68 +352,68 @@ function SelectAugmentation(PersonaItemButton buttonPressed)
 
 function InstallAugmentation(optional int level)
 {
-	local AugmentationCannister augCan;
-	local Augmentation aug;
+    local AugmentationCannister augCan;
+    local Augmentation aug;
 
-	if (HUDMedBotAugItemButton(selectedAugButton) == None)
-		return;
+    if (HUDMedBotAugItemButton(selectedAugButton) == None)
+        return;
 
-	if(bInstallPending)
-	{
-		winInfo.Clear();
-		winInfo.SetTitle(selectedAug.AugmentationName);
-		winInfo.SetText(Sprintf(SelectReplaceText,selectedAug.AugLocsText[selectedAug.AugmentationLocation]));
-		return;
-	}
-		
-	// Get pointers to the AugmentationCannister and the 
-	// Augmentation Class
+    if(bInstallPending)
+    {
+        winInfo.Clear();
+        winInfo.SetTitle(selectedAug.AugmentationName);
+        winInfo.SetText(Sprintf(SelectReplaceText,selectedAug.AugLocsText[selectedAug.AugmentationLocation]));
+        return;
+    }
+        
+    // Get pointers to the AugmentationCannister and the 
+    // Augmentation Class
 
-	augCan = HUDMedBotAugItemButton(selectedAugButton).GetAugCan();
-	aug    = HUDMedBotAugItemButton(selectedAugButton).GetAugmentation();
+    augCan = HUDMedBotAugItemButton(selectedAugButton).GetAugCan();
+    aug    = HUDMedBotAugItemButton(selectedAugButton).GetAugmentation();
 
-	// Add this augmentation (if we can get this far, then the augmentation
-	// to be added is a valid one, as the checks to see if we already have
-	// the augmentation and that there's enough space were done when the 
-	// AugmentationAddButtons were created)
+    // Add this augmentation (if we can get this far, then the augmentation
+    // to be added is a valid one, as the checks to see if we already have
+    // the augmentation and that there's enough space were done when the 
+    // AugmentationAddButtons were created)
 
-	winInfo.Clear();
-	winInfo.setTitle(selectedAug.AugmentationName);
+    winInfo.Clear();
+    winInfo.setTitle(selectedAug.AugmentationName);
 
-	if(selectedAug.bHasIt)
-		winInfo.setText(Sprintf(UpgradedText, (selectedAug.CurrentLevel + 2) ));
-	else
-		winInfo.setText(InstalledText);
+    if(selectedAug.bHasIt)
+        winInfo.setText(Sprintf(UpgradedText, (selectedAug.CurrentLevel + 2) ));
+    else
+        winInfo.setText(InstalledText);
 
-	player.AugmentationSystem.GivePlayerAugmentation(aug.class);
+    player.AugmentationSystem.GivePlayerAugmentation(aug.class);
 
-	while(level >= 1)
-	{
-		player.AugmentationSystem.GivePlayerAugmentation(aug.class);
-		level--;
-	}
+    while(level >= 1)
+    {
+        player.AugmentationSystem.GivePlayerAugmentation(aug.class);
+        level--;
+    }
 
-	// play a cool animation
-	medBot.PlayAnim('Scan');
+    // play a cool animation
+    medBot.PlayAnim('Scan');
 
-	// Now Destroy the Augmentation cannister
-	player.DeleteInventory(augCan);
+    // Now Destroy the Augmentation cannister
+    player.DeleteInventory(augCan);
 
-	// Now remove the cannister from our list
-	selectedAugButton.GetParent().Destroy();
-	selectedAugButton = None;
-	selectedAug       = None;
+    // Now remove the cannister from our list
+    selectedAugButton.GetParent().Destroy();
+    selectedAugButton = None;
+    selectedAug       = None;
 
-	// Update the Installed Augmentation Icons
-	DestroyAugmentationButtons();
-	CreateAugmentationButtons();
+    // Update the Installed Augmentation Icons
+    DestroyAugmentationButtons();
+    CreateAugmentationButtons();
 
-	// Need to update the aug list
-	PopulateAugCanList();
+    // Need to update the aug list
+    PopulateAugCanList();
 
-	//Added this in because of my upgrade stuff -- Y|yukichigai
-	btnInstall.SetButtonText(InstallButtonLabel);
-	EnableButtons();
+    //Added this in because of my upgrade stuff -- Y|yukichigai
+    btnInstall.SetButtonText(InstallButtonLabel);
+    EnableButtons();
 }
 
 // ----------------------------------------------------------------------
@@ -422,13 +422,13 @@ function InstallAugmentation(optional int level)
 
 function DestroyAugmentationButtons()
 {
-	local int buttonIndex;
+    local int buttonIndex;
 
-	for(buttonIndex=0; buttonIndex<arrayCount(augItems); buttonIndex++)
-	{
-		if (augItems[buttonIndex] != None)
-			augItems[buttonIndex].Destroy();
-	}
+    for(buttonIndex=0; buttonIndex<arrayCount(augItems); buttonIndex++)
+    {
+        if (augItems[buttonIndex] != None)
+            augItems[buttonIndex].Destroy();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -437,17 +437,17 @@ function DestroyAugmentationButtons()
 
 function EnableButtons()
 {
-	// Only enable the Install button if the player has an
-	// Augmentation Cannister aug button selected
+    // Only enable the Install button if the player has an
+    // Augmentation Cannister aug button selected
 
-	if (HUDMedBotAugItemButton(selectedAugButton) != None)
-	{
-		btnInstall.EnableWindow(True);
-	}
-	else
-	{
-		btnInstall.EnableWindow(False);
-	}
+    if (HUDMedBotAugItemButton(selectedAugButton) != None)
+    {
+        btnInstall.EnableWindow(True);
+    }
+    else
+    {
+        btnInstall.EnableWindow(False);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -456,18 +456,18 @@ function EnableButtons()
 
 function SetMedicalBot(MedicalBot newBot, optional bool bPlayAnim)
 {
-	medBot = newBot;
+    medBot = newBot;
 
-	if (medBot != None)
-	{
-		medBot.StandStill();
+    if (medBot != None)
+    {
+        medBot.StandStill();
 
-		if (bPlayAnim)
-		{
-			medBot.PlayAnim('Start');
-			medBot.PlaySound(sound'MedicalBotRaiseArm', SLOT_None);
-		}
-	}
+        if (bPlayAnim)
+        {
+            medBot.PlayAnim('Start');
+            medBot.PlaySound(sound'MedicalBotRaiseArm', SLOT_None);
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -476,7 +476,7 @@ function SetMedicalBot(MedicalBot newBot, optional bool bPlayAnim)
 
 function SkipAnimation(bool bNewSkipAnimation)
 {
-	bSkipAnimation = bNewSkipAnimation;
+    bSkipAnimation = bNewSkipAnimation;
 }
 
 // ----------------------------------------------------------------------

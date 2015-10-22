@@ -5,15 +5,15 @@ class BoneFemur extends DeusExDecoration;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPBoneFemur", class'Texture', True));
-	else
-		Skin = None;
+    if(bOn)
+        Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPBoneFemur", class'Texture', True));
+    else
+        Skin = None;
 
-	return true;
+    return true;
 }
 
 defaultproperties

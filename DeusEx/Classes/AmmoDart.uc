@@ -8,25 +8,25 @@ class AmmoDart extends DeusExAmmo;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmoDartTex1", class'Texture', True));
+    if(bOn)
+        skin = Texture(DynamicLoadObject("HDTPItems.HDTPAmmoDartTex1", class'Texture', True));
 
-	if(skin == None || !bOn)
-		skin = Default.skin;
+    if(skin == None || !bOn)
+        skin = Default.skin;
 
-	return true;
+    return true;
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-      		AmmoAmount = 6;
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+              AmmoAmount = 6;
 }
 
 defaultproperties

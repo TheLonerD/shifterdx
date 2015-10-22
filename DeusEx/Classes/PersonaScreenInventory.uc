@@ -11,7 +11,7 @@ var PersonaActionButtonWindow btnChangeAmmo;
 
 var Window                        winItems;
 var PersonaInventoryInfoWindow    winInfo;
-var PersonaItemButton             selectedItem;			// Currently Selected Inventory item
+var PersonaItemButton             selectedItem;            // Currently Selected Inventory item
 var PersonaInventoryCreditsWindow winCredits;
 var PersonaItemDetailWindow       winNanoKeyRing;
 var PersonaItemDetailWindow       winAmmo;
@@ -21,20 +21,20 @@ var float TimeSinceLastUpdate;
 
 // Inventory object belt
 var PersonaInventoryObjectBelt invBelt;
-var HUDObjectSlot		       selectedSlot;
+var HUDObjectSlot               selectedSlot;
 
-var	int invButtonWidth;
-var int	invButtonHeight;
+var    int invButtonWidth;
+var int    invButtonHeight;
 
-var int	smallInvWidth;									// Small Inventory Button Width
-var int	smallInvHeight;									// Small Inventory Button Heigth
+var int    smallInvWidth;                                    // Small Inventory Button Width
+var int    smallInvHeight;                                    // Small Inventory Button Heigth
 
 // Drag and Drop Stuff
 var Bool         bDragging;
-var ButtonWindow dragButton;							// Button we're dragging around
+var ButtonWindow dragButton;                            // Button we're dragging around
 var ButtonWindow lastDragOverButton;
 var Window       lastDragOverWindow;
-var Window       destroyWindow;							// Used to defer window destroy
+var Window       destroyWindow;                            // Used to defer window destroy
 
 var localized String InventoryTitleText;
 var localized String EquipButtonLabel;
@@ -60,11 +60,11 @@ var localized String NoAmmoLabel;
 
 event InitWindow()
 {
-	Super.InitWindow();
+    Super.InitWindow();
 
-	PersonaNavBarWindow(winNavBar).btnInventory.SetSensitivity(False);
+    PersonaNavBarWindow(winNavBar).btnInventory.SetSensitivity(False);
 
-	EnableButtons();
+    EnableButtons();
     //Force an update
     SignalRefresh();
 
@@ -79,11 +79,11 @@ event InitWindow()
 
 function Tick(float deltaTime)
 {
-	if (destroyWindow != None)
-	{
-		destroyWindow.Destroy();
-		bTickEnabled = False;
-	}
+    if (destroyWindow != None)
+    {
+        destroyWindow.Destroy();
+        bTickEnabled = False;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -92,18 +92,18 @@ function Tick(float deltaTime)
 
 function CreateControls()
 {
-	Super.CreateControls();
+    Super.CreateControls();
 
-	CreateTitleWindow(9, 5, InventoryTitleText);
-	CreateInfoWindow();
-	CreateCreditsWindow();
-	CreateObjectBelt();
-	CreateButtons();
-	CreateItemsWindow();
-	CreateNanoKeyRingWindow();
-	CreateAmmoWindow();
-	CreateInventoryButtons();
-	CreateStatusWindow();
+    CreateTitleWindow(9, 5, InventoryTitleText);
+    CreateInfoWindow();
+    CreateCreditsWindow();
+    CreateObjectBelt();
+    CreateButtons();
+    CreateItemsWindow();
+    CreateNanoKeyRingWindow();
+    CreateAmmoWindow();
+    CreateInventoryButtons();
+    CreateStatusWindow();
 }
 
 // ----------------------------------------------------------------------
@@ -112,8 +112,8 @@ function CreateControls()
 
 function CreateStatusWindow()
 {
-	winStatus = PersonaStatusLineWindow(winClient.NewChild(Class'PersonaStatusLineWindow'));
-	winStatus.SetPos(337, 243);
+    winStatus = PersonaStatusLineWindow(winClient.NewChild(Class'PersonaStatusLineWindow'));
+    winStatus.SetPos(337, 243);
 }
 
 // ----------------------------------------------------------------------
@@ -122,23 +122,23 @@ function CreateStatusWindow()
 
 function CreateButtons()
 {
-	local PersonaButtonBarWindow winActionButtons;
+    local PersonaButtonBarWindow winActionButtons;
 
-	winActionButtons = PersonaButtonBarWindow(winClient.NewChild(Class'PersonaButtonBarWindow'));
-	winActionButtons.SetPos(9, 339);
-	winActionButtons.SetWidth(267);
+    winActionButtons = PersonaButtonBarWindow(winClient.NewChild(Class'PersonaButtonBarWindow'));
+    winActionButtons.SetPos(9, 339);
+    winActionButtons.SetWidth(267);
 
-	btnChangeAmmo = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
-	btnChangeAmmo.SetButtonText(ChangeAmmoButtonLabel);
+    btnChangeAmmo = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
+    btnChangeAmmo.SetButtonText(ChangeAmmoButtonLabel);
 
-	btnDrop = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
-	btnDrop.SetButtonText(DropButtonLabel);
+    btnDrop = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
+    btnDrop.SetButtonText(DropButtonLabel);
 
-	btnUse = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
-	btnUse.SetButtonText(UseButtonLabel);
+    btnUse = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
+    btnUse.SetButtonText(UseButtonLabel);
 
-	btnEquip = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
-	btnEquip.SetButtonText(EquipButtonLabel);
+    btnEquip = PersonaActionButtonWindow(winActionButtons.NewChild(Class'PersonaActionButtonWindow'));
+    btnEquip.SetButtonText(EquipButtonLabel);
 }
 
 // ----------------------------------------------------------------------
@@ -147,9 +147,9 @@ function CreateButtons()
 
 function CreateInfoWindow()
 {
-	winInfo = PersonaInventoryInfoWindow(winClient.NewChild(Class'PersonaInventoryInfoWindow'));
-	winInfo.SetPos(337, 17);
-	winInfo.SetSize(238, 218);
+    winInfo = PersonaInventoryInfoWindow(winClient.NewChild(Class'PersonaInventoryInfoWindow'));
+    winInfo.SetPos(337, 17);
+    winInfo.SetSize(238, 218);
 }
 
 // ----------------------------------------------------------------------
@@ -158,10 +158,10 @@ function CreateInfoWindow()
 
 function CreateObjectBelt()
 {
-	invBelt = PersonaInventoryObjectBelt(NewChild(Class'PersonaInventoryObjectBelt'));
-	invBelt.SetWindowAlignments(HALIGN_Right, VALIGN_Bottom, 0, 0);
-	invBelt.SetInventoryWindow(Self);
-//	invBelt.AskParentForReconfigure();
+    invBelt = PersonaInventoryObjectBelt(NewChild(Class'PersonaInventoryObjectBelt'));
+    invBelt.SetWindowAlignments(HALIGN_Right, VALIGN_Bottom, 0, 0);
+    invBelt.SetInventoryWindow(Self);
+//    invBelt.AskParentForReconfigure();
 }
 
 // ----------------------------------------------------------------------
@@ -170,10 +170,10 @@ function CreateObjectBelt()
 
 function CreateCreditsWindow()
 {
-	winCredits = PersonaInventoryCreditsWindow(winClient.NewChild(Class'PersonaInventoryCreditsWindow'));
-	winCredits.SetPos(165, 3);
-	winCredits.SetWidth(108);
-	winCredits.SetCredits(Player.Credits);
+    winCredits = PersonaInventoryCreditsWindow(winClient.NewChild(Class'PersonaInventoryCreditsWindow'));
+    winCredits.SetPos(165, 3);
+    winCredits.SetWidth(108);
+    winCredits.SetCredits(Player.Credits);
 }
 
 // ----------------------------------------------------------------------
@@ -182,16 +182,16 @@ function CreateCreditsWindow()
 
 function CreateNanoKeyRingWindow()
 {
-	winNanoKeyRing = PersonaItemDetailWindow(winClient.NewChild(Class'PersonaItemDetailWindow'));
-	winNanoKeyRing.SetPos(335, 285);
-	winNanoKeyRing.SetWidth(121);
-	winNanoKeyRing.SetIcon(Class'NanoKeyRing'.Default.LargeIcon);
-	winNanoKeyRing.SetItem(player.KeyRing);
-	winNanoKeyRing.SetText(NanoKeyRingInfoText);
-	winNanoKeyRing.SetTextAlignments(HALIGN_Center, VALIGN_Center);
-	winNanoKeyRing.SetCountLabel(NanoKeyRingLabel);
-	winNanoKeyRing.SetCount(player.KeyRing.GetKeyCount());
-	winNanoKeyRing.SetIconSensitivity(True);
+    winNanoKeyRing = PersonaItemDetailWindow(winClient.NewChild(Class'PersonaItemDetailWindow'));
+    winNanoKeyRing.SetPos(335, 285);
+    winNanoKeyRing.SetWidth(121);
+    winNanoKeyRing.SetIcon(Class'NanoKeyRing'.Default.LargeIcon);
+    winNanoKeyRing.SetItem(player.KeyRing);
+    winNanoKeyRing.SetText(NanoKeyRingInfoText);
+    winNanoKeyRing.SetTextAlignments(HALIGN_Center, VALIGN_Center);
+    winNanoKeyRing.SetCountLabel(NanoKeyRingLabel);
+    winNanoKeyRing.SetCount(player.KeyRing.GetKeyCount());
+    winNanoKeyRing.SetIconSensitivity(True);
 }
 
 // ----------------------------------------------------------------------
@@ -200,15 +200,15 @@ function CreateNanoKeyRingWindow()
 
 function CreateAmmoWindow()
 {
-	winAmmo = PersonaItemDetailWindow(winClient.NewChild(Class'PersonaItemDetailWindow'));
-	winAmmo.SetPos(456, 285);
-	winAmmo.SetWidth(120);
-	winAmmo.SetIcon(Class'AmmoShell'.Default.LargeIcon);
-	winAmmo.SetIconSize(Class'AmmoShell'.Default.largeIconWidth, Class'AmmoShell'.Default.largeIconHeight);
-	winAmmo.SetText(AmmoInfoText);
-	winAmmo.SetTextAlignments(HALIGN_Center, VALIGN_Center);
-	winAmmo.SetIgnoreCount(True);
-	winAmmo.SetIconSensitivity(True);
+    winAmmo = PersonaItemDetailWindow(winClient.NewChild(Class'PersonaItemDetailWindow'));
+    winAmmo.SetPos(456, 285);
+    winAmmo.SetWidth(120);
+    winAmmo.SetIcon(Class'AmmoShell'.Default.LargeIcon);
+    winAmmo.SetIconSize(Class'AmmoShell'.Default.largeIconWidth, Class'AmmoShell'.Default.largeIconHeight);
+    winAmmo.SetText(AmmoInfoText);
+    winAmmo.SetTextAlignments(HALIGN_Center, VALIGN_Center);
+    winAmmo.SetIgnoreCount(True);
+    winAmmo.SetIconSensitivity(True);
 }
 
 // ----------------------------------------------------------------------
@@ -217,9 +217,9 @@ function CreateAmmoWindow()
 
 function CreateItemsWindow()
 {
-	winItems = winClient.NewChild(Class'Window');
-	winItems.SetPos(9, 19);
-	winItems.SetSize(266, 319);
+    winItems = winClient.NewChild(Class'Window');
+    winItems.SetPos(9, 19);
+    winItems.SetSize(266, 319);
 }
 
 // ----------------------------------------------------------------------
@@ -236,70 +236,70 @@ function CreateItemsWindow()
 
 function CreateInventoryButtons()
 {
-	local Inventory anItem;
-	local PersonaInventoryItemButton newButton;
+    local Inventory anItem;
+    local PersonaInventoryItemButton newButton;
 
-	// First, clear the player's inventory grid.
+    // First, clear the player's inventory grid.
     // DEUS_EX AMSD Due to not being able to guarantee order of delivery for functions,
     // do NOT clear inventory in multiplayer, else we risk clearing AFTER a lot of the sets
     // below.
-    if (player.Level.NetMode == NM_Standalone)	
+    if (player.Level.NetMode == NM_Standalone)    
         player.ClearInventorySlots();
 
-	// Iterate through the inventory items, creating a unique button for each
-	anItem = player.Inventory;
+    // Iterate through the inventory items, creating a unique button for each
+    anItem = player.Inventory;
 
-	while(anItem != None)
-	{
-		if (anItem.bDisplayableInv && anItem.invPosX != -2 && anItem.invPosY != -2)
-		{
-			// Create another button
-			newButton = PersonaInventoryItemButton(winItems.NewChild(Class'PersonaInventoryItemButton'));
-			newButton.SetClientObject(anItem);
-			newButton.SetInventoryWindow(Self);
+    while(anItem != None)
+    {
+        if (anItem.bDisplayableInv && anItem.invPosX != -2 && anItem.invPosY != -2)
+        {
+            // Create another button
+            newButton = PersonaInventoryItemButton(winItems.NewChild(Class'PersonaInventoryItemButton'));
+            newButton.SetClientObject(anItem);
+            newButton.SetInventoryWindow(Self);
 
-			// If the item has a large icon, use it.  Otherwise just use the 
-			// smaller icon that's also shared by the object belt 
+            // If the item has a large icon, use it.  Otherwise just use the 
+            // smaller icon that's also shared by the object belt 
 
-			if ( anItem.largeIcon != None )
-			{
-				newButton.SetIcon(anItem.largeIcon);
-				newButton.SetIconSize(anItem.largeIconWidth, anItem.largeIconHeight);
-			}
-			else
-			{
-				newButton.SetIcon(anItem.icon);
-				newButton.SetIconSize(smallInvWidth, smallInvHeight);
-			}
+            if ( anItem.largeIcon != None )
+            {
+                newButton.SetIcon(anItem.largeIcon);
+                newButton.SetIconSize(anItem.largeIconWidth, anItem.largeIconHeight);
+            }
+            else
+            {
+                newButton.SetIcon(anItem.icon);
+                newButton.SetIconSize(smallInvWidth, smallInvHeight);
+            }
 
-			newButton.SetSize(
-				(invButtonWidth  * anItem.invSlotsX) + 1, 
-				(invButtonHeight * anItem.invSlotsY) + 1);
+            newButton.SetSize(
+                (invButtonWidth  * anItem.invSlotsX) + 1, 
+                (invButtonHeight * anItem.invSlotsY) + 1);
 
-			// Okeydokey, update the player's inventory grid with this item.
-			player.SetInvSlots(anItem, 1);
+            // Okeydokey, update the player's inventory grid with this item.
+            player.SetInvSlots(anItem, 1);
 
-			// If this item is currently equipped, notify the button
-			if ( anItem == player.inHand )
-				newButton.SetEquipped( True );
+            // If this item is currently equipped, notify the button
+            if ( anItem == player.inHand )
+                newButton.SetEquipped( True );
 
-			// If this inventory item already has a position, use it.
-			if (( anItem.invPosX != -1 ) && ( anItem.invPosY != -1 ))
-			{
-				SetItemButtonPos(newButton, anItem.invPosX, anItem.invPosY);
-			}
-			else
-			{
-				// Find a place for it.
-				if (player.FindInventorySlot(anItem))
-					SetItemButtonPos(newButton, anItem.invPosX, anItem.invPosY);
-				else
-					newButton.Destroy();		// Shit!
-			}
-		}
+            // If this inventory item already has a position, use it.
+            if (( anItem.invPosX != -1 ) && ( anItem.invPosY != -1 ))
+            {
+                SetItemButtonPos(newButton, anItem.invPosX, anItem.invPosY);
+            }
+            else
+            {
+                // Find a place for it.
+                if (player.FindInventorySlot(anItem))
+                    SetItemButtonPos(newButton, anItem.invPosX, anItem.invPosY);
+                else
+                    newButton.Destroy();        // Shit!
+            }
+        }
 
-		anItem = anItem.Inventory;
-	}	
+        anItem = anItem.Inventory;
+    }    
 }
 
 // ----------------------------------------------------------------------
@@ -308,13 +308,13 @@ function CreateInventoryButtons()
 
 function SetItemButtonPos(PersonaInventoryItemButton moveButton, int slotX, int slotY)
 {
-	moveButton.dragPosX = slotX;
-	moveButton.dragPosY = slotY;
+    moveButton.dragPosX = slotX;
+    moveButton.dragPosY = slotY;
 
-	moveButton.SetPos(
-		moveButton.dragPosX * (invButtonWidth), 
-		moveButton.dragPosY * (invButtonHeight)
-		);
+    moveButton.SetPos(
+        moveButton.dragPosX * (invButtonWidth), 
+        moveButton.dragPosY * (invButtonHeight)
+        );
 }
 
 // ----------------------------------------------------------------------
@@ -323,72 +323,72 @@ function SetItemButtonPos(PersonaInventoryItemButton moveButton, int slotX, int 
 
 function bool ButtonActivated( Window buttonPressed )
 {
-	local bool bHandled;
-	local Class<DeusExAmmo> ammoClass;
+    local bool bHandled;
+    local Class<DeusExAmmo> ammoClass;
 
-	bHandled = True;
+    bHandled = True;
 
-	// First check to see if this is an Ammo button
-	if (buttonPressed.IsA('PersonaAmmoDetailButton'))
-	{
-		if (DeusExWeapon(selectedItem.GetClientObject()) != None)
-		{
-			// Before doing anything, check to see if this button is already
-			// selected.
+    // First check to see if this is an Ammo button
+    if (buttonPressed.IsA('PersonaAmmoDetailButton'))
+    {
+        if (DeusExWeapon(selectedItem.GetClientObject()) != None)
+        {
+            // Before doing anything, check to see if this button is already
+            // selected.
 
-			if (!PersonaAmmoDetailButton(buttonPressed).bSelected)
-			{
-				winInfo.SelectAmmoButton(PersonaAmmoDetailButton(buttonPressed));
-				ammoClass = LoadAmmo();
-				DeusExWeapon(selectedItem.GetClientObject()).UpdateAmmoInfo(winInfo, ammoClass);
-				EnableButtons();
-			}
-		}
-	}
-	// Check to see if this is the Ammo button
-	else if ((buttonPressed.IsA('PersonaItemDetailButton')) && 
-	         (PersonaItemDetailButton(buttonPressed).icon == Class'AmmoShell'.Default.LargeIcon))
-	{
-		SelectInventory(PersonaItemButton(buttonPressed));
-		UpdateAmmoDisplay();
-	}
-	// Now check to see if it's an Inventory button
-	else if (buttonPressed.IsA('PersonaItemButton'))
-	{
-		winStatus.ClearText();
-		SelectInventory(PersonaItemButton(buttonPressed));
-	}
-	// Otherwise must be one of our action buttons
-	else
-	{
-		switch( buttonPressed )
-		{
-			case btnChangeAmmo:
-				WeaponChangeAmmo();
-				break;
+            if (!PersonaAmmoDetailButton(buttonPressed).bSelected)
+            {
+                winInfo.SelectAmmoButton(PersonaAmmoDetailButton(buttonPressed));
+                ammoClass = LoadAmmo();
+                DeusExWeapon(selectedItem.GetClientObject()).UpdateAmmoInfo(winInfo, ammoClass);
+                EnableButtons();
+            }
+        }
+    }
+    // Check to see if this is the Ammo button
+    else if ((buttonPressed.IsA('PersonaItemDetailButton')) && 
+             (PersonaItemDetailButton(buttonPressed).icon == Class'AmmoShell'.Default.LargeIcon))
+    {
+        SelectInventory(PersonaItemButton(buttonPressed));
+        UpdateAmmoDisplay();
+    }
+    // Now check to see if it's an Inventory button
+    else if (buttonPressed.IsA('PersonaItemButton'))
+    {
+        winStatus.ClearText();
+        SelectInventory(PersonaItemButton(buttonPressed));
+    }
+    // Otherwise must be one of our action buttons
+    else
+    {
+        switch( buttonPressed )
+        {
+            case btnChangeAmmo:
+                WeaponChangeAmmo();
+                break;
 
-			case btnEquip:
-				EquipSelectedItem();
-				break;
+            case btnEquip:
+                EquipSelectedItem();
+                break;
 
-			case btnUse:
-				UseSelectedItem();
-				break;
+            case btnUse:
+                UseSelectedItem();
+                break;
 
-			case btnDrop:
-				DropSelectedItem();
-				break;
+            case btnDrop:
+                DropSelectedItem();
+                break;
 
-			default:
-				bHandled = False;
-				break;
-		}
-	}
+            default:
+                bHandled = False;
+                break;
+        }
+    }
 
-	if ( !bHandled )
-		bHandled = Super.ButtonActivated(buttonPressed);
+    if ( !bHandled )
+        bHandled = Super.ButtonActivated(buttonPressed);
 
-	return bHandled;
+    return bHandled;
 }
 
 // ----------------------------------------------------------------------
@@ -397,34 +397,34 @@ function bool ButtonActivated( Window buttonPressed )
 
 event bool ToggleChanged(Window button, bool bNewToggle)
 {
-	if (button.IsA('HUDObjectSlot') && (bNewToggle))
-	{
-		if ((selectedSlot != None) && (selectedSlot != HUDObjectSlot(button)))
-			selectedSlot.HighlightSelect(False);
+    if (button.IsA('HUDObjectSlot') && (bNewToggle))
+    {
+        if ((selectedSlot != None) && (selectedSlot != HUDObjectSlot(button)))
+            selectedSlot.HighlightSelect(False);
 
-		selectedSlot = HUDObjectSlot(button);
+        selectedSlot = HUDObjectSlot(button);
 
-		// Only allow to be highlighted if the slot isn't empty
-		if (selectedSlot.item != None)
-		{
-			selectedSlot.HighlightSelect(bNewToggle);
-			SelectInventoryItem(selectedSlot.item);
-		}
-		else
-		{
-			selectedSlot = None;
-		}
-	}
-	else if (button.IsA('PersonaCheckboxWindow'))
-	{
-		player.bShowAmmoDescriptions = bNewToggle;
-		player.SaveConfig();
-		UpdateAmmoDisplay();
-	}
+        // Only allow to be highlighted if the slot isn't empty
+        if (selectedSlot.item != None)
+        {
+            selectedSlot.HighlightSelect(bNewToggle);
+            SelectInventoryItem(selectedSlot.item);
+        }
+        else
+        {
+            selectedSlot = None;
+        }
+    }
+    else if (button.IsA('PersonaCheckboxWindow'))
+    {
+        player.bShowAmmoDescriptions = bNewToggle;
+        player.SaveConfig();
+        UpdateAmmoDisplay();
+    }
 
-	EnableButtons();
+    EnableButtons();
 
-	return True;
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -435,48 +435,48 @@ event bool ToggleChanged(Window button, bool bNewToggle)
 
 event bool VirtualKeyPressed(EInputKey key, bool bRepeat)
 {
-	local int keyIndex;
-	local bool bKeyHandled;
+    local int keyIndex;
+    local bool bKeyHandled;
 
-	bKeyHandled = True;
+    bKeyHandled = True;
 
-	if ( IsKeyDown( IK_Alt ) || IsKeyDown( IK_Shift ) || IsKeyDown( IK_Ctrl ))
-		return False;
+    if ( IsKeyDown( IK_Alt ) || IsKeyDown( IK_Shift ) || IsKeyDown( IK_Ctrl ))
+        return False;
 
-	// If a number key was pressed and we have a selected inventory item,
-	// then assign the hotkey
-	if (( key >= IK_1 ) && ( key <= IK_9 ) && (selectedItem != None) && (Inventory(selectedItem.GetClientObject()) != None))
-	{
-		invBelt.AssignObjectBeltByKey(Inventory(selectedItem.GetClientObject()), key);
-	}
-	else
-	{
-		switch( key ) 
-		{	
-			// Allow a selected object to be dropped
-			// TODO: Use the actual key(s) assigned to drop
+    // If a number key was pressed and we have a selected inventory item,
+    // then assign the hotkey
+    if (( key >= IK_1 ) && ( key <= IK_9 ) && (selectedItem != None) && (Inventory(selectedItem.GetClientObject()) != None))
+    {
+        invBelt.AssignObjectBeltByKey(Inventory(selectedItem.GetClientObject()), key);
+    }
+    else
+    {
+        switch( key ) 
+        {    
+            // Allow a selected object to be dropped
+            // TODO: Use the actual key(s) assigned to drop
 
-			case IK_Backspace:
-				DropSelectedItem();
-				break;
+            case IK_Backspace:
+                DropSelectedItem();
+                break;
 
-			case IK_Delete:
-				ClearSelectedSlot();
-				break;
+            case IK_Delete:
+                ClearSelectedSlot();
+                break;
 
-			case IK_Enter:
-				UseSelectedItem();
-				break;
+            case IK_Enter:
+                UseSelectedItem();
+                break;
 
-			default:
-				bKeyHandled = False;
-		}
-	}
+            default:
+                bKeyHandled = False;
+        }
+    }
 
-	if (!bKeyHandled)
-		return Super.VirtualKeyPressed(key, bRepeat);
-	else
-		return bKeyHandled;
+    if (!bKeyHandled)
+        return Super.VirtualKeyPressed(key, bRepeat);
+    else
+        return bKeyHandled;
 }
 
 // ----------------------------------------------------------------------
@@ -488,43 +488,43 @@ event bool VirtualKeyPressed(EInputKey key, bool bRepeat)
 
 function UpdateAmmoDisplay()
 {
-	local Inventory inv;
-	local DeusExAmmo ammo;
-	local int ammoCount;
+    local Inventory inv;
+    local DeusExAmmo ammo;
+    local int ammoCount;
 
-	if (!bUpdatingAmmoDisplay)
-	{
-		bUpdatingAmmoDisplay = True;
+    if (!bUpdatingAmmoDisplay)
+    {
+        bUpdatingAmmoDisplay = True;
 
-		winInfo.Clear();
+        winInfo.Clear();
 
-		winInfo.SetTitle(AmmoTitleLabel);
-		winInfo.AddAmmoCheckbox(player.bShowAmmoDescriptions);
-		winInfo.AddLine();
-		
-		inv = Player.Inventory;
-		while(inv != None)
-		{
-			ammo = DeusExAmmo(inv);
+        winInfo.SetTitle(AmmoTitleLabel);
+        winInfo.AddAmmoCheckbox(player.bShowAmmoDescriptions);
+        winInfo.AddLine();
+        
+        inv = Player.Inventory;
+        while(inv != None)
+        {
+            ammo = DeusExAmmo(inv);
 
-			if ((ammo != None) && (ammo.bShowInfo))
-			{
-				winInfo.AddAmmoInfoWindow(ammo, player.bShowAmmoDescriptions);
-				ammoCount++;	
-			}
+            if ((ammo != None) && (ammo.bShowInfo))
+            {
+                winInfo.AddAmmoInfoWindow(ammo, player.bShowAmmoDescriptions);
+                ammoCount++;    
+            }
 
-			inv = inv.Inventory;
-		}
+            inv = inv.Inventory;
+        }
 
-		if (ammoCount == 0)
-		{
-			winInfo.Clear();
-			winInfo.SetTitle(AmmoTitleLabel);
-			winInfo.SetText(NoAmmoLabel);
-		}
+        if (ammoCount == 0)
+        {
+            winInfo.Clear();
+            winInfo.SetTitle(AmmoTitleLabel);
+            winInfo.SetText(NoAmmoLabel);
+        }
 
-		bUpdatingAmmoDisplay = False;
-	}
+        bUpdatingAmmoDisplay = False;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -533,43 +533,43 @@ function UpdateAmmoDisplay()
 
 function SelectInventory(PersonaItemButton buttonPressed)
 {
-	local Inventory anItem;
+    local Inventory anItem;
 
-	// Don't do extra work.
-	if (buttonPressed != None) 
-	{
-		if (selectedItem != buttonPressed)
-		{
-			// Deselect current button
-			if (selectedItem != None)
-				selectedItem.SelectButton(False);
+    // Don't do extra work.
+    if (buttonPressed != None) 
+    {
+        if (selectedItem != buttonPressed)
+        {
+            // Deselect current button
+            if (selectedItem != None)
+                selectedItem.SelectButton(False);
 
-			selectedItem = buttonPressed;
+            selectedItem = buttonPressed;
 
-			ClearSpecialHighlights();
-			HighlightSpecial(Inventory(selectedItem.GetClientObject()));
-			SelectObjectBeltItem(Inventory(selectedItem.GetClientObject()), True);
+            ClearSpecialHighlights();
+            HighlightSpecial(Inventory(selectedItem.GetClientObject()));
+            SelectObjectBeltItem(Inventory(selectedItem.GetClientObject()), True);
 
-			selectedItem.SelectButton(True);
+            selectedItem.SelectButton(True);
 
-			anItem = Inventory(selectedItem.GetClientObject());
+            anItem = Inventory(selectedItem.GetClientObject());
 
-			if (anItem != None)
-				anItem.UpdateInfo(winInfo);
+            if (anItem != None)
+                anItem.UpdateInfo(winInfo);
 
-			EnableButtons();
-		}
-	}
-	else
-	{
-		if (selectedItem != None)
-			PersonaInventoryItemButton(selectedItem).SelectButton(False);
+            EnableButtons();
+        }
+    }
+    else
+    {
+        if (selectedItem != None)
+            PersonaInventoryItemButton(selectedItem).SelectButton(False);
 
-		if (selectedSlot != None)
-			selectedSlot.SetToggle(False);
+        if (selectedSlot != None)
+            selectedSlot.SetToggle(False);
 
-		selectedItem = None;
-	}
+        selectedItem = None;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -581,39 +581,39 @@ function SelectInventory(PersonaItemButton buttonPressed)
 
 function SelectInventoryItem(Inventory item)
 {
-	local PersonaInventoryItemButton itemButton;
-	local Window itemWindow;
+    local PersonaInventoryItemButton itemButton;
+    local Window itemWindow;
 
-	// Special case for NanoKeyRing
-	if (item != None)
-	{
-		if (item.IsA('NanoKeyRing')) 
-		{   
-			if (winNanoKeyRing != None)
-			{
-				SelectInventory(winNanoKeyRing.GetItemButton());
-			}
-		}
-		else if (winItems != None)
-		{
-			// Search through the buttons
-			itemWindow = winItems.GetTopChild();
-			while(itemWindow != None)
-			{
-				itemButton = PersonaInventoryItemButton(itemWindow);
-				if (itemButton != None)
-				{
-					if (itemButton.GetClientObject() == item)
-					{
-						SelectInventory(itemButton);
-						break;
-					}
-				}
+    // Special case for NanoKeyRing
+    if (item != None)
+    {
+        if (item.IsA('NanoKeyRing')) 
+        {   
+            if (winNanoKeyRing != None)
+            {
+                SelectInventory(winNanoKeyRing.GetItemButton());
+            }
+        }
+        else if (winItems != None)
+        {
+            // Search through the buttons
+            itemWindow = winItems.GetTopChild();
+            while(itemWindow != None)
+            {
+                itemButton = PersonaInventoryItemButton(itemWindow);
+                if (itemButton != None)
+                {
+                    if (itemButton.GetClientObject() == item)
+                    {
+                        SelectInventory(itemButton);
+                        break;
+                    }
+                }
 
-				itemWindow = itemWindow.GetLowerSibling();
-			}
-		}
-	}
+                itemWindow = itemWindow.GetLowerSibling();
+            }
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -659,8 +659,8 @@ function RefreshInventoryItemButtons()
     //item.update(wininfo) calls cause quite a slowdown when any item
     //is selected.  Since we aren't really selecting a different item,
     //we don't need to do that update.
-	if (SelectedInventory != None)
-	{
+    if (SelectedInventory != None)
+    {
         // Search through the buttons
         itemWindow = winItems.GetTopChild();
         while(itemWindow != None)
@@ -678,10 +678,10 @@ function RefreshInventoryItemButtons()
             
             itemWindow = itemWindow.GetLowerSibling();
         }
-	}
+    }
 
    // if this does special highlighting, refresh that.
-   if (SelectedInventory != None)			   
+   if (SelectedInventory != None)               
       HighlightSpecial(SelectedInventory);
 }
 
@@ -691,7 +691,7 @@ function RefreshInventoryItemButtons()
 
 function SelectObjectBeltItem(Inventory item, bool bNewToggle)
 {
-	invBelt.SelectObject(item, bNewToggle);
+    invBelt.SelectObject(item, bNewToggle);
 }
 
 // ----------------------------------------------------------------------
@@ -700,41 +700,41 @@ function SelectObjectBeltItem(Inventory item, bool bNewToggle)
 
 function UseSelectedItem()
 {
-	local Inventory inv;
-	local int numCopies;
+    local Inventory inv;
+    local int numCopies;
 
-	inv = Inventory(selectedItem.GetClientObject());
+    inv = Inventory(selectedItem.GetClientObject());
 
-	if (inv != None)
-	{
-		// If this item was equipped in the inventory screen, 
-		// make sure we set inHandPending to None so it's not
-		// drawn when we exit the Inventory screen
+    if (inv != None)
+    {
+        // If this item was equipped in the inventory screen, 
+        // make sure we set inHandPending to None so it's not
+        // drawn when we exit the Inventory screen
 
-		if (player.inHandPending == inv)
-			player.SetInHandPending(None);
+        if (player.inHandPending == inv)
+            player.SetInHandPending(None);
 
-		// If this is a binoculars, then it needs to be equipped
-		// before it can be activated
-		if (inv.IsA('Binoculars')) 
-			player.PutInHand(inv);
+        // If this is a binoculars, then it needs to be equipped
+        // before it can be activated
+        if (inv.IsA('Binoculars')) 
+            player.PutInHand(inv);
 
-		inv.Activate();
+        inv.Activate();
 
-		// Check to see if this is a stackable item, and keep track of 
-		// the count
-		if ((inv.IsA('DeusExPickup')) && (DeusExPickup(inv).bCanHaveMultipleCopies))
-			numCopies = DeusExPickup(inv).NumCopies - 1;
-		else
-			numCopies = 0;
+        // Check to see if this is a stackable item, and keep track of 
+        // the count
+        if ((inv.IsA('DeusExPickup')) && (DeusExPickup(inv).bCanHaveMultipleCopies))
+            numCopies = DeusExPickup(inv).NumCopies - 1;
+        else
+            numCopies = 0;
 
-		// Update the object belt
-		invBelt.UpdateBeltText(inv);
+        // Update the object belt
+        invBelt.UpdateBeltText(inv);
 
-		// Refresh the info!
-		if (numCopies > 0)
-			UpdateWinInfo(inv);
-	}
+        // Refresh the info!
+        if (numCopies > 0)
+            UpdateWinInfo(inv);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -743,57 +743,57 @@ function UseSelectedItem()
 
 function DropSelectedItem()
 {
-	local Inventory anItem;
-	local int numCopies;
+    local Inventory anItem;
+    local int numCopies;
 
-	if (selectedItem == None)
-		return;
+    if (selectedItem == None)
+        return;
 
-	if (Inventory(selectedItem.GetClientObject()) != None)
-	{
-		// Now drop it, unless this is the NanoKeyRing
-		if (!Inventory(selectedItem.GetClientObject()).IsA('NanoKeyRing'))
-		{
-			anItem = Inventory(selectedItem.GetClientObject());
+    if (Inventory(selectedItem.GetClientObject()) != None)
+    {
+        // Now drop it, unless this is the NanoKeyRing
+        if (!Inventory(selectedItem.GetClientObject()).IsA('NanoKeyRing'))
+        {
+            anItem = Inventory(selectedItem.GetClientObject());
 
-			// If this is a DeusExPickup, keep track of the number of copies
-			if (anItem.IsA('DeusExPickup'))
-				numCopies = DeusExPickup(anItem).NumCopies;
+            // If this is a DeusExPickup, keep track of the number of copies
+            if (anItem.IsA('DeusExPickup'))
+                numCopies = DeusExPickup(anItem).NumCopies;
 
-			// First make sure the player can drop it!
-			if (player.DropItem(anItem, True))
-			{
-				// Make damn sure there's nothing pending
+            // First make sure the player can drop it!
+            if (player.DropItem(anItem, True))
+            {
+                // Make damn sure there's nothing pending
             if ((player.inHandPending == anItem) || (player.inHand == anItem))
-				   player.SetInHandPending(None);
+                   player.SetInHandPending(None);
 
-				// Remove the item, but first check to see if it was stackable
-				// and there are more than 1 copies available
+                // Remove the item, but first check to see if it was stackable
+                // and there are more than 1 copies available
 
-				if ( (!anItem.IsA('DeusExPickup')) || 
-					 (anItem.IsA('DeusExPickup') && (numCopies <= 1)))
-				{
-					RemoveSelectedItem();
-				}
+                if ( (!anItem.IsA('DeusExPickup')) || 
+                     (anItem.IsA('DeusExPickup') && (numCopies <= 1)))
+                {
+                    RemoveSelectedItem();
+                }
 
-				// Send status message
-				winStatus.AddText(Sprintf(DroppedLabel, anItem.itemName));
+                // Send status message
+                winStatus.AddText(Sprintf(DroppedLabel, anItem.itemName));
 
-				// Update the object belt
-				invBelt.UpdateBeltText(anItem);
+                // Update the object belt
+                invBelt.UpdateBeltText(anItem);
 
                 //Force an update
                 SignalRefresh();
-			}
-			else
-			{
+            }
+            else
+            {
                 //DEUS_EX AMSD Don't do this in multiplayer, because the way function repl
                 //works, we'll ALWAYS end up here.
-                if (player.Level.NetMode == NM_Standalone)				
+                if (player.Level.NetMode == NM_Standalone)                
                     winStatus.AddText(Sprintf(CannotBeDroppedLabel, anItem.itemName));
-			}
-		}
-	}
+            }
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -802,32 +802,32 @@ function DropSelectedItem()
 
 function RemoveSelectedItem()
 {
-	local Inventory inv;
+    local Inventory inv;
 
-	if (selectedItem == None)
-		return;
+    if (selectedItem == None)
+        return;
 
-	inv = Inventory(selectedItem.GetClientObject());
+    inv = Inventory(selectedItem.GetClientObject());
 
-	if (inv != None)
-	{
-		// Destroy the button
-		selectedItem.Destroy();
-		selectedItem = None;
+    if (inv != None)
+    {
+        // Destroy the button
+        selectedItem.Destroy();
+        selectedItem = None;
 
-		// Remove it from the object belt
-		invBelt.RemoveObject(inv);
+        // Remove it from the object belt
+        invBelt.RemoveObject(inv);
 
-		// Remove it from the inventory screen
-		UnequipItemInHand();
+        // Remove it from the inventory screen
+        UnequipItemInHand();
 
-		ClearSpecialHighlights();
+        ClearSpecialHighlights();
 
-		SelectInventory(None);
+        SelectInventory(None);
 
-		winInfo.Clear();
-		EnableButtons();
-	}
+        winInfo.Clear();
+        EnableButtons();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -836,22 +836,22 @@ function RemoveSelectedItem()
 
 function WeaponChangeAmmo()
 {
-	local DeusExWeapon aWeapon;
+    local DeusExWeapon aWeapon;
 
-	aWeapon = DeusExWeapon(selectedItem.GetClientObject());
+    aWeapon = DeusExWeapon(selectedItem.GetClientObject());
 
-	if ( aWeapon != None )
-	{
-		aWeapon.CycleAmmo();	
+    if ( aWeapon != None )
+    {
+        aWeapon.CycleAmmo();    
 
-		// Send status message and update info window
-		winStatus.AddText(Sprintf(AmmoLoadedLabel, aWeapon.ammoType.itemName));
-		aWeapon.UpdateAmmoInfo(winInfo, Class<DeusExAmmo>(aWeapon.AmmoName));
-		winInfo.SetLoaded(aWeapon.AmmoName);
+        // Send status message and update info window
+        winStatus.AddText(Sprintf(AmmoLoadedLabel, aWeapon.ammoType.itemName));
+        aWeapon.UpdateAmmoInfo(winInfo, Class<DeusExAmmo>(aWeapon.AmmoName));
+        winInfo.SetLoaded(aWeapon.AmmoName);
 
-		// Update the object belt
-		invBelt.UpdateBeltText(aWeapon);
-	}
+        // Update the object belt
+        invBelt.UpdateBeltText(aWeapon);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -860,30 +860,30 @@ function WeaponChangeAmmo()
 
 function Class<DeusExAmmo> LoadAmmo()
 {
-	local DeusExWeapon aWeapon;
-	local Class<DeusExAmmo> ammo;
+    local DeusExWeapon aWeapon;
+    local Class<DeusExAmmo> ammo;
 
-	aWeapon = DeusExWeapon(selectedItem.GetClientObject());
+    aWeapon = DeusExWeapon(selectedItem.GetClientObject());
 
-	if ( aWeapon != None )
-	{	
-		ammo = Class<DeusExAmmo>(winInfo.GetSelectedAmmo());
+    if ( aWeapon != None )
+    {    
+        ammo = Class<DeusExAmmo>(winInfo.GetSelectedAmmo());
 
-		// Only change if this is a different kind of ammo
+        // Only change if this is a different kind of ammo
 
-		if ((ammo != None) && (ammo != aWeapon.AmmoName))
-		{
-			aWeapon.LoadAmmoClass(ammo);
-			
-			// Send status message
-			winStatus.AddText(Sprintf(AmmoLoadedLabel, ammo.Default.itemName));
+        if ((ammo != None) && (ammo != aWeapon.AmmoName))
+        {
+            aWeapon.LoadAmmoClass(ammo);
+            
+            // Send status message
+            winStatus.AddText(Sprintf(AmmoLoadedLabel, ammo.Default.itemName));
 
-			// Update the object belt
-			invBelt.UpdateBeltText(aWeapon);
-		}
-	}
+            // Update the object belt
+            invBelt.UpdateBeltText(aWeapon);
+        }
+    }
 
-	return ammo;
+    return ammo;
 }
 
 // ----------------------------------------------------------------------
@@ -892,33 +892,33 @@ function Class<DeusExAmmo> LoadAmmo()
 
 function EquipSelectedItem()
 {
-	local Inventory inv;
+    local Inventory inv;
 
-	// If the object's in-hand, then unequip
-	// it.  Otherwise put this object in-hand.
+    // If the object's in-hand, then unequip
+    // it.  Otherwise put this object in-hand.
 
-	inv = Inventory(selectedItem.GetClientObject());
-	
-	if ( inv != None )
-	{
-		// Make sure the Binoculars aren't activated.
-		if ((player.inHand != None) && (player.inHand.IsA('Binoculars')))
-			Binoculars(player.inHand).Activate();
-		else if ((player.inHandPending != None) && (player.inHandPending.IsA('Binoculars')))
-			Binoculars(player.inHandPending).Activate();
+    inv = Inventory(selectedItem.GetClientObject());
+    
+    if ( inv != None )
+    {
+        // Make sure the Binoculars aren't activated.
+        if ((player.inHand != None) && (player.inHand.IsA('Binoculars')))
+            Binoculars(player.inHand).Activate();
+        else if ((player.inHandPending != None) && (player.inHandPending.IsA('Binoculars')))
+            Binoculars(player.inHandPending).Activate();
 
-		if ((inv == player.inHand) || (inv == player.inHandPending))
-		{
-			UnequipItemInHand();
-		}
-		else
-		{
-			player.PutInHand(inv);
-			PersonaInventoryItemButton(selectedItem).SetEquipped(True);
-		}
+        if ((inv == player.inHand) || (inv == player.inHandPending))
+        {
+            UnequipItemInHand();
+        }
+        else
+        {
+            player.PutInHand(inv);
+            PersonaInventoryItemButton(selectedItem).SetEquipped(True);
+        }
 
-		EnableButtons();
-	}
+        EnableButtons();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -927,14 +927,14 @@ function EquipSelectedItem()
 
 function UnequipItemInHand()
 {
-	if ((PersonaInventoryItemButton(selectedItem) != None) && ((player.inHand != None) || (player.inHandPending != None)))
-	{
-		player.PutInHand(None);
-		player.SetInHandPending(None);
+    if ((PersonaInventoryItemButton(selectedItem) != None) && ((player.inHand != None) || (player.inHandPending != None)))
+    {
+        player.PutInHand(None);
+        player.SetInHandPending(None);
 
-		PersonaInventoryItemButton(selectedItem).SetEquipped(False);
-		EnableButtons();
-	}
+        PersonaInventoryItemButton(selectedItem).SetEquipped(False);
+        EnableButtons();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -943,13 +943,13 @@ function UnequipItemInHand()
 
 function UpdateWinInfo(Inventory inv)
 {
-	winInfo.Clear();
+    winInfo.Clear();
 
-	if (inv != None)
-	{
-		winInfo.SetTitle(inv.ItemName);
-		winInfo.SetText(inv.Description);
-	}
+    if (inv != None)
+    {
+        winInfo.SetTitle(inv.ItemName);
+        winInfo.SetText(inv.Description);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1008,34 +1008,34 @@ function CleanBelt()
 
 function RemoveItem(Inventory item)
 {
-	local Window itemWindow;
+    local Window itemWindow;
 
-	if (item == None)
-		return;
+    if (item == None)
+        return;
 
-	// Remove it from the object belt
-	invBelt.RemoveObject(item);
+    // Remove it from the object belt
+    invBelt.RemoveObject(item);
 
-	if ((selectedItem != None) && (item == selectedItem.GetClientObject()))
-	{
-		RemoveSelectedItem();
-	}
-	else
-	{	
-		// Loop through the PersonaInventoryItemButtons looking for a match
-		itemWindow = winItems.GetTopChild();
-		while( itemWindow != None )
-		{
-			if (itemWindow.GetClientObject() == item)
-			{
-				DeferDestroy(itemWindow);
-//				itemWindow.Destroy();
-				break;
-			}
-			
-			itemWindow = itemWindow.GetLowerSibling();
-		}
-	}
+    if ((selectedItem != None) && (item == selectedItem.GetClientObject()))
+    {
+        RemoveSelectedItem();
+    }
+    else
+    {    
+        // Loop through the PersonaInventoryItemButtons looking for a match
+        itemWindow = winItems.GetTopChild();
+        while( itemWindow != None )
+        {
+            if (itemWindow.GetClientObject() == item)
+            {
+                DeferDestroy(itemWindow);
+//                itemWindow.Destroy();
+                break;
+            }
+            
+            itemWindow = itemWindow.GetLowerSibling();
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1044,10 +1044,10 @@ function RemoveItem(Inventory item)
 
 function DeferDestroy(Window newDestroyWindow)
 {
-	destroyWindow = newDestroyWindow;
+    destroyWindow = newDestroyWindow;
 
-	if (destroyWindow != None)
-		bTickEnabled = True;
+    if (destroyWindow != None)
+        bTickEnabled = True;
 }
 
 // ----------------------------------------------------------------------
@@ -1061,11 +1061,11 @@ function DeferDestroy(Window newDestroyWindow)
 
 function InventoryDeleted(Inventory item)
 {
-	if (item != None)
-	{
-		// Remove the item from the screen
-		RemoveItem(item);
-	}
+    if (item != None)
+    {
+        // Remove the item from the screen
+        RemoveItem(item);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1074,19 +1074,19 @@ function InventoryDeleted(Inventory item)
 
 function ClearSelectedSlot()
 {
-	if (selectedSlot == None)
-		return;
+    if (selectedSlot == None)
+        return;
 
-	// Make sure this isn't the NanoKeyRing
-	if ((selectedSlot.item != None) && (!selectedSlot.item.IsA('NanoKeyRing')))
-	{
-		selectedSlot.SetToggle(False);
-		ClearSlotItem(selectedSlot.item);
-		selectedSlot = None;
+    // Make sure this isn't the NanoKeyRing
+    if ((selectedSlot.item != None) && (!selectedSlot.item.IsA('NanoKeyRing')))
+    {
+        selectedSlot.SetToggle(False);
+        ClearSlotItem(selectedSlot.item);
+        selectedSlot = None;
 
-		winInfo.Clear();
-		EnableButtons();
-	}
+        winInfo.Clear();
+        EnableButtons();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1095,7 +1095,7 @@ function ClearSelectedSlot()
 
 function ClearSlotItem(Inventory item)
 {
-	invBelt.RemoveObject(item);
+    invBelt.RemoveObject(item);
 }
 
 // ----------------------------------------------------------------------
@@ -1104,89 +1104,89 @@ function ClearSlotItem(Inventory item)
 
 function EnableButtons()
 {
-	local Inventory inv;
+    local Inventory inv;
 
-	// Make sure all the buttons exist!
-	if ((btnChangeAmmo == None) || (btnDrop == None) || (btnEquip == None) || (btnUse == None))
-		return;
+    // Make sure all the buttons exist!
+    if ((btnChangeAmmo == None) || (btnDrop == None) || (btnEquip == None) || (btnUse == None))
+        return;
 
-	if ( selectedItem == None )
-	{
-		btnChangeAmmo.DisableWindow();
-		btnDrop.DisableWindow();
-		btnEquip.DisableWindow();
-		btnUse.DisableWindow();
-	}
-	else
-	{
-		btnChangeAmmo.EnableWindow();
-		btnEquip.EnableWindow();
-		btnUse.EnableWindow();
-		btnDrop.EnableWindow();
+    if ( selectedItem == None )
+    {
+        btnChangeAmmo.DisableWindow();
+        btnDrop.DisableWindow();
+        btnEquip.DisableWindow();
+        btnUse.DisableWindow();
+    }
+    else
+    {
+        btnChangeAmmo.EnableWindow();
+        btnEquip.EnableWindow();
+        btnUse.EnableWindow();
+        btnDrop.EnableWindow();
 
-		inv = Inventory(selectedItem.GetClientObject());
+        inv = Inventory(selectedItem.GetClientObject());
 
-		if (inv != None)
-		{
-			// Anything can be dropped, except the NanoKeyRing
-			btnDrop.EnableWindow();
+        if (inv != None)
+        {
+            // Anything can be dropped, except the NanoKeyRing
+            btnDrop.EnableWindow();
 
-			if (inv.IsA('WeaponMod'))
-			{
-				btnChangeAmmo.DisableWindow();
-				btnUse.DisableWindow();		
-			}
-			else if (inv.IsA('NanoKeyRing'))
-			{
-				btnChangeAmmo.DisableWindow();
-				btnDrop.DisableWindow();
-				btnEquip.DisableWindow();
-				btnUse.DisableWindow();
-			}
-			// Augmentation Upgrade Cannisters cannot be used
-			// on this screen
-			else if ( inv.IsA('AugmentationUpgradeCannister') )
-			{
-				btnUse.DisableWindow();
-				btnChangeAmmo.DisableWindow();
-			}
-			// Ammo can't be used or equipped
-			else if ( inv.IsA('Ammo') )
-			{
-				btnUse.DisableWindow();
-				btnEquip.DisableWindow();
-			}
-			else 
-			{
-				if ((inv == player.inHand ) || (inv == player.inHandPending))
-					btnEquip.SetButtonText(UnequipButtonLabel);
-				else
-					btnEquip.SetButtonText(EquipButtonLabel);
-			}
+            if (inv.IsA('WeaponMod'))
+            {
+                btnChangeAmmo.DisableWindow();
+                btnUse.DisableWindow();        
+            }
+            else if (inv.IsA('NanoKeyRing'))
+            {
+                btnChangeAmmo.DisableWindow();
+                btnDrop.DisableWindow();
+                btnEquip.DisableWindow();
+                btnUse.DisableWindow();
+            }
+            // Augmentation Upgrade Cannisters cannot be used
+            // on this screen
+            else if ( inv.IsA('AugmentationUpgradeCannister') )
+            {
+                btnUse.DisableWindow();
+                btnChangeAmmo.DisableWindow();
+            }
+            // Ammo can't be used or equipped
+            else if ( inv.IsA('Ammo') )
+            {
+                btnUse.DisableWindow();
+                btnEquip.DisableWindow();
+            }
+            else 
+            {
+                if ((inv == player.inHand ) || (inv == player.inHandPending))
+                    btnEquip.SetButtonText(UnequipButtonLabel);
+                else
+                    btnEquip.SetButtonText(EquipButtonLabel);
+            }
 
-			// If this is a weapon, check to see if this item has more than 
-			// one type of ammo in the player's inventory that can be
-			// equipped.  If so, enable the "AMMO" button.
-			if ( inv.IsA('DeusExWeapon') )
-			{
-				btnUse.DisableWindow();
+            // If this is a weapon, check to see if this item has more than 
+            // one type of ammo in the player's inventory that can be
+            // equipped.  If so, enable the "AMMO" button.
+            if ( inv.IsA('DeusExWeapon') )
+            {
+                btnUse.DisableWindow();
 
-				if ( DeusExWeapon(inv).NumAmmoTypesAvailable() < 2 )
-					btnChangeAmmo.DisableWindow();
-			}
-			else
-			{
-				btnChangeAmmo.DisableWindow();
-			}
-		}
-		else
-		{
-			btnChangeAmmo.DisableWindow();
-			btnDrop.DisableWindow();
-			btnEquip.DisableWindow();
-			btnUse.DisableWindow();
-		}
-	}
+                if ( DeusExWeapon(inv).NumAmmoTypesAvailable() < 2 )
+                    btnChangeAmmo.DisableWindow();
+            }
+            else
+            {
+                btnChangeAmmo.DisableWindow();
+            }
+        }
+        else
+        {
+            btnChangeAmmo.DisableWindow();
+            btnDrop.DisableWindow();
+            btnEquip.DisableWindow();
+            btnUse.DisableWindow();
+        }
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1195,187 +1195,187 @@ function EnableButtons()
 
 function UpdateDragMouse(float newX, float newY)
 {
-	local Window findWin, itemWindow;
-	local Float relX, relY;
-	local Int slotX, slotY;
-	local PersonaInventoryItemButton invButton;
-	local HUDObjectSlot objSlot;
-	local Bool bValidDrop;
-	local Bool bOverrideButtonColor;
+    local Window findWin, itemWindow;
+    local Float relX, relY;
+    local Int slotX, slotY;
+    local PersonaInventoryItemButton invButton;
+    local HUDObjectSlot objSlot;
+    local Bool bValidDrop;
+    local Bool bOverrideButtonColor;
 
-	findWin = FindWindow(newX, newY, relX, relY);
+    findWin = FindWindow(newX, newY, relX, relY);
 
-	// If we're dragging an inventory button, behave one way, if we're
-	// dragging a hotkey button, behave another
+    // If we're dragging an inventory button, behave one way, if we're
+    // dragging a hotkey button, behave another
 
-	if (dragButton.IsA('PersonaInventoryItemButton'))
-	{
-		invButton = PersonaInventoryItemButton(dragButton);
+    if (dragButton.IsA('PersonaInventoryItemButton'))
+    {
+        invButton = PersonaInventoryItemButton(dragButton);
 
-		// If we're over the Inventory Items window, check to see 
-		// if there's enough space to deposit this item here.
+        // If we're over the Inventory Items window, check to see 
+        // if there's enough space to deposit this item here.
 
-		bValidDrop = False;
-		bOverrideButtonColor = False;
+        bValidDrop = False;
+        bOverrideButtonColor = False;
 
-		//== Just reset all the highlights at first
-		if(dragButton.GetClientObject().IsA('WeaponMod'))
-		{
-			itemWindow = winItems.GetTopChild();
-			while(itemWindow != None)
-			{
-				if(PersonaInventoryItemButton(itemWindow) != None)
-					PersonaInventoryItemButton(itemWindow).ResetFill();
-				itemWindow = itemWindow.GetLowerSibling();
-			}
-		}
+        //== Just reset all the highlights at first
+        if(dragButton.GetClientObject().IsA('WeaponMod'))
+        {
+            itemWindow = winItems.GetTopChild();
+            while(itemWindow != None)
+            {
+                if(PersonaInventoryItemButton(itemWindow) != None)
+                    PersonaInventoryItemButton(itemWindow).ResetFill();
+                itemWindow = itemWindow.GetLowerSibling();
+            }
+        }
 
-		if ((findWin == winItems) || (findWin == dragButton ))
-		{
-			if ( findWin == dragButton )
-				ConvertCoordinates(Self, newX, newY, winItems, relX, relY);
+        if ((findWin == winItems) || (findWin == dragButton ))
+        {
+            if ( findWin == dragButton )
+                ConvertCoordinates(Self, newX, newY, winItems, relX, relY);
 
-			bValidDrop = CalculateItemPosition(
-				Inventory(dragButton.GetClientObject()), 
-				relX, relY, 
-				slotX, slotY);
+            bValidDrop = CalculateItemPosition(
+                Inventory(dragButton.GetClientObject()), 
+                relX, relY, 
+                slotX, slotY);
 
-			// If the mouse is still in the window, don't actually hide the 
-			// button just yet.
+            // If the mouse is still in the window, don't actually hide the 
+            // button just yet.
 
-			if (bValidDrop && (player.IsEmptyItemSlot(Inventory(invButton.GetClientObject()), slotX, slotY)))
-				SetItemButtonPos(invButton, slotX, slotY);
-		}
+            if (bValidDrop && (player.IsEmptyItemSlot(Inventory(invButton.GetClientObject()), slotX, slotY)))
+                SetItemButtonPos(invButton, slotX, slotY);
+        }
 
-		// Check to see if we're over the Object Belt
-		else if (HUDObjectSlot(findWin) != None)
-		{
-			bValidDrop = True;
+        // Check to see if we're over the Object Belt
+        else if (HUDObjectSlot(findWin) != None)
+        {
+            bValidDrop = True;
 
-			if (HUDObjectSlot(findWin).item != None)
-				if (HUDObjectSlot(findWin).item.IsA('NanoKeyRing'))
-					bValidDrop = False;
+            if (HUDObjectSlot(findWin).item != None)
+                if (HUDObjectSlot(findWin).item.IsA('NanoKeyRing'))
+                    bValidDrop = False;
 
-			if (dragButton.GetClientObject().IsA('WeaponMod') && HUDObjectSlot(findWin).item != None)
-			{
-				if(HUDObjectSlot(findWin).item.IsA('DeusExWeapon'))
-				{
-					bValidDrop = False;
-					if (WeaponMod(dragButton.GetClientObject()).CanUpgradeWeapon(DeusExWeapon(HUDObjectSlot(findWin).item)))
-					{
-						bValidDrop = True;
-						itemWindow = winItems.GetTopChild();
-						while(itemWindow != None)
-						{
-							if(PersonaInventoryItemButton(itemWindow).GetClientObject() != None)
-								if(DeusExWeapon(PersonaInventoryItemButton(itemWindow).GetClientObject()) == DeusExWeapon(HUDObjectSlot(findWin).item))
-									PersonaInventoryItemButton(itemWindow).HighlightWeapon(True);
+            if (dragButton.GetClientObject().IsA('WeaponMod') && HUDObjectSlot(findWin).item != None)
+            {
+                if(HUDObjectSlot(findWin).item.IsA('DeusExWeapon'))
+                {
+                    bValidDrop = False;
+                    if (WeaponMod(dragButton.GetClientObject()).CanUpgradeWeapon(DeusExWeapon(HUDObjectSlot(findWin).item)))
+                    {
+                        bValidDrop = True;
+                        itemWindow = winItems.GetTopChild();
+                        while(itemWindow != None)
+                        {
+                            if(PersonaInventoryItemButton(itemWindow).GetClientObject() != None)
+                                if(DeusExWeapon(PersonaInventoryItemButton(itemWindow).GetClientObject()) == DeusExWeapon(HUDObjectSlot(findWin).item))
+                                    PersonaInventoryItemButton(itemWindow).HighlightWeapon(True);
 
-							itemWindow = itemWindow.GetLowerSibling();
-						}
-					}
-				}
-			}
+                            itemWindow = itemWindow.GetLowerSibling();
+                        }
+                    }
+                }
+            }
 
-			HUDObjectSlot(findWin).SetDropFill(bValidDrop);
-		}
+            HUDObjectSlot(findWin).SetDropFill(bValidDrop);
+        }
 
-		// Check to see if we're over another inventory item
-		else if (PersonaInventoryItemButton(findWin) != None)
-		{
-			// If we're dragging a weapon mod and we're over a weapon, check to 
-			// see if the mod can be dropped here.  
-			//
-			// Otherwise this is a bad drop location
+        // Check to see if we're over another inventory item
+        else if (PersonaInventoryItemButton(findWin) != None)
+        {
+            // If we're dragging a weapon mod and we're over a weapon, check to 
+            // see if the mod can be dropped here.  
+            //
+            // Otherwise this is a bad drop location
 
-			PersonaInventoryItemButton(findWin).SetDropFill(False);
+            PersonaInventoryItemButton(findWin).SetDropFill(False);
 
-			// Check for weapon mods being dragged over weapons
-			if ((dragButton.GetClientObject().IsA('WeaponMod')) && (findWin.GetClientObject().IsA('DeusExWeapon')))
-			{
-				if (WeaponMod(invButton.GetClientObject()).CanUpgradeWeapon(DeusExWeapon(findWin.GetClientObject())))
-				{
-					bValidDrop = True;
-					PersonaInventoryItemButton(findWin).SetDropFill(True);
-					invButton.bValidSlot = False;
-					invButton.bDimIcon   = False;
-					bOverrideButtonColor = True;
+            // Check for weapon mods being dragged over weapons
+            if ((dragButton.GetClientObject().IsA('WeaponMod')) && (findWin.GetClientObject().IsA('DeusExWeapon')))
+            {
+                if (WeaponMod(invButton.GetClientObject()).CanUpgradeWeapon(DeusExWeapon(findWin.GetClientObject())))
+                {
+                    bValidDrop = True;
+                    PersonaInventoryItemButton(findWin).SetDropFill(True);
+                    invButton.bValidSlot = False;
+                    invButton.bDimIcon   = False;
+                    bOverrideButtonColor = True;
 
-					invButton.ResetFill();
-				}
-			}
+                    invButton.ResetFill();
+                }
+            }
 
-			// Check for ammo being dragged over weapons
-			else if ((dragButton.GetClientObject().IsA('DeusExAmmo')) && (findWin.GetClientObject().IsA('DeusExWeapon')))
-			{
-				if (DeusExWeapon(findWin.GetClientObject()).CanLoadAmmoType(DeusExAmmo(dragButton.GetClientObject())))
-				{
-					bValidDrop = True;
-					PersonaInventoryItemButton(findWin).SetDropFill(True);
-					invButton.bValidSlot = False;
-					invButton.bDimIcon   = False;
-					bOverrideButtonColor = True;
+            // Check for ammo being dragged over weapons
+            else if ((dragButton.GetClientObject().IsA('DeusExAmmo')) && (findWin.GetClientObject().IsA('DeusExWeapon')))
+            {
+                if (DeusExWeapon(findWin.GetClientObject()).CanLoadAmmoType(DeusExAmmo(dragButton.GetClientObject())))
+                {
+                    bValidDrop = True;
+                    PersonaInventoryItemButton(findWin).SetDropFill(True);
+                    invButton.bValidSlot = False;
+                    invButton.bDimIcon   = False;
+                    bOverrideButtonColor = True;
 
-					invButton.ResetFill();
-				}
-			}
-		}
+                    invButton.ResetFill();
+                }
+            }
+        }
 
-		if (!bOverrideButtonColor)
-		{
-			invButton.SetDropFill(bValidDrop);
-			invButton.bDimIcon = !bValidDrop;
+        if (!bOverrideButtonColor)
+        {
+            invButton.SetDropFill(bValidDrop);
+            invButton.bDimIcon = !bValidDrop;
 
-			if (HUDObjectSlot(findWin) != None)
-				invButton.bValidSlot = False;
-			else
-				invButton.bValidSlot = bValidDrop;
-		}
-	}
-	else
-	{
-		// This is an Object Belt item we're dragging
+            if (HUDObjectSlot(findWin) != None)
+                invButton.bValidSlot = False;
+            else
+                invButton.bValidSlot = bValidDrop;
+        }
+    }
+    else
+    {
+        // This is an Object Belt item we're dragging
 
-		objSlot = HUDObjectSlot(dragButton);
-		bValidDrop = False;
+        objSlot = HUDObjectSlot(dragButton);
+        bValidDrop = False;
 
-		// Can only be dragged over another object slot
-		if (findWin.IsA('HUDObjectSlot'))
-		{
-			if (HUDObjectSlot(findWin).item != None) 
-			{
-				if (!HUDObjectSlot(findWin).item.IsA('NanoKeyRing'))
-				{
-					bValidDrop = True;
-				}
-			}
-			else
-			{
-				bValidDrop = True;
-			}
+        // Can only be dragged over another object slot
+        if (findWin.IsA('HUDObjectSlot'))
+        {
+            if (HUDObjectSlot(findWin).item != None) 
+            {
+                if (!HUDObjectSlot(findWin).item.IsA('NanoKeyRing'))
+                {
+                    bValidDrop = True;
+                }
+            }
+            else
+            {
+                bValidDrop = True;
+            }
 
-			HUDObjectSlot(findWin).SetDropFill(bValidDrop);
-		}
-		
-		objSlot.bDimIcon = !bValidDrop;
-	}
+            HUDObjectSlot(findWin).SetDropFill(bValidDrop);
+        }
+        
+        objSlot.bDimIcon = !bValidDrop;
+    }
 
-	// Unhighlight the previous window we were over	
-	if ((lastDragOverButton != None) && (lastDragOverButton != findWin))
-	{
-		if (lastDragOverButton.IsA('HUDObjectSlot'))
-		{
-			HUDObjectSlot(lastDragOverButton).ResetFill();
-		}
-		else if (lastDragOverButton.IsA('PersonaInventoryItemButton'))
-		{
-			PersonaInventoryItemButton(lastDragOverButton).ResetFill();
-		}
-	}	
-		
-	// Keep track of the last button window we were over
-	lastDragOverButton = ButtonWindow(findWin);	
-	lastDragOverWindow = findWin;
+    // Unhighlight the previous window we were over    
+    if ((lastDragOverButton != None) && (lastDragOverButton != findWin))
+    {
+        if (lastDragOverButton.IsA('HUDObjectSlot'))
+        {
+            HUDObjectSlot(lastDragOverButton).ResetFill();
+        }
+        else if (lastDragOverButton.IsA('PersonaInventoryItemButton'))
+        {
+            PersonaInventoryItemButton(lastDragOverButton).ResetFill();
+        }
+    }    
+        
+    // Keep track of the last button window we were over
+    lastDragOverButton = ButtonWindow(findWin);    
+    lastDragOverWindow = findWin;
 }
 
 // ----------------------------------------------------------------------
@@ -1389,63 +1389,63 @@ function UpdateDragMouse(float newX, float newY)
 // ----------------------------------------------------------------------
 
 function bool CalculateItemPosition(
-	Inventory item, 
-	float pointX, 
-	float pointY, 
-	out int slotX, 
-	out int slotY)
+    Inventory item, 
+    float pointX, 
+    float pointY, 
+    out int slotX, 
+    out int slotY)
 {
-	local int invWidth;
-	local int invHeight;
-	local int adjustX;
-	local int adjustY;
-	local bool bResult;
+    local int invWidth;
+    local int invHeight;
+    local int adjustX;
+    local int adjustY;
+    local bool bResult;
 
-	bResult = True;
+    bResult = True;
 
-	// First get the width and height of the inventory icon
-	invWidth  = item.largeIconWidth;
-	invHeight = item.largeIconHeight;
+    // First get the width and height of the inventory icon
+    invWidth  = item.largeIconWidth;
+    invHeight = item.largeIconHeight;
 
-	// Calculate the first square that represents where this object is
-	adjustX = 0;
-	adjustY = 0;
+    // Calculate the first square that represents where this object is
+    adjustX = 0;
+    adjustY = 0;
 
-	if (invWidth > invButtonWidth)
-		adjustX = ((invWidth/2) - (invButtonWidth / 2));
+    if (invWidth > invButtonWidth)
+        adjustX = ((invWidth/2) - (invButtonWidth / 2));
 
-	if (invWidth > invButtonwidth)
-		adjustY = ((invHeight/2) - (invButtonHeight /2));
+    if (invWidth > invButtonwidth)
+        adjustY = ((invHeight/2) - (invButtonHeight /2));
 
-	// Check to see if we're outside the range of where the 
-	// slots are located.
-	if ((pointX - adjustX) > (invButtonWidth  * player.maxInvCols))
-	{
-		slotX = player.maxInvCols - 1;
-		if (slotX < 0)
-			slotX = 0;
+    // Check to see if we're outside the range of where the 
+    // slots are located.
+    if ((pointX - adjustX) > (invButtonWidth  * player.maxInvCols))
+    {
+        slotX = player.maxInvCols - 1;
+        if (slotX < 0)
+            slotX = 0;
 
-		bResult = False;
-	}
-	else
-	{
-		slotX = (pointX - adjustX) / invButtonWidth;
+        bResult = False;
+    }
+    else
+    {
+        slotX = (pointX - adjustX) / invButtonWidth;
 
-		if (slotX < 0)
-			slotX = 0;
-	}
+        if (slotX < 0)
+            slotX = 0;
+    }
 
-	if ((pointY - adjustY) > (invButtonHeight * player.maxInvRows))
-	{
-		slotY = player.maxInvRows - 1;
-		bResult = False;
-	}
-	else
-	{
-		slotY = (pointY - adjustY) / invButtonHeight;
-	}
+    if ((pointY - adjustY) > (invButtonHeight * player.maxInvRows))
+    {
+        slotY = player.maxInvRows - 1;
+        bResult = False;
+    }
+    else
+    {
+        slotY = (pointY - adjustY) / invButtonHeight;
+    }
 
-	return bResult;
+    return bResult;
 }
 
 // ----------------------------------------------------------------------
@@ -1454,28 +1454,28 @@ function bool CalculateItemPosition(
 
 function StartButtonDrag(ButtonWindow newDragButton)
 {
-	// Show the object belt
-	dragButton = newDragButton;
+    // Show the object belt
+    dragButton = newDragButton;
 
-	ClearSpecialHighlights();
+    ClearSpecialHighlights();
 
-	if (dragButton.IsA('PersonaInventoryItemButton'))
-	{
-		SelectInventory(None);
+    if (dragButton.IsA('PersonaInventoryItemButton'))
+    {
+        SelectInventory(None);
 
-		// Clear the space used by this button in the grid so we can
-		// still place the button here. 
-		player.SetInvSlots(Inventory(dragButton.GetClientObject()), 0);
-	}
-	else
-	{
-		// Make sure no hud icon is selected
-		if (selectedSlot != None)
-			selectedSlot.SetToggle(False);
-	}
+        // Clear the space used by this button in the grid so we can
+        // still place the button here. 
+        player.SetInvSlots(Inventory(dragButton.GetClientObject()), 0);
+    }
+    else
+    {
+        // Make sure no hud icon is selected
+        if (selectedSlot != None)
+            selectedSlot.SetToggle(False);
+    }
 
     SignalRefresh();
-	bDragging  = True;
+    bDragging  = True;
 }
 
 // ----------------------------------------------------------------------
@@ -1484,138 +1484,138 @@ function StartButtonDrag(ButtonWindow newDragButton)
 
 function FinishButtonDrag()
 {
-	local int beltSlot;
-	local Inventory dragInv;
-	local PersonaInventoryItemButton dragTarget;
-	local HUDObjectSlot itemSlot;
-	local DeusExWeapon upgWeapon;
+    local int beltSlot;
+    local Inventory dragInv;
+    local PersonaInventoryItemButton dragTarget;
+    local HUDObjectSlot itemSlot;
+    local DeusExWeapon upgWeapon;
 
-	// Take a look at the last window we were over to determine
-	// what to do now.  If we were over the Inventory Items window,
-	// then move the item to a new slot.  If we were over the Object belt,
-	// then assign this item to the appropriate key
+    // Take a look at the last window we were over to determine
+    // what to do now.  If we were over the Inventory Items window,
+    // then move the item to a new slot.  If we were over the Object belt,
+    // then assign this item to the appropriate key
 
-	if (dragButton == None)
-	{
-		EndDragMode();
-		return;
-	}
+    if (dragButton == None)
+    {
+        EndDragMode();
+        return;
+    }
 
-	if (dragButton.IsA('PersonaInventoryItemButton'))
-	{	
-		dragInv    = Inventory(dragButton.GetClientObject());
-		dragTarget = PersonaInventoryItemButton(lastDragOverButton);
+    if (dragButton.IsA('PersonaInventoryItemButton'))
+    {    
+        dragInv    = Inventory(dragButton.GetClientObject());
+        dragTarget = PersonaInventoryItemButton(lastDragOverButton);
 
-		itemSlot = HUDObjectSlot(lastDragOverButton);
+        itemSlot = HUDObjectSlot(lastDragOverButton);
 
-		// Check if this is a weapon mod and we landed on a weapon
-		if ( (dragInv.IsA('WeaponMod')) && ( (dragTarget != None && dragTarget.GetClientObject().IsA('DeusExWeapon')) || (itemSlot != None && itemSlot.item.IsA('DeusExWeapon')) ) )
-		{
-			if(itemSlot != None)
-				upgWeapon = DeusExWeapon(itemSlot.item);
-			else
-				upgWeapon = DeusExWeapon(dragTarget.GetClientObject());
+        // Check if this is a weapon mod and we landed on a weapon
+        if ( (dragInv.IsA('WeaponMod')) && ( (dragTarget != None && dragTarget.GetClientObject().IsA('DeusExWeapon')) || (itemSlot != None && itemSlot.item.IsA('DeusExWeapon')) ) )
+        {
+            if(itemSlot != None)
+                upgWeapon = DeusExWeapon(itemSlot.item);
+            else
+                upgWeapon = DeusExWeapon(dragTarget.GetClientObject());
 
-			if (WeaponMod(dragInv).CanUpgradeWeapon(upgWeapon))
-			{
-				// 0.  Unhighlight highlighted weapons
-				// 1.  Apply the weapon upgrade
-				// 2.  Remove from Object Belt
-				// 3.  Destroy the upgrade (will cause button to be destroyed)
-				// 4.  Highlight the weapon.
+            if (WeaponMod(dragInv).CanUpgradeWeapon(upgWeapon))
+            {
+                // 0.  Unhighlight highlighted weapons
+                // 1.  Apply the weapon upgrade
+                // 2.  Remove from Object Belt
+                // 3.  Destroy the upgrade (will cause button to be destroyed)
+                // 4.  Highlight the weapon.
 
-				WeaponMod(dragInv).ApplyMod(upgWeapon);
-				
-				Player.RemoveObjectFromBelt(dragInv);
-				//invBelt.objBelt.RemoveObjectFromBelt(dragInv);
+                WeaponMod(dragInv).ApplyMod(upgWeapon);
+                
+                Player.RemoveObjectFromBelt(dragInv);
+                //invBelt.objBelt.RemoveObjectFromBelt(dragInv);
 
-				// Send status message
-				winStatus.AddText(Sprintf(WeaponUpgradedLabel, upgWeapon.itemName));
+                // Send status message
+                winStatus.AddText(Sprintf(WeaponUpgradedLabel, upgWeapon.itemName));
 
-				//DEUS_EX AMSD done here for multiplayer propagation.
-				WeaponMod(draginv).DestroyMod();
-				//player.DeleteInventory(dragInv);
+                //DEUS_EX AMSD done here for multiplayer propagation.
+                WeaponMod(draginv).DestroyMod();
+                //player.DeleteInventory(dragInv);
 
-				dragButton = None;
-				if(dragTarget != None)
-					SelectInventory(dragTarget);
-				else if(itemSlot != None)
-					itemSlot.SetToggle(True);
-			}
-			else
-			{
-				// move back to original spot
-				ReturnButton(PersonaInventoryItemButton(dragButton));
-			}
-		}
+                dragButton = None;
+                if(dragTarget != None)
+                    SelectInventory(dragTarget);
+                else if(itemSlot != None)
+                    itemSlot.SetToggle(True);
+            }
+            else
+            {
+                // move back to original spot
+                ReturnButton(PersonaInventoryItemButton(dragButton));
+            }
+        }
 
-		// Check if this is ammo and we landed on a weapon
-		else if ((dragInv.IsA('DeusExAmmo')) && (dragTarget != None) && (dragTarget.GetClientObject().IsA('DeusExWeapon')) )
-		{
-			if (DeusExWeapon(dragTarget.GetClientObject()).CanLoadAmmoType(DeusExAmmo(dragInv)))
-			{
-				// Load this ammo into the weapon
-				DeusExWeapon(dragTarget.GetClientObject()).LoadAmmoType(DeusExAmmo(dragInv));
+        // Check if this is ammo and we landed on a weapon
+        else if ((dragInv.IsA('DeusExAmmo')) && (dragTarget != None) && (dragTarget.GetClientObject().IsA('DeusExWeapon')) )
+        {
+            if (DeusExWeapon(dragTarget.GetClientObject()).CanLoadAmmoType(DeusExAmmo(dragInv)))
+            {
+                // Load this ammo into the weapon
+                DeusExWeapon(dragTarget.GetClientObject()).LoadAmmoType(DeusExAmmo(dragInv));
 
-				// Send status message
-				winStatus.AddText(Sprintf(AmmoLoadedLabel, DeusExAmmo(dragInv).itemName));
+                // Send status message
+                winStatus.AddText(Sprintf(AmmoLoadedLabel, DeusExAmmo(dragInv).itemName));
 
-				// move back to original spot
-				ReturnButton(PersonaInventoryItemButton(dragButton));
-			}
-		}
-		else
-		{	
-			if (dragTarget == dragButton)
-			{
-				MoveItemButton(PersonaInventoryItemButton(dragButton), PersonaInventoryItemButton(dragButton).dragPosX, PersonaInventoryItemButton(dragButton).dragPosY );
-			}
-			else if ( HUDObjectSlot(lastDragOverButton) != None )	
-			{
-				beltSlot = HUDObjectSlot(lastDragOverButton).objectNum;
+                // move back to original spot
+                ReturnButton(PersonaInventoryItemButton(dragButton));
+            }
+        }
+        else
+        {    
+            if (dragTarget == dragButton)
+            {
+                MoveItemButton(PersonaInventoryItemButton(dragButton), PersonaInventoryItemButton(dragButton).dragPosX, PersonaInventoryItemButton(dragButton).dragPosY );
+            }
+            else if ( HUDObjectSlot(lastDragOverButton) != None )    
+            {
+                beltSlot = HUDObjectSlot(lastDragOverButton).objectNum;
 
-				// Don't allow to be moved over NanoKeyRing
-				if (beltSlot > 0)
-				{
-					invBelt.AddObject(dragInv, beltSlot);
-				}
+                // Don't allow to be moved over NanoKeyRing
+                if (beltSlot > 0)
+                {
+                    invBelt.AddObject(dragInv, beltSlot);
+                }
 
-				// Restore item to original slot
-				ReturnButton(PersonaInventoryItemButton(dragButton));
-			}
-			else if (lastDragOverButton != dragButton)
-			{
-				// move back to original spot
-				ReturnButton(PersonaInventoryItemButton(dragButton));
-			}
-		}
-	}
-	else		// 'ObjectSlot'
-	{
-		itemSlot = HUDObjectSlot(lastDragOverButton);
+                // Restore item to original slot
+                ReturnButton(PersonaInventoryItemButton(dragButton));
+            }
+            else if (lastDragOverButton != dragButton)
+            {
+                // move back to original spot
+                ReturnButton(PersonaInventoryItemButton(dragButton));
+            }
+        }
+    }
+    else        // 'ObjectSlot'
+    {
+        itemSlot = HUDObjectSlot(lastDragOverButton);
 
-		// Check to see if this is a valid drop location (which are only 
-		// other object slots).
-		//
-		// Swap the two items and select the one that was dragged
-		// but make sure the target isn't the NanoKeyRing
+        // Check to see if this is a valid drop location (which are only 
+        // other object slots).
+        //
+        // Swap the two items and select the one that was dragged
+        // but make sure the target isn't the NanoKeyRing
 
-		if (itemSlot != None) 
-		{
-			if (((itemSlot.Item != None) && (!itemSlot.Item.IsA('NanoKeyRing'))) || (itemSlot.Item == None))
-			{
-				invBelt.SwapObjects(HUDObjectSlot(dragButton), itemSlot);
-				itemSlot.SetToggle(True);
-			}
-		}
-		else
-		{
-			// If the player drags the item outside the object belt, 
-			// then remove it.
+        if (itemSlot != None) 
+        {
+            if (((itemSlot.Item != None) && (!itemSlot.Item.IsA('NanoKeyRing'))) || (itemSlot.Item == None))
+            {
+                invBelt.SwapObjects(HUDObjectSlot(dragButton), itemSlot);
+                itemSlot.SetToggle(True);
+            }
+        }
+        else
+        {
+            // If the player drags the item outside the object belt, 
+            // then remove it.
 
-			ClearSlotItem(HUDObjectSlot(dragButton).item);
-		}
-	}
+            ClearSlotItem(HUDObjectSlot(dragButton).item);
+        }
+    }
 
     EndDragMode();
 }
@@ -1626,29 +1626,29 @@ function FinishButtonDrag()
 
 function EndDragMode()
 {
-	// Make sure the last inventory item dragged over isn't still highlighted
-	if (lastDragOverButton != None)
-	{
-		if (lastDragOverButton.IsA('PersonaInventoryItemButton'))
-			PersonaInventoryItemButton(lastDragOverButton).ResetFill();
-		else
-			HUDObjectSlot(lastDragOverButton).ResetFill();
+    // Make sure the last inventory item dragged over isn't still highlighted
+    if (lastDragOverButton != None)
+    {
+        if (lastDragOverButton.IsA('PersonaInventoryItemButton'))
+            PersonaInventoryItemButton(lastDragOverButton).ResetFill();
+        else
+            HUDObjectSlot(lastDragOverButton).ResetFill();
 
-		lastDragOverButton = None;
-	}
+        lastDragOverButton = None;
+    }
 
-	bDragging = False;
+    bDragging = False;
 
-	// Select the item
-	if (dragButton != None)
-	{
-		if (dragButton.IsA('PersonaInventoryItemButton'))
-			SelectInventory(PersonaInventoryItemButton(dragButton));
-		else if (dragButton.IsA('ToggleWindow'))
-			ToggleWindow(dragButton).SetToggle(True);
+    // Select the item
+    if (dragButton != None)
+    {
+        if (dragButton.IsA('PersonaInventoryItemButton'))
+            SelectInventory(PersonaInventoryItemButton(dragButton));
+        else if (dragButton.IsA('ToggleWindow'))
+            ToggleWindow(dragButton).SetToggle(True);
 
-		dragButton = None;
-	}
+        dragButton = None;
+    }
     
     SignalRefresh();
 }
@@ -1659,9 +1659,9 @@ function EndDragMode()
 
 function MoveItemButton(PersonaInventoryItemButton anItemButton, int col, int row)
 {
-	player.SetInvSlots(Inventory(anItemButton.GetClientObject()), 0);
-	player.PlaceItemInSlot(Inventory(anItemButton.GetClientObject()), col, row );
-	SetItemButtonPos(anItemButton, col, row);
+    player.SetInvSlots(Inventory(anItemButton.GetClientObject()), 0);
+    player.PlaceItemInSlot(Inventory(anItemButton.GetClientObject()), col, row );
+    SetItemButtonPos(anItemButton, col, row);
     //Set it to refresh again
     SignalRefresh();
 }
@@ -1672,12 +1672,12 @@ function MoveItemButton(PersonaInventoryItemButton anItemButton, int col, int ro
 
 function ReturnButton(PersonaInventoryItemButton anItemButton)
 {
-	local Inventory inv;
+    local Inventory inv;
 
-	inv = Inventory(anItemButton.GetClientObject());
+    inv = Inventory(anItemButton.GetClientObject());
 
-	player.PlaceItemInSlot(inv, inv.invPosX, inv.invPosY);
-	SetItemButtonPos(anItemButton, inv.invPosX, inv.invPosY);
+    player.PlaceItemInSlot(inv, inv.invPosX, inv.invPosY);
+    SetItemButtonPos(anItemButton, inv.invPosX, inv.invPosY);
 }
 
 // ----------------------------------------------------------------------
@@ -1686,13 +1686,13 @@ function ReturnButton(PersonaInventoryItemButton anItemButton)
 
 function HighlightSpecial(Inventory item)
 {
-	if (item != None)
-	{
-		if (item.IsA('WeaponMod'))
-			HighlightModWeapons(WeaponMod(item));
-		else if (item.IsA('DeusExAmmo'))
-			HighlightAmmoWeapons(DeusExAmmo(item));
-	}
+    if (item != None)
+    {
+        if (item.IsA('WeaponMod'))
+            HighlightModWeapons(WeaponMod(item));
+        else if (item.IsA('DeusExAmmo'))
+            HighlightAmmoWeapons(DeusExAmmo(item));
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1704,34 +1704,34 @@ function HighlightSpecial(Inventory item)
 
 function HighlightModWeapons(WeaponMod weaponMod)
 {
-	local Window itemWindow;
-	local PersonaInventoryItemButton itemButton;
-	local Inventory anItem;
+    local Window itemWindow;
+    local PersonaInventoryItemButton itemButton;
+    local Inventory anItem;
 
-	// Loop through all our children and check to see if 
-	// we have a match.
+    // Loop through all our children and check to see if 
+    // we have a match.
 
-	itemWindow = winItems.GetTopChild();
-	while( itemWindow != None )
-	{
-		itemButton = PersonaInventoryItemButton(itemWindow);
-		if (itemButton != None)
-		{
-			anItem = Inventory(itemButton.GetClientObject());
-			if ((anItem != None) && (anItem.IsA('DeusExWeapon')))
-			{
-				if ((weaponMod != None) && (weaponMod.CanUpgradeWeapon(DeusExWeapon(anItem))))
-				{
-					itemButton.HighlightWeapon(True);
-				}
-			}
-			else
-			{
-				itemButton.ResetFill();
-			}
-		}	
-		itemWindow = itemWindow.GetLowerSibling();
-	}
+    itemWindow = winItems.GetTopChild();
+    while( itemWindow != None )
+    {
+        itemButton = PersonaInventoryItemButton(itemWindow);
+        if (itemButton != None)
+        {
+            anItem = Inventory(itemButton.GetClientObject());
+            if ((anItem != None) && (anItem.IsA('DeusExWeapon')))
+            {
+                if ((weaponMod != None) && (weaponMod.CanUpgradeWeapon(DeusExWeapon(anItem))))
+                {
+                    itemButton.HighlightWeapon(True);
+                }
+            }
+            else
+            {
+                itemButton.ResetFill();
+            }
+        }    
+        itemWindow = itemWindow.GetLowerSibling();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1743,34 +1743,34 @@ function HighlightModWeapons(WeaponMod weaponMod)
 
 function HighlightAmmoWeapons(DeusExAmmo ammo)
 {
-	local Window itemWindow;
-	local PersonaInventoryItemButton itemButton;
-	local Inventory anItem;
+    local Window itemWindow;
+    local PersonaInventoryItemButton itemButton;
+    local Inventory anItem;
 
-	// Loop through all our children and check to see if 
-	// we have a match.
+    // Loop through all our children and check to see if 
+    // we have a match.
 
-	itemWindow = winItems.GetTopChild();
-	while( itemWindow != None )
-	{
-		itemButton = PersonaInventoryItemButton(itemWindow);
-		if (itemButton != None)
-		{
-			anItem = Inventory(itemButton.GetClientObject());
-			if ((anItem != None) && (anItem.IsA('DeusExWeapon')))
-			{
-				if ((ammo != None) && (DeusExWeapon(anItem).CanLoadAmmoType(ammo)))
-				{
-					itemButton.HighlightWeapon(True);
-				}
-			}
-			else
-			{
-				itemButton.ResetFill();
-			}
-		}	
-		itemWindow = itemWindow.GetLowerSibling();
-	}
+    itemWindow = winItems.GetTopChild();
+    while( itemWindow != None )
+    {
+        itemButton = PersonaInventoryItemButton(itemWindow);
+        if (itemButton != None)
+        {
+            anItem = Inventory(itemButton.GetClientObject());
+            if ((anItem != None) && (anItem.IsA('DeusExWeapon')))
+            {
+                if ((ammo != None) && (DeusExWeapon(anItem).CanLoadAmmoType(ammo)))
+                {
+                    itemButton.HighlightWeapon(True);
+                }
+            }
+            else
+            {
+                itemButton.ResetFill();
+            }
+        }    
+        itemWindow = itemWindow.GetLowerSibling();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -1779,24 +1779,24 @@ function HighlightAmmoWeapons(DeusExAmmo ammo)
 
 function ClearSpecialHighlights()
 {
-	local Window itemWindow;
-	local PersonaInventoryItemButton itemButton;
-	local Inventory anItem;
+    local Window itemWindow;
+    local PersonaInventoryItemButton itemButton;
+    local Inventory anItem;
 
-	// Loop through all our children and check to see if 
-	// we have a match.
+    // Loop through all our children and check to see if 
+    // we have a match.
 
-	itemWindow = winItems.GetTopChild();
-	while( itemWindow != None )
-	{
-		itemButton = PersonaInventoryItemButton(itemWindow);
-		if (itemButton != None)
-		{
-			itemButton.ResetFill();
-		}
+    itemWindow = winItems.GetTopChild();
+    while( itemWindow != None )
+    {
+        itemButton = PersonaInventoryItemButton(itemWindow);
+        if (itemButton != None)
+        {
+            itemButton.ResetFill();
+        }
 
-		itemWindow = itemWindow.GetLowerSibling();
-	}
+        itemWindow = itemWindow.GetLowerSibling();
+    }
 }
 
 // ----------------------------------------------------------------------

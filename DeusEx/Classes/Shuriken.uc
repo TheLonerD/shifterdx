@@ -3,55 +3,55 @@
 //=============================================================================
 class Shuriken extends DeusExProjectile;
 
-var float	mpDamage;
-var int		mpAccurateRange;
-var int		mpMaxRange;
+var float    mpDamage;
+var int        mpAccurateRange;
+var int        mpMaxRange;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPShurikenPickup", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPShurikenPickup", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 // set it's rotation correctly
 simulated function Tick(float deltaTime)
 {
-	local Rotator rot;
+    local Rotator rot;
 
-	if (bStuck)
-		return;
+    if (bStuck)
+        return;
 
-	Super.Tick(deltaTime);
+    Super.Tick(deltaTime);
 
-	if (Level.Netmode != NM_DedicatedServer)
-	{
-		rot = Rotation;
-		rot.Roll += 16384;
-		rot.Pitch -= 16384;
-		SetRotation(rot);
-	}
+    if (Level.Netmode != NM_DedicatedServer)
+    {
+        rot = Rotation;
+        rot.Roll += 16384;
+        rot.Pitch -= 16384;
+        SetRotation(rot);
+    }
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		Damage = mpDamage;
-		AccurateRange = mpAccurateRange;
-		MaxRange = mpMaxRange;
-		Mesh = LodMesh'DeusExItems.ShurikenPickup';
-	}
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        Damage = mpDamage;
+        AccurateRange = mpAccurateRange;
+        MaxRange = mpMaxRange;
+        Mesh = LodMesh'DeusExItems.ShurikenPickup';
+    }
 }
 // Changed the mesh
 //     Mesh=LodMesh'DeusExItems.CombatKnifePickup'

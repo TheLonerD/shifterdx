@@ -3,7 +3,7 @@
 //=============================================================================
 
 class ComputerCameraUIChoice extends MenuUIChoiceEnum
-	abstract;
+    abstract;
 
 var ComputerSecurityCameraWindow winCamera;
 var ComputerScreenSecurity       securityWindow;
@@ -14,7 +14,7 @@ var ComputerScreenSecurity       securityWindow;
 
 function SetCameraView(ComputerSecurityCameraWindow newCamera)
 {
-	winCamera = newCamera;
+    winCamera = newCamera;
 }
 
 // ----------------------------------------------------------------------
@@ -23,7 +23,7 @@ function SetCameraView(ComputerSecurityCameraWindow newCamera)
 
 function SetSecurityWindow(ComputerScreenSecurity newScreen)
 {
-	securityWindow = newScreen;
+    securityWindow = newScreen;
 }
 
 // ----------------------------------------------------------------------
@@ -32,8 +32,8 @@ function SetSecurityWindow(ComputerScreenSecurity newScreen)
 
 function DisableChoice()
 {
-	btnAction.DisableWindow();
-	btnInfo.DisableWindow();
+    btnAction.DisableWindow();
+    btnInfo.DisableWindow();
 }
 
 // ----------------------------------------------------------------------

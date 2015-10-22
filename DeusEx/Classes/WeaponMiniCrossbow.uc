@@ -7,175 +7,175 @@ var Texture HDTPCrossTex[3];
 
 function bool Facelift(bool bOn)
 {
-	local Name tName;
-	local int i;
+    local Name tName;
+    local int i;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	tName = GetStateName();
+    tName = GetStateName();
 
-	if(bOn)
-	{
-		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPMiniCrossbow", class'mesh', True));
-		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPMiniCrossbowPickup", class'mesh', True));
-		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPMiniCrossbow3rd", class'mesh', True));
-	}
+    if(bOn)
+    {
+        PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPMiniCrossbow", class'mesh', True));
+        PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPMiniCrossbowPickup", class'mesh', True));
+        ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPMiniCrossbow3rd", class'mesh', True));
+    }
 
-	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
-	{
-		PlayerViewMesh = Default.PlayerViewMesh;
-		PickupViewMesh = Default.PickupViewMesh;
-		ThirdPersonMesh = Default.ThirdPersonMesh;
-		for(i = 0; i < 8; ++i)
-			MultiSkins[i] = Default.MultiSkins[i];
-	}
-	else
-	{
-		Mesh = PickupViewMesh;
-		for(i = 1; i < 4; ++i)
-			HDTPCrossTex[i-1] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMiniCrossbowTex"$ i, class'Texture'));
+    if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+    {
+        PlayerViewMesh = Default.PlayerViewMesh;
+        PickupViewMesh = Default.PickupViewMesh;
+        ThirdPersonMesh = Default.ThirdPersonMesh;
+        for(i = 0; i < 8; ++i)
+            MultiSkins[i] = Default.MultiSkins[i];
+    }
+    else
+    {
+        Mesh = PickupViewMesh;
+        for(i = 1; i < 4; ++i)
+            HDTPCrossTex[i-1] = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPMiniCrossbowTex"$ i, class'Texture'));
 
-		HDTPHandTex[0] = Texture'MiniCrossbowTex1';
-		HDTPHandTex[1] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexBlack", class'Texture'));
-		HDTPHandTex[2] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexLatino", class'Texture'));
-		HDTPHandTex[3] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexGinger", class'Texture'));
-		HDTPHandTex[4] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexAlbino", class'Texture'));
+        HDTPHandTex[0] = Texture'MiniCrossbowTex1';
+        HDTPHandTex[1] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexBlack", class'Texture'));
+        HDTPHandTex[2] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexLatino", class'Texture'));
+        HDTPHandTex[3] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexGinger", class'Texture'));
+        HDTPHandTex[4] = Texture(DynamicLoadObject("HDTPItems.Skins.CrossbowHandsTexAlbino", class'Texture'));
 
-		CheckWeaponSkins();
-	}
+        CheckWeaponSkins();
+    }
 
-	if(tName == 'Pickup')
-		Mesh = PickupViewMesh;
-	else
-		Mesh = PlayerViewMesh;
+    if(tName == 'Pickup')
+        Mesh = PickupViewMesh;
+    else
+        Mesh = PlayerViewMesh;
 
-	return true;
+    return true;
 }
 
 simulated function renderoverlays(Canvas canvas)
 {
-	if(PickupViewMesh != Default.PickupViewMesh)
-	{
-		Multiskins[0] = getweaponhandtex();
-		Multiskins[1] = none;
-	
-		if ((AmmoType != None) && (AmmoType.AmmoAmount > 0) && (ClipCount < ReloadCount))
-		{
-			if(AmmoType.isA('AmmoDartPoison'))
-				Multiskins[2] = HDTPCrossTex[1];
-			else if(Ammotype.isA('AmmoDartFlare'))
-				Multiskins[2] = HDTPCrossTex[2];
-			else
-				Multiskins[2] = HDTPCrossTex[0];
-		}
-		else
-			Multiskins[2] = texture'pinkmasktex';
-		if(bHasScope)
-			multiskins[3] = none;
-		else
-			multiskins[3] = texture'pinkmasktex';
-		if(bHasLaser)
-			multiskins[4] = none;
-		else
-			multiskins[4] = texture'pinkmasktex';
-		if(bLasing)
-			multiskins[5] = none;
-		else
-			multiskins[5] = texture'pinkmasktex';
-	
-		super(weapon).renderoverlays(canvas);
-		
-		multiskins[0] = none;
-	
-		if ((AmmoType != None) && (AmmoType.AmmoAmount > 0) && (ClipCount < ReloadCount))
-		{
-			if(AmmoType.isA('AmmoDartPoison'))
-				Multiskins[1] = HDTPCrossTex[1];
-			else if(Ammotype.isA('AmmoDartFlare'))
-				Multiskins[1] = HDTPCrossTex[2];
-			else
-				Multiskins[1] = HDTPCrossTex[0];
-		}
-		else
-			Multiskins[1] = texture'pinkmasktex';
-	   if(bHasScope)
-	      multiskins[2] = none;
-	   else
-	      multiskins[2] = texture'pinkmasktex';
-	   if(bHasLaser)
-	      multiskins[3] = none;
-	   else
-	      multiskins[3] = texture'pinkmasktex';
-	   if(bLasing)
-	      multiskins[4] = none;
-	   else
-	      multiskins[4] = texture'pinkmasktex';
-	}
-	else
-		Super.RenderOverlays(canvas);
+    if(PickupViewMesh != Default.PickupViewMesh)
+    {
+        Multiskins[0] = getweaponhandtex();
+        Multiskins[1] = none;
+    
+        if ((AmmoType != None) && (AmmoType.AmmoAmount > 0) && (ClipCount < ReloadCount))
+        {
+            if(AmmoType.isA('AmmoDartPoison'))
+                Multiskins[2] = HDTPCrossTex[1];
+            else if(Ammotype.isA('AmmoDartFlare'))
+                Multiskins[2] = HDTPCrossTex[2];
+            else
+                Multiskins[2] = HDTPCrossTex[0];
+        }
+        else
+            Multiskins[2] = texture'pinkmasktex';
+        if(bHasScope)
+            multiskins[3] = none;
+        else
+            multiskins[3] = texture'pinkmasktex';
+        if(bHasLaser)
+            multiskins[4] = none;
+        else
+            multiskins[4] = texture'pinkmasktex';
+        if(bLasing)
+            multiskins[5] = none;
+        else
+            multiskins[5] = texture'pinkmasktex';
+    
+        super(weapon).renderoverlays(canvas);
+        
+        multiskins[0] = none;
+    
+        if ((AmmoType != None) && (AmmoType.AmmoAmount > 0) && (ClipCount < ReloadCount))
+        {
+            if(AmmoType.isA('AmmoDartPoison'))
+                Multiskins[1] = HDTPCrossTex[1];
+            else if(Ammotype.isA('AmmoDartFlare'))
+                Multiskins[1] = HDTPCrossTex[2];
+            else
+                Multiskins[1] = HDTPCrossTex[0];
+        }
+        else
+            Multiskins[1] = texture'pinkmasktex';
+       if(bHasScope)
+          multiskins[2] = none;
+       else
+          multiskins[2] = texture'pinkmasktex';
+       if(bHasLaser)
+          multiskins[3] = none;
+       else
+          multiskins[3] = texture'pinkmasktex';
+       if(bLasing)
+          multiskins[4] = none;
+       else
+          multiskins[4] = texture'pinkmasktex';
+    }
+    else
+        Super.RenderOverlays(canvas);
 
 }
 
 function CheckWeaponSkins()
 {
-	if(PickupViewMesh != Default.PickupViewMesh)
-	{
-	   if(bHasScope)
-	      multiskins[2] = none;
-	   else
-	      multiskins[2] = texture'pinkmasktex';
-	   if(bHasLaser)
-	      multiskins[3] = none;
-	   else
-	      multiskins[3] = texture'pinkmasktex';
-	   if(bLasing)
-	      multiskins[4] = none;
-	   else
-	      multiskins[4] = texture'pinkmasktex';
-	}
+    if(PickupViewMesh != Default.PickupViewMesh)
+    {
+       if(bHasScope)
+          multiskins[2] = none;
+       else
+          multiskins[2] = texture'pinkmasktex';
+       if(bHasLaser)
+          multiskins[3] = none;
+       else
+          multiskins[3] = texture'pinkmasktex';
+       if(bLasing)
+          multiskins[4] = none;
+       else
+          multiskins[4] = texture'pinkmasktex';
+    }
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		HitDamage = mpHitDamage;
-		BaseAccuracy = mpBaseAccuracy;
-		ReloadTime = mpReloadTime;
-		AccurateRange = mpAccurateRange;
-		MaxRange = mpMaxRange;
-		ReloadCount = mpReloadCount;
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        HitDamage = mpHitDamage;
+        BaseAccuracy = mpBaseAccuracy;
+        ReloadTime = mpReloadTime;
+        AccurateRange = mpAccurateRange;
+        MaxRange = mpMaxRange;
+        ReloadCount = mpReloadCount;
       PickupAmmoCount = mpReloadCount;
-	}
+    }
 }
 
 // pinkmask out the arrow when we're out of ammo or the clip is empty
 state NormalFire
 {
-	function BeginState()
-	{
-		if (ClipCount >= ReloadCount)
-			MultiSkins[3] = Texture'PinkMaskTex';
+    function BeginState()
+    {
+        if (ClipCount >= ReloadCount)
+            MultiSkins[3] = Texture'PinkMaskTex';
 
-		if ((AmmoType != None) && (AmmoType.AmmoAmount <= 0))
-			MultiSkins[3] = Texture'PinkMaskTex';
-	
-		Super.BeginState();
-	}
+        if ((AmmoType != None) && (AmmoType.AmmoAmount <= 0))
+            MultiSkins[3] = Texture'PinkMaskTex';
+    
+        Super.BeginState();
+    }
 }
 
 // unpinkmask the arrow when we reload
 function Tick(float deltaTime)
 {
-	if (MultiSkins[3] != None)
-		if ((AmmoType != None) && (AmmoType.AmmoAmount > 0) && (ClipCount < ReloadCount))
-			MultiSkins[3] = None;
+    if (MultiSkins[3] != None)
+        if ((AmmoType != None) && (AmmoType.AmmoAmount > 0) && (ClipCount < ReloadCount))
+            MultiSkins[3] = None;
 
-	Super.Tick(deltaTime);
+    Super.Tick(deltaTime);
 }
 
 //== Y|y: play the proper firing noise instead of the stealth pistol's firing sound.  Per Lork on the OTP forums

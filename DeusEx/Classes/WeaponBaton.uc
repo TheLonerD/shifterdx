@@ -8,68 +8,68 @@ class WeaponBaton extends DeusExWeapon;
 
 function bool Facelift(bool bOn)
 {
-	local Name tName;
+    local Name tName;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	tName = GetStateName();
+    tName = GetStateName();
 
-	if(bOn)
-		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPWeaponBaton", class'mesh', True));
+    if(bOn)
+        PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPWeaponBaton", class'mesh', True));
 
-	if(PlayerViewMesh == None || !bOn)
-		PlayerViewMesh = Default.PlayerViewMesh;
+    if(PlayerViewMesh == None || !bOn)
+        PlayerViewMesh = Default.PlayerViewMesh;
 
-	if(tName != 'Pickup')
-		Mesh = PlayerViewMesh;
+    if(tName != 'Pickup')
+        Mesh = PlayerViewMesh;
 
-	return true;
+    return true;
 }
 
 simulated function bool ClientAltFire( float Value )
 {
-		if(IsA('WeaponBlackjack'))
-			return false;
+        if(IsA('WeaponBlackjack'))
+            return false;
 
-        	bClientReadyToFire = False;
-        	bInProcess = True;
-        	GotoState('ClientFiring');
-        	bPointing = True;
-        	if ( PlayerPawn(Owner) != None )
-	     	PlayerPawn(Owner).PlayFiring();
-        	PlayFiringAltSound();
-        	ProjectileAltFire(AltProjectileClass, AltProjectileSpeed, bAltWarnTarget);
-		if(Level.NetMode == NM_Standalone)
-			SwitchItem();
-        	Destroy();
-        	return true;		
+            bClientReadyToFire = False;
+            bInProcess = True;
+            GotoState('ClientFiring');
+            bPointing = True;
+            if ( PlayerPawn(Owner) != None )
+             PlayerPawn(Owner).PlayFiring();
+            PlayFiringAltSound();
+            ProjectileAltFire(AltProjectileClass, AltProjectileSpeed, bAltWarnTarget);
+        if(Level.NetMode == NM_Standalone)
+            SwitchItem();
+            Destroy();
+            return true;        
 }
 
 function AltFire( float Value )
 {
-		if(IsA('WeaponBlackjack'))
-			return;
+        if(IsA('WeaponBlackjack'))
+            return;
 
-        	GotoState('AltFiring');
-        	bPointing = True;
-        	if ( Owner.IsA('PlayerPawn') )
-	     	PlayerPawn(Owner).PlayFiring();
-        	PlayFiringAltSound();
-        	ProjectileAltFire(AltProjectileClass, AltProjectileSpeed, bAltWarnTarget);
-		if(Level.NetMode == NM_Standalone)
-			SwitchItem();
-        	Destroy();
+            GotoState('AltFiring');
+            bPointing = True;
+            if ( Owner.IsA('PlayerPawn') )
+             PlayerPawn(Owner).PlayFiring();
+            PlayFiringAltSound();
+            ProjectileAltFire(AltProjectileClass, AltProjectileSpeed, bAltWarnTarget);
+        if(Level.NetMode == NM_Standalone)
+            SwitchItem();
+            Destroy();
 }
 
 function name WeaponDamageType()
 {
-	return 'KnockedOut';
+    return 'KnockedOut';
 }
 
 function bool TestCycleable()
 {
-	return true;
+    return true;
 }
 
 //Increased damage from 7 to 8

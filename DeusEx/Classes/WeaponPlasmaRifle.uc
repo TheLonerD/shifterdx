@@ -8,116 +8,116 @@ class WeaponPlasmaRifle extends DeusExWeapon;
 
 function bool Facelift(bool bOn)
 {
-	local Name tName;
-	local int i;
+    local Name tName;
+    local int i;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	tName = GetStateName();
+    tName = GetStateName();
 
-	if(bOn)
-	{
-		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPPlasmaRifle", class'mesh', True));
-		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPPlasmaRiflePickup", class'mesh', True));
-		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPPlasmaRifle3rd", class'mesh', True));
-	}
+    if(bOn)
+    {
+        PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPPlasmaRifle", class'mesh', True));
+        PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPPlasmaRiflePickup", class'mesh', True));
+        ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPPlasmaRifle3rd", class'mesh', True));
+    }
 
-	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
-	{
-		PlayerViewMesh = Default.PlayerViewMesh;
-		PickupViewMesh = Default.PickupViewMesh;
-		ThirdPersonMesh = Default.ThirdPersonMesh;
-		for(i = 0; i < 8; ++i)
-			MultiSkins[i] = Default.MultiSkins[i];
-	}
-	else
-	{
-		Mesh = PickupViewMesh;
-		CheckWeaponSkins();
-	}
+    if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+    {
+        PlayerViewMesh = Default.PlayerViewMesh;
+        PickupViewMesh = Default.PickupViewMesh;
+        ThirdPersonMesh = Default.ThirdPersonMesh;
+        for(i = 0; i < 8; ++i)
+            MultiSkins[i] = Default.MultiSkins[i];
+    }
+    else
+    {
+        Mesh = PickupViewMesh;
+        CheckWeaponSkins();
+    }
 
-	if(tName == 'Pickup')
-		Mesh = PickupViewMesh;
-	else
-		Mesh = PlayerViewMesh;
+    if(tName == 'Pickup')
+        Mesh = PickupViewMesh;
+    else
+        Mesh = PlayerViewMesh;
 
-	return true;
+    return true;
 }
 
 simulated function renderoverlays(Canvas canvas)
 {
-	if(PickupViewMesh != Default.PickupViewMesh)
-	{
-	   if(bHasScope)
-	      multiskins[6] = none;
-	   else
-	      multiskins[6] = texture'pinkmasktex';
-	   if(bHasLaser)
-	      multiskins[4] = none;
-	   else
-	      multiskins[4] = texture'pinkmasktex';
-	   if(bLasing)
-	      multiskins[5] = none; 
-	   else
-	      multiskins[5] = texture'pinkmasktex';
-	
-	   //hah! Multiskins 3 wasn't autoresetting, of course, so you only got green when a laser was installed -_-
-	   multiskins[3]=none;
-	
-	   super.renderoverlays(canvas);
-	
-	   if(bHasScope)
-	      multiskins[5] = none;
-	   else
-	      multiskins[5] = texture'pinkmasktex';
-	   if(bHasLaser)
-	      multiskins[3] = none;
-	   else
-	      multiskins[3] = texture'pinkmasktex';
-	   if(bLasing)
-	      multiskins[4] = none;
-	   else
-	      multiskins[4] = texture'pinkmasktex';
-	}
-	else
-		Super.RenderOverlays(canvas);
+    if(PickupViewMesh != Default.PickupViewMesh)
+    {
+       if(bHasScope)
+          multiskins[6] = none;
+       else
+          multiskins[6] = texture'pinkmasktex';
+       if(bHasLaser)
+          multiskins[4] = none;
+       else
+          multiskins[4] = texture'pinkmasktex';
+       if(bLasing)
+          multiskins[5] = none; 
+       else
+          multiskins[5] = texture'pinkmasktex';
+    
+       //hah! Multiskins 3 wasn't autoresetting, of course, so you only got green when a laser was installed -_-
+       multiskins[3]=none;
+    
+       super.renderoverlays(canvas);
+    
+       if(bHasScope)
+          multiskins[5] = none;
+       else
+          multiskins[5] = texture'pinkmasktex';
+       if(bHasLaser)
+          multiskins[3] = none;
+       else
+          multiskins[3] = texture'pinkmasktex';
+       if(bLasing)
+          multiskins[4] = none;
+       else
+          multiskins[4] = texture'pinkmasktex';
+    }
+    else
+        Super.RenderOverlays(canvas);
 
 }
 
 function CheckWeaponSkins()
 {
-	if(PickupViewMesh != Default.PickupViewMesh)
-	{
-		if(bHasScope)
-			multiskins[5] = none;
-		else
-			multiskins[5] = texture'pinkmasktex';
-		if(bHasLaser)
-			multiskins[3] = none;
-		else
-			multiskins[3] = texture'pinkmasktex';
-		if(bLasing)
-			multiskins[4] = none;
-		else
-			multiskins[4] = texture'pinkmasktex';
-	}
+    if(PickupViewMesh != Default.PickupViewMesh)
+    {
+        if(bHasScope)
+            multiskins[5] = none;
+        else
+            multiskins[5] = texture'pinkmasktex';
+        if(bHasLaser)
+            multiskins[3] = none;
+        else
+            multiskins[3] = texture'pinkmasktex';
+        if(bLasing)
+            multiskins[4] = none;
+        else
+            multiskins[4] = texture'pinkmasktex';
+    }
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		HitDamage = mpHitDamage;
-		BaseAccuracy = mpBaseAccuracy;
-		ReloadTime = mpReloadTime;
-		AccurateRange = mpAccurateRange;
-		MaxRange = mpMaxRange;
-		ReloadCount = mpReloadCount;
-	}
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        HitDamage = mpHitDamage;
+        BaseAccuracy = mpBaseAccuracy;
+        ReloadTime = mpReloadTime;
+        AccurateRange = mpAccurateRange;
+        MaxRange = mpMaxRange;
+        ReloadCount = mpReloadCount;
+    }
 }
 
 defaultproperties

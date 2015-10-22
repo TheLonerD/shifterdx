@@ -17,9 +17,9 @@ var MenuScreenHostGame hostparent;
 
 event InitWindow()
 {
-	PopulateVictoryTypes();
+    PopulateVictoryTypes();
 
-	Super.InitWindow();
+    Super.InitWindow();
 
    SetInitialVictoryType();
 
@@ -32,7 +32,7 @@ event InitWindow()
 
 function PopulateVictoryTypes()
 {
-	local int typeIndex;
+    local int typeIndex;
 
    for (typeIndex = 0; typeIndex < arrayCount(VictoryNames); typeIndex++)
    {

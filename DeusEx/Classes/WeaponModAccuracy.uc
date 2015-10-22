@@ -11,14 +11,14 @@ class WeaponModAccuracy extends WeaponMod;
 
 function ApplyMod(DeusExWeapon weapon)
 {
-	if (weapon != None)
-	{
-		if (weapon.BaseAccuracy == 0.0)
-			weapon.BaseAccuracy    -= WeaponModifier;
-		else
-			weapon.BaseAccuracy    -= (weapon.Default.BaseAccuracy * WeaponModifier);
-		weapon.ModBaseAccuracy += WeaponModifier;
-	}
+    if (weapon != None)
+    {
+        if (weapon.BaseAccuracy == 0.0)
+            weapon.BaseAccuracy    -= WeaponModifier;
+        else
+            weapon.BaseAccuracy    -= (weapon.Default.BaseAccuracy * WeaponModifier);
+        weapon.ModBaseAccuracy += WeaponModifier;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -27,10 +27,10 @@ function ApplyMod(DeusExWeapon weapon)
 
 simulated function bool CanUpgradeWeapon(DeusExWeapon weapon)
 {
-	if (weapon != None)
-		return (weapon.bCanHaveModBaseAccuracy && !weapon.HasMaxAccuracyMod());
-	else
-		return False;
+    if (weapon != None)
+        return (weapon.bCanHaveModBaseAccuracy && !weapon.HasMaxAccuracyMod());
+    else
+        return False;
 }
 
 // ----------------------------------------------------------------------

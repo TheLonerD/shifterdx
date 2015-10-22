@@ -16,7 +16,7 @@ simulated function Tick(float deltaTime)
       Destroy();
       return;
    }
-	HandleNintendoEffect( AttachedPlayer );
+    HandleNintendoEffect( AttachedPlayer );
    HandlePlayerCloak(AttachedPlayer, deltaTime);
 }
 
@@ -36,10 +36,10 @@ function HandleNintendoEffect( DeusExPlayer OtherPlayer )
    if (OtherPlayer == MyPlayer)
       return;
 
-	if ( OtherPlayer.NintendoImmunityTimeLeft > 0.0 )
-		OtherPlayer.DrawInvulnShield();
-	else
-		OtherPlayer.InvulnSph = None;
+    if ( OtherPlayer.NintendoImmunityTimeLeft > 0.0 )
+        OtherPlayer.DrawInvulnShield();
+    else
+        OtherPlayer.InvulnSph = None;
 }
 
 // ----------------------------------------------------------------------

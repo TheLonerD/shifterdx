@@ -5,18 +5,18 @@ class AmmoRocketWP extends AmmoRocket;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		skin = Texture(DynamicLoadObject("HDTPItems.HDTPGEPAmmoTex2", class'Texture', True));
+    if(bOn)
+        skin = Texture(DynamicLoadObject("HDTPItems.HDTPGEPAmmoTex2", class'Texture', True));
 
-	if(skin == None || !bOn)
-		skin = Default.skin;
+    if(skin == None || !bOn)
+        skin = Default.skin;
 
-	Multiskins[1] = Skin;
+    Multiskins[1] = Skin;
 
-	return true;
+    return true;
 }
 
 defaultproperties

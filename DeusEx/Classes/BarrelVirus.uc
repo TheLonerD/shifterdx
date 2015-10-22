@@ -5,25 +5,25 @@ class BarrelVirus extends Containers;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPBarrelAmbrosia", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPBarrelAmbrosia", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Mesh = Default.Mesh;
-		MultiSkins[1] = Default.MultiSkins[1];
-		MultiSkins[2] = Default.MultiSkins[2];
-	}
-	else
-	{
-		MultiSkins[1] = None;
-		MultiSkins[2] = FireTexture'Effects.liquid.Virus_SFX';
-	}
+    if(Mesh == None || !bOn)
+    {
+        Mesh = Default.Mesh;
+        MultiSkins[1] = Default.MultiSkins[1];
+        MultiSkins[2] = Default.MultiSkins[2];
+    }
+    else
+    {
+        MultiSkins[1] = None;
+        MultiSkins[2] = FireTexture'Effects.liquid.Virus_SFX';
+    }
 
-	return true;
+    return true;
 }
 
 defaultproperties

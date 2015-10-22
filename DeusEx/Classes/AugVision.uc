@@ -24,32 +24,32 @@ Begin:
 
 function Activate()
 {
-	local bool bWasActive;
-	
-	bWasActive = bIsActive;
+    local bool bWasActive;
+    
+    bWasActive = bIsActive;
 
-	Super.Activate();
+    Super.Activate();
 
-	if (!bWasActive && bIsActive)
-	{
-		SetVisionAugStatus(CurrentLevel,LevelValues[CurrentLevel],True);
-		Player.RelevantRadius = LevelValues[CurrentLevel];
-	}
+    if (!bWasActive && bIsActive)
+    {
+        SetVisionAugStatus(CurrentLevel,LevelValues[CurrentLevel],True);
+        Player.RelevantRadius = LevelValues[CurrentLevel];
+    }
 }
 
 function Deactivate()
 {
-	local bool bWasActive;
-	
-	bWasActive = bIsActive;
+    local bool bWasActive;
+    
+    bWasActive = bIsActive;
 
-	Super.Deactivate();
+    Super.Deactivate();
 
-	if (bWasActive && !bIsActive)
-	{
-		SetVisionAugStatus(CurrentLevel,LevelValues[CurrentLevel],False);
-		Player.RelevantRadius = 0;
-	}
+    if (bWasActive && !bIsActive)
+    {
+        SetVisionAugStatus(CurrentLevel,LevelValues[CurrentLevel],False);
+        Player.RelevantRadius = 0;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -69,20 +69,20 @@ simulated function SetVisionAugStatus(int Level, int LevelValue, bool IsActive)
          DeusExRootWindow(Player.rootWindow).hud.augDisplay.bVisionActive = False;
       DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionBlinder = None;
    }
-	DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevel = Level;
+    DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevel = Level;
    DeusExRootWindow(Player.rootWindow).hud.augDisplay.visionLevelValue = LevelValue;
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		LevelValues[3] = mpAugValue;
-		EnergyRate = mpEnergyDrain;
-	}
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        LevelValues[3] = mpAugValue;
+        EnergyRate = mpEnergyDrain;
+    }
 }
 
 defaultproperties

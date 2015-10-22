@@ -9,33 +9,33 @@ var float mpEnergyDrain;
 state Active
 {
 Begin:
-	if ((Player.inHand != None) && (Player.inHand.IsA('DeusExWeapon')))
-		Player.ServerConditionalNotifyMsg( Player.MPMSG_NoCloakWeapon );
-	Player.PlaySound(Sound'CloakUp', SLOT_Interact, 0.85, ,768,1.0);
+    if ((Player.inHand != None) && (Player.inHand.IsA('DeusExWeapon')))
+        Player.ServerConditionalNotifyMsg( Player.MPMSG_NoCloakWeapon );
+    Player.PlaySound(Sound'CloakUp', SLOT_Interact, 0.85, ,768,1.0);
 }
 
 function Deactivate()
 {
-	Player.PlaySound(Sound'CloakDown', SLOT_Interact, 0.85, ,768,1.0);
-	Super.Deactivate();
+    Player.PlaySound(Sound'CloakDown', SLOT_Interact, 0.85, ,768,1.0);
+    Super.Deactivate();
 }
 
 simulated function float GetEnergyRate()
 {
-	return energyRate * LevelValues[CurrentLevel];
+    return energyRate * LevelValues[CurrentLevel];
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		LevelValues[3] = mpAugValue;
-		EnergyRate = mpEnergyDrain;
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        LevelValues[3] = mpAugValue;
+        EnergyRate = mpEnergyDrain;
       AugmentationLocation = LOC_Eye;
-	}
+    }
 }
 
 defaultproperties

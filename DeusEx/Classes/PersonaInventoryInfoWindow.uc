@@ -11,7 +11,7 @@ var localized String ShowAmmoDescriptionsLabel;
 
 var PersonaAmmoDetailButton      selectedAmmoButton;
 var PersonaInfoItemWindow        lastAmmoLoaded;
-var PersonaInfoItemWindow	     lastAmmoTypes;
+var PersonaInfoItemWindow         lastAmmoTypes;
 var PersonaNormalLargeTextWindow lastAmmoDescription;
 
 // ----------------------------------------------------------------------
@@ -20,47 +20,47 @@ var PersonaNormalLargeTextWindow lastAmmoDescription;
 
 function AddAmmoInfoWindow(DeusExAmmo ammo, bool bShowDescriptions)
 {
-	local AlignWindow winAmmo;
-	local PersonaNormalTextWindow winText;
-	local Window winIcon;
-	local Texture temptex;
+    local AlignWindow winAmmo;
+    local PersonaNormalTextWindow winText;
+    local Window winIcon;
+    local Texture temptex;
 
-	if (ammo != None)
-	{
-		winAmmo = AlignWindow(winTile.NewChild(Class'AlignWindow'));
-		winAmmo.SetChildVAlignment(VALIGN_Top);
-		winAmmo.SetChildSpacing(4);
+    if (ammo != None)
+    {
+        winAmmo = AlignWindow(winTile.NewChild(Class'AlignWindow'));
+        winAmmo.SetChildVAlignment(VALIGN_Top);
+        winAmmo.SetChildSpacing(4);
 
-		// Add icon
-		winIcon = winAmmo.NewChild(Class'Window');
-		//== Allow for the loading of optional, updated textures
-		if(ammo.Default.DynamicLoadIcon != "")
-			temptex = Texture(DynamicLoadObject(ammo.Default.DynamicLoadIcon,class'Texture', True));
-		if(temptex != None)
-			winIcon.SetBackground(temptex);
-		else
-			winIcon.SetBackground(ammo.Icon);
-		winIcon.SetBackgroundStyle(DSTY_Masked);
-		winIcon.SetSize(42, 37);
+        // Add icon
+        winIcon = winAmmo.NewChild(Class'Window');
+        //== Allow for the loading of optional, updated textures
+        if(ammo.Default.DynamicLoadIcon != "")
+            temptex = Texture(DynamicLoadObject(ammo.Default.DynamicLoadIcon,class'Texture', True));
+        if(temptex != None)
+            winIcon.SetBackground(temptex);
+        else
+            winIcon.SetBackground(ammo.Icon);
+        winIcon.SetBackgroundStyle(DSTY_Masked);
+        winIcon.SetSize(42, 37);
 
-		// Add description
-		winText = PersonaNormalTextWindow(winAmmo.NewChild(Class'PersonaNormalTextWindow'));
-		winText.SetWordWrap(True);
-		winText.SetTextMargins(0, 0);
-		winText.SetTextAlignments(HALIGN_Left, VALIGN_Top);
+        // Add description
+        winText = PersonaNormalTextWindow(winAmmo.NewChild(Class'PersonaNormalTextWindow'));
+        winText.SetWordWrap(True);
+        winText.SetTextMargins(0, 0);
+        winText.SetTextAlignments(HALIGN_Left, VALIGN_Top);
 
-		if (bShowDescriptions)
-		{
-			winText.SetText(ammo.itemName @ "(" $ AmmoRoundsLabel @ ammo.AmmoAmount $ ")|n|n");
-			winText.AppendText(ammo.description);
-		}
-		else
-		{
-			winText.SetText(ammo.itemName $ "|n|n" $ AmmoRoundsLabel @ ammo.AmmoAmount);
-		}
-	}
+        if (bShowDescriptions)
+        {
+            winText.SetText(ammo.itemName @ "(" $ AmmoRoundsLabel @ ammo.AmmoAmount $ ")|n|n");
+            winText.AppendText(ammo.description);
+        }
+        else
+        {
+            winText.SetText(ammo.itemName $ "|n|n" $ AmmoRoundsLabel @ ammo.AmmoAmount);
+        }
+    }
 
-	AddLine();
+    AddLine();
 }
 
 // ----------------------------------------------------------------------
@@ -69,12 +69,12 @@ function AddAmmoInfoWindow(DeusExAmmo ammo, bool bShowDescriptions)
 
 function AddAmmoCheckbox(bool bChecked)
 {
-	local PersonaCheckboxWindow winCheck;
+    local PersonaCheckboxWindow winCheck;
 
-	winCheck = PersonaCheckboxWindow(winTile.NewChild(Class'PersonaCheckboxWindow'));
-	winCheck.SetFont(Font'FontMenuSmall');
-	winCheck.SetText(ShowAmmoDescriptionsLabel);
-	winCheck.SetToggle(bChecked);
+    winCheck = PersonaCheckboxWindow(winTile.NewChild(Class'PersonaCheckboxWindow'));
+    winCheck.SetFont(Font'FontMenuSmall');
+    winCheck.SetText(ShowAmmoDescriptionsLabel);
+    winCheck.SetToggle(bChecked);
 }
 
 // ----------------------------------------------------------------------
@@ -83,25 +83,25 @@ function AddAmmoCheckbox(bool bChecked)
 
 function CreateAmmoTileWindow()
 {
-	local PersonaNormalTextWindow winText;
+    local PersonaNormalTextWindow winText;
 
-	if (winTileAmmo == None)
-	{
-		winTileAmmo = TileWindow(winTile.NewChild(Class'TileWindow'));
-		winTileAmmo.SetOrder(ORDER_Right);
-		winTileAmmo.SetChildAlignments(HALIGN_Left, VALIGN_Full);
-		winTileAmmo.SetWindowAlignments(HALIGN_Full, VALIGN_Top);
-		winTileAmmo.MakeWidthsEqual(False);
-		winTileAmmo.MakeHeightsEqual(True);
-		winTileAmmo.SetMargins(0, 0);
-		winTileAmmo.SetMinorSpacing(4);
+    if (winTileAmmo == None)
+    {
+        winTileAmmo = TileWindow(winTile.NewChild(Class'TileWindow'));
+        winTileAmmo.SetOrder(ORDER_Right);
+        winTileAmmo.SetChildAlignments(HALIGN_Left, VALIGN_Full);
+        winTileAmmo.SetWindowAlignments(HALIGN_Full, VALIGN_Top);
+        winTileAmmo.MakeWidthsEqual(False);
+        winTileAmmo.MakeHeightsEqual(True);
+        winTileAmmo.SetMargins(0, 0);
+        winTileAmmo.SetMinorSpacing(4);
 
-		winText = PersonaNormalTextWindow(winTileAmmo.NewChild(Class'PersonaNormalTextWindow'));
-		winText.SetWidth(70);
-		winText.SetTextMargins(0, 6);
-		winText.SetTextAlignments(HALIGN_Right, VALIGN_Center);
-		winText.SetText(AmmoLabel);
-	}
+        winText = PersonaNormalTextWindow(winTileAmmo.NewChild(Class'PersonaNormalTextWindow'));
+        winText.SetWidth(70);
+        winText.SetTextMargins(0, 6);
+        winText.SetTextAlignments(HALIGN_Right, VALIGN_Center);
+        winText.SetText(AmmoLabel);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -110,13 +110,13 @@ function CreateAmmoTileWindow()
 
 function AddAmmo(Class<Ammo> ammo, bool bHasIt, optional int newRounds)
 {
-	local PersonaAmmoDetailButton ammoButton;
+    local PersonaAmmoDetailButton ammoButton;
 
-	if (winTileAmmo == None)
-		CreateAmmoTileWindow();
+    if (winTileAmmo == None)
+        CreateAmmoTileWindow();
 
-	ammoButton = PersonaAmmoDetailButton(winTileAmmo.NewChild(Class'PersonaAmmoDetailButton'));
-	ammoButton.SetAmmo(ammo, bHasIt, newRounds);
+    ammoButton = PersonaAmmoDetailButton(winTileAmmo.NewChild(Class'PersonaAmmoDetailButton'));
+    ammoButton.SetAmmo(ammo, bHasIt, newRounds);
 }
 
 // ----------------------------------------------------------------------
@@ -125,7 +125,7 @@ function AddAmmo(Class<Ammo> ammo, bool bHasIt, optional int newRounds)
 
 function AddAmmoLoadedItem(String newLabel, String newText)
 {
-	lastAmmoLoaded = AddInfoItem(newLabel, newText);
+    lastAmmoLoaded = AddInfoItem(newLabel, newText);
 }
 
 // ----------------------------------------------------------------------
@@ -134,8 +134,8 @@ function AddAmmoLoadedItem(String newLabel, String newText)
 
 function UpdateAmmoLoaded(String newText)
 {
-	if (lastAmmoLoaded != None)
-		lastAmmoLoaded.SetItemText(newText);
+    if (lastAmmoLoaded != None)
+        lastAmmoLoaded.SetItemText(newText);
 }
 
 // ----------------------------------------------------------------------
@@ -144,7 +144,7 @@ function UpdateAmmoLoaded(String newText)
 
 function AddAmmoTypesItem(String newLabel, String newText)
 {
-	lastAmmoTypes = AddInfoItem(newLabel, newText);
+    lastAmmoTypes = AddInfoItem(newLabel, newText);
 }
 
 // ----------------------------------------------------------------------
@@ -153,8 +153,8 @@ function AddAmmoTypesItem(String newLabel, String newText)
 
 function UpdateAmmoTypes(String newText)
 {
-	if (lastAmmoTypes != None)
-		lastAmmoTypes.SetItemText(newText);
+    if (lastAmmoTypes != None)
+        lastAmmoTypes.SetItemText(newText);
 }
 
 // ----------------------------------------------------------------------
@@ -163,7 +163,7 @@ function UpdateAmmoTypes(String newText)
 
 function AddAmmoDescription(String newDesc)
 {
-	lastAmmoDescription = SetText(newDesc);
+    lastAmmoDescription = SetText(newDesc);
 }
 
 // ----------------------------------------------------------------------
@@ -172,8 +172,8 @@ function AddAmmoDescription(String newDesc)
 
 function UpdateAmmoDescription(String newDesc)
 {
-	if (lastAmmoDescription != None)
-		lastAmmoDescription.SetText(newDesc);
+    if (lastAmmoDescription != None)
+        lastAmmoDescription.SetText(newDesc);
 }
 
 // ----------------------------------------------------------------------
@@ -182,30 +182,30 @@ function UpdateAmmoDescription(String newDesc)
 
 function Class<Ammo> GetSelectedAmmo()
 {
-	local Window currentWindow;
+    local Window currentWindow;
 
-	if (selectedAmmoButton != None)	
-	{
-		return selectedAmmoButton.GetAmmo();
-	}
-	else
-	{
-		currentWindow = winTileAmmo.GetTopChild();
-		while(currentWindow != None)
-		{
-			if (PersonaAmmoDetailButton(currentWindow) != None)
-			{
-				if (PersonaAmmoDetailButton(currentWindow).IsLoaded())
-				{
-					return PersonaAmmoDetailButton(currentWindow).GetAmmo();
-					break;
-				}
-			}
-			currentWindow = currentWindow.GetLowerSibling();
-		}
-	}
+    if (selectedAmmoButton != None)    
+    {
+        return selectedAmmoButton.GetAmmo();
+    }
+    else
+    {
+        currentWindow = winTileAmmo.GetTopChild();
+        while(currentWindow != None)
+        {
+            if (PersonaAmmoDetailButton(currentWindow) != None)
+            {
+                if (PersonaAmmoDetailButton(currentWindow).IsLoaded())
+                {
+                    return PersonaAmmoDetailButton(currentWindow).GetAmmo();
+                    break;
+                }
+            }
+            currentWindow = currentWindow.GetLowerSibling();
+        }
+    }
 
-	return None;
+    return None;
 }
 
 // ----------------------------------------------------------------------
@@ -217,22 +217,22 @@ function Class<Ammo> GetSelectedAmmo()
 
 function SetLoaded(Class<Ammo> ammo)
 {
-	local Window currentWindow;
+    local Window currentWindow;
 
-	currentWindow = winTileAmmo.GetTopChild();
-	while(currentWindow != None)
-	{
-		if (PersonaAmmoDetailButton(currentWindow) != None)
-		{
-			PersonaAmmoDetailButton(currentWindow).SetLoaded(currentWindow.GetClientObject() == ammo);
-			PersonaAmmoDetailButton(currentWindow).SelectButton(currentWindow.GetClientObject() == ammo);
+    currentWindow = winTileAmmo.GetTopChild();
+    while(currentWindow != None)
+    {
+        if (PersonaAmmoDetailButton(currentWindow) != None)
+        {
+            PersonaAmmoDetailButton(currentWindow).SetLoaded(currentWindow.GetClientObject() == ammo);
+            PersonaAmmoDetailButton(currentWindow).SelectButton(currentWindow.GetClientObject() == ammo);
 
-			// Keep track of the selected button
-			if (currentWindow.GetClientObject() == ammo) 
-				selectedAmmoButton = PersonaAmmoDetailButton(currentWindow);
-		}
-		currentWindow = currentWindow.GetLowerSibling();
-	}
+            // Keep track of the selected button
+            if (currentWindow.GetClientObject() == ammo) 
+                selectedAmmoButton = PersonaAmmoDetailButton(currentWindow);
+        }
+        currentWindow = currentWindow.GetLowerSibling();
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -241,21 +241,21 @@ function SetLoaded(Class<Ammo> ammo)
 
 function SelectAmmoButton(PersonaAmmoDetailButton selectedButton)
 {
-	local Window currentWindow;
+    local Window currentWindow;
 
-	currentWindow = winTileAmmo.GetTopChild();
-	while(currentWindow != None)
-	{
-		if (PersonaAmmoDetailButton(currentWindow) != None)
-		{
-			PersonaAmmoDetailButton(currentWindow).SetLoaded(selectedButton == currentWindow);
-			PersonaAmmoDetailButton(currentWindow).SelectButton(selectedButton == currentWindow);
-		}
-		currentWindow = currentWindow.GetLowerSibling();
-	}
+    currentWindow = winTileAmmo.GetTopChild();
+    while(currentWindow != None)
+    {
+        if (PersonaAmmoDetailButton(currentWindow) != None)
+        {
+            PersonaAmmoDetailButton(currentWindow).SetLoaded(selectedButton == currentWindow);
+            PersonaAmmoDetailButton(currentWindow).SelectButton(selectedButton == currentWindow);
+        }
+        currentWindow = currentWindow.GetLowerSibling();
+    }
 
-	// Keep track of the selected button
-	selectedAmmoButton = selectedButton;
+    // Keep track of the selected button
+    selectedAmmoButton = selectedButton;
 }
 
 // ----------------------------------------------------------------------
@@ -264,8 +264,8 @@ function SelectAmmoButton(PersonaAmmoDetailButton selectedButton)
 
 function Clear()
 {
-	Super.Clear();
-	winTileAmmo = None;
+    Super.Clear();
+    winTileAmmo = None;
 }
 
 // ----------------------------------------------------------------------

@@ -12,11 +12,11 @@ var ProgressBarWindow winEnergy;
 
 event InitWindow()
 {
-	Super.InitWindow();
+    Super.InitWindow();
 
-	CreateEnergyBar();
+    CreateEnergyBar();
 
-	bTickEnabled = TRUE;
+    bTickEnabled = TRUE;
 }
 
 // ----------------------------------------------------------------------
@@ -27,9 +27,9 @@ event InitWindow()
 
 event Tick(float deltaSeconds)
 {
-	local ChargedPickup item;
+    local ChargedPickup item;
 
-	item = ChargedPickup(GetClientObject());
+    item = ChargedPickup(GetClientObject());
 
    if ((item != None) && (Player.PlayerIsRemoteClient()))
       if (!VerifyItemCarried())
@@ -39,10 +39,10 @@ event Tick(float deltaSeconds)
       }
 
 
-	if ((item != None) && (winEnergy != None))
-	{
-		winEnergy.SetCurrentValue(item.GetCurrentCharge());
-	}
+    if ((item != None) && (winEnergy != None))
+    {
+        winEnergy.SetCurrentValue(item.GetCurrentCharge());
+    }
   
 }
 
@@ -52,13 +52,13 @@ event Tick(float deltaSeconds)
 
 function CreateEnergyBar()
 {
-	winEnergy = ProgressBarWindow(NewChild(Class'ProgressBarWindow'));
-	winEnergy.SetSize(32, 2);
-	winEnergy.UseScaledColor(True);
-	winEnergy.SetPos(1, 30);
-	winEnergy.SetValues(0, 100);
-	winEnergy.SetCurrentValue(0);
-	winEnergy.SetVertical(False);
+    winEnergy = ProgressBarWindow(NewChild(Class'ProgressBarWindow'));
+    winEnergy.SetSize(32, 2);
+    winEnergy.UseScaledColor(True);
+    winEnergy.SetPos(1, 30);
+    winEnergy.SetValues(0, 100);
+    winEnergy.SetCurrentValue(0);
+    winEnergy.SetVertical(False);
 }
 
 // ----------------------------------------------------------------------

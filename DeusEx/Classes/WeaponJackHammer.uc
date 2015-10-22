@@ -5,36 +5,36 @@ class WeaponJackHammer expands WeaponAssaultShotgun;
 
 function bool loadAmmo(int ammonum)
 {
-	local bool result;
+    local bool result;
 
-	result = Super.loadAmmo(ammonum);
+    result = Super.loadAmmo(ammonum);
 
-	//== If we don't set the sabot rounds to do more than 1 damage, they won't do any damage
-	if(AmmoType.IsA('AmmoSabot'))
-	{
-		AreaOfEffect = AOE_Cone;
-		HitDamage = Default.HitDamage * 3;
-	}
-	else
-	{
-		AreaOfEffect = Default.AreaOfEffect;
-		HitDamage = Default.HitDamage;
-	}
+    //== If we don't set the sabot rounds to do more than 1 damage, they won't do any damage
+    if(AmmoType.IsA('AmmoSabot'))
+    {
+        AreaOfEffect = AOE_Cone;
+        HitDamage = Default.HitDamage * 3;
+    }
+    else
+    {
+        AreaOfEffect = Default.AreaOfEffect;
+        HitDamage = Default.HitDamage;
+    }
 
-	return result;
+    return result;
 }
 
 //== Unlike the normal shotguns we want the Jackhammer to have absolutely no delay between simul-firing, since it's already automatic
 simulated function DoTraceFire( float Accuracy )
 {
-	do
-	{
-		Super.DoTraceFire(Accuracy);
-		ExtraAmmoLoaded--;
-	}
-	until(ExtraAmmoLoaded < 0);
+    do
+    {
+        Super.DoTraceFire(Accuracy);
+        ExtraAmmoLoaded--;
+    }
+    until(ExtraAmmoLoaded < 0);
 
-	ExtraAmmoLoaded = 0;
+    ExtraAmmoLoaded = 0;
 }
 
 defaultproperties

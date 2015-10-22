@@ -10,21 +10,21 @@ var ParticleGenerator smokeGen;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPRocket", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPRocket", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 function PostBeginPlay()
 {
-	Super.PostBeginPlay();
+    Super.PostBeginPlay();
 
    if (Level.NetMode == NM_DedicatedServer)
       return;
@@ -42,55 +42,55 @@ simulated function PostNetBeginPlay()
 
 simulated function SpawnRocketEffects()
 {
-	fireGen = Spawn(class'ParticleGenerator', Self);
-	if (fireGen != None)
-	{
+    fireGen = Spawn(class'ParticleGenerator', Self);
+    if (fireGen != None)
+    {
       fireGen.RemoteRole = ROLE_None;
-		fireGen.particleTexture = Texture'Effects.Fire.Fireball1';
-		fireGen.particleDrawScale = 0.1;
-		fireGen.checkTime = 0.01;
-		fireGen.riseRate = 0.0;
-		fireGen.ejectSpeed = 0.0;
-		fireGen.particleLifeSpan = 0.1;
-		fireGen.bRandomEject = True;
-		fireGen.SetBase(Self);
-	}
-	smokeGen = Spawn(class'ParticleGenerator', Self);
-	if (smokeGen != None)
-	{
+        fireGen.particleTexture = Texture'Effects.Fire.Fireball1';
+        fireGen.particleDrawScale = 0.1;
+        fireGen.checkTime = 0.01;
+        fireGen.riseRate = 0.0;
+        fireGen.ejectSpeed = 0.0;
+        fireGen.particleLifeSpan = 0.1;
+        fireGen.bRandomEject = True;
+        fireGen.SetBase(Self);
+    }
+    smokeGen = Spawn(class'ParticleGenerator', Self);
+    if (smokeGen != None)
+    {
       smokeGen.RemoteRole = ROLE_None;
-		smokeGen.particleTexture = Texture'Effects.Smoke.SmokePuff1';
-		smokeGen.particleDrawScale = 0.3;
-		smokeGen.checkTime = 0.02;
-		smokeGen.riseRate = 8.0;
-		smokeGen.ejectSpeed = 0.0;
-		smokeGen.particleLifeSpan = 2.0;
-		smokeGen.bRandomEject = True;
-		smokeGen.SetBase(Self);
-	}
+        smokeGen.particleTexture = Texture'Effects.Smoke.SmokePuff1';
+        smokeGen.particleDrawScale = 0.3;
+        smokeGen.checkTime = 0.02;
+        smokeGen.riseRate = 8.0;
+        smokeGen.ejectSpeed = 0.0;
+        smokeGen.particleLifeSpan = 2.0;
+        smokeGen.bRandomEject = True;
+        smokeGen.SetBase(Self);
+    }
 }
 
 simulated function Destroyed()
 {
-	if (smokeGen != None)
-		smokeGen.DelayedDestroy();
-	if (fireGen != None)
-		fireGen.DelayedDestroy();
+    if (smokeGen != None)
+        smokeGen.DelayedDestroy();
+    if (fireGen != None)
+        fireGen.DelayedDestroy();
 
-	Super.Destroyed();
+    Super.Destroyed();
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	if ( ( Level.NetMode != NM_Standalone ) && (Class == Class'Rocket') )
-	{
-		blastRadius = mpBlastRadius;
+    if ( ( Level.NetMode != NM_Standalone ) && (Class == Class'Rocket') )
+    {
+        blastRadius = mpBlastRadius;
       speed = 2000.0000;
       SetTimer(5,false);
-		SoundRadius = 64;
-	}
+        SoundRadius = 64;
+    }
 }
 
 simulated function Timer()

@@ -10,12 +10,12 @@ class ComputerSecurityChoice_MPCamera extends ComputerCameraUIChoice;
 
 function SetCameraView(ComputerSecurityCameraWindow newCamera)
 {
-	Super.SetCameraView(newCamera);
+    Super.SetCameraView(newCamera);
 
-	if (winCamera != None)
-	{
-		if (winCamera.camera != None)
-		{      
+    if (winCamera != None)
+    {
+        if (winCamera.camera != None)
+        {      
          if (!winCamera.camera.bActive)
             SetValue(0);
          else if (DeusExPlayer(winCamera.camera.safetarget) == winCamera.player)
@@ -25,26 +25,26 @@ function SetCameraView(ComputerSecurityCameraWindow newCamera)
          else
             SetValue(2);       
          EnableWindow();
-		}
-		else
-		{
-			// Disable!
-			DisableWindow();
-			btnInfo.SetButtonText("");
-		}
+        }
+        else
+        {
+            // Disable!
+            DisableWindow();
+            btnInfo.SetButtonText("");
+        }
 
-		if (securityWindow != None)
-			securityWindow.EnableCameraButtons(winCamera.camera != None);
-	}
-	else
-	{
-		// Disable!
-		DisableWindow();
-		btnInfo.SetButtonText("");
+        if (securityWindow != None)
+            securityWindow.EnableCameraButtons(winCamera.camera != None);
+    }
+    else
+    {
+        // Disable!
+        DisableWindow();
+        btnInfo.SetButtonText("");
 
-		if (securityWindow != None)
-			securityWindow.EnableCameraButtons(False);
-	}
+        if (securityWindow != None)
+            securityWindow.EnableCameraButtons(False);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -82,8 +82,8 @@ function bool ButtonActivated( Window buttonPressed )
 
    Super.ButtonActivated(buttonPressed);
    SetCameraState(bWasActive);
-	//securityWindow.ToggleCameraState();
-	return True;
+    //securityWindow.ToggleCameraState();
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -98,7 +98,7 @@ function bool ButtonActivatedRight( Window buttonPressed )
 
    Super.ButtonActivated(buttonPressed);
    SetCameraState(bWasActive);
-	return True;
+    return True;
 }
 
 // ----------------------------------------------------------------------

@@ -5,23 +5,23 @@ class FishCarcass extends DeusExCarcass;
 
 //auto state Dead
 //{
-//	function Timer()
-//	{
-//		Super.Timer();
-//	}
+//    function Timer()
+//    {
+//        Super.Timer();
+//    }
 //
-//	function HandleLanding()
-//	{
-//		//Do nothing
-//	}
+//    function HandleLanding()
+//    {
+//        //Do nothing
+//    }
 //
 //Begin:
-//	//== Make our fishy float upside-down
-//	if(Region.Zone.bWaterZone)
-//	{
-//		DesiredRotation = Rotation;
-//		DesiredRotation.Roll = 32768;
-//	}
+//    //== Make our fishy float upside-down
+//    if(Region.Zone.bWaterZone)
+//    {
+//        DesiredRotation = Rotation;
+//        DesiredRotation.Roll = 32768;
+//    }
 //}
 
 defaultproperties

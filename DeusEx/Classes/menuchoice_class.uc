@@ -5,7 +5,7 @@
 //[95] was [24] -- Y|yukichigai
 
 class MenuChoice_Class extends MenuUIChoiceEnum
-	config;
+    config;
 
 var globalconfig string  ClassClasses[95]; //Actual classes of classes (sigh)
 var localized String     ClassNames[95]; //Human readable class names.
@@ -24,10 +24,10 @@ var int PortraitIndex;
 
 event InitWindow()
 {
-	PopulateClassChoices();
+    PopulateClassChoices();
    CreatePortraitButton();
 
-	Super.InitWindow();
+    Super.InitWindow();
 
    SetInitialClass();
 
@@ -43,7 +43,7 @@ event InitWindow()
 
 function PopulateClassChoices()
 {
-	local int typeIndex;
+    local int typeIndex;
 
    for (typeIndex = 0; typeIndex < arrayCount(ClassNames); typeIndex++)
    {
@@ -136,12 +136,12 @@ function string GetModuleName(int ClassIndex)
 
 function CreatePortraitButton()
 {
-	btnPortrait = ButtonWindow(NewChild(Class'ButtonWindow'));
+    btnPortrait = ButtonWindow(NewChild(Class'ButtonWindow'));
 
-	btnPortrait.SetSize(116, 163);
-	btnPortrait.SetPos(19, 27);
+    btnPortrait.SetSize(116, 163);
+    btnPortrait.SetPos(19, 27);
 
-	btnPortrait.SetBackgroundStyle(DSTY_Masked);
+    btnPortrait.SetBackgroundStyle(DSTY_Masked);
 }
 
 // ----------------------------------------------------------------------
@@ -158,7 +158,7 @@ function UpdatePortrait()
    portTex = Texture(DynamicLoadObject(texPortraits[CurrentValue], class'Texture', True));
 
    if(portTex == None)
-	portTex = Texture'DeusExUI.UserInterface.menuplayersetupautoteam';
+    portTex = Texture'DeusExUI.UserInterface.menuplayersetupautoteam';
 
    btnPortrait.SetBackground(portTex);
 }

@@ -6,87 +6,87 @@ class WaltonSimons extends HumanMilitary;
 //
 // Damage type table for Walton Simons:
 //
-// Shot			- 100%
-// Sabot		- 100%
-// Exploded		- 100%
-// TearGas		- 10%
-// PoisonGas	- 10%
-// Poison		- 10%
-// PoisonEffect	- 10%
-// HalonGas		- 10%
-// Radiation	- 10%
-// Shocked		- 10%
-// Stunned		- 0%
+// Shot            - 100%
+// Sabot        - 100%
+// Exploded        - 100%
+// TearGas        - 10%
+// PoisonGas    - 10%
+// Poison        - 10%
+// PoisonEffect    - 10%
+// HalonGas        - 10%
+// Radiation    - 10%
+// Shocked        - 10%
+// Stunned        - 0%
 // KnockedOut   - 0%
-// Flamed		- 0%
-// Burned		- 0%
-// NanoVirus	- 0%
-// EMP			- 0%
+// Flamed        - 0%
+// Burned        - 0%
+// NanoVirus    - 0%
+// EMP            - 0%
 //
 
 function bool Facelift(bool bOn)
 {
-	local int i;
+    local int i;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPWaltonSimons", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPWaltonSimons", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+    {
+        Mesh = Default.Mesh;
 
-		for(i = 0; i < 8; ++i)
-			MultiSkins[i] = Default.MultiSkins[i];
-	}
-	else
-	{
-		for(i = 0; i < 8; ++i)
-			MultiSkins[i] = None;
-	}
+        for(i = 0; i < 8; ++i)
+            MultiSkins[i] = Default.MultiSkins[i];
+    }
+    else
+    {
+        for(i = 0; i < 8; ++i)
+            MultiSkins[i] = None;
+    }
 
-	return true;
+    return true;
 }
 
 function float ShieldDamage(name damageType)
 {
-	// handle special damage types
-	if ((damageType == 'Flamed') || (damageType == 'Burned') || (damageType == 'Stunned') ||
-	    (damageType == 'KnockedOut'))
-		return 0.0;
-	else if ((damageType == 'TearGas') || (damageType == 'PoisonGas') || (damageType == 'HalonGas') ||
-			(damageType == 'Radiation') || (damageType == 'Shocked') || (damageType == 'Poison') ||
-	        (damageType == 'PoisonEffect'))
-		return 0.1;
-	else
-		return Super.ShieldDamage(damageType);
+    // handle special damage types
+    if ((damageType == 'Flamed') || (damageType == 'Burned') || (damageType == 'Stunned') ||
+        (damageType == 'KnockedOut'))
+        return 0.0;
+    else if ((damageType == 'TearGas') || (damageType == 'PoisonGas') || (damageType == 'HalonGas') ||
+            (damageType == 'Radiation') || (damageType == 'Shocked') || (damageType == 'Poison') ||
+            (damageType == 'PoisonEffect'))
+        return 0.1;
+    else
+        return Super.ShieldDamage(damageType);
 }
 
 function GotoDisabledState(name damageType, EHitLocation hitPos)
 {
-	if (!bCollideActors && !bBlockActors && !bBlockPlayers)
-		return;
-	if (CanShowPain())
-		TakeHit(hitPos);
-	else
-		GotoNextState();
+    if (!bCollideActors && !bBlockActors && !bBlockPlayers)
+        return;
+    if (CanShowPain())
+        TakeHit(hitPos);
+    else
+        GotoNextState();
 }
 
 function InitializeInventory()
 {
-	local DeusExLevelInfo info;
-	info = DeusExPlayer(GetPlayerPawn()).GetLevelInfo();
+    local DeusExLevelInfo info;
+    info = DeusExPlayer(GetPlayerPawn()).GetLevelInfo();
 
-	if(caps(info.mapName) == "15_AREA51_BUNKER")
-	{
-		InitialInventory[0].Inventory = Class'WeaponRailgun';
-		InitialInventory[1].Inventory = Class'AmmoPlasma';
-		InitialInventory[1].Count = 40;
-	}
+    if(caps(info.mapName) == "15_AREA51_BUNKER")
+    {
+        InitialInventory[0].Inventory = Class'WeaponRailgun';
+        InitialInventory[1].Inventory = Class'AmmoPlasma';
+        InitialInventory[1].Count = 40;
+    }
 
-	Super.InitializeInventory();
+    Super.InitializeInventory();
 }
 
 defaultproperties

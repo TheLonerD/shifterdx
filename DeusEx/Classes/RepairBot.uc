@@ -15,25 +15,25 @@ var Float lastTickTime;
 // ----------------------------------------------------------------------
 replication
 {
-	// MBCODE: Replicate the last time charged to the server
+    // MBCODE: Replicate the last time charged to the server
    // DEUS_EX AMSD Changed to replicate to client.
-	reliable if ( Role == ROLE_Authority )
-		lastchargeTime, chargeRefreshTime;
+    reliable if ( Role == ROLE_Authority )
+        lastchargeTime, chargeRefreshTime;
 
 }
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPRepairBot", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPCharacters.HDTPRepairBot", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 // ----------------------------------------------------------------------
@@ -42,7 +42,7 @@ function bool Facelift(bool bOn)
 
 function PostBeginPlay()
 {
-	Super.PostBeginPlay();
+    Super.PostBeginPlay();
 
    if (Level.NetMode != NM_Standalone)
    {
@@ -58,14 +58,14 @@ function PostBeginPlay()
 
 function Tick(float deltaTime)
 {
-	//== Track the time shift from pausing
-	if(DeusExGameInfo(Level.Game) != None)
-		if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime)
-			lastChargeTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
+    //== Track the time shift from pausing
+    if(DeusExGameInfo(Level.Game) != None)
+        if(lastTickTime <= DeusExGameInfo(Level.Game).PauseStartTime)
+            lastChargeTime += (DeusExGameInfo(Level.Game).PauseEndTime - DeusExGameInfo(Level.Game).PauseStartTime);
 
-	lastTickTime = Level.TimeSeconds;
+    lastTickTime = Level.TimeSeconds;
 
-	Super.Tick(deltaTime);
+    Super.Tick(deltaTime);
 }
 
 // ----------------------------------------------------------------------
@@ -74,8 +74,8 @@ function Tick(float deltaTime)
 
 function StandStill()
 {
-	GotoState('Idle', 'Idle');
-	Acceleration=Vect(0, 0, 0);
+    GotoState('Idle', 'Idle');
+    Acceleration=Vect(0, 0, 0);
 }
 
 // ----------------------------------------------------------------------
@@ -85,7 +85,7 @@ function StandStill()
 // ----------------------------------------------------------------------
 function Frob(Actor Frobber, Inventory frobWith)
 {
-	Super.Frob(Frobber, frobWith);
+    Super.Frob(Frobber, frobWith);
 
    if (DeusExPlayer(Frobber) == None)
       return;
@@ -100,7 +100,7 @@ function Frob(Actor Frobber, Inventory frobWith)
    {
       if (CanCharge())
       {
-			PlaySound(sound'PlasmaRifleReload', SLOT_None,,, 256);
+            PlaySound(sound'PlasmaRifleReload', SLOT_None,,, 256);
          ChargePlayer(DeusExPlayer(Frobber));
          Pawn(Frobber).ClientMessage("Received Recharge");
       }
@@ -117,9 +117,9 @@ function Frob(Actor Frobber, Inventory frobWith)
 
 simulated function ActivateRepairBotScreens(DeusExPlayer PlayerToDisplay)
 {
-	local DeusExRootWindow root;
-	local HUDRechargeWindow winCharge;
-			
+    local DeusExRootWindow root;
+    local HUDRechargeWindow winCharge;
+            
    root = DeusExRootWindow(PlayerToDisplay.rootWindow);
    if (root != None)
    {
@@ -135,13 +135,13 @@ simulated function ActivateRepairBotScreens(DeusExPlayer PlayerToDisplay)
 // ----------------------------------------------------------------------
 function int ChargePlayer(DeusExPlayer PlayerToCharge)
 {
-	local int chargedPoints;
+    local int chargedPoints;
 
-	if ( CanCharge() )
-	{
-		chargedPoints = PlayerToCharge.ChargePlayer( chargeAmount );
-		lastChargeTime = Level.TimeSeconds;
-	}
+    if ( CanCharge() )
+    {
+        chargedPoints = PlayerToCharge.ChargePlayer( chargeAmount );
+        lastChargeTime = Level.TimeSeconds;
+    }
    return chargedPoints;
 }
 
@@ -152,8 +152,8 @@ function int ChargePlayer(DeusExPlayer PlayerToCharge)
 // ----------------------------------------------------------------------
 
 simulated function bool CanCharge()
-{	
-	return ( (Level.TimeSeconds - int(lastChargeTime)) > chargeRefreshTime);
+{    
+    return ( (Level.TimeSeconds - int(lastChargeTime)) > chargeRefreshTime);
 }
 
 // ----------------------------------------------------------------------
@@ -162,7 +162,7 @@ simulated function bool CanCharge()
 
 simulated function Float GetRefreshTimeRemaining()
 {
-	return chargeRefreshTime - (Level.TimeSeconds - lastChargeTime);
+    return chargeRefreshTime - (Level.TimeSeconds - lastChargeTime);
 }
 
 // ----------------------------------------------------------------------
@@ -171,10 +171,10 @@ simulated function Float GetRefreshTimeRemaining()
 
 simulated function Int GetAvailableCharge()
 {
-	if (CanCharge())
-		return chargeAmount; 
-	else
-		return 0;
+    if (CanCharge())
+        return chargeAmount; 
+    else
+        return 0;
 }
 
 // ----------------------------------------------------------------------

@@ -7,33 +7,33 @@ class WeaponModAuto extends WeaponMod;
 
 function bool Facelift(bool bOn)
 {
-	local Texture temptex;
+    local Texture temptex;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-	{
-		temptex = Texture(DynamicLoadObject("ShifterEX.Items.WeaponModTexAuto",class'Texture', True));
-		if(temptex != None)
-			Skin = temptex;
+    if(bOn)
+    {
+        temptex = Texture(DynamicLoadObject("ShifterEX.Items.WeaponModTexAuto",class'Texture', True));
+        if(temptex != None)
+            Skin = temptex;
 
-		temptex = Texture(DynamicLoadObject("ShifterEX.Icons.LargeIconModAuto",class'Texture', True));
-		if(temptex != None)
-			largeIcon = temptex;
+        temptex = Texture(DynamicLoadObject("ShifterEX.Icons.LargeIconModAuto",class'Texture', True));
+        if(temptex != None)
+            largeIcon = temptex;
 
-		temptex = Texture(DynamicLoadObject("ShifterEX.Icons.BeltIconModAuto",class'Texture', True));
-		if(temptex != None)
-			Icon = temptex;		
-	}
-	else
-	{
-		Skin = Default.Skin;
-		largeIcon = Default.largeIcon;
-		Icon = Default.Icon;
-	}
+        temptex = Texture(DynamicLoadObject("ShifterEX.Icons.BeltIconModAuto",class'Texture', True));
+        if(temptex != None)
+            Icon = temptex;        
+    }
+    else
+    {
+        Skin = Default.Skin;
+        largeIcon = Default.largeIcon;
+        Icon = Default.Icon;
+    }
 
-	return true;
+    return true;
 }
 
 // ----------------------------------------------------------------------
@@ -42,13 +42,13 @@ function bool Facelift(bool bOn)
 
 function ApplyMod(DeusExWeapon weapon)
 {
-	if (weapon != None)
-	{
-		weapon.ShotTime += (weapon.Default.ShotTime * WeaponModifier);
-		if (weapon.ShotTime < 0.0)
-			weapon.ShotTime = 0.0;
-		weapon.ModShotTime += WeaponModifier;
-	}
+    if (weapon != None)
+    {
+        weapon.ShotTime += (weapon.Default.ShotTime * WeaponModifier);
+        if (weapon.ShotTime < 0.0)
+            weapon.ShotTime = 0.0;
+        weapon.ModShotTime += WeaponModifier;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -57,10 +57,10 @@ function ApplyMod(DeusExWeapon weapon)
 
 simulated function bool CanUpgradeWeapon(DeusExWeapon weapon)
 {
-	if (weapon != None)
-		return (weapon.bCanHaveModShotTime && !weapon.HasMaxROFMod());
-	else
-		return False;
+    if (weapon != None)
+        return (weapon.bCanHaveModShotTime && !weapon.HasMaxROFMod());
+    else
+        return False;
 }
 
 // ----------------------------------------------------------------------

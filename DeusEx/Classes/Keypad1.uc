@@ -5,16 +5,16 @@ class Keypad1 extends Keypad;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPKeypad1Tex1", class'Texture', True));
+    if(bOn)
+        Skin = Texture(DynamicLoadObject("HDTPDecos.Skins.HDTPKeypad1Tex1", class'Texture', True));
 
-	if(Skin == None || !bOn)
-		Skin = None;
+    if(Skin == None || !bOn)
+        Skin = None;
 
-	return true;
+    return true;
 }
 
 defaultproperties

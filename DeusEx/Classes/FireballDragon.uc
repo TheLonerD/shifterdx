@@ -5,18 +5,18 @@ class FireballDragon extends Fireball;
 
 simulated function Tick(float deltaTime)
 {
-	// don't Super.Tick() becuase we don't want gravity to affect the stream
-	time += deltaTime;
+    // don't Super.Tick() becuase we don't want gravity to affect the stream
+    time += deltaTime;
 
-	DrawScale += ((MaxDrawScale - DrawScale) * (deltaTime/LifeSpan));
-	ScaleGlow = FMax((((LifeSpan * 2.0) - Time )/LifeSpan), 0.20);
-	LightBrightness = Default.LightBrightness * ScaleGlow;
+    DrawScale += ((MaxDrawScale - DrawScale) * (deltaTime/LifeSpan));
+    ScaleGlow = FMax((((LifeSpan * 2.0) - Time )/LifeSpan), 0.20);
+    LightBrightness = Default.LightBrightness * ScaleGlow;
 
-	//== Strobe effect
-	if(LightRadius != Default.LightRadius)
-		LightRadius = Default.LightRadius;
-	else if(Time < 0.1)
-		LightRadius *= 300;
+    //== Strobe effect
+    if(LightRadius != Default.LightRadius)
+        LightRadius = Default.LightRadius;
+    else if(Time < 0.1)
+        LightRadius *= 300;
 }
 
 defaultproperties

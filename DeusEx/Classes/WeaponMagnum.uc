@@ -5,46 +5,46 @@ class WeaponMagnum expands WeaponPistol;
 
 function bool Facelift(bool bOn)
 {
-	local Texture temptex;
+    local Texture temptex;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-	{
-		temptex = Texture(DynamicLoadObject("ShifterTextures.Icons.IconMagnum",class'Texture', True));
-		if(temptex != None)
-			largeIcon = temptex;
+    if(bOn)
+    {
+        temptex = Texture(DynamicLoadObject("ShifterTextures.Icons.IconMagnum",class'Texture', True));
+        if(temptex != None)
+            largeIcon = temptex;
 
-		temptex = Texture(DynamicLoadObject("ShifterTextures.Icons.BeltMagnum",class'Texture', True));
-		if(temptex != None)
-			Icon = temptex;
+        temptex = Texture(DynamicLoadObject("ShifterTextures.Icons.BeltMagnum",class'Texture', True));
+        if(temptex != None)
+            Icon = temptex;
 
-		temptex = Texture(DynamicLoadObject("ShifterEX.Weapons.MagnumTex1",class'Texture', True));
-		if(temptex != None)
-		{
-			PlayerViewMesh = Default.PlayerViewMesh;
-			MultiSkins[3] = temptex;
+        temptex = Texture(DynamicLoadObject("ShifterEX.Weapons.MagnumTex1",class'Texture', True));
+        if(temptex != None)
+        {
+            PlayerViewMesh = Default.PlayerViewMesh;
+            MultiSkins[3] = temptex;
 
-		}
+        }
 
-		temptex = Texture(DynamicLoadObject("ShifterEX.Weapons.Magnum3rdTex1",class'Texture', True));
-		if(temptex != None)
-		{
-			ThirdPersonMesh = Default.ThirdPersonMesh;
-			PickupViewMesh = Default.PickupViewMesh;
-			Skin = temptex;
-		}
-	}
-	else
-	{
-		MultiSkins[3] = Default.MultiSkins[3];
-		largeIcon = Default.largeIcon;
-		Icon = Default.Icon;
-		Skin = Default.Skin;
-	} 
+        temptex = Texture(DynamicLoadObject("ShifterEX.Weapons.Magnum3rdTex1",class'Texture', True));
+        if(temptex != None)
+        {
+            ThirdPersonMesh = Default.ThirdPersonMesh;
+            PickupViewMesh = Default.PickupViewMesh;
+            Skin = temptex;
+        }
+    }
+    else
+    {
+        MultiSkins[3] = Default.MultiSkins[3];
+        largeIcon = Default.largeIcon;
+        Icon = Default.Icon;
+        Skin = Default.Skin;
+    } 
 
-	return true;
+    return true;
 }
 
 defaultproperties

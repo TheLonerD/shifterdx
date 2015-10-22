@@ -3,149 +3,149 @@
 //=============================================================================
 class WeaponRifle extends DeusExWeapon;
 
-var float	mpNoScopeMult;
+var float    mpNoScopeMult;
 
 function bool Facelift(bool bOn)
 {
-	local Name tName;
-	local int i;
+    local Name tName;
+    local int i;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	tName = GetStateName();
+    tName = GetStateName();
 
-	if(bOn)
-	{
-		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPWeaponRifle", class'mesh', True));
-		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPSniperPickup", class'mesh', True));
-		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPSniper3rd", class'mesh', True));
-	}
+    if(bOn)
+    {
+        PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPWeaponRifle", class'mesh', True));
+        PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPSniperPickup", class'mesh', True));
+        ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPSniper3rd", class'mesh', True));
+    }
 
-	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
-	{
-		PlayerViewMesh = Default.PlayerViewMesh;
-		PickupViewMesh = Default.PickupViewMesh;
-		ThirdPersonMesh = Default.ThirdPersonMesh;
-		Icon = Default.Icon;
-		LargeIcon = Default.LargeIcon;
-		Texture = Default.Texture;
-		for(i = 0; i < 8; ++i)
-			MultiSkins[i] = Default.MultiSkins[i];
-	}
-	else
-	{
-		Mesh = PickupViewMesh;
-		Icon = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPBeltIconRifle", class'Texture'));
-		LargeIcon = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLargeIconRifle", class'Texture'));
-		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPWeaponRifleShine", class'Texture'));
-		CheckWeaponSkins();
-	}
+    if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+    {
+        PlayerViewMesh = Default.PlayerViewMesh;
+        PickupViewMesh = Default.PickupViewMesh;
+        ThirdPersonMesh = Default.ThirdPersonMesh;
+        Icon = Default.Icon;
+        LargeIcon = Default.LargeIcon;
+        Texture = Default.Texture;
+        for(i = 0; i < 8; ++i)
+            MultiSkins[i] = Default.MultiSkins[i];
+    }
+    else
+    {
+        Mesh = PickupViewMesh;
+        Icon = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPBeltIconRifle", class'Texture'));
+        LargeIcon = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLargeIconRifle", class'Texture'));
+        Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPWeaponRifleShine", class'Texture'));
+        CheckWeaponSkins();
+    }
 
-	if(tName == 'Pickup')
-		Mesh = PickupViewMesh;
-	else
-		Mesh = PlayerViewMesh;
+    if(tName == 'Pickup')
+        Mesh = PickupViewMesh;
+    else
+        Mesh = PlayerViewMesh;
 
-	return true;
+    return true;
 }
 
 simulated function renderoverlays(Canvas canvas)
 {
-	if(PickupViewMesh != Default.PickupViewMesh)
-	{
-	   if(bHasSilencer)
-		  multiskins[4] = none;
-	   else
-		  multiskins[4] = texture'pinkmasktex';
-	   if(bHasLaser)
-		  multiskins[3] = none;
-	   else
-		  multiskins[3] = texture'pinkmasktex';
-	
-		multiskins[6] = Getweaponhandtex();
-	
-	   super.renderoverlays(canvas);
-	
-	   if(bHasSilencer)
-		  multiskins[3] = none;
-	   else
-		  multiskins[3] = texture'pinkmasktex';
-	   if(bHasLaser)
-		  multiskins[4] = none;
-	   else
-		  multiskins[4] = texture'pinkmasktex';
-	
-		multiskins[6] = none;
-	}
-	else
-		Super.RenderOverlays(canvas);
+    if(PickupViewMesh != Default.PickupViewMesh)
+    {
+       if(bHasSilencer)
+          multiskins[4] = none;
+       else
+          multiskins[4] = texture'pinkmasktex';
+       if(bHasLaser)
+          multiskins[3] = none;
+       else
+          multiskins[3] = texture'pinkmasktex';
+    
+        multiskins[6] = Getweaponhandtex();
+    
+       super.renderoverlays(canvas);
+    
+       if(bHasSilencer)
+          multiskins[3] = none;
+       else
+          multiskins[3] = texture'pinkmasktex';
+       if(bHasLaser)
+          multiskins[4] = none;
+       else
+          multiskins[4] = texture'pinkmasktex';
+    
+        multiskins[6] = none;
+    }
+    else
+        Super.RenderOverlays(canvas);
 
 }
 
 function CheckWeaponSkins()
 {
-	if(PickupViewMesh != Default.PickupViewMesh)
-	{
-		if(bHasSilencer)
-			multiskins[3] = none;
-		else
-			multiskins[3] = texture'pinkmasktex';
-		if(bHasLaser)
-			multiskins[4] = none;
-		else
-			multiskins[4] = texture'pinkmasktex';
-	}
+    if(PickupViewMesh != Default.PickupViewMesh)
+    {
+        if(bHasSilencer)
+            multiskins[3] = none;
+        else
+            multiskins[3] = texture'pinkmasktex';
+        if(bHasLaser)
+            multiskins[4] = none;
+        else
+            multiskins[4] = texture'pinkmasktex';
+    }
 }
 
 // Muzzle Flash Stuff
 simulated function SwapMuzzleFlashTexture()
 {
-	if(PickupViewMesh == Default.PickupViewMesh)
-	{
-		Super.SwapMuzzleFlashTexture();
-		return;
-	}
+    if(PickupViewMesh == Default.PickupViewMesh)
+    {
+        Super.SwapMuzzleFlashTexture();
+        return;
+    }
 
-	if (!bHasMuzzleFlash)
-		return;
+    if (!bHasMuzzleFlash)
+        return;
 
-	MultiSkins[7] = GetMuzzleTex();
+    MultiSkins[7] = GetMuzzleTex();
 
-	MuzzleFlashLight();
-	SetTimer(0.1, False);
+    MuzzleFlashLight();
+    SetTimer(0.1, False);
 }
 
 simulated function texture GetMuzzleTex()
 {
-	return HDTPMuzzleTexLarge[rand(8)];
+    return HDTPMuzzleTexLarge[rand(8)];
 }
 
 simulated function EraseMuzzleFlashTexture()
 {
-	if(PickupViewMesh != Default.PickupViewMesh)
-		MultiSkins[7] = None;
-	else
-		Super.EraseMuzzleFlashTexture();
+    if(PickupViewMesh != Default.PickupViewMesh)
+        MultiSkins[7] = None;
+    else
+        Super.EraseMuzzleFlashTexture();
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		HitDamage = mpHitDamage;
-		BaseAccuracy = mpBaseAccuracy;
-		ReloadTime = mpReloadTime;
-		AccurateRange = mpAccurateRange;
-		MaxRange = mpMaxRange;
-		ReloadCount = mpReloadCount;
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        HitDamage = mpHitDamage;
+        BaseAccuracy = mpBaseAccuracy;
+        ReloadTime = mpReloadTime;
+        AccurateRange = mpAccurateRange;
+        MaxRange = mpMaxRange;
+        ReloadCount = mpReloadCount;
       bHasMuzzleFlash = True;
       ReloadCount = 1;
       ReloadTime = ShotTime;
-	}
+    }
 }
 
 defaultproperties

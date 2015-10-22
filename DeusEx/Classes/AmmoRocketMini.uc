@@ -5,16 +5,16 @@ class AmmoRocketMini extends DeusExAmmo;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Skin = Texture(DynamicLoadObject("ShifterEX.Ammo.AmmoRocketMini",class'Texture', True));
+    if(bOn)
+        Skin = Texture(DynamicLoadObject("ShifterEX.Ammo.AmmoRocketMini",class'Texture', True));
 
-	if(!bOn || Skin == None)
-		Skin = Default.Skin;
+    if(!bOn || Skin == None)
+        Skin = Default.Skin;
 
-	return true;
+    return true;
 }
 
 defaultproperties

@@ -10,32 +10,32 @@ class ComputerSecurityChoice_DoorAccess extends ComputerCameraUIChoice;
 
 function SetCameraView(ComputerSecurityCameraWindow newCamera)
 {
-	Super.SetCameraView(newCamera);
+    Super.SetCameraView(newCamera);
 
-	if (winCamera != None)
-	{
-		if (winCamera.door != None)
-		{
-			EnableWindow();		// In case was previously disabled
+    if (winCamera != None)
+    {
+        if (winCamera.door != None)
+        {
+            EnableWindow();        // In case was previously disabled
 
-			if (winCamera.door.bLocked)
-				SetValue(0);
-			else
-				SetValue(1);
-		}
-		else
-		{
-			// Disable!
-			DisableWindow();
-			btnInfo.SetButtonText("");
-		}
-	}
-	else
-	{
-		// Disable!
-		DisableWindow();
-		btnInfo.SetButtonText("");
-	}
+            if (winCamera.door.bLocked)
+                SetValue(0);
+            else
+                SetValue(1);
+        }
+        else
+        {
+            // Disable!
+            DisableWindow();
+            btnInfo.SetButtonText("");
+        }
+    }
+    else
+    {
+        // Disable!
+        DisableWindow();
+        btnInfo.SetButtonText("");
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -47,9 +47,9 @@ function SetCameraView(ComputerSecurityCameraWindow newCamera)
 
 function bool ButtonActivated( Window buttonPressed )
 {
-	Super.ButtonActivated(buttonPressed);
-	securityWindow.ToggleDoorLock();
-	return True;
+    Super.ButtonActivated(buttonPressed);
+    securityWindow.ToggleDoorLock();
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -58,9 +58,9 @@ function bool ButtonActivated( Window buttonPressed )
 
 function bool ButtonActivatedRight( Window buttonPressed )
 {
-	Super.ButtonActivated(buttonPressed);
-	securityWindow.ToggleDoorLock();
-	return True;
+    Super.ButtonActivated(buttonPressed);
+    securityWindow.ToggleDoorLock();
+    return True;
 }
 
 // ----------------------------------------------------------------------

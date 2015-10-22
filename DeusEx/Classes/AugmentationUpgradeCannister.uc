@@ -9,25 +9,25 @@ var localized string MustBeUsedOn;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAugUpCan", class'Mesh', True));
+    if(bOn)
+        Mesh = Mesh(DynamicLoadObject("HDTPItems.HDTPAugUpCan", class'Mesh', True));
 
-	if(Mesh == None || !bOn)
-	{
-		Mesh = Default.Mesh;
-		PickupViewMesh = Default.Mesh;
-	}
-	else
-	{
-		PickupViewMesh = Mesh;
-		PlayerviewMesh = Mesh;
-		ThirdPersonMesh = Mesh;
-	}
+    if(Mesh == None || !bOn)
+    {
+        Mesh = Default.Mesh;
+        PickupViewMesh = Default.Mesh;
+    }
+    else
+    {
+        PickupViewMesh = Mesh;
+        PlayerviewMesh = Mesh;
+        ThirdPersonMesh = Mesh;
+    }
 
-	return true;
+    return true;
 } 
 
 // ----------------------------------------------------------------------
@@ -36,17 +36,17 @@ function bool Facelift(bool bOn)
 
 simulated function bool UpdateInfo(Object winObject)
 {
-	local PersonaInfoWindow winInfo;
+    local PersonaInfoWindow winInfo;
 
-	winInfo = PersonaInfoWindow(winObject);
-	if (winInfo == None)
-		return False;
+    winInfo = PersonaInfoWindow(winObject);
+    if (winInfo == None)
+        return False;
 
-	winInfo.Clear();
-	winInfo.SetTitle(itemName);
-	winInfo.SetText(Description $ winInfo.CR() $ winInfo.CR() $ MustBeUsedOn);
+    winInfo.Clear();
+    winInfo.SetTitle(itemName);
+    winInfo.SetText(Description $ winInfo.CR() $ winInfo.CR() $ MustBeUsedOn);
 
-	return True;
+    return True;
 }
 
 // ----------------------------------------------------------------------

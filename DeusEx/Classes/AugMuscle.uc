@@ -16,26 +16,26 @@ Begin:
 
 function Deactivate()
 {
-	Super.Deactivate();
+    Super.Deactivate();
 
-	// check to see if the player is carrying something too heavy for him
-	if (Player.CarriedDecoration != None)
-		if (!Player.CanBeLifted(Player.CarriedDecoration))
-			Player.DropDecoration();
+    // check to see if the player is carrying something too heavy for him
+    if (Player.CarriedDecoration != None)
+        if (!Player.CanBeLifted(Player.CarriedDecoration))
+            Player.DropDecoration();
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		LevelValues[3] = mpAugValue;
-		EnergyRate = mpEnergyDrain;
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        LevelValues[3] = mpAugValue;
+        EnergyRate = mpEnergyDrain;
       //Lift with your legs, not with your back.
       AugmentationLocation = LOC_Leg;
-	}
+    }
 }
 
 defaultproperties

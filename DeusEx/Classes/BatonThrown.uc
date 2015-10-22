@@ -3,63 +3,63 @@
 //=============================================================================
 class BatonThrown extends DeusExProjectile;
 
-var float	mpDamage;
-var int		mpAccurateRange;
-var int		mpMaxRange;
+var float    mpDamage;
+var int        mpAccurateRange;
+var int        mpMaxRange;
 
 // set it's rotation correctly
 simulated function Tick(float deltaTime)
 {
-	local Rotator rot;
+    local Rotator rot;
 
-	if (bStuck)
-		return;
+    if (bStuck)
+        return;
 
-	Super.Tick(deltaTime);
+    Super.Tick(deltaTime);
 
-	if (Level.Netmode != NM_DedicatedServer)
-	{
-		rot = Rotation;
-		rot.Roll += 16384;
-		rot.Pitch -= 16384;
-		SetRotation(rot);
-	}
+    if (Level.Netmode != NM_DedicatedServer)
+    {
+        rot = Rotation;
+        rot.Roll += 16384;
+        rot.Pitch -= 16384;
+        SetRotation(rot);
+    }
 }
 
 auto simulated state Flying
 {
-	simulated function ProcessTouch (Actor Other, Vector HitLocation)
-	{
-		Super.ProcessTouch(Other, HitLocation);
-	}
-	simulated function HitWall(vector HitNormal, actor Wall)
-	{
-		Super.HitWall(HitNormal, Wall);
-	}
-	simulated function Explode(vector HitLocation, vector HitNormal)
-	{
-		spawn(spawnWeaponClass, None,, HitLocation + (HitNormal * 0.1));
-		Super.Explode(HitLocation, HitNormal);
-	}
-	simulated function BeginState()
-	{
-		Super.BeginState();
-	}
+    simulated function ProcessTouch (Actor Other, Vector HitLocation)
+    {
+        Super.ProcessTouch(Other, HitLocation);
+    }
+    simulated function HitWall(vector HitNormal, actor Wall)
+    {
+        Super.HitWall(HitNormal, Wall);
+    }
+    simulated function Explode(vector HitLocation, vector HitNormal)
+    {
+        spawn(spawnWeaponClass, None,, HitLocation + (HitNormal * 0.1));
+        Super.Explode(HitLocation, HitNormal);
+    }
+    simulated function BeginState()
+    {
+        Super.BeginState();
+    }
 }
 
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		Damage = mpDamage;
-		AccurateRange = mpAccurateRange;
-		MaxRange = mpMaxRange;
-		Mesh = LodMesh'DeusExItems.CombatKnifePickup';
-	}
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        Damage = mpDamage;
+        AccurateRange = mpAccurateRange;
+        MaxRange = mpMaxRange;
+        Mesh = LodMesh'DeusExItems.CombatKnifePickup';
+    }
 }
 
 defaultproperties

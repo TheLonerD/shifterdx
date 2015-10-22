@@ -2,7 +2,7 @@
 // WeaponNPCRanged.
 //=============================================================================
 class WeaponNPCRanged extends DeusExWeapon
-	abstract;
+    abstract;
 
 defaultproperties
 {

@@ -7,39 +7,39 @@ var Texture HDTPPOVtex;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		HDTPPOVtex = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLockpickPOVTex1", class'Texture', True));
+    if(bOn)
+        HDTPPOVtex = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLockpickPOVTex1", class'Texture', True));
 
-	if(!bOn || HDTPPOVtex == None)
-		HDTPPOVtex = None;
+    if(!bOn || HDTPPOVtex == None)
+        HDTPPOVtex = None;
 }
 
 
 function renderoverlays(canvas canvas)
 {
-	if(HDTPPOVtex != None || HDTPHandTex[0] != HDTPHandTex[1])
-	{
-		multiskins[1] = HDTPPOVtex;
-		multiskins[0] = Getweaponhandtex();
-		
-		super.renderoverlays(canvas);
-		multiskins[1] = none;
-		multiskins[0] = none;
-	}
-	else
-		Super.RenderOverlays(canvas);
+    if(HDTPPOVtex != None || HDTPHandTex[0] != HDTPHandTex[1])
+    {
+        multiskins[1] = HDTPPOVtex;
+        multiskins[0] = Getweaponhandtex();
+        
+        super.renderoverlays(canvas);
+        multiskins[1] = none;
+        multiskins[0] = none;
+    }
+    else
+        Super.RenderOverlays(canvas);
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-		MaxCopies = 5;
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+        MaxCopies = 5;
 }
 
 // ----------------------------------------------------------------------

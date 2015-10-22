@@ -7,34 +7,34 @@ var bool bUsing;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPpinball", class'mesh', True));
+    if(bOn)
+        Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPpinball", class'mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 function Timer()
 {
-	bUsing = False;
+    bUsing = False;
 }
 
 function Frob(actor Frobber, Inventory frobWith)
 {
-	Super.Frob(Frobber, frobWith);
+    Super.Frob(Frobber, frobWith);
 
-	if (bUsing)
-		return;
+    if (bUsing)
+        return;
 
-	SetTimer(2.0, False);
-	bUsing = True;
+    SetTimer(2.0, False);
+    bUsing = True;
 
-	PlaySound(sound'PinballMachine',,,, 256);
+    PlaySound(sound'PinballMachine',,,, 256);
 }
 
 defaultproperties

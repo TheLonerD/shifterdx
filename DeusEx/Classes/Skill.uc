@@ -2,23 +2,23 @@
 // Skill.
 //=============================================================================
 class Skill extends Actor
-	intrinsic;
+    intrinsic;
 
-var() localized string		SkillName;
-var() localized string		Description;
+var() localized string        SkillName;
+var() localized string        Description;
 var   Texture               SkillIcon;
-var() bool					bAutomatic;
-var() bool					bConversationBased;
-var() int					Cost[3];
-var() float					LevelValues[4];
-var travel int				CurrentLevel;		// 0 is unskilled, 3 is master
-var() class<SkilledTool>	itemNeeded;
+var() bool                    bAutomatic;
+var() bool                    bConversationBased;
+var() int                    Cost[3];
+var() float                    LevelValues[4];
+var travel int                CurrentLevel;        // 0 is unskilled, 3 is master
+var() class<SkilledTool>    itemNeeded;
 
 // which player am I attached to?
 var DeusExPlayer Player;
 
 // Pointer to next skill
-var travel Skill next;		
+var travel Skill next;        
 
 // Printable skill level strings
 var Localized string skillLevelStrings[4];
@@ -45,13 +45,13 @@ replication
 // ----------------------------------------------------------------------
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( (Level.NetMode != NM_StandAlone ) && (Level.Game != None) && (Level.Game.IsA('DeusExMPGame')) )
-	{
+    // If this is a netgame, then override defaults
+    if ( (Level.NetMode != NM_StandAlone ) && (Level.Game != None) && (Level.Game.IsA('DeusExMPGame')) )
+    {
       CurrentLevel = DeusExMPGame(Level.Game).MPSkillStartLevel;
-	}
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -60,28 +60,28 @@ simulated function PreBeginPlay()
 
 function bool Use()
 {
-	local bool bDoIt;
+    local bool bDoIt;
 
-	bDoIt = True;
+    bDoIt = True;
 
-	if (itemNeeded != None)
-	{
-		bDoIt = False;
+    if (itemNeeded != None)
+    {
+        bDoIt = False;
 
-		if ((Player.inHand != None) && (Player.inHand.Class == itemNeeded))
-		{
-			SkilledTool(Player.inHand).PlayUseAnim();
+        if ((Player.inHand != None) && (Player.inHand.Class == itemNeeded))
+        {
+            SkilledTool(Player.inHand).PlayUseAnim();
 
-			// alert NPCs that I'm messing with stuff
-			if (Player.FrobTarget != None)
-				if (Player.FrobTarget.bOwned)
-					Player.FrobTarget.AISendEvent('MegaFutz', EAITYPE_Visual);
+            // alert NPCs that I'm messing with stuff
+            if (Player.FrobTarget != None)
+                if (Player.FrobTarget.bOwned)
+                    Player.FrobTarget.AISendEvent('MegaFutz', EAITYPE_Visual);
 
-			bDoIt = True;
-		}
-	}
+            bDoIt = True;
+        }
+    }
 
-	return bDoIt;
+    return bDoIt;
 }
 
 // ----------------------------------------------------------------------
@@ -94,7 +94,7 @@ function bool Use()
 
 simulated function int GetCost()
 {
-	return Cost[CurrentLevel];
+    return Cost[CurrentLevel];
 }
 
 // ----------------------------------------------------------------------
@@ -103,7 +103,7 @@ simulated function int GetCost()
 
 simulated function int GetCurrentLevel()
 {
-	return CurrentLevel;
+    return CurrentLevel;
 }
 
 // ----------------------------------------------------------------------
@@ -114,7 +114,7 @@ simulated function int GetCurrentLevel()
 
 simulated function String GetCurrentLevelString()
 {
-	return skillLevelStrings[currentLevel];
+    return skillLevelStrings[currentLevel];
 }
 
 // ----------------------------------------------------------------------
@@ -123,40 +123,40 @@ simulated function String GetCurrentLevelString()
 
 function bool IncLevel(optional DeusExPlayer usePlayer)
 {
-	local DeusExPlayer localPlayer;
+    local DeusExPlayer localPlayer;
 
-	// First make sure we're not maxed out
-	if (CurrentLevel < 3)
-	{
-		// If "usePlayer" is passed in, then we want to use this 
-		// as the basis for making our calculations, temporarily
-		// overriding whatever this skill's player is set to.
+    // First make sure we're not maxed out
+    if (CurrentLevel < 3)
+    {
+        // If "usePlayer" is passed in, then we want to use this 
+        // as the basis for making our calculations, temporarily
+        // overriding whatever this skill's player is set to.
 
-		if (usePlayer != None)
-			localPlayer = usePlayer;
-		else
-			localPlayer = Player;
+        if (usePlayer != None)
+            localPlayer = usePlayer;
+        else
+            localPlayer = Player;
 
-		// Now, if a player is defined, then check to see if there enough
-		// skill points available.  If no player is defined, just do it.
-		if (localPlayer != None) 
-		{
-			if ((localPlayer.SkillPointsAvail >= Cost[CurrentLevel]))
-			{
-				// decrement the cost and increment the current skill level
-				localPlayer.SkillPointsAvail -= GetCost();
-				CurrentLevel++;
-				return True;
-			}
-		}
-		else
-		{
-			CurrentLevel++;
-			return True;
-		}
-	}
+        // Now, if a player is defined, then check to see if there enough
+        // skill points available.  If no player is defined, just do it.
+        if (localPlayer != None) 
+        {
+            if ((localPlayer.SkillPointsAvail >= Cost[CurrentLevel]))
+            {
+                // decrement the cost and increment the current skill level
+                localPlayer.SkillPointsAvail -= GetCost();
+                CurrentLevel++;
+                return True;
+            }
+        }
+        else
+        {
+            CurrentLevel++;
+            return True;
+        }
+    }
 
-	return False;
+    return False;
 }
 
 // ----------------------------------------------------------------------
@@ -168,35 +168,35 @@ function bool IncLevel(optional DeusExPlayer usePlayer)
 // ----------------------------------------------------------------------
 
 function bool DecLevel( 
-	optional bool bGiveUserPoints,
-	optional DeusExPlayer usePlayer )
+    optional bool bGiveUserPoints,
+    optional DeusExPlayer usePlayer )
 {
-	local DeusExPlayer localPlayer;
+    local DeusExPlayer localPlayer;
 
-	// First make sure we're not already at the bottom
-	if (CurrentLevel > 0)
-	{
-		// Decrement the skill level 
-		CurrentLevel--;
+    // First make sure we're not already at the bottom
+    if (CurrentLevel > 0)
+    {
+        // Decrement the skill level 
+        CurrentLevel--;
 
-		// If "usePlayer" is passed in, then we want to use this 
-		// as the basis for making our calculations, temporarily
-		// overriding whatever this skill's player is set to.
+        // If "usePlayer" is passed in, then we want to use this 
+        // as the basis for making our calculations, temporarily
+        // overriding whatever this skill's player is set to.
 
-		if (usePlayer != None)
-			localPlayer = usePlayer;
-		else
-			localPlayer = Player;
+        if (usePlayer != None)
+            localPlayer = usePlayer;
+        else
+            localPlayer = Player;
 
-		// If a player exists and the 'bGiveUserPoints' flag is set, 
-		// then add the points to the player
-		if (( bGiveUserPoints ) && (localPlayer != None))
-			localPlayer.SkillPointsAvail += GetCost();
+        // If a player exists and the 'bGiveUserPoints' flag is set, 
+        // then add the points to the player
+        if (( bGiveUserPoints ) && (localPlayer != None))
+            localPlayer.SkillPointsAvail += GetCost();
 
-		return True;
-	}
+        return True;
+    }
 
-	return False;
+    return False;
 }
 
 // ----------------------------------------------------------------------
@@ -209,12 +209,12 @@ function bool DecLevel(
 
 simulated function bool CanAffordToUpgrade( int skillPointsAvailable )
 {
-	if ( CurrentLevel == 3 ) 
-		return False;
-	else if ( Cost[CurrentLevel] > skillPointsAvailable )
-		return False;
-	else
-		return True;
+    if ( CurrentLevel == 3 ) 
+        return False;
+    else if ( Cost[CurrentLevel] > skillPointsAvailable )
+        return False;
+    else
+        return True;
 }
 
 // ----------------------------------------------------------------------
@@ -223,17 +223,17 @@ simulated function bool CanAffordToUpgrade( int skillPointsAvailable )
 
 simulated function bool UpdateInfo(Object winObject)
 {
-	local PersonaInfoWindow winInfo;
+    local PersonaInfoWindow winInfo;
 
-	winInfo = PersonaInfoWindow(winObject);
-	if (winInfo == None)
-		return False;
+    winInfo = PersonaInfoWindow(winObject);
+    if (winInfo == None)
+        return False;
 
-	winInfo.Clear();
-	winInfo.SetTitle(SkillName);
-	winInfo.SetText(Description);
+    winInfo.Clear();
+    winInfo.SetTitle(SkillName);
+    winInfo.SetText(Description);
 
-	return True;
+    return True;
 }
 
 // ----------------------------------------------------------------------

@@ -10,38 +10,38 @@ class ComputerSecurityChoice_Camera extends ComputerCameraUIChoice;
 
 function SetCameraView(ComputerSecurityCameraWindow newCamera)
 {
-	Super.SetCameraView(newCamera);
+    Super.SetCameraView(newCamera);
 
-	if (winCamera != None)
-	{
-		if (winCamera.camera != None)
-		{
-			if (winCamera.camera.bActive)
-				SetValue(0);
-			else
-				SetValue(1);
+    if (winCamera != None)
+    {
+        if (winCamera.camera != None)
+        {
+            if (winCamera.camera.bActive)
+                SetValue(0);
+            else
+                SetValue(1);
 
-			EnableWindow();
-		}
-		else
-		{
-			// Disable!
-			DisableWindow();
-			btnInfo.SetButtonText("");
-		}
+            EnableWindow();
+        }
+        else
+        {
+            // Disable!
+            DisableWindow();
+            btnInfo.SetButtonText("");
+        }
 
-		if (securityWindow != None)
-			securityWindow.EnableCameraButtons(winCamera.camera != None);
-	}
-	else
-	{
-		// Disable!
-		DisableWindow();
-		btnInfo.SetButtonText("");
+        if (securityWindow != None)
+            securityWindow.EnableCameraButtons(winCamera.camera != None);
+    }
+    else
+    {
+        // Disable!
+        DisableWindow();
+        btnInfo.SetButtonText("");
 
-		if (securityWindow != None)
-			securityWindow.EnableCameraButtons(False);
-	}
+        if (securityWindow != None)
+            securityWindow.EnableCameraButtons(False);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -53,9 +53,9 @@ function SetCameraView(ComputerSecurityCameraWindow newCamera)
 
 function bool ButtonActivated( Window buttonPressed )
 {
-	Super.ButtonActivated(buttonPressed);
-	securityWindow.ToggleCameraState();
-	return True;
+    Super.ButtonActivated(buttonPressed);
+    securityWindow.ToggleCameraState();
+    return True;
 }
 
 // ----------------------------------------------------------------------
@@ -64,9 +64,9 @@ function bool ButtonActivated( Window buttonPressed )
 
 function bool ButtonActivatedRight( Window buttonPressed )
 {
-	Super.ButtonActivated(buttonPressed);
-	securityWindow.ToggleCameraState();
-	return True;
+    Super.ButtonActivated(buttonPressed);
+    securityWindow.ToggleCameraState();
+    return True;
 }
 
 // ----------------------------------------------------------------------

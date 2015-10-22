@@ -2,83 +2,83 @@
 // DeusExGameInfo.
 //=============================================================================
 class DeusExGameInfo expands GameInfo
-	config;
+    config;
 
-var() config bool bNewSkillSystem;	//toggles the new skill system
+var() config bool bNewSkillSystem;    //toggles the new skill system
 
 var Float PauseStartTime;
 var Float PauseEndTime;
-	
+    
 // ----------------------------------------------------------------------
 // Login()
 // ----------------------------------------------------------------------
 
 event playerpawn Login
 (
-	string Portal,
-	string Options,
-	out string Error,
-	class<playerpawn> SpawnClass
+    string Portal,
+    string Options,
+    out string Error,
+    class<playerpawn> SpawnClass
 )
 {
-	local DeusExPlayer player;
-	local NavigationPoint StartSpot;
-	local byte InTeam;
-	local DumpLocation dump;
+    local DeusExPlayer player;
+    local NavigationPoint StartSpot;
+    local byte InTeam;
+    local DumpLocation dump;
 
    //== In Unrealistic we can be whoever the hell we want
    if(float(ParseOption( Options, "Difficulty")) > 4.0)
    {
-	if(!ClassIsChildOf(SpawnClass, class'Human'))
-		SpawnClass=class'JCDentonMale';
+    if(!ClassIsChildOf(SpawnClass, class'Human'))
+        SpawnClass=class'JCDentonMale';
    }
    else
    {
-	//DEUS_EX AMSD In non multiplayer games, force JCDenton.
-	if (!ApproveClass(SpawnClass))
-	{
-		SpawnClass=class'JCDentonMale';
-	}
+    //DEUS_EX AMSD In non multiplayer games, force JCDenton.
+    if (!ApproveClass(SpawnClass))
+    {
+        SpawnClass=class'JCDentonMale';
+    }
    }
 
-	player = DeusExPlayer(Super.Login(Portal, Options, Error, SpawnClass));
+    player = DeusExPlayer(Super.Login(Portal, Options, Error, SpawnClass));
 
-	// If we're traveling across a map on the same mission, 
-	// nuke the player's crap and 
+    // If we're traveling across a map on the same mission, 
+    // nuke the player's crap and 
 
-	if ((player != None) && (!HasOption(Options, "Loadgame")))
-	{
-		player.ResetPlayerToDefaults();
+    if ((player != None) && (!HasOption(Options, "Loadgame")))
+    {
+        player.ResetPlayerToDefaults();
 
-		dump = player.CreateDumpLocationObject();
+        dump = player.CreateDumpLocationObject();
 
-		if ((dump != None) && (dump.HasLocationBeenSaved()))
-		{
-			dump.LoadLocation();
+        if ((dump != None) && (dump.HasLocationBeenSaved()))
+        {
+            dump.LoadLocation();
 
-			player.Pause();
-			player.SetLocation(dump.currentDumpLocation.Location);
-			player.SetRotation(dump.currentDumpLocation.ViewRotation);
-			player.ViewRotation = dump.currentDumpLocation.ViewRotation;
-			player.ClientSetRotation(dump.currentDumpLocation.ViewRotation);
+            player.Pause();
+            player.SetLocation(dump.currentDumpLocation.Location);
+            player.SetRotation(dump.currentDumpLocation.ViewRotation);
+            player.ViewRotation = dump.currentDumpLocation.ViewRotation;
+            player.ClientSetRotation(dump.currentDumpLocation.ViewRotation);
 
-			CriticalDelete(dump);
-		}
-		else
-		{
-			InTeam    = GetIntOption( Options, "Team", 0 ); // Multiplayer now, defaults to Team_Unatco=0
-         if (Level.NetMode == NM_Standalone)			
+            CriticalDelete(dump);
+        }
+        else
+        {
+            InTeam    = GetIntOption( Options, "Team", 0 ); // Multiplayer now, defaults to Team_Unatco=0
+         if (Level.NetMode == NM_Standalone)            
             StartSpot = FindPlayerStart( None, InTeam, Portal );
          else
             StartSpot = FindPlayerStart( Player, InTeam, Portal );
 
-			player.SetLocation(StartSpot.Location);
-			player.SetRotation(StartSpot.Rotation);
-			player.ViewRotation = StartSpot.Rotation;
-			player.ClientSetRotation(player.Rotation);
-		}
-	}
-	return player;
+            player.SetLocation(StartSpot.Location);
+            player.SetRotation(StartSpot.Rotation);
+            player.ViewRotation = StartSpot.Rotation;
+            player.ClientSetRotation(player.Rotation);
+        }
+    }
+    return player;
 }
 
 // ----------------------------------------------------------------------
@@ -89,7 +89,7 @@ event playerpawn Login
 
 function bool ApproveClass( class<playerpawn> SpawnClass)
 {
-	return false;
+    return false;
 }
 
 // ----------------------------------------------------------------------
@@ -98,7 +98,7 @@ function bool ApproveClass( class<playerpawn> SpawnClass)
 
 function DiscardInventory( Pawn Other )
 {
-	// do nothing
+    // do nothing
 }
 
 // ----------------------------------------------------------------------
@@ -107,7 +107,7 @@ function DiscardInventory( Pawn Other )
 
 function ScoreKill(pawn Killer, pawn Other)
 {
-	// do nothing	
+    // do nothing    
 }
 
 // ----------------------------------------------------------------------
@@ -115,8 +115,8 @@ function ScoreKill(pawn Killer, pawn Other)
 // ----------------------------------------------------------------------
 function ClientPlayerPossessed(PlayerPawn CheckPlayer)
 {
-	CheckPlayerWindow(CheckPlayer);
-	CheckPlayerConsole(CheckPlayer);
+    CheckPlayerWindow(CheckPlayer);
+    CheckPlayerConsole(CheckPlayer);
 }
 
 // ----------------------------------------------------------------------
@@ -124,7 +124,7 @@ function ClientPlayerPossessed(PlayerPawn CheckPlayer)
 // ----------------------------------------------------------------------
 function CheckPlayerWindow(PlayerPawn CheckPlayer)
 {
-	// do nothing.
+    // do nothing.
 }
 
 // ----------------------------------------------------------------------
@@ -132,7 +132,7 @@ function CheckPlayerWindow(PlayerPawn CheckPlayer)
 // ----------------------------------------------------------------------
 function CheckPlayerConsole(PlayerPawn CheckPlayer)
 {
-	// do nothing.
+    // do nothing.
 }
 
 // ----------------------------------------------------------------------
@@ -140,7 +140,7 @@ function CheckPlayerConsole(PlayerPawn CheckPlayer)
 // ----------------------------------------------------------------------
 function FailRootWindowCheck(PlayerPawn FailPlayer)
 {
-	// do nothing
+    // do nothing
 }
 
 // ----------------------------------------------------------------------
@@ -148,7 +148,7 @@ function FailRootWindowCheck(PlayerPawn FailPlayer)
 // ----------------------------------------------------------------------
 function FailConsoleCheck(PlayerPawn FailPlayer)
 {
-	// do nothing
+    // do nothing
 }
 
 // ----------------------------------------------------------------------
@@ -156,12 +156,12 @@ function FailConsoleCheck(PlayerPawn FailPlayer)
 
 function bool SetPause(BOOL bPause, PlayerPawn P)
 {
-	if(bPause && Level.Pauser == "")
-		PauseStartTime = Level.TimeSeconds;
-	if(!bPause && Level.Pauser != "")
-		PauseEndTime = Level.TimeSeconds;
+    if(bPause && Level.Pauser == "")
+        PauseStartTime = Level.TimeSeconds;
+    if(!bPause && Level.Pauser != "")
+        PauseEndTime = Level.TimeSeconds;
 
-	Super.SetPause(bPause, P);
+    Super.SetPause(bPause, P);
 }
 
 defaultproperties

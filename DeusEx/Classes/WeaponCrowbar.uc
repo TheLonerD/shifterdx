@@ -8,101 +8,101 @@ class WeaponCrowbar extends DeusExWeapon;
 
 simulated function bool ClientAltFire( float Value )
 {
-        	bClientReadyToFire = False;
-        	bInProcess = True;
-        	GotoState('ClientFiring');
-        	bPointing = True;
-        	if ( PlayerPawn(Owner) != None )
-	     	PlayerPawn(Owner).PlayFiring();
-        	PlayFiringAltSound();
-        	ProjectileAltFire(AltProjectileClass, AltProjectileSpeed, bAltWarnTarget);
-		if(Level.NetMode == NM_Standalone)
-			SwitchItem();
-        	Destroy();
-        	return true;		
+            bClientReadyToFire = False;
+            bInProcess = True;
+            GotoState('ClientFiring');
+            bPointing = True;
+            if ( PlayerPawn(Owner) != None )
+             PlayerPawn(Owner).PlayFiring();
+            PlayFiringAltSound();
+            ProjectileAltFire(AltProjectileClass, AltProjectileSpeed, bAltWarnTarget);
+        if(Level.NetMode == NM_Standalone)
+            SwitchItem();
+            Destroy();
+            return true;        
 }
 
 function AltFire( float Value )
 {
-        	GotoState('AltFiring');
-        	bPointing = True;
-        	if ( Owner.IsA('PlayerPawn') )
-	     	PlayerPawn(Owner).PlayFiring();
-        	PlayFiringAltSound();
-        	ProjectileAltFire(AltProjectileClass, AltProjectileSpeed, bAltWarnTarget);
-		if(Level.NetMode == NM_Standalone)
-			SwitchItem();
-        	Destroy();
+            GotoState('AltFiring');
+            bPointing = True;
+            if ( Owner.IsA('PlayerPawn') )
+             PlayerPawn(Owner).PlayFiring();
+            PlayFiringAltSound();
+            ProjectileAltFire(AltProjectileClass, AltProjectileSpeed, bAltWarnTarget);
+        if(Level.NetMode == NM_Standalone)
+            SwitchItem();
+            Destroy();
 }
 
 simulated function PreBeginPlay()
 {
-	Super.PreBeginPlay();
+    Super.PreBeginPlay();
 
-	// If this is a netgame, then override defaults
-	if ( Level.NetMode != NM_StandAlone )
-	{
-		HitDamage = mpHitDamage;
-		BaseAccuracy = mpBaseAccuracy;
-		ReloadTime = mpReloadTime;
-		AccurateRange = mpAccurateRange;
-		MaxRange = mpMaxRange;
-	}
+    // If this is a netgame, then override defaults
+    if ( Level.NetMode != NM_StandAlone )
+    {
+        HitDamage = mpHitDamage;
+        BaseAccuracy = mpBaseAccuracy;
+        ReloadTime = mpReloadTime;
+        AccurateRange = mpAccurateRange;
+        MaxRange = mpMaxRange;
+    }
 
 }
 
 function bool Facelift(bool bOn)
 {
-	local Name tName;
+    local Name tName;
 
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	tName = GetStateName();
+    tName = GetStateName();
 
-	if(bOn)
-	{
-		PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPWeaponCrowbar", class'mesh', True));
-		PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCrowbarPickup", class'mesh', True));
-		ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCrowbar3rd", class'mesh', True));
-	}
+    if(bOn)
+    {
+        PlayerViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPWeaponCrowbar", class'mesh', True));
+        PickupViewMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCrowbarPickup", class'mesh', True));
+        ThirdPersonMesh = mesh(DynamicLoadObject("HDTPItems.HDTPCrowbar3rd", class'mesh', True));
+    }
 
-	if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
-	{
-		Texture = None;
-		PlayerViewMesh = Default.PlayerViewMesh;
-		PickupViewMesh = Default.PickupViewMesh;
-		ThirdPersonMesh = Default.ThirdPersonMesh;
-	}
-	else
-	{
-		Mesh = PickupViewMesh;
-		Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPWeaponCrowbarTex2", class'Texture'));
-		largeIcon = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLargeIconCrowbar", class'Texture'));
-	}
+    if(PlayerViewMesh == None || PickupViewMesh == None || ThirdPersonMesh == None || !bOn)
+    {
+        Texture = None;
+        PlayerViewMesh = Default.PlayerViewMesh;
+        PickupViewMesh = Default.PickupViewMesh;
+        ThirdPersonMesh = Default.ThirdPersonMesh;
+    }
+    else
+    {
+        Mesh = PickupViewMesh;
+        Texture = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPWeaponCrowbarTex2", class'Texture'));
+        largeIcon = Texture(DynamicLoadObject("HDTPItems.Skins.HDTPLargeIconCrowbar", class'Texture'));
+    }
 
-	if(tName == 'Pickup')
-		Mesh = PickupViewMesh;
-	else
-		Mesh = PlayerViewMesh;
+    if(tName == 'Pickup')
+        Mesh = PickupViewMesh;
+    else
+        Mesh = PlayerViewMesh;
 
-	return true;
+    return true;
 }
 
 simulated function renderoverlays(Canvas canvas)
 {
-	if(PickupViewMesh != Default.PickupViewMesh)
-		multiskins[1] = Getweaponhandtex();
+    if(PickupViewMesh != Default.PickupViewMesh)
+        multiskins[1] = Getweaponhandtex();
 
-	super.renderoverlays(canvas);
+    super.renderoverlays(canvas);
 
-	if(PickupViewMesh != Default.PickupViewMesh)
-		multiskins[1] = none; 
+    if(PickupViewMesh != Default.PickupViewMesh)
+        multiskins[1] = none; 
 }
 
 function bool TestCycleable()
 {
-	return true;
+    return true;
 }
 
 //Damage up to 12 from 10

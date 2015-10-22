@@ -9,48 +9,48 @@ var int spinDir, spinSpeed;
 
 function bool Facelift(bool bOn)
 {
-	if(!Super.Facelift(bOn))
-		return false;
+    if(!Super.Facelift(bOn))
+        return false;
 
-	if(bOn)
-		Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPshipswheel", class'mesh', True));
+    if(bOn)
+        Mesh = mesh(DynamicLoadObject("HDTPDecos.HDTPshipswheel", class'mesh', True));
 
-	if(Mesh == None || !bOn)
-		Mesh = Default.Mesh;
+    if(Mesh == None || !bOn)
+        Mesh = Default.Mesh;
 
-	return true;
+    return true;
 }
 
 function Tick(float deltaTime)
 {
-	local Rotator rot;
+    local Rotator rot;
 
-	Super.Tick(deltaTime);
+    Super.Tick(deltaTime);
 
-	if (bSpinning)
-	{
-		rot = Rotation;
-		rot.Roll += spinDir * spinSpeed * deltaTime * (spinDuration - spinTime) / spinDuration;
-		SetRotation(rot);
-		spinTime += deltaTime;
-		if (spinTime >= spinDuration)
-			bSpinning = False;
-	}
+    if (bSpinning)
+    {
+        rot = Rotation;
+        rot.Roll += spinDir * spinSpeed * deltaTime * (spinDuration - spinTime) / spinDuration;
+        SetRotation(rot);
+        spinTime += deltaTime;
+        if (spinTime >= spinDuration)
+            bSpinning = False;
+    }
 }
 
 function Frob(actor Frobber, Inventory frobWith)
 {
-	Super.Frob(Frobber, frobWith);
+    Super.Frob(Frobber, frobWith);
 
-	// spin the wheel in a random direction for a random amount of time at a random speed
-	if (FRand() < 0.5)
-		spinDir = -1;
-	else
-		spinDir = 1;
-	spinSpeed = Rand(64) * 1024;
-	spinDuration = FRand() * 5 + 2;
-	spinTime = 0;
-	bSpinning = True;
+    // spin the wheel in a random direction for a random amount of time at a random speed
+    if (FRand() < 0.5)
+        spinDir = -1;
+    else
+        spinDir = 1;
+    spinSpeed = Rand(64) * 1024;
+    spinDuration = FRand() * 5 + 2;
+    spinTime = 0;
+    bSpinning = True;
 }
 
 defaultproperties
